@@ -1,12 +1,14 @@
 import { Outlet } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import Navbar from "../components/Navbar";
 
 const MainLayout = () => {
   return (
-    <div>
+    <>
       <Navbar />
       <Outlet />
-    </div>
+      <Toaster position="top-right" />
+    </>
   );
 };
 
