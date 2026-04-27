@@ -7,7 +7,7 @@ const JobPage = ({ deleteJob }) => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const onDeleteClick = async (jobId) => {
+  const onDeleteClick = (jobId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this job?",
     );
@@ -15,7 +15,7 @@ const JobPage = ({ deleteJob }) => {
       return;
     }
 
-    await deleteJob(jobId);
+    deleteJob(jobId);
 
     toast.success("Job deleted successfully");
 
