@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -28,12 +29,8 @@ export class PostsController {
 
   // [GET] /posts/:id
   @Get(':id')
-  findOne(@Param('id') id: string): Post | { message: string } {
-    const post = this.postsService.findOne(Number(id));
-    if (!post) {
-      return { message: `Post with id ${id} not found` };
-    }
-    return post;
+  findOne(@Param('id', ParseIntPipe) id: number): Post {
+    return this.postsService.findOne(id);
   }
 
   // [POST] /posts
@@ -45,23 +42,16 @@ export class PostsController {
   // [PUT] /posts/:id
   @Put(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updatePostDto: UpdatePostDto,
-  ): Post | { message: string } {
-    const updated = this.postsService.update(Number(id), updatePostDto);
-    if (!updated) {
-      return { message: `Post with id ${id} not found` };
-    }
-    return updated;
+  ): Post {
+    return this.postsService.update(id, updatePostDto);
   }
 
   // [DELETE] /posts/:id
   @Delete(':id')
-  remove(@Param('id') id: string): { message: string } {
-    const deleted = this.postsService.remove(Number(id));
-    if (!deleted) {
-      return { message: `Post with id ${id} not found` };
-    }
+  remove(@Param('id', ParseIntPipe) id: number) {
+    this.postsService.remove(id);
     return { message: `Post with id ${id} deleted` };
   }
 }

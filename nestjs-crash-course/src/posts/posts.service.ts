@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 interface Post {
   id: number;
@@ -18,8 +19,12 @@ export class PostsService {
     return this.posts;
   }
 
-  findOne(id: number): Post | undefined {
-    return this.posts.find((p) => p.id === id);
+  findOne(id: number): Post {
+    const post = this.posts.find((p) => p.id === id);
+    if (!post) {
+      throw new NotFoundException(`Post with id ${id} not found`);
+    }
+    return post;
   }
 
   create(data: Omit<Post, 'id'>): Post {
@@ -32,16 +37,20 @@ export class PostsService {
     return newPost;
   }
 
-  update(id: number, data: Partial<Post>): Post | undefined {
+  update(id: number, data: UpdatePostDto): Post {
     const index = this.posts.findIndex((p) => p.id === id);
-    if (index === -1) return undefined;
+    if (index === -1) {
+      throw new NotFoundException(`Post with id ${id} not found`);
+    }
     this.posts[index] = { ...this.posts[index], ...data };
     return this.posts[index];
   }
 
-  remove(id: number): boolean {
-    const lengthBefore = this.posts.length;
-    this.posts = this.posts.filter((p) => p.id !== id);
-    return this.posts.length < lengthBefore;
+  remove(id: number): void {
+    const index = this.posts.findIndex((p) => p.id === id);
+    if (index === -1) {
+      throw new NotFoundException(`Post with id ${id} not found`);
+    }
+    this.posts.splice(index, 1);
   }
 }
