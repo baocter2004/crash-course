@@ -48,6 +48,7 @@ export class PostsService {
 
   remove(id: number): void {
     const index = this.posts.findIndex((p) => p.id === id);
+    console.log(index);
     if (index === -1) {
       throw new NotFoundException(`Post with id ${id} not found`);
     }

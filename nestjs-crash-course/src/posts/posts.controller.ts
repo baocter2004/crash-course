@@ -7,10 +7,12 @@ import {
   Post,
   Put,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 
 interface Post {
   id: number;
@@ -34,12 +36,14 @@ export class PostsController {
   }
 
   // [POST] /posts
+  @UseGuards(AuthGuard)
   @Post()
   create(@Body() createPostDto: CreatePostDto): Post {
     return this.postsService.create(createPostDto);
   }
 
   // [PUT] /posts/:id
+  @UseGuards(AuthGuard)
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -49,6 +53,7 @@ export class PostsController {
   }
 
   // [DELETE] /posts/:id
+  @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     this.postsService.remove(id);
