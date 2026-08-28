@@ -18,12 +18,6 @@ interface Post {
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
-  private posts: Post[] = [
-    { id: 1, title: 'Post One', body: 'This is post one' },
-    { id: 2, title: 'Post Two', body: 'This is post two' },
-    { id: 3, title: 'Post Three', body: 'This is post three' },
-  ];
-
   // [GET] /posts
   @Get()
   findAll(): Post[] {
