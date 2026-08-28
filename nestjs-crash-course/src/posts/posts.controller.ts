@@ -8,6 +8,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 interface Post {
   id: number;
@@ -36,17 +38,17 @@ export class PostsController {
 
   // [POST] /posts
   @Post()
-  create(@Body() body: Omit<Post, 'id'>): Post {
-    return this.postsService.create(body);
+  create(@Body() createPostDto: CreatePostDto): Post {
+    return this.postsService.create(createPostDto);
   }
 
   // [PUT] /posts/:id
   @Put(':id')
   update(
     @Param('id') id: string,
-    @Body() body: Partial<Post>,
+    @Body() updatePostDto: UpdatePostDto,
   ): Post | { message: string } {
-    const updated = this.postsService.update(Number(id), body);
+    const updated = this.postsService.update(Number(id), updatePostDto);
     if (!updated) {
       return { message: `Post with id ${id} not found` };
     }
