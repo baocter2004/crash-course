@@ -7,7 +7,7 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const port = process.env.PORT ?? 30100;
+  const port = process.env.PORT ?? 3000;
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -23,4 +23,7 @@ async function bootstrap() {
   console.log(`This app url: http://localhost:${port}`);
 }
 
-bootstrap();
+bootstrap().catch((err) => {
+  console.error('Failed to start application', err);
+  process.exit(1);
+});

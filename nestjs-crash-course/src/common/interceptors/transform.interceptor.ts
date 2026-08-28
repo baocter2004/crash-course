@@ -7,15 +7,23 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+export interface ApiResponse<T> {
+  success: true;
+  data: T;
+}
+
 @Injectable()
-export class TransformInterceptor implements NestInterceptor {
+export class TransformInterceptor<T> implements NestInterceptor<
+  T,
+  ApiResponse<T>
+> {
   intercept(
     context: ExecutionContext,
-    next: CallHandler<any>,
-  ): Observable<any> | Promise<Observable<any>> {
+    next: CallHandler<T>,
+  ): Observable<ApiResponse<T>> {
     return next.handle().pipe(
       map((data) => ({
-        success: true,
+        success: true as const,
         data,
       })),
     );

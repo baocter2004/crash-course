@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
 interface Post {
@@ -27,9 +28,15 @@ export class PostsService {
     return post;
   }
 
-  create(data: Omit<Post, 'id'>): Post {
+  create(data: CreatePostDto): Post {
+    // KHÔNG dùng length + 1: sau khi xoá bản ghi giữa mảng sẽ sinh ID trùng.
+    // Lấy max(id) + 1 để ID luôn là duy nhất.
+    const nextId = this.posts.length
+      ? Math.max(...this.posts.map((p) => p.id)) + 1
+      : 1;
+
     const newPost: Post = {
-      id: this.posts.length + 1,
+      id: nextId,
       ...data,
     };
 
@@ -48,7 +55,6 @@ export class PostsService {
 
   remove(id: number): void {
     const index = this.posts.findIndex((p) => p.id === id);
-    console.log(index);
     if (index === -1) {
       throw new NotFoundException(`Post with id ${id} not found`);
     }
