@@ -13,7 +13,7 @@ import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { AuthGuard } from 'src/common/guards/auth.guard';
-import { Post as PostEntity } from './entities/post.entity';
+import { Post as PostEntity } from './enities/post.entity';
 
 @Controller('posts')
 export class PostsController {
