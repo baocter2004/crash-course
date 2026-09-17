@@ -1,0 +1,3112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Laravel Crash Course — Lộ trình học chi tiết (v2, đã audit)</title>
+<style>
+  @page { size: A4; margin: 17mm 16mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Helvetica, Arial, sans-serif; color: #1a1a1a; line-height: 1.5; font-size: 13.5px; }
+  .cover { height: 245mm; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; page-break-after: always; }
+  .cover .tag { background: #FF2D20; color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; letter-spacing: 1px; margin-bottom: 18px; }
+  .cover h1 { font-size: 40px; margin: 0 0 8px 0; color: #111; }
+  .cover h2 { font-size: 18px; font-weight: 400; color: #555; margin: 0 0 40px 0; }
+  .cover .meta { color: #888; font-size: 13px; }
+  .cover .meta div { margin-bottom: 4px; }
+  h1 { font-size: 22px; border-bottom: 3px solid #FF2D20; padding-bottom: 8px; margin-top: 0; color: #111; }
+  h2 { font-size: 16px; color: #FF2D20; margin-top: 22px; border-left: 4px solid #FF2D20; padding-left: 10px; }
+  h3 { font-size: 14px; color: #222; margin-top: 16px; }
+  p { margin: 6px 0; }
+  .part { margin-top: 34px; padding-top: 18px; border-top: 2px dashed #d9d9d9; }
+  .part.first { margin-top: 24px; }
+  .part-head { break-inside: avoid; page-break-inside: avoid; break-after: avoid; page-break-after: avoid; }
+  .part-badge { display: inline-block; background: #111; color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 12px; margin-bottom: 8px; }
+  .part-badge.new { background: #FF2D20; }
+  .goal-box { background: #fff3f2; border-left: 4px solid #FF2D20; padding: 8px 12px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+  .goal-box b { color: #FF2D20; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12.5px; }
+  th, td { border: 1px solid #ddd; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #f5f5f5; }
+  code { background: #f2f2f2; padding: 1px 5px; border-radius: 3px; font-family: "DejaVu Sans Mono", "Noto Sans Mono", Consolas, monospace; font-size: 12px; color: #c7254e; }
+  pre { background: #1e1e2e; color: #e0e0e0; padding: 12px 14px; border-radius: 6px; white-space: pre-wrap; word-break: break-word; overflow-x: visible; font-size: 11.5px; line-height: 1.5; margin: 10px 0; font-family: "DejaVu Sans Mono", "Noto Sans Mono", Consolas, monospace; }
+  pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+  .diagram { background: #0f172a; color: #a5f3fc; padding: 14px 16px; border-radius: 6px; font-family: "DejaVu Sans Mono", "Noto Sans Mono", Consolas, monospace; font-size: 11.5px; white-space: pre-wrap; line-height: 1.5; margin: 12px 0; }
+  .note { background: #fffbe6; border: 1px solid #ffe58f; padding: 8px 12px; border-radius: 4px; margin: 10px 0; font-size: 12.5px; }
+  .note b { color: #ad6800; }
+  .task-box { background: #f0fdf4; border-left: 4px solid #16a34a; padding: 8px 12px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+  .task-box b { color: #16a34a; }
+  .audit { background: #eff6ff; border-left: 4px solid #2563eb; padding: 8px 12px; margin: 10px 0; border-radius: 0 4px 4px 0; font-size: 12.5px; }
+  .audit b { color: #2563eb; }
+  .goal-box, .note, .audit, pre, .diagram { page-break-inside: avoid; break-inside: avoid; }
+  .task-box ol { break-before: avoid; page-break-before: avoid; }
+  .task-box li, tr { break-inside: avoid; page-break-inside: avoid; }
+  h2, h3 { break-after: avoid; page-break-after: avoid; }
+  ul, ol { margin: 6px 0; padding-left: 22px; }
+  li { margin: 3px 0; }
+  .toc-list { list-style: none; padding-left: 0; }
+  .toc-list li { display: flex; justify-content: space-between; border-bottom: 1px dotted #ccc; padding: 5px 0; font-size: 13px; }
+  .toc-list .n { color: #FF2D20; font-weight: 700; margin-right: 8px; }
+  .toc-list .tag { font-size: 10px; color: #666; background: #eee; padding: 1px 6px; border-radius: 8px; }
+  .toc-list .tag.new { color: #fff; background: #FF2D20; }
+  .kw { color: #f97583; } .cls { color: #b392f0; } .str { color: #9ecbff; } .cm { color: #9aa4b2; } .attr { color: #ffab70; } .cli { color: #7ee787; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="tag">CRASH COURSE PLAN — v2 (đã audit theo docs Laravel 13.x)</div>
+  <h1>Laravel Crash Course — REST API</h1>
+  <h2>Lộ trình học chi tiết từng phần, kèm giải thích cơ chế bên trong — và lộ trình để master Laravel</h2>
+  <div class="meta">
+    <div>Repo: crash-course / laravel-crash-course</div>
+    <div>Bám theo Laravel 13.x (phát hành 17/03/2026, PHP 8.3–8.5) — mọi API trong tài liệu đã đối chiếu với laravel.com/docs (tháng 09/2026)</div>
+    <div>Kiểm tra phiên bản dự án của bạn bằng <c>php artisan --version</c></div>
+  </div>
+</div>
+
+<h1>Mục lục</h1>
+<ul class="toc-list">
+  <li><span><span class="n">PHP</span> PHP 8.3+ cho người viết Laravel</span><span class="tag">NỀN TẢNG NGÔN NGỮ</span></li>
+  <li><span><span class="n">00</span> Kiến trúc tổng thể &amp; Request Lifecycle</span><span class="tag">NỀN TẢNG</span></li>
+  <li><span><span class="n">01</span> Khởi tạo dự án &amp; cấu trúc thư mục</span></li>
+  <li><span><span class="n">02</span> Routing &amp; Controllers cho API</span></li>
+  <li><span><span class="n">03</span> Service Container, DI &amp; Service Providers</span></li>
+  <li><span><span class="n">04</span> Database: Migration, Model (Eloquent), Factory &amp; Seeder</span></li>
+  <li><span><span class="n">05</span> Validation với Form Request</span></li>
+  <li><span><span class="n">06</span> API Resources — tầng transform response</span></li>
+  <li><span><span class="n">07</span> Middleware &amp; Exception Handling (chuẩn hoá lỗi JSON)</span></li>
+  <li><span><span class="n">08</span> Quan hệ dữ liệu (Relationships) &amp; vấn đề N+1</span></li>
+  <li><span><span class="n">09</span> Authentication với Laravel Sanctum</span></li>
+  <li><span><span class="n">10</span> Chuẩn hoá REST API cho production</span></li>
+  <li><span><span class="n">11</span> Testing (Pest / PHPUnit)</span></li>
+  <li><span><span class="n">12</span> Pagination chuyên sâu &amp; xử lý dữ liệu lớn</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">13</span> Database Transactions</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">14</span> Queue &amp; Jobs — chuyên sâu</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">15</span> Events, Listeners &amp; Observers</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">16</span> Cache &amp; Atomic Locks</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">17</span> Task Scheduling (cron)</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">18</span> File Storage &amp; Upload</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">19</span> Authorization chuyên sâu: Gate &amp; Policy</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">20</span> Mail &amp; Notifications (queued)</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">21</span> Kiến trúc dự án lớn: Service, Action, DTO, Enum</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">22</span> Production: deploy, worker, Octane, quan sát hệ thống</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">23</span> Lộ trình master Laravel — làm gì tiếp theo</span><span class="tag new">MỚI</span></li>
+</ul>
+<div class="note"><b>Cách dùng tài liệu này:</b> Bạn tự code 100% từng phần. Mỗi phần có mục "Việc cần làm" (task) — không có code giải sẵn để copy, chỉ có ví dụ cú pháp minh hoạ để hiểu cách viết. Khi xong một phần, quay lại chat để mình review và giải thích tiếp phần sau.</div>
+<div class="audit"><b>Bản v2 khác gì bản gốc:</b> (1) mọi API/cú pháp đã đối chiếu lại với docs chính thức Laravel 13.x — các khung màu xanh như khung này đánh dấu chỗ đã sửa hoặc bổ sung sau audit; (2) thêm 12 phần mới (Part 12–23) đi sâu vào những thứ phân biệt "biết Laravel" với "master Laravel": pagination cho dữ liệu lớn, transaction, queue/job, event, cache, scheduling, storage, authorization, notification, kiến trúc dự án lớn, vận hành production; (3) phần cuối là lộ trình tự học tiếp để master.</div>
+<div class="note"><b>Dự án xuyên suốt:</b> Xây một API quản lý bài viết — Post (tiêu đề, nội dung), Comment (bình luận thuộc về một Post), User (đăng ký / đăng nhập bằng token). Đây đúng là bài toán bạn đã làm bên NestJS, nên xuyên suốt tài liệu sẽ có các bảng đối chiếu NestJS ↔ Laravel để bạn thấy cùng một khái niệm được hai framework giải quyết thế nào. Các Part mới mở rộng chính dự án này: đăng bài xong thì đẩy job xử lý nền, bắn event, gửi notification, cache danh sách, dọn dẹp theo lịch.</div>
+
+<!-- ===================== PART PHP ===================== -->
+<div class="part first">
+<div class="part-head">
+<div class="part-badge">PART PHP — NỀN TẢNG NGÔN NGỮ</div>
+<h1>PHP 8.3+ cho người viết Laravel</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Nắm đủ PHP hiện đại để đọc/viết Laravel không bị "ngợp cú pháp". Phần này bắt buộc nếu bạn mới sang từ JS/TS — vì 90% khó khăn khi học Laravel thực chất là khó khăn với PHP, không phải với framework.</div>
+</div>
+
+<h2>P.1 Mô hình thực thi: PHP khác Node.js ở chỗ căn bản nhất</h2>
+<table>
+<tr><th>Đặc điểm</th><th>Node.js / NestJS</th><th>PHP / Laravel (PHP-FPM)</th></tr>
+<tr><td>Tiến trình</td><td>1 process sống mãi, xử lý mọi request</td><td>Mỗi request là một lần chạy script từ đầu, xong thì xoá sạch bộ nhớ</td></tr>
+<tr><td>Bất đồng bộ</td><td>Event loop, mọi I/O đều async</td><td>Đồng bộ (blocking) theo mặc định — code chạy tuần tự từ trên xuống</td></tr>
+<tr><td>Biến toàn cục / cache RAM</td><td>Giữ được giữa các request</td><td>Không giữ được — muốn cache phải dùng Redis/file/DB (Part 16)</td></tr>
+<tr><td>Rò rỉ bộ nhớ</td><td>Nguy hiểm, tích tụ dần</td><td>Gần như không có — process chết sau mỗi request</td></tr>
+<tr><td>Việc chạy nền / lâu</td><td>Promise, worker thread trong cùng process</td><td>Đẩy sang Queue worker — một process PHP riêng chạy mãi (Part 14)</td></tr>
+</table>
+<div class="note"><b>Vì sao phải biết điều này:</b> nó giải thích tại sao Laravel "singleton" chỉ sống trong 1 request (Part 03), tại sao Laravel không có async/await ở tầng controller, tại sao mọi việc nặng đều đẩy ra Queue (Part 14), và tại sao Laravel Octane (Part 22) là một thay đổi lớn về mô hình chứ không chỉ là "tăng tốc".</div>
+
+<h2>P.2 Cú pháp cốt lõi — đọc nhanh phần khác JS</h2>
+<code-block lang="php">
+<?php
+declare(strict_types=1);          // NÊN có ở đầu mọi file: bật kiểm tra kiểu nghiêm ngặt
+
+$name = 'Nhat';                   // biến LUÔN bắt đầu bằng $
+const MAX = 10;                   // hằng số (không có $)
+
+// Nháy đơn vs nháy kép — khác biệt quan trọng
+echo 'Xin chào $name';            // → Xin chào $name      (KHÔNG nội suy)
+echo "Xin chào $name";            // → Xin chào Nhat       (CÓ nội suy)
+echo "Tổng: {$order->total}";     // nội suy biểu thức phức tạp thì bọc {}
+
+// Nối chuỗi bằng dấu CHẤM, không phải dấu +
+echo 'Xin ' . 'chào';             // 'Xin chào'   ('a' + 'b' là LỖI trong PHP 8)
+
+// So sánh: LUÔN dùng === (== có ép kiểu ngầm, nguồn bug kinh điển)
+0 == '0';                         // true
+0 === '0';                        // false  ← dùng cái này
+</code-block>
+
+<h2>P.3 Toán tử hiện đại (PHP 8) — Laravel dùng liên tục</h2>
+<table>
+<tr><th>Cú pháp</th><th>Ý nghĩa</th><th>Tương đương JS/TS</th></tr>
+<tr><td><c>$a ?? 'default'</c></td><td>Null coalescing: nếu null/không tồn tại thì lấy default</td><td><c>a ?? 'default'</c></td></tr>
+<tr><td><c>$a ??= 5</c></td><td>Gán nếu đang null</td><td><c>a ??= 5</c></td></tr>
+<tr><td><c>$user?->profile?->city</c></td><td>Nullsafe: null thì dừng, không lỗi</td><td><c>user?.profile?.city</c></td></tr>
+<tr><td><c>$a <=> $b</c></td><td>Spaceship: trả -1 / 0 / 1 — dùng cho sort</td><td>hàm compare</td></tr>
+<tr><td><c>...$items</c></td><td>Spread / variadic</td><td><c>...items</c></td></tr>
+<tr><td><c>fn ($x) => $x * 2</c></td><td>Arrow function (tự bắt biến ngoài)</td><td><c>(x) => x * 2</c></td></tr>
+</table>
+<code-block lang="php">
+// match (PHP 8) — thay thế switch, so sánh === và TRẢ VỀ giá trị
+$label = match($status) {
+    200, 201 => 'success',
+    404      => 'not found',
+    default  => 'unknown',        // thiếu default + không khớp → throw UnhandledMatchError
+};
+
+// match(true) — mẹo rất hay dùng trong Laravel
+$tier = match(true) {
+    $total > 1000 => 'vip',
+    $total > 100  => 'normal',
+    default       => 'new',
+};
+</code-block>
+
+<h2>P.4 Array — chỉ có MỘT kiểu, gánh cả object của JS</h2>
+<code-block lang="php">
+// Indexed array (như Array của JS)
+$tags = ['php', 'laravel'];
+
+// Associative array (như Object/Map của JS) — RẤT hay gặp trong Laravel
+$post = ['title' => 'Hello', 'views' => 10];
+echo $post['title'];                            // truy cập bằng [] chứ không phải .
+
+foreach ($post as $key => $value) { /* ... */ }
+
+// Các hàm array phải thuộc lòng
+array_map(fn ($p) => $p['title'], $posts);       // map
+array_filter($posts, fn ($p) => $p['views'] > 5); // filter (GIỮ NGUYÊN key!)
+array_reduce($posts, fn ($c, $p) => $c + $p['views'], 0);
+array_column($posts, 'title');                   // lấy 1 cột từ mảng 2 chiều
+array_keys($post); array_values($post); count($post);
+in_array('php', $tags, true);                    // tham số 3 = so sánh strict
+</code-block>
+<div class="note"><b>Bẫy:</b> <c>array_map</c> đảo thứ tự tham số so với <c>array_filter</c> (callback trước / mảng trước), và <c>array_filter</c> giữ nguyên key cũ nên mảng kết quả có thể "khuyết index" — khi trả JSON sẽ thành object thay vì array. Dùng <c>array_values(...)</c> để reset index. Trong Laravel bạn sẽ ít gặp chuyện này vì Collection (<c>collect($arr)->map()->filter()->values()</c>) xử lý gọn hơn nhiều — nhưng phải biết array thuần trước.</div>
+
+<h2>P.5 Function &amp; type declaration</h2>
+<code-block lang="php">
+// Khai kiểu đầy đủ — bắt buộc nếu muốn code Laravel chuyên nghiệp
+function slugify(string $title, int $maxLength = 60): string
+{
+    return substr(strtolower(str_replace(' ', '-', $title)), 0, $maxLength);
+}
+
+function find(int $id): ?Post { }        // ?Post = Post hoặc null
+function parse(string|int $v): array { } // union type
+function log(string ...$lines): void { } // variadic: nhận n tham số
+
+// Named arguments (PHP 8) — Laravel dùng nhiều, vd apiPrefix: 'api/v1'
+slugify(title: 'Hello World', maxLength: 20);
+
+// Closure vs arrow fn: closure PHẢI khai báo use() để lấy biến ngoài
+$rate = 1.1;
+$f1 = function ($x) use ($rate) { return $x * $rate; };  // tường minh
+$f2 = fn ($x) => $x * $rate;                              // tự bắt, gọn hơn
+</code-block>
+
+<h2>P.6 OOP — phần Laravel dùng nhiều nhất</h2>
+<code-block lang="php">
+namespace App\Services;                 // namespace ~ đường dẫn thư mục
+
+use App\Models\Post;                    // import class (giống import của JS)
+
+class PostService
+{
+    // Constructor property promotion (PHP 8): khai báo + gán trong 1 dòng
+    public function __construct(
+        private readonly Repository $repo,   // readonly: gán 1 lần, không sửa được
+        protected int $perPage = 15,
+    ) {}
+
+    public function latest(): array
+    {
+        return $this->repo->all();          // $this->   (không phải this.)
+    }
+
+    public static function make(): static
+    {
+        return new static();                // self:: / static:: cho thành viên static
+    }
+}
+</code-block>
+<table>
+<tr><th>Khái niệm</th><th>Ý nghĩa &amp; nơi Laravel dùng</th></tr>
+<tr><td><c>interface</c></td><td>Hợp đồng (chỉ khai method, không có thân). Laravel gọi là Contract — vd <c>Illuminate\Contracts\Auth\Authenticatable</c>, <c>ShouldQueue</c></td></tr>
+<tr><td><c>abstract class</c></td><td>Class không tạo instance trực tiếp, để kế thừa — vd <c>Model</c>, <c>FormRequest</c></td></tr>
+<tr><td><c>trait</c></td><td>Ghép code vào class (PHP không đa kế thừa). Laravel dùng khắp nơi: <c>HasApiTokens</c>, <c>SoftDeletes</c>, <c>HasFactory</c>, <c>Queueable</c>, <c>RefreshDatabase</c></td></tr>
+<tr><td><c>enum</c> (PHP 8.1)</td><td>Tập giá trị cố định — rất nên dùng cho status. Cast được thẳng vào Eloquent (Part 04, 21)</td></tr>
+<tr><td><c>static</c> vs <c>self</c></td><td><c>static</c> = late static binding (theo class con), <c>self</c> = cố định class hiện tại</td></tr>
+<tr><td><c>readonly class</c> (PHP 8.2)</td><td>Mọi property đều readonly — lý tưởng cho DTO/Value Object (Part 21)</td></tr>
+</table>
+<code-block lang="php">
+// Trait — hiểu nó là hiểu "phép thuật" của Laravel
+trait Sluggable
+{
+    public function slug(): string { return slugify($this->title); }
+}
+
+class Post extends Model
+{
+    use Sluggable, HasFactory;              // "dán" method của trait vào class này
+}
+
+// Enum backed — dùng cho trạng thái
+enum PostStatus: string
+{
+    case Draft = 'draft';
+    case Published = 'published';
+
+    public function label(): string
+    {
+        return match($this) {
+            self::Draft => 'Bản nháp',
+            self::Published => 'Đã xuất bản',
+        };
+    }
+}
+</code-block>
+
+<h2>P.7 Attribute (PHP 8) — cú pháp giống decorator của TS</h2>
+<code-block lang="php">
+// Attribute là METADATA gắn lên class/method/property, đọc lại bằng Reflection
+#[Fillable(['title', 'body'])]
+#[Table('posts')]
+class Post extends Model { }
+</code-block>
+<p>Điểm khác decorator của TypeScript/NestJS: attribute của PHP hoàn toàn thụ động — nó không tự chạy code, chỉ ngồi đó cho tới khi có ai chủ động đọc nó bằng Reflection. Laravel 13 chuyển nhiều cấu hình sang attribute và bạn sẽ gặp cú pháp này liên tục trong tài liệu.</p>
+<div class="audit"><b>Đã đối chiếu docs — danh sách attribute Laravel 13 dùng trong tài liệu này:</b> Eloquent: <c>#[Table]</c>, <c>#[Fillable]</c>, <c>#[Unguarded]</c>, <c>#[RouteKey]</c>, <c>#[Scope]</c>, <c>#[ScopedBy]</c>, <c>#[ObservedBy]</c>, <c>#[UsePolicy]</c>, <c>#[WithoutTimestamps]</c>, <c>#[Connection]</c>. Controller: <c>#[Middleware]</c>, <c>#[WithoutMiddleware]</c>, <c>#[Authorize]</c>. Queue/Listener: <c>#[Tries]</c>, <c>#[Timeout]</c>, <c>#[Backoff]</c>, <c>#[MaxExceptions]</c>, <c>#[FailOnTimeout]</c>, <c>#[UniqueFor]</c>, <c>#[DebounceFor]</c>, <c>#[WithoutRelations]</c>, <c>#[Queue]</c>, <c>#[Connection]</c>, <c>#[Delay]</c>. Tất cả đều có trong docs chính thức 13.x; cú pháp cũ (<c>protected $fillable</c>, <c>public $tries</c>...) vẫn chạy song song.</div>
+
+<h2>P.8 Namespace, Composer &amp; autoload PSR-4</h2>
+<code-block lang="json">
+// composer.json — phần quan trọng nhất
+{
+    "require":     { "php": "^8.3", "laravel/framework": "^13.0" },
+    "require-dev": { "pestphp/pest": "^4.0" },
+    "autoload":    { "psr-4": { "App\\": "app/" } }
+}
+</code-block>
+<p>PSR-4 là quy ước: namespace phải phản chiếu đúng đường dẫn thư mục. <c>App\Services\PostService</c> ⇒ file <c>app/Services/PostService.php</c>. Sai một chữ (kể cả sai hoa/thường) là "class not found". Không cần <c>require</c> file thủ công — <c>vendor/autoload.php</c> tự nạp khi bạn <c>use</c>.</p>
+<table>
+<tr><th>Lệnh Composer</th><th>Tác dụng</th></tr>
+<tr><td><c>composer install</c></td><td>Cài đúng version trong <c>composer.lock</c> (dùng khi deploy / clone repo)</td></tr>
+<tr><td><c>composer update</c></td><td>Nâng version theo constraint + ghi lại lock (cẩn thận, đừng chạy khi deploy)</td></tr>
+<tr><td><c>composer require vendor/pkg</c></td><td>Thêm package mới</td></tr>
+<tr><td><c>composer dump-autoload</c></td><td>Nạp lại map autoload khi thêm class mà báo "not found"</td></tr>
+</table>
+
+<h2>P.9 Exception</h2>
+<code-block lang="php">
+try {
+    $post = $service->publish($id);
+} catch (ModelNotFoundException $e) {
+    // bắt loại cụ thể trước
+} catch (\Throwable $e) {
+    // Throwable = cha của MỌI lỗi (Exception + Error). Bắt cuối cùng.
+    report($e);                      // helper Laravel: ghi log rồi tiếp tục
+} finally {
+    // luôn chạy
+}
+
+throw new \InvalidArgumentException('ID phải > 0');
+</code-block>
+<div class="note">Trong Laravel bạn sẽ rất ít viết try/catch. Triết lý là: cứ throw, để Exception Handler tập trung lo việc biến nó thành response (Part 07). Try/catch chỉ dùng khi bạn thực sự xử lý được lỗi tại chỗ đó (ví dụ rollback transaction thủ công — Part 13).</div>
+
+<h2>P.10 Bảng tra nhanh PHP ↔ TypeScript</h2>
+<table>
+<tr><th>TypeScript / NestJS</th><th>PHP / Laravel</th></tr>
+<tr><td><c>const x = 1</c></td><td><c>$x = 1;</c> (biến), <c>const X = 1;</c> (hằng)</td></tr>
+<tr><td><c>this.foo</c></td><td><c>$this->foo</c></td></tr>
+<tr><td><c>obj.prop</c></td><td><c>$obj->prop</c> (object) / <c>$arr['key']</c> (array)</td></tr>
+<tr><td><c>Class.staticMethod()</c></td><td><c>Class::staticMethod()</c></td></tr>
+<tr><td><c>`text ${v}`</c></td><td><c>"text $v"</c> hoặc <c>'text ' . $v</c></td></tr>
+<tr><td><c>arr.map(f)</c></td><td><c>array_map($f, $arr)</c> / <c>collect($arr)->map($f)</c></td></tr>
+<tr><td><c>interface</c> + <c>implements</c></td><td>Giống hệt (PHP có <c>interface</c>, <c>implements</c>)</td></tr>
+<tr><td>Mixin / kế thừa nhiều</td><td><c>trait</c></td></tr>
+<tr><td><c>@Decorator()</c></td><td><c>#[Attribute]</c> (thụ động, cần Reflection đọc)</td></tr>
+<tr><td><c>async / await</c></td><td>Không có ở tầng app — code chạy đồng bộ; việc nền dùng Queue</td></tr>
+<tr><td><c>npm / package.json</c></td><td><c>composer / composer.json</c></td></tr>
+<tr><td>eslint + prettier</td><td>Laravel Pint (chuẩn PSR-12) — chạy <c>./vendor/bin/pint</c></td></tr>
+</table>
+
+<div class="task-box"><b>Việc cần làm (làm bằng PHP thuần, chưa cần Laravel):</b>
+<ol>
+<li>Tạo thư mục <c>php-warmup/</c>, viết file <c>index.php</c> có <c>declare(strict_types=1)</c>, chạy bằng <c>php index.php</c></li>
+<li>Viết hàm <c>slugify(string $title): string</c> có khai báo kiểu đầy đủ; thử truyền số vào để xem <c>strict_types</c> báo lỗi thế nào</li>
+<li>Tạo mảng 5 post (associative array), dùng <c>array_filter</c> + <c>array_map</c> + <c>array_values</c> để lấy tiêu đề các post có views &gt; 10, in ra bằng <c>json_encode</c></li>
+<li>Viết class <c>Post</c> + interface <c>Publishable</c> + trait <c>Sluggable</c> + enum <c>PostStatus: string</c> — dùng constructor property promotion và <c>readonly</c></li>
+<li>Tạo <c>composer.json</c> với autoload PSR-4 <c>"App\\": "app/"</c>, đặt class vào <c>app/</c>, chạy <c>composer dump-autoload</c> rồi <c>use</c> class đó từ <c>index.php</c></li>
+<li>Viết một exception tự định nghĩa và throw / catch nó</li>
+<li>Trả lời được: vì sao PHP không giữ được biến giữa 2 request, và điều đó ảnh hưởng gì tới cách bạn cache dữ liệu</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 00 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge">PART 00 — NỀN TẢNG</div>
+<h1>Kiến trúc tổng thể &amp; Request Lifecycle</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Hiểu Laravel là gì ở tầng kiến trúc trước khi code. Laravel không phải "một đống helper function" — nó là một IoC container (kho chứa và tự lắp ráp object) được bootstrap bởi các Service Provider, rồi đẩy request qua một pipeline middleware. Hiểu 3 khái niệm đó là hiểu 80% Laravel.</div>
+</div>
+
+<h2>1. Điểm khởi đầu: public/index.php → bootstrap/app.php</h2>
+<p>Mọi request HTTP đều được web server (Nginx/Apache) trỏ vào đúng một file duy nhất: <c>public/index.php</c>. File này rất ngắn, nó chỉ làm 3 việc: nạp Composer autoloader, lấy instance ứng dụng từ <c>bootstrap/app.php</c>, rồi gọi <c>handleRequest()</c>.</p>
+<code-block lang="php">
+// bootstrap/app.php — "file cấu hình trung tâm" của Laravel 11+
+return Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        web: __DIR__.'/../routes/web.php',
+        api: __DIR__.'/../routes/api.php',       // chỉ có sau khi chạy install:api
+        commands: __DIR__.'/../routes/console.php',
+        health: '/up',
+    )
+    ->withMiddleware(function (Middleware $middleware) {
+        // đăng ký / sắp xếp middleware ở đây
+    })
+    ->withExceptions(function (Exceptions $exceptions) {
+        // tuỳ biến cách báo lỗi & render lỗi ở đây
+    })->create();
+</code-block>
+<div class="note"><b>Điểm khác biệt lớn so với Laravel 10 trở về trước:</b> từ Laravel 11, các file <c>app/Http/Kernel.php</c>, <c>app/Exceptions/Handler.php</c>, <c>app/Providers/RouteServiceProvider.php</c> đã bị xoá. Toàn bộ cấu hình middleware, exception, routing gom hết về <c>bootstrap/app.php</c>. Nếu bạn xem tutorial cũ trên YouTube/blog mà thấy sửa <c>Kernel.php</c> → đó là tài liệu lỗi thời, đừng làm theo.</div>
+
+<h2>2. Service Container (IoC Container) — trái tim của Laravel</h2>
+<p>Service Container là một "kho" biết cách tự khởi tạo object và tự tiêm dependency. Khi bạn type-hint một class ở constructor (hoặc ở tham số method của controller), Laravel dùng PHP Reflection để đọc kiểu dữ liệu đó, tự tạo instance rồi truyền vào — bạn không bao giờ phải tự <c>new PostService()</c>.</p>
+<code-block lang="php">
+class PostController extends Controller
+{
+    public function __construct(
+        protected PostService $posts,     // container tự resolve và tiêm vào
+    ) {}
+}
+</code-block>
+<p>Đây chính xác là cơ chế Dependency Injection bạn đã gặp ở NestJS. Khác biệt: NestJS đọc metadata do decorator sinh ra lúc compile; Laravel đọc trực tiếp type-hint qua Reflection lúc runtime — không cần đăng ký class vào một mảng <c>providers</c> nào cả nếu class đó có thể tự khởi tạo được.</p>
+
+<h2>3. Service Providers — nơi mọi thứ được "lắp ráp"</h2>
+<p>Service Provider là các class chịu trách nhiệm khai báo cho container biết: "gặp interface X thì dựng class Y", "service Z là singleton"... Mỗi provider có 2 method, và thứ tự chạy của chúng rất quan trọng:</p>
+<table>
+<tr><th>Method</th><th>Chạy khi nào</th><th>Được làm gì</th></tr>
+<tr><td><c>register()</c></td><td>Chạy trước, trên TẤT CẢ provider</td><td>Chỉ được đăng ký binding vào container. KHÔNG được dùng service của provider khác (vì có thể chưa đăng ký xong)</td></tr>
+<tr><td><c>boot()</c></td><td>Chạy sau, khi mọi provider đã register xong</td><td>Làm mọi thứ cần dùng tới service khác: định nghĩa rate limiter, gate/policy, event listener, <c>Model::preventLazyLoading()</c>...</td></tr>
+</table>
+<p>Danh sách provider của ứng dụng nằm ở <c>bootstrap/providers.php</c>; provider mặc định của bạn là <c>app/Providers/AppServiceProvider.php</c>.</p>
+
+<h2>4. Request Lifecycle — thứ tự một request đi qua hệ thống</h2>
+<p>Đây là sơ đồ cần thuộc. So với NestJS (Middleware → Guard → Interceptor → Pipe → Handler), Laravel gom gọn hơn: mọi thứ chặn/lọc request đều là middleware, còn validate dữ liệu thì nằm ở Form Request.</p>
+<div class="diagram">Client Request         HTTP request tới web server → trỏ vào public/index.php
+      ▼
+  Bootstrap             Nạp autoloader, tạo Application (container), đọc .env + config,
+                        đăng ký & boot toàn bộ Service Provider
+      ▼
+  Global Middleware     Chạy cho MỌI request: TrustProxies, HandleCors, ValidatePostSize,
+                        TrimStrings, ConvertEmptyStringsToNull...
+      ▼
+  Router                Tìm route khớp URI + HTTP method. Không khớp → NotFoundHttpException (404)
+      ▼
+  Route Middleware      Middleware của nhóm api + của riêng route: SubstituteBindings (route model
+                        binding), auth:sanctum, throttle, can... Đây là chỗ tương đương Guard bên NestJS
+      ▼
+  Form Request          Nếu controller type-hint một FormRequest → validate TRƯỚC khi thân hàm chạy.
+                        Sai → tự trả 422. Tương đương ValidationPipe + DTO bên NestJS
+      ▼
+  Controller            Method controller chạy, gọi Model/Service, trả về Resource hoặc response
+      ▼
+  Response ← Middleware Response đi NGƯỢC ra qua đúng chuỗi middleware đó rồi send() về client
+      ▼
+  Terminate             Middleware có terminate() chạy SAU khi response đã gửi (FastCGI)
+
+⚠ Bất kỳ bước nào throw exception → nhảy thẳng tới Exception Handler (withExceptions)
+  → render thành response lỗi. Request có Accept: application/json → Laravel tự trả JSON.</div>
+
+<h2>5. Facade thực chất là gì?</h2>
+<p>Khi bạn viết <c>Route::get(...)</c> hay <c>DB::table(...)</c>, trông như gọi static method, nhưng thực ra không có static method nào cả. Facade là một class proxy: nó bắt lời gọi static bằng <c>__callStatic()</c>, hỏi container lấy instance thật đang được đăng ký, rồi gọi method instance trên đó. Nghĩa là Facade chỉ là "lối tắt cú pháp" để lấy đồ trong container — object bên dưới vẫn mock được khi test (<c>Queue::fake()</c>, <c>Event::fake()</c>, <c>Storage::fake()</c> ở các Part sau đều là ứng dụng của điều này).</p>
+
+<h2>6. Đối chiếu nhanh NestJS ↔ Laravel</h2>
+<table>
+<tr><th>NestJS</th><th>Laravel</th><th>Ghi chú</th></tr>
+<tr><td>Module (<c>@Module</c>)</td><td>Service Provider</td><td>Laravel không đóng gói theo module; code tổ chức theo thư mục + provider</td></tr>
+<tr><td>IoC container + <c>providers: []</c></td><td>Service Container (tự resolve qua Reflection)</td><td>Laravel không cần khai báo trước nếu class tự dựng được</td></tr>
+<tr><td>Controller + <c>@Get()</c></td><td>Controller + <c>routes/api.php</c></td><td>Laravel tách route ra file riêng thay vì gắn decorator</td></tr>
+<tr><td>DTO + class-validator</td><td>Form Request</td><td>Cùng vai trò: validate input trước khi vào handler</td></tr>
+<tr><td>Guard (<c>CanActivate</c>)</td><td>Middleware (<c>auth:sanctum</c>, <c>can:...</c>)</td><td>Laravel gộp Guard vào middleware</td></tr>
+<tr><td>Interceptor (transform response)</td><td>API Resource</td><td>Laravel transform ở tầng Resource thay vì bọc response</td></tr>
+<tr><td>Exception Filter</td><td><c>withExceptions()</c> trong <c>bootstrap/app.php</c></td><td>Cùng mục đích: chuẩn hoá format lỗi</td></tr>
+<tr><td>TypeORM Repository (Data Mapper)</td><td>Eloquent Model (Active Record)</td><td>Eloquent: bản thân model tự biết lưu/xoá chính nó</td></tr>
+<tr><td>Bull/BullMQ queue</td><td>Queue + Job (<c>ShouldQueue</c>)</td><td>Laravel tích hợp sẵn, không cần package ngoài (Part 14)</td></tr>
+</table>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Chưa code gì cả — đọc hiểu sơ đồ lifecycle ở mục 4, tự vẽ lại ra giấy</li>
+<li>Trả lời được: khác nhau giữa <c>register()</c> và <c>boot()</c> là gì, và tại sao phải tách làm 2 bước</li>
+<li>Trả lời được: Facade khác gì với static method thật</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 01 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge">PART 01</div>
+<h1>Khởi tạo dự án &amp; cấu trúc thư mục</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Dựng được project Laravel chạy được, hiểu mỗi thư mục dùng để làm gì, và bật chế độ API (điều mà Laravel không bật sẵn).</div>
+</div>
+
+<h2>1.1 Cài đặt</h2>
+<p>Yêu cầu: PHP 8.3 trở lên (Laravel 13 hỗ trợ PHP 8.3–8.5) và Composer. Kiểm tra bằng <c>php -v</c> và <c>composer -V</c>.</p>
+<code-block lang="bash">
+# Cách 1 — dùng Composer (không cần cài thêm gì)
+composer create-project laravel/laravel laravel-crash-course
+
+# Cách 2 — dùng Laravel installer (cài 1 lần, dùng mãi)
+composer global require laravel/installer
+laravel new laravel-crash-course
+
+# Chạy dev server
+cd laravel-crash-course
+php artisan serve           # → http://127.0.0.1:8000
+</code-block>
+<div class="note">Khi cài sẽ có bước hỏi chọn starter kit / testing framework. Với crash course API này, chọn không dùng starter kit (none) vì ta không làm giao diện. Phần test framework chọn Pest (mặc định) — sẽ dùng ở Part 11. Nếu chọn SQLite, installer tự tạo <c>database/database.sqlite</c> và chạy migration mặc định.</div>
+
+<h2>1.2 Bật API — bước bắt buộc, rất nhiều người quên</h2>
+<p>Laravel 11+ không tạo sẵn file <c>routes/api.php</c>. Dự án mới chỉ có <c>routes/web.php</c>. Muốn làm API bạn phải chạy:</p>
+<code-block lang="bash">
+php artisan install:api
+</code-block>
+<p>Lệnh này làm 3 việc: (1) cài Laravel Sanctum (authentication bằng API token — Part 09), (2) tạo file <c>routes/api.php</c>, (3) thêm dòng <c>api:</c> vào <c>withRouting()</c> trong <c>bootstrap/app.php</c> đồng thời publish migration bảng <c>personal_access_tokens</c>.</p>
+<div class="note"><b>Hệ quả quan trọng:</b> mọi route khai trong <c>routes/api.php</c> được tự động thêm prefix <c>/api</c> và gán nhóm middleware <c>api</c>. Khai <c>Route::get('/posts', ...)</c> → URL thật là <c>/api/posts</c>. Đừng tự thêm <c>/api</c> vào route nữa, sẽ thành <c>/api/api/posts</c>.</div>
+
+<h2>1.3 Cấu hình môi trường (.env)</h2>
+<p>File <c>.env</c> chứa config theo từng máy (DB, key, debug) và không bao giờ được commit lên git (đã có sẵn trong <c>.gitignore</c>). File <c>.env.example</c> mới là file được commit — nó là "bản kê khai" các biến cần có để người khác biết đường tự tạo <c>.env</c> của họ.</p>
+<code-block lang="ini">
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=base64:...           # sinh bởi php artisan key:generate — dùng để mã hoá cookie/session
+APP_DEBUG=true               # PRODUCTION BẮT BUỘC = false (nếu true sẽ lộ config, stack trace)
+APP_URL=http://localhost
+
+DB_CONNECTION=sqlite         # mặc định của Laravel 11+ — nhẹ, không cần cài server
+# Muốn dùng MySQL thì đổi thành:
+# DB_CONNECTION=mysql
+# DB_HOST=127.0.0.1 / DB_PORT=3306 / DB_DATABASE=... / DB_USERNAME=... / DB_PASSWORD=...
+
+QUEUE_CONNECTION=database    # Part 14 sẽ giải thích; 'sync' = chạy ngay, không có queue thật
+CACHE_STORE=database         # Part 16
+</code-block>
+<div class="note"><b>Quy tắc vàng:</b> KHÔNG gọi <c>env('APP_DEBUG')</c> rải rác trong code. Chỉ được gọi <c>env()</c> bên trong các file <c>config/*.php</c>, còn code ứng dụng thì đọc qua <c>config('app.debug')</c>. Lý do: khi chạy <c>php artisan config:cache</c> ở production, mọi lời gọi <c>env()</c> ngoài config sẽ trả về null — đây là lỗi kinh điển làm sập app khi deploy.</div>
+
+<h2>1.4 Cấu trúc thư mục cần nhớ</h2>
+<table>
+<tr><th>Đường dẫn</th><th>Vai trò</th></tr>
+<tr><td><c>public/index.php</c></td><td>Entry point duy nhất — web server phải trỏ document root vào thư mục <c>public/</c></td></tr>
+<tr><td><c>bootstrap/app.php</c></td><td>Cấu hình trung tâm: routing, middleware, exception (Laravel 11+)</td></tr>
+<tr><td><c>bootstrap/providers.php</c></td><td>Danh sách Service Provider của ứng dụng</td></tr>
+<tr><td><c>routes/api.php</c></td><td>Route API (prefix <c>/api</c>, middleware group <c>api</c>)</td></tr>
+<tr><td><c>routes/web.php</c></td><td>Route web (có session + CSRF) — API không dùng tới</td></tr>
+<tr><td><c>routes/console.php</c></td><td>Artisan command tự viết + <b>lịch chạy định kỳ (Part 17)</b></td></tr>
+<tr><td><c>app/Http/Controllers/</c></td><td>Controller</td></tr>
+<tr><td><c>app/Http/Requests/</c></td><td>Form Request — nơi validate input (Part 05)</td></tr>
+<tr><td><c>app/Http/Resources/</c></td><td>API Resource — nơi định dạng output (Part 06)</td></tr>
+<tr><td><c>app/Models/</c></td><td>Model Eloquent</td></tr>
+<tr><td><c>app/Jobs/</c>, <c>app/Events/</c>, <c>app/Listeners/</c>, <c>app/Notifications/</c>, <c>app/Policies/</c></td><td>Sinh ra khi bạn chạy <c>make:job</c>, <c>make:event</c>... (Part 14, 15, 19, 20)</td></tr>
+<tr><td><c>app/Providers/</c></td><td>Service Provider của bạn</td></tr>
+<tr><td><c>database/migrations/</c></td><td>Lịch sử thay đổi cấu trúc bảng</td></tr>
+<tr><td><c>database/factories/</c>, <c>seeders/</c></td><td>Sinh dữ liệu giả để dev &amp; test</td></tr>
+<tr><td><c>config/</c></td><td>File cấu hình (Laravel 11+ rút gọn, chạy <c>php artisan config:publish</c> để lấy thêm)</td></tr>
+<tr><td><c>storage/logs/laravel.log</c></td><td>Log — chỗ đầu tiên phải xem khi có lỗi 500</td></tr>
+<tr><td><c>storage/app/</c></td><td>File người dùng upload (Part 18) — không nằm trong <c>public/</c></td></tr>
+</table>
+
+<h2>1.5 Vài lệnh artisan sống còn</h2>
+<table>
+<tr><th>Lệnh</th><th>Dùng để</th></tr>
+<tr><td><c>php artisan list</c></td><td>Xem toàn bộ lệnh có sẵn</td></tr>
+<tr><td><c>php artisan route:list --path=api</c></td><td>Liệt kê route API đã đăng ký (kiểm tra nhanh nhất)</td></tr>
+<tr><td><c>php artisan make:...</c></td><td>Sinh class (controller, model, request, resource, job, event...)</td></tr>
+<tr><td><c>php artisan migrate</c></td><td>Chạy migration lên database</td></tr>
+<tr><td><c>php artisan tinker</c></td><td>REPL — gõ thẳng code PHP có sẵn toàn bộ app (test Eloquent cực nhanh)</td></tr>
+<tr><td><c>php artisan optimize:clear</c></td><td>Xoá mọi cache (config/route/view/event) khi thấy "sửa mà không ăn"</td></tr>
+<tr><td><c>php artisan about</c></td><td>Tổng quan môi trường: version, driver cache/queue/session đang dùng</td></tr>
+</table>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo project <c>laravel-crash-course</c> trong repo <c>crash-course</c></li>
+<li>Chạy <c>php artisan install:api</c>, xác nhận file <c>routes/api.php</c> đã xuất hiện và <c>bootstrap/app.php</c> có thêm dòng <c>api:</c></li>
+<li>Chạy <c>php artisan serve</c>, mở <c>http://127.0.0.1:8000/up</c> (health check) — phải thấy trang báo application up</li>
+<li>Chạy <c>php artisan route:list</c> và đọc hiểu output: cột Method / URI / Action / Middleware</li>
+<li>Mở <c>bootstrap/app.php</c> đọc kỹ 4 method <c>withRouting</c> / <c>withMiddleware</c> / <c>withExceptions</c> / <c>create</c></li>
+<li>Chạy <c>php artisan about</c>, ghi lại driver queue/cache/session đang dùng — sẽ cần ở Part 14/16</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 02 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge">PART 02</div>
+<h1>Routing &amp; Controllers cho API</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Map được HTTP request tới đúng method trong Controller theo chuẩn REST, và hiểu Route Model Binding — thứ giúp bạn xoá sạch code "tìm bản ghi, không thấy thì trả 404".</div>
+</div>
+
+<h2>2.1 Khai báo route</h2>
+<code-block lang="php">
+// routes/api.php — nhớ: đã tự có prefix /api
+use App\Http\Controllers\PostController;
+
+Route::get('/posts', [PostController::class, 'index']);
+Route::post('/posts', [PostController::class, 'store']);
+Route::get('/posts/{post}', [PostController::class, 'show']);
+Route::put('/posts/{post}', [PostController::class, 'update']);
+Route::delete('/posts/{post}', [PostController::class, 'destroy']);
+</code-block>
+
+<h2>2.2 apiResource — viết 5 route trên bằng 1 dòng</h2>
+<code-block lang="php">
+Route::apiResource('posts', PostController::class);
+</code-block>
+<table>
+<tr><th>Verb</th><th>URI</th><th>Method</th><th>Route name</th></tr>
+<tr><td>GET</td><td><c>/api/posts</c></td><td>index</td><td>posts.index</td></tr>
+<tr><td>POST</td><td><c>/api/posts</c></td><td>store</td><td>posts.store</td></tr>
+<tr><td>GET</td><td><c>/api/posts/{post}</c></td><td>show</td><td>posts.show</td></tr>
+<tr><td>PUT/PATCH</td><td><c>/api/posts/{post}</c></td><td>update</td><td>posts.update</td></tr>
+<tr><td>DELETE</td><td><c>/api/posts/{post}</c></td><td>destroy</td><td>posts.destroy</td></tr>
+</table>
+<p><c>apiResource</c> khác <c>resource</c> ở chỗ nó bỏ 2 route <c>create</c> và <c>edit</c> — hai route đó chỉ để trả về form HTML, API thuần không cần. Sinh controller tương ứng bằng:</p>
+<code-block lang="bash">
+# --api: sinh sẵn 5 method (không có create/edit)
+# --model: type-hint sẵn model Post vào tham số (bật route model binding)
+# --requests: sinh luôn StorePostRequest + UpdatePostRequest
+php artisan make:controller PostController --api --model=Post --requests
+</code-block>
+<div class="note"><b>PUT hay PATCH?</b> Chuẩn HTTP: PUT = thay thế toàn bộ resource (client gửi đủ mọi field), PATCH = sửa một phần. <c>apiResource</c> đăng ký cả hai cùng trỏ vào <c>update()</c>, nên bạn tự quyết định: nếu rule validation cho phép thiếu field (<c>sometimes</c>) thì thực chất bạn đang làm PATCH — hãy để client gọi PATCH cho đúng ngữ nghĩa.</div>
+
+<h2>2.3 Route Model Binding — tính năng "ăn tiền" nhất</h2>
+<p>Thay vì nhận <c>$id</c> rồi tự query, bạn type-hint thẳng Model. Middleware <c>SubstituteBindings</c> (có sẵn trong nhóm <c>api</c>) sẽ tự query bản ghi theo giá trị URI, và tự trả 404 nếu không tìm thấy:</p>
+<code-block lang="php">
+// Route: /api/posts/{post}   →   tên tham số {post} phải TRÙNG tên biến $post
+public function show(Post $post)
+{
+    return $post;   // tới được đây nghĩa là chắc chắn tìm thấy
+}
+</code-block>
+<p>So sánh với NestJS: bên đó bạn phải viết <c>ParseIntPipe</c> + tự <c>throw new NotFoundException()</c> trong service. Laravel làm sẵn cả hai. Muốn tìm theo cột khác <c>id</c> (ví dụ slug) — có 2 cách:</p>
+<code-block lang="php">
+// Cách 1: khai ngay tại route (chỉ áp dụng cho route đó)
+Route::get('/posts/{post:slug}', [PostController::class, 'show']);
+
+// Cách 2 (Laravel 13): gắn attribute lên Model → áp dụng cho MỌI route bind Post
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
+
+#[RouteKey('slug')]
+class Post extends Model { }
+</code-block>
+<div class="audit"><b>Đã đối chiếu docs Routing 13.x:</b> <c>#[RouteKey('slug')]</c> đúng là attribute chính thức (namespace <c>Illuminate\Database\Eloquent\Attributes\RouteKey</c>). Cách cũ <c>getRouteKeyName()</c> vẫn dùng được. Với route lồng (<c>/posts/{post}/comments/{comment}</c>), Laravel tự "scope" comment phải thuộc post đó khi bạn dùng custom key — xem Part 08.</div>
+
+<h2>2.4 Controller gọn gàng</h2>
+<code-block lang="php">
+namespace App\Http\Controllers;
+
+use App\Models\Post;
+
+class PostController extends Controller
+{
+    public function index()
+    {
+        return Post::latest()->paginate(15);
+    }
+
+    public function store(StorePostRequest $request)      // validate tự chạy trước
+    {
+        $post = Post::create($request->validated());
+
+        return response()->json($post, 201);            // 201 Created
+    }
+
+    public function destroy(Post $post)
+    {
+        $post->delete();
+
+        return response()->noContent();                 // 204 No Content
+    }
+}
+</code-block>
+<div class="note"><b>Nguyên tắc "controller mỏng":</b> controller chỉ nên làm 3 việc — nhận request đã validate, gọi model/service, trả response. Không đặt logic nghiệp vụ phức tạp, không viết query dài dòng ở đây. Part 21 sẽ chỉ chỗ đặt những thứ đó.</div>
+
+<h2>2.5 Nhóm route &amp; middleware</h2>
+<code-block lang="php">
+Route::apiResource('posts', PostController::class)->only(['index', 'show']);
+
+// Nhóm route cần đăng nhập
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('posts', PostController::class)->except(['index', 'show']);
+});
+
+// Hoặc chỉ định theo từng action — gọn hơn (docs 13.x: middlewareFor / withoutMiddlewareFor)
+Route::apiResource('posts', PostController::class)
+    ->middlewareFor(['store', 'update', 'destroy'], 'auth:sanctum');
+
+// Hoặc khai ngay trên controller bằng attribute (Laravel 13)
+use Illuminate\Routing\Attributes\Controllers\Middleware;
+
+#[Middleware('auth:sanctum', except: ['index', 'show'])]
+class PostController extends Controller { }
+</code-block>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo <c>PostController</c> bằng <c>make:controller --api</c></li>
+<li>Đăng ký <c>Route::apiResource('posts', ...)</c> trong <c>routes/api.php</c></li>
+<li>Tạm thời trả về mảng cứng trong bộ nhớ (chưa cần database) cho đủ 5 action</li>
+<li>Chạy <c>php artisan route:list --path=api</c>, đối chiếu với bảng ở mục 2.2</li>
+<li>Test 5 endpoint bằng Postman/curl. Nhớ gửi header <c>Accept: application/json</c> — thiếu header này Laravel sẽ trả HTML khi có lỗi</li>
+<li>Thử gọi <c>/api/posts/999</c> và quan sát response khi chưa có model binding</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 03 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge">PART 03</div>
+<h1>Service Container, DI &amp; Service Providers</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Tách logic nghiệp vụ ra khỏi Controller, và hiểu container tự lắp ráp object như thế nào — nền tảng để code test được.</div>
+</div>
+
+<h2>3.1 Tự động resolve (zero config)</h2>
+<p>Container đọc type-hint bằng Reflection và tự dựng object. Với class không có dependency đặc biệt, bạn không cần khai báo gì cả:</p>
+<code-block lang="php">
+namespace App\Services;
+
+class PostService
+{
+    public function publish(Post $post): Post
+    {
+        $post->update(['published_at' => now()]);
+
+        return $post;
+    }
+}
+
+// Controller — chỉ cần type-hint, container lo phần còn lại
+class PostController extends Controller
+{
+    public function __construct(protected PostService $posts) {}
+}
+</code-block>
+<div class="note"><b>Khác NestJS ở đây:</b> Nest bắt buộc khai <c>providers: [PostsService]</c> trong module, quên là lỗi "Nest can't resolve dependencies". Laravel không cần — chỉ khi bạn muốn can thiệp vào cách dựng object mới phải đăng ký binding.</div>
+
+<h2>3.2 Khi nào phải bind thủ công</h2>
+<p>Khi type-hint là interface (container không biết dựng interface), hoặc khi cần truyền tham số đặc biệt, hoặc muốn dùng chung một instance:</p>
+<code-block lang="php">
+// app/Providers/AppServiceProvider.php
+public function register(): void
+{
+    // bind: mỗi lần resolve tạo instance MỚI (giống scope TRANSIENT bên Nest)
+    $this->app->bind(PaymentGateway::class, StripeGateway::class);
+
+    // singleton: tạo 1 lần, dùng lại mãi (giống scope DEFAULT bên Nest)
+    $this->app->singleton(PostService::class, function ($app) {
+        return new PostService(config('services.posts.per_page'));
+    });
+
+    // scoped: 1 instance cho mỗi request (quan trọng khi chạy Octane — Part 22)
+    $this->app->scoped(RequestContext::class, fn () => new RequestContext());
+}
+</code-block>
+<table>
+<tr><th>Cách bind</th><th>Vòng đời instance</th><th>Tương đương NestJS</th></tr>
+<tr><td><c>bind</c></td><td>Tạo mới mỗi lần được resolve</td><td>Scope.TRANSIENT</td></tr>
+<tr><td><c>singleton</c></td><td>Một instance duy nhất cho cả app</td><td>Scope.DEFAULT</td></tr>
+<tr><td><c>scoped</c></td><td>Một instance cho mỗi request</td><td>Scope.REQUEST</td></tr>
+</table>
+<div class="note"><b>Lưu ý về vòng đời process:</b> PHP-FPM mặc định huỷ toàn bộ bộ nhớ sau mỗi request — nên "singleton" của Laravel thực chất chỉ sống trong một request, khác hẳn Node.js/NestJS nơi singleton sống suốt đời tiến trình server. Đây là lý do bạn không thể "cache dữ liệu vào thuộc tính static" trong Laravel như bên Nest. Ngoại lệ: Queue worker và Octane là process sống lâu — lúc đó singleton sống thật, và <c>scoped</c> mới trở nên quan trọng.</div>
+
+<h2>3.3 Bind theo interface — vì sao nên làm</h2>
+<code-block lang="php">
+// Contract
+interface NotifierInterface { public function send(string $msg): void; }
+
+// Ở AppServiceProvider::register()
+$this->app->bind(NotifierInterface::class, MailNotifier::class);
+</code-block>
+<p>Lợi ích: đổi <c>MailNotifier</c> → <c>SlackNotifier</c> chỉ sửa 1 dòng; khi test thì bind sang một fake object. Đây là nguyên tắc Dependency Inversion — code phụ thuộc vào abstraction, không phụ thuộc implementation cụ thể.</p>
+
+<h2>3.4 register() vs boot() — lỗi hay gặp</h2>
+<code-block lang="php">
+public function register(): void
+{
+    // ✔ CHỈ đăng ký binding ở đây
+    $this->app->singleton(PostService::class);
+    // ✘ SAI: Route::pattern(...) / RateLimiter::for(...) — lúc này provider khác có thể chưa sẵn sàng
+}
+
+public function boot(): void
+{
+    // ✔ Mọi thứ cần dùng service khác thì đặt ở đây
+    RateLimiter::for('api', fn ($request) =>
+        Limit::perMinute(60)->by($request->user()?->id ?: $request->ip()));
+
+    Model::preventLazyLoading(! $this->app->isProduction());   // Part 08
+}
+</code-block>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo <c>app/Services/PostService.php</c>, chuyển toàn bộ logic từ Controller sang đây</li>
+<li>Inject <c>PostService</c> vào Controller qua constructor — xác nhận chạy được mà KHÔNG cần đăng ký gì</li>
+<li>Tạo interface <c>PostRepositoryInterface</c> + một implementation, bind trong <c>AppServiceProvider::register()</c>, rồi type-hint interface đó ở service</li>
+<li>Thử cố tình bind sai (bind interface tới class không tồn tại) để xem thông báo lỗi của container trông thế nào</li>
+<li>Trả lời: vì sao <c>RateLimiter::for()</c> phải nằm trong <c>boot()</c> chứ không phải <c>register()</c></li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 04 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge">PART 04</div>
+<h1>Database: Migration, Eloquent Model, Factory &amp; Seeder</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Thay mảng cứng bằng database thật, hiểu Eloquent (Active Record) khác gì TypeORM Repository (Data Mapper), và biết bảo vệ ứng dụng khỏi lỗ hổng mass assignment.</div>
+</div>
+
+<h2>4.1 Migration — "git cho cấu trúc database"</h2>
+<p>Migration là file PHP mô tả một thay đổi cấu trúc bảng, chạy theo thứ tự thời gian. Nhờ nó, đồng đội chỉ cần <c>git pull</c> + <c>php artisan migrate</c> là có database giống hệt bạn.</p>
+<code-block lang="bash">
+php artisan make:migration create_posts_table
+</code-block>
+<code-block lang="php">
+public function up(): void
+{
+    Schema::create('posts', function (Blueprint $table) {
+        $table->id();                                 // BIGINT UNSIGNED AUTO_INCREMENT PK
+        $table->string('title');
+        $table->text('body');
+        $table->timestamp('published_at')->nullable();
+        $table->timestamps();                         // tạo created_at + updated_at
+    });
+}
+
+public function down(): void
+{
+    Schema::dropIfExists('posts');                    // dùng khi rollback
+}
+</code-block>
+<table>
+<tr><th>Lệnh</th><th>Tác dụng</th></tr>
+<tr><td><c>php artisan migrate</c></td><td>Chạy các migration chưa chạy</td></tr>
+<tr><td><c>php artisan migrate:rollback</c></td><td>Lùi lại batch migration gần nhất</td></tr>
+<tr><td><c>php artisan migrate:fresh --seed</c></td><td>Xoá sạch mọi bảng, chạy lại từ đầu + seed. Chỉ dùng ở local</td></tr>
+<tr><td><c>php artisan migrate:status</c></td><td>Xem migration nào đã chạy</td></tr>
+<tr><td><c>php artisan db:show</c> / <c>db:table posts</c></td><td>Xem tổng quan DB / cấu trúc 1 bảng ngay trong terminal</td></tr>
+</table>
+<div class="note"><b>Nguyên tắc:</b> migration đã chạy trên production thì không sửa lại file cũ — phải tạo migration mới để thay đổi. Sửa file cũ sẽ khiến máy người khác (đã chạy rồi) không bao giờ nhận được thay đổi đó. Đây là điểm khác hẳn <c>synchronize: true</c> của TypeORM mà bạn dùng bên NestJS — Laravel không bao giờ "tự đoán" schema.</div>
+
+<h2>4.2 Model Eloquent &amp; quy ước ngầm</h2>
+<code-block lang="bash">
+php artisan make:model Post -mf      # -m: kèm migration, -f: kèm factory
+php artisan make:model Post -a       # -a: kèm migration+factory+seeder+policy+controller+requests
+</code-block>
+<table>
+<tr><th>Quy ước</th><th>Mặc định Eloquent hiểu là</th></tr>
+<tr><td>Tên bảng</td><td>snake_case số nhiều của tên class: <c>Post</c> → <c>posts</c></td></tr>
+<tr><td>Khoá chính</td><td>Cột <c>id</c>, kiểu số tự tăng</td></tr>
+<tr><td>Timestamps</td><td>Tự quản lý <c>created_at</c> / <c>updated_at</c></td></tr>
+<tr><td>Khoá ngoại</td><td><c>Comment</c> thuộc <c>Post</c> → cột <c>post_id</c></td></tr>
+</table>
+<p>Muốn đổi quy ước, Laravel 13 dùng PHP attribute thay cho các thuộc tính protected kiểu cũ:</p>
+<code-block lang="php">
+use Illuminate\Database\Eloquent\Attributes\Table;
+
+#[Table('blog_posts', key: 'post_id')]
+class Post extends Model { }
+
+// Các attribute khác đã kiểm chứng trong docs 13.x:
+#[Table(key: 'uuid', keyType: 'string', incrementing: false)]   // khoá chính UUID
+#[WithoutTimestamps]                                              // bảng không có created_at/updated_at
+#[Connection('mysql')]                                            // model dùng connection khác
+</code-block>
+
+<h2>4.3 Mass assignment — bảo mật, không phải thủ tục</h2>
+<p>Muốn dùng <c>Post::create($data)</c>, bạn phải khai báo field nào được phép gán hàng loạt. Đây là cơ chế chống việc kẻ tấn công gửi thêm field lạ (ví dụ <c>is_admin=1</c>, <c>user_id=999</c>) rồi ghi thẳng vào DB.</p>
+<code-block lang="php">
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+
+#[Fillable(['title', 'body', 'published_at'])]     // cú pháp Laravel 13
+class Post extends Model
+{
+    protected function casts(): array               // ép kiểu khi đọc/ghi
+    {
+        return [
+            'published_at' => 'datetime',           // string trong DB → Carbon object trong PHP
+            'is_featured'  => 'boolean',            // 0/1 → true/false
+            'status'       => PostStatus::class,    // enum backed (P.6) — DB lưu 'draft', PHP nhận enum
+        ];
+    }
+}
+</code-block>
+<div class="note"><b>Cú pháp cũ vẫn chạy:</b> <c>protected $fillable = ['title','body'];</c> vẫn hoạt động bình thường và bạn sẽ gặp nó ở 99% tutorial trên mạng. Attribute <c>#[Fillable]</c> là cách viết mới mà docs Laravel 13 dùng — chọn một kiểu và dùng nhất quán trong cả project.</div>
+<div class="audit"><b>Bổ sung sau audit — bật "strict mode" cho Eloquent khi dev.</b> Docs khuyến nghị đặt trong <c>AppServiceProvider::boot()</c>:
+<code-block lang="php">
+Model::preventLazyLoading(! $this->app->isProduction());          // bắt N+1 (Part 08)
+Model::preventSilentlyDiscardingAttributes($this->app->isLocal());  // field không nằm trong fillable → throw thay vì âm thầm bỏ
+</code-block>
+Không có 2 dòng này, việc quên thêm field vào <c>fillable</c> sẽ khiến <c>create()</c> "thành công" nhưng cột đó rỗng — bug rất khó tìm.</div>
+
+<h2>4.4 CRUD với Eloquent</h2>
+<code-block lang="php">
+// ĐỌC
+Post::all();                                   // mọi bản ghi — cẩn thận với bảng lớn
+Post::find(1);                                 // không thấy → null
+Post::findOrFail(1);                           // không thấy → ModelNotFoundException → tự thành 404
+Post::where('title', 'like', '%nest%')->get();
+Post::latest()->paginate(15);                  // phân trang, kèm sẵn meta/links (Part 12)
+
+// TẠO
+$post = Post::create(['title' => 'Hello', 'body' => '...']);
+
+// SỬA
+$post->update(['title' => 'Updated']);
+
+// XOÁ
+$post->delete();
+
+// UPSERT / firstOrCreate — hay dùng khi import
+Post::firstOrCreate(['slug' => 'hello'], ['title' => 'Hello', 'body' => '...']);
+</code-block>
+<div class="note"><b>Active Record vs Data Mapper:</b> Eloquent là Active Record — bản thân object <c>$post</c> biết cách tự lưu/xoá chính nó (<c>$post->save()</c>). TypeORM bên NestJS là Data Mapper — entity chỉ là dữ liệu thuần, phải nhờ <c>repository.save(entity)</c>. Active Record viết nhanh hơn nhiều; đổi lại model gánh cả logic truy vấn nên dễ phình to — vì vậy dự án lớn hay tách bớt sang Service/Action/Query class (Part 21).</div>
+
+<h2>4.5 Factory &amp; Seeder — dữ liệu giả</h2>
+<code-block lang="php">
+// database/factories/PostFactory.php
+public function definition(): array
+{
+    return [
+        'title' => fake()->sentence(),
+        'body'  => fake()->paragraphs(3, true),
+    ];
+}
+
+// Dùng ở seeder / test / tinker
+Post::factory()->count(30)->create();
+Post::factory()->has(Comment::factory()->count(3))->create();   // kèm quan hệ (Part 08)
+</code-block>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo model + migration + factory: <c>php artisan make:model Post -mf</c></li>
+<li>Viết schema bảng posts (title, body, timestamps), chạy <c>php artisan migrate</c></li>
+<li>Khai báo fillable + <c>casts()</c> cho Post</li>
+<li>Bật <c>preventLazyLoading</c> + <c>preventSilentlyDiscardingAttributes</c> trong <c>AppServiceProvider::boot()</c></li>
+<li>Viết <c>PostFactory</c>, seed 30 bản ghi, kiểm tra bằng <c>php artisan tinker</c>: gõ <c>Post::count()</c></li>
+<li>Chuyển toàn bộ 5 action trong Controller sang dùng Eloquent thật (dùng <c>paginate</c> cho index)</li>
+<li>Thử bỏ field ra khỏi fillable rồi gọi <c>create()</c> — quan sát exception nhờ strict mode ở bước 4</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 05 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge">PART 05</div>
+<h1>Validation với Form Request</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Đảm bảo dữ liệu client gửi lên luôn đúng định dạng trước khi chạm tới Controller — và trả lỗi theo đúng chuẩn 422 Unprocessable Content.</div>
+</div>
+
+<h2>5.1 Hai cách validate</h2>
+<code-block lang="php">
+// Cách 1 — validate ngay trong controller (nhanh, cho case đơn giản)
+public function store(Request $request)
+{
+    $data = $request->validate([
+        'title' => ['required', 'string', 'max:255'],
+        'body'  => ['required', 'string'],
+    ]);
+
+    return Post::create($data);
+}
+</code-block>
+<code-block lang="bash">
+# Cách 2 — Form Request (KHUYẾN NGHỊ cho API): tách rule ra class riêng
+php artisan make:request StorePostRequest
+</code-block>
+<code-block lang="php">
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StorePostRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;                        // false → tự trả 403 Forbidden (Part 19 sẽ dùng thật)
+    }
+
+    public function rules(): array
+    {
+        return [
+            'title' => ['required', 'string', 'max:255', 'unique:posts,title'],
+            'body'  => ['required', 'string', 'min:10'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return ['title.required' => 'Tiêu đề là bắt buộc.'];
+    }
+}
+</code-block>
+
+<h2>5.2 Cơ chế: nó chạy lúc nào?</h2>
+<p>Bạn chỉ cần type-hint Form Request vào controller. Container thấy class đó kế thừa <c>FormRequest</c> nên tự chạy validate ngay khi resolve tham số — tức là trước khi dòng code đầu tiên trong thân method chạy:</p>
+<code-block lang="php">
+public function store(StorePostRequest $request)
+{
+    // Tới được đây = dữ liệu CHẮC CHẮN đã hợp lệ
+    return Post::create($request->validated());
+}
+</code-block>
+<p>Thứ tự thực tế: <c>authorize()</c> → <c>rules()</c> → (sai thì 422 / không có quyền thì 403) → thân method.</p>
+
+<h2>5.3 Format lỗi 422 mà Laravel trả về</h2>
+<p>Nếu request có header <c>Accept: application/json</c> (hoặc là XHR), Laravel trả về đúng cấu trúc sau — hãy nhớ nó vì frontend sẽ dựa vào đây:</p>
+<code-block lang="json">
+HTTP/1.1 422 Unprocessable Content
+
+{
+    "message": "The title field is required. (and 1 more error)",
+    "errors": {
+        "title": ["The title field is required."],
+        "body":  ["The body field must be at least 10 characters."]
+    }
+}
+</code-block>
+<div class="note"><b>Bẫy kinh điển:</b> nếu không gửi header <c>Accept: application/json</c>, Laravel coi đây là request từ browser nên trả về redirect 302 kèm lỗi trong session thay vì JSON 422. Rất nhiều người tưởng API bị lỗi trong khi chỉ là thiếu header. Part 07 sẽ chỉ cách ép mọi request <c>/api/*</c> luôn nhận JSON.</div>
+
+<h2>5.4 Lấy dữ liệu đã validate</h2>
+<table>
+<tr><th>Cách gọi</th><th>Trả về</th></tr>
+<tr><td><c>$request->validated()</c></td><td>Mảng chỉ chứa các field có trong rules — field lạ bị loại bỏ</td></tr>
+<tr><td><c>$request->safe()->only([...])</c></td><td>Chỉ lấy một số field trong dữ liệu đã validate</td></tr>
+<tr><td><c>$request->safe()->except([...])</c></td><td>Loại một số field</td></tr>
+<tr><td><c>$request->all()</c></td><td>Toàn bộ input thô, chưa lọc — không nên đưa thẳng vào <c>create()</c></td></tr>
+</table>
+<div class="note"><b>Đối chiếu NestJS:</b> <c>validated()</c> chính là tương đương của <c>whitelist: true</c> trong <c>ValidationPipe</c> — chỉ nhận field đã khai báo. Còn muốn giống <c>forbidNonWhitelisted: true</c> (có field lạ thì báo lỗi luôn), bên Laravel bạn thêm rule <c>'field_la' => 'prohibited'</c> hoặc kiểm tra trong <c>after()</c>.</div>
+
+<h2>5.5 Rule hay dùng cho API</h2>
+<table>
+<tr><th>Rule</th><th>Ý nghĩa</th></tr>
+<tr><td><c>required</c> / <c>nullable</c></td><td>Bắt buộc có / cho phép null</td></tr>
+<tr><td><c>sometimes</c></td><td>Chỉ validate NẾU field xuất hiện — dùng cho PATCH / UpdateRequest</td></tr>
+<tr><td><c>string</c>, <c>integer</c>, <c>boolean</c>, <c>array</c></td><td>Kiểm tra kiểu</td></tr>
+<tr><td><c>max:255</c>, <c>min:10</c>, <c>between:1,10</c></td><td>Giới hạn độ dài / giá trị</td></tr>
+<tr><td><c>email</c>, <c>url</c>, <c>date</c>, <c>uuid</c></td><td>Định dạng</td></tr>
+<tr><td><c>unique:posts,title</c></td><td>Không trùng trong bảng. Khi update phải bỏ qua chính bản ghi đó: <c>Rule::unique('posts')->ignore($this->post)</c></td></tr>
+<tr><td><c>exists:posts,id</c></td><td>Phải tồn tại trong bảng — dùng cho khoá ngoại</td></tr>
+<tr><td><c>confirmed</c></td><td>password phải khớp <c>password_confirmation</c></td></tr>
+<tr><td><c>Rule::enum(PostStatus::class)</c></td><td>Giá trị phải là 1 case của enum</td></tr>
+<tr><td><c>File::image()->max(2048)</c></td><td>Validate file upload (Part 18)</td></tr>
+</table>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo <c>StorePostRequest</c> và <c>UpdatePostRequest</c></li>
+<li><c>UpdatePostRequest</c> dùng <c>sometimes</c> để mọi field đều optional (tương đương <c>PartialType</c> bên NestJS)</li>
+<li>Type-hint chúng vào <c>store()</c> / <c>update()</c>, dùng <c>validated()</c> khi tạo/cập nhật</li>
+<li>Test: gửi body thiếu field → xác nhận nhận đúng 422 với cấu trúc <c>{message, errors}</c></li>
+<li>Test: gửi body thiếu header <c>Accept: application/json</c> → quan sát response 302 để hiểu cái bẫy ở mục 5.3</li>
+<li>Thêm rule <c>unique</c> cho title, xử lý case update chính bản ghi đó mà không bị báo trùng</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 06 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge">PART 06</div>
+<h1>API Resources — tầng transform response</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Không bao giờ trả model thô ra ngoài. Có một tầng riêng quyết định "API này công khai những field nào, định dạng ra sao".</div>
+</div>
+
+<h2>6.1 Vì sao không return thẳng model?</h2>
+<p>Trả <c>return $post;</c> thì Laravel tự serialize toàn bộ cột trong bảng thành JSON. Ba vấn đề: (1) rò rỉ dữ liệu — thêm cột <c>internal_note</c> vào DB là API tự động phơi ra; (2) API vỡ hợp đồng — đổi tên cột trong DB làm frontend chết theo; (3) không kiểm soát được định dạng (ngày tháng, field tính toán). API Resource giải quyết cả ba.</p>
+<code-block lang="bash">
+php artisan make:resource PostResource
+</code-block>
+<code-block lang="php">
+namespace App\Http\Resources;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class PostResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
+        return [
+            'id'         => $this->id,
+            'title'      => $this->title,
+            'body'       => $this->body,
+            'created_at' => $this->created_at?->toIso8601String(),
+        ];
+    }
+}
+</code-block>
+<div class="note">Vì sao gọi được <c>$this->id</c> khi <c>$this</c> là Resource chứ không phải Post? Vì <c>JsonResource</c> proxy mọi lời gọi property/method xuống model bên dưới. Model thật nằm ở <c>$this->resource</c>.</div>
+
+<h2>6.2 Dùng trong Controller</h2>
+<code-block lang="php">
+// 1 bản ghi
+return new PostResource($post);
+return $post->toResource();                            // cách gọn (Laravel 12+), tự tìm PostResource
+
+// nhiều bản ghi
+return PostResource::collection(Post::all());
+return Post::latest()->paginate(15)->toResourceCollection();
+
+// kèm status code & header
+return (new PostResource($post))->response()->setStatusCode(201);
+</code-block>
+<div class="audit"><b>Đã đối chiếu docs:</b> <c>toResource()</c> tự tìm class theo quy ước — model <c>App\Models\Post</c> → tìm <c>App\Http\Resources\PostResource</c> (hoặc <c>Post</c>) ở namespace <c>Http\Resources</c> gần model nhất; có thể chỉ định tường minh <c>$post->toResource(CustomPostResource::class)</c>.</div>
+
+<h2>6.3 Data wrapping — response trông thế nào</h2>
+<p>Mặc định Laravel bọc kết quả trong key <c>data</c>:</p>
+<code-block lang="json">
+{ "data": { "id": 1, "title": "Hello" } }
+</code-block>
+<p>Khi phân trang qua Resource collection, response luôn có thêm <c>links</c> và <c>meta</c>:</p>
+<code-block lang="json">
+{
+    "data": [ ... ],
+    "links": { "first": "...?page=1", "last": "...?page=4", "prev": null, "next": "...?page=2" },
+    "meta": { "current_page": 1, "from": 1, "last_page": 4, "per_page": 15, "to": 15, "total": 54 }
+}
+</code-block>
+<p>Muốn bỏ lớp <c>data</c>, gọi <c>JsonResource::withoutWrapping()</c> trong <c>AppServiceProvider::boot()</c>. Lưu ý: response phân trang vẫn giữ <c>data</c> vì cần chỗ đặt meta/links.</p>
+<div class="note"><b>Khuyến nghị:</b> giữ nguyên wrapping mặc định. Một API mà "khi thì trả object, khi thì trả object bọc data" là nguồn bug bất tận cho frontend. Chọn một kiểu và giữ nhất quán toàn bộ endpoint — đây cũng là bài học bạn đã rút ra khi làm <c>TransformInterceptor</c> bên NestJS.</div>
+
+<h2>6.4 Field có điều kiện</h2>
+<code-block lang="php">
+return [
+    'id'    => $this->id,
+    'title' => $this->title,
+
+    // chỉ trả khi thoả điều kiện
+    'secret' => $this->when($request->user()?->isAdmin(), $this->secret),
+
+    // chỉ trả khi relation ĐÃ được eager load → tránh N+1 (xem Part 08)
+    'comments' => CommentResource::collection($this->whenLoaded('comments')),
+
+    // chỉ trả khi đã loadCount('comments')
+    'comments_count' => $this->whenCounted('comments'),
+];
+</code-block>
+
+<h2>6.5 JSON:API Resource (mới ở Laravel 13)</h2>
+<p>Laravel 13 bổ sung <c>JsonApiResource</c> — tạo response đúng chuẩn jsonapi.org: có <c>type</c>, <c>attributes</c>, <c>relationships</c>, hỗ trợ <c>?include=</c> và sparse fieldsets <c>?fields[posts]=title</c>, tự set header <c>application/vnd.api+json</c>.</p>
+<code-block lang="bash">
+php artisan make:resource PostResource --json-api
+</code-block>
+<code-block lang="php">
+use Illuminate\Http\Resources\JsonApi\JsonApiResource;
+
+class PostResource extends JsonApiResource
+{
+    public $attributes = ['title', 'body', 'created_at'];
+
+    public $relationships = ['author', 'comments'];
+}
+// Response: { "data": { "id": "1", "type": "posts", "attributes": { "title": "...", "body": "..." } } }
+</code-block>
+<div class="audit"><b>Đã đối chiếu docs:</b> class chính xác là <c>Illuminate\Http\Resources\JsonApi\JsonApiResource</c>; muốn kiểm soát chi tiết thì override <c>toAttributes(Request $request): array</c> (có thể trả closure để lazy-evaluate field nặng). Relationship chỉ được serialize khi client yêu cầu qua <c>?include=</c>. Docs gợi ý dùng kèm package Spatie Query Builder để parse filter/sort phía request.</div>
+<p>Có nên dùng JSON:API ngay? Với crash course này thì không cần — hãy làm <c>JsonResource</c> thường cho vững đã. Biết là nó tồn tại, để khi gặp dự án yêu cầu chuẩn JSON:API thì không phải tự viết tay.</p>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo <c>PostResource</c>, chỉ expose: id, title, body, created_at (ISO 8601)</li>
+<li>Sửa cả 5 action trong Controller để trả về Resource thay vì model thô</li>
+<li>Endpoint index: dùng <c>paginate(15)</c> + resource collection, kiểm tra response có <c>meta</c> và <c>links</c></li>
+<li>Thêm 1 cột "nội bộ" vào bảng posts (vd <c>internal_note</c>), xác nhận nó KHÔNG lộ ra API nhờ Resource</li>
+<li>Đảm bảo status code đúng: store → 201, destroy → 204</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 07 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge">PART 07</div>
+<h1>Middleware &amp; Exception Handling</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Tự viết middleware, và chuẩn hoá toàn bộ response lỗi của API về một format duy nhất — đây là thứ phân biệt API "tập viết" với API dùng được thật.</div>
+</div>
+
+<h2>7.1 Viết middleware</h2>
+<code-block lang="bash">
+php artisan make:middleware LogRequests
+</code-block>
+<code-block lang="php">
+public function handle(Request $request, Closure $next): Response
+{
+    $start = microtime(true);
+
+    $response = $next($request);                  // đi sâu vào app
+
+    Log::info('API', [
+        'method' => $request->method(),
+        'uri'    => $request->path(),
+        'status' => $response->status(),
+        'ms'     => round((microtime(true) - $start) * 1000),
+    ]);
+
+    return $response;                             // PHẢI return, nếu không request bị treo
+}
+</code-block>
+<p>Middleware là pipeline hai chiều: code trước <c>$next()</c> chạy khi request đi vào, code sau <c>$next()</c> chạy khi response đi ra. Nó gánh vai trò của cả Middleware + Guard + Interceptor bên NestJS. Muốn làm việc nặng sau khi đã trả response (ghi log ra dịch vụ ngoài...), thêm method <c>terminate(Request $request, Response $response)</c> — Laravel gọi nó sau khi response đã gửi tới client (cần FastCGI).</p>
+
+<h2>7.2 Đăng ký middleware</h2>
+<code-block lang="php">
+// bootstrap/app.php
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->append(LogRequests::class);                       // global, chạy cho mọi request
+
+    $middleware->api(prepend: ['throttle:api']);                   // thêm vào nhóm api
+
+    $middleware->alias(['admin' => EnsureUserIsAdmin::class]);     // đặt tên ngắn
+})
+</code-block>
+<p>Sau khi có alias, gắn vào route: <c>Route::delete(...)->middleware('admin')</c>. Middleware nhận tham số qua dấu <c>:</c> — ví dụ <c>'role:editor,publisher'</c> tương ứng <c>handle($request, $next, ...$roles)</c>.</p>
+<div class="audit"><b>Đã đối chiếu docs Middleware 13.x — nhóm mặc định:</b> nhóm <c>api</c> chỉ có đúng 1 middleware <c>SubstituteBindings</c>; <c>throttle:api</c> và <c>EnsureFrontendRequestsAreStateful</c> (Sanctum SPA) đều <b>bị comment sẵn</b>. Nghĩa là rate limit KHÔNG bật sẵn — muốn có thì tự thêm như trên (chi tiết Part 10). Nhóm <c>web</c> ở Laravel 13 dùng <c>PreventRequestForgery</c> (tên mới của middleware CSRF, có kiểm tra origin) — API stateless không dùng tới.</div>
+
+<h2>7.3 Exception Handling — chuẩn hoá lỗi JSON</h2>
+<p>Mặc định Laravel đã trả lỗi dạng JSON khi request có <c>Accept: application/json</c>: 404 cho model không tìm thấy, 422 cho validation, 401 khi chưa đăng nhập. Nhưng format mỗi loại một kiểu. Muốn thống nhất, cấu hình trong <c>withExceptions()</c>:</p>
+<code-block lang="php">
+// bootstrap/app.php
+->withExceptions(function (Exceptions $exceptions) {
+
+    // 1) Mọi request /api/* đều được coi là muốn nhận JSON (hết bẫy 302 ở Part 05)
+    $exceptions->shouldRenderJsonWhen(fn (Request $request, Throwable $e) =>
+        $request->is('api/*') || $request->expectsJson());
+
+    // 2) Đổi thông điệp 404 cho API (mặc định message rỗng, khó debug)
+    $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+        if ($request->is('api/*')) {
+            return response()->json(['message' => 'Resource not found.'], 404);
+        }
+    });
+
+    // 3) Không report một số exception vô hại (giảm rác log)
+    $exceptions->dontReport([PostAlreadyPublishedException::class]);
+})
+</code-block>
+<div class="note"><b>Bài học từ audit dự án NestJS của bạn:</b> khi tự viết filter/handler lỗi, tuyệt đối đừng bọc lồng payload lỗi. Nếu response thành <c>{"message": {"message": "...", "statusCode": 404}}</c> thì client phải đọc <c>body.message.message</c> — sai chuẩn và rất dễ gây bug. Format lỗi nên phẳng và giống nhau ở mọi status code, ví dụ: <c>{ message, errors?, status }</c>.</div>
+
+<h2>7.4 Exception nghiệp vụ tự viết</h2>
+<code-block lang="bash">
+php artisan make:exception PostAlreadyPublishedException
+</code-block>
+<code-block lang="php">
+class PostAlreadyPublishedException extends Exception
+{
+    // Có method render() → Laravel tự gọi, không cần khai gì trong bootstrap/app.php
+    public function render(Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'Bài viết này đã được publish trước đó.',
+        ], 409);                          // 409 Conflict
+    }
+}
+</code-block>
+<p>Trong service chỉ cần <c>throw new PostAlreadyPublishedException();</c> — không cần try/catch ở controller. Ngoài <c>render()</c>, exception còn có thể khai <c>report()</c> để tự quyết cách ghi log, và <c>context()</c> để thêm dữ liệu vào log.</p>
+
+<h2>7.5 Các exception → status code Laravel tự map</h2>
+<table>
+<tr><th>Exception</th><th>Status</th><th>Sinh ra khi</th></tr>
+<tr><td><c>ValidationException</c></td><td>422</td><td>Form Request / <c>validate()</c> thất bại</td></tr>
+<tr><td><c>ModelNotFoundException</c></td><td>404</td><td><c>findOrFail()</c>, route model binding không thấy</td></tr>
+<tr><td><c>NotFoundHttpException</c></td><td>404</td><td>Không route nào khớp</td></tr>
+<tr><td><c>AuthenticationException</c></td><td>401</td><td>Middleware <c>auth</c> chặn</td></tr>
+<tr><td><c>AuthorizationException</c></td><td>403</td><td><c>authorize()</c> trả false / policy từ chối (Part 19)</td></tr>
+<tr><td><c>MethodNotAllowedHttpException</c></td><td>405</td><td>Đúng URI nhưng sai HTTP verb</td></tr>
+<tr><td><c>ThrottleRequestsException</c></td><td>429</td><td>Vượt rate limit</td></tr>
+</table>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Viết <c>LogRequests</c> middleware (log method + uri + status + thời gian xử lý), đăng ký global</li>
+<li>Viết 1 middleware có tham số (vd <c>EnsureHeader:X-Client-Version</c>), đặt alias và gắn lên vài route</li>
+<li>Cấu hình <c>withExceptions()</c>: dùng <c>shouldRenderJsonWhen</c> cho <c>api/*</c> và chuẩn hoá message 404</li>
+<li>Tự viết 1 exception nghiệp vụ có <c>render()</c> trả 409, ném từ service và test</li>
+<li>Gọi thử đủ 7 tình huống trong bảng 7.5 bằng curl, ghi lại status + body thực tế nhận được</li>
+<li>Đặt <c>APP_DEBUG=false</c> rồi gây lỗi 500 — so sánh response với lúc true để thấy vì sao production bắt buộc false</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 08 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge">PART 08</div>
+<h1>Quan hệ dữ liệu (Relationships) &amp; vấn đề N+1</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Thêm entity Comment liên kết với Post, và hiểu N+1 query — lỗi hiệu năng phổ biến nhất của mọi ORM.</div>
+</div>
+
+<h2>8.1 Khai báo quan hệ 1-N</h2>
+<code-block lang="php">
+// migration của bảng comments
+$table->foreignId('post_id')->constrained()->cascadeOnDelete();
+// constrained(): tự suy ra bảng posts + tạo khoá ngoại
+// cascadeOnDelete(): xoá post thì comment tự xoá theo
+
+// app/Models/Post.php — một Post có NHIỀU Comment
+public function comments(): HasMany
+{
+    return $this->hasMany(Comment::class);
+}
+
+// app/Models/Comment.php — một Comment thuộc về MỘT Post
+public function post(): BelongsTo
+{
+    return $this->belongsTo(Post::class);
+}
+</code-block>
+<table>
+<tr><th>Quan hệ</th><th>Khoá ngoại nằm ở</th><th>Ví dụ</th></tr>
+<tr><td><c>hasMany</c></td><td>Bảng con</td><td>Post → nhiều Comment</td></tr>
+<tr><td><c>belongsTo</c></td><td>Chính bảng này</td><td>Comment → một Post</td></tr>
+<tr><td><c>hasOne</c></td><td>Bảng con</td><td>User → một Profile</td></tr>
+<tr><td><c>belongsToMany</c></td><td>Bảng trung gian (pivot)</td><td>Post ↔ Tag</td></tr>
+<tr><td><c>morphMany</c> / <c>morphTo</c></td><td>Bảng con có cột <c>*_type</c> + <c>*_id</c></td><td>Comment gắn được cho cả Post lẫn Video</td></tr>
+</table>
+
+<h2>8.2 Truy vấn quan hệ</h2>
+<code-block lang="php">
+$post->comments;                  // property → chạy query LÚC gọi, trả Collection
+$post->comments();                // method → trả query builder, còn nối được điều kiện
+
+$post->comments()->where('is_approved', true)->latest()->get();
+
+$post->comments()->create(['body' => 'Hay quá']);   // tự gán post_id
+</code-block>
+
+<h2>8.3 N+1 — lỗi hiệu năng phải hiểu</h2>
+<code-block lang="php">
+// ✘ SAI — sinh 1 + N query
+$posts = Post::all();                          // 1 query lấy 30 post
+foreach ($posts as $post) {
+    echo $post->comments->count();             // + 30 query nữa (mỗi post 1 query)
+}
+// → tổng 31 query cho một trang danh sách
+
+// ✔ ĐÚNG — eager loading, chỉ 2 query
+$posts = Post::with('comments')->get();
+// query 1: select * from posts
+// query 2: select * from comments where post_id in (1,2,3,...)
+
+// ✔ Chỉ cần ĐẾM thì đừng load hết dữ liệu
+$posts = Post::withCount('comments')->get();   // có $post->comments_count
+</code-block>
+<div class="note"><b>Bắt N+1 tự động khi dev:</b> <c>Model::preventLazyLoading(! $this->app->isProduction());</c> trong <c>AppServiceProvider::boot()</c> (đã bật ở Part 04). Từ đó bất kỳ chỗ nào quên <c>with()</c> sẽ throw exception ngay ở local thay vì âm thầm chạy chậm ở production. Đây là một trong những setting đáng bật nhất của Laravel.</div>
+<p>Ghép với Part 06: Resource dùng <c>whenLoaded('comments')</c> — nếu controller quên <c>with('comments')</c> thì field đó đơn giản không xuất hiện, chứ không âm thầm bắn thêm N query. Hai tính năng này thiết kế để đi cùng nhau.</p>
+
+<h2>8.4 Eager load có điều kiện &amp; lồng nhau</h2>
+<code-block lang="php">
+Post::with(['comments' => fn ($q) => $q->where('is_approved', true)])->get();
+
+Post::with('comments.author')->get();          // lồng 2 cấp
+
+$post->load('comments');                        // load sau khi đã có model
+$post->loadMissing('comments');                 // chỉ load nếu chưa có
+
+Post::has('comments')->get();                   // chỉ post CÓ comment
+Post::doesntHave('comments')->get();            // chỉ post KHÔNG có comment
+Post::whereHas('comments', fn ($q) => $q->where('is_approved', true))->get();
+</code-block>
+
+<h2>8.5 Route lồng &amp; scope tự động</h2>
+<code-block lang="php">
+// routes/api.php — comment thuộc post
+Route::apiResource('posts.comments', CommentController::class)->shallow();
+// → GET  /api/posts/{post}/comments      index
+//   POST /api/posts/{post}/comments      store
+//   GET  /api/comments/{comment}         show    (shallow: con có id riêng thì không cần lặp lại cha)
+
+// Controller
+public function store(StoreCommentRequest $request, Post $post)
+{
+    $comment = $post->comments()->create($request->validated());
+    return $comment->toResource()->response()->setStatusCode(201);
+}
+</code-block>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo model + migration Comment (post_id, body), khai <c>foreignId()->constrained()->cascadeOnDelete()</c></li>
+<li>Khai <c>hasMany</c> / <c>belongsTo</c> ở hai model</li>
+<li>Endpoint <c>GET /api/posts/{post}</c> trả post kèm comments (dùng <c>with()</c> + <c>whenLoaded()</c>)</li>
+<li>Endpoint lồng: <c>GET /api/posts/{post}/comments</c> và <c>POST /api/posts/{post}/comments</c></li>
+<li>Cố tình bỏ <c>with()</c> để thấy exception của <c>preventLazyLoading</c></li>
+<li>Dùng <c>withCount('comments')</c> cho endpoint index và trả qua <c>whenCounted()</c></li>
+<li>Dùng <c>DB::listen()</c> (Part 13) hoặc Telescope để đếm số query thực tế của endpoint index — chứng minh đã hết N+1</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 09 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge">PART 09</div>
+<h1>Authentication với Laravel Sanctum</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Hiểu trọn luồng đăng ký → đăng nhập → cấp token → bảo vệ route → đăng xuất, và biết vì sao password phải hash chứ không được mã hoá.</div>
+</div>
+
+<h2>9.1 Sanctum là gì — và không phải là gì</h2>
+<p>Sanctum đã được cài sẵn khi bạn chạy <c>php artisan install:api</c> ở Part 01. Nó giải quyết 2 bài toán tách biệt:</p>
+<ul>
+<li><b>API token</b> (personal access token, giống token của GitHub): token là chuỗi random, được hash SHA-256 rồi lưu vào bảng <c>personal_access_tokens</c>. Client gửi kèm header <c>Authorization: Bearer <token></c>. → Đây là phần ta dùng.</li>
+<li><b>SPA authentication</b>: dùng session cookie thay vì token, cho frontend cùng domain. Không dùng trong crash course này.</li>
+</ul>
+<div class="note"><b>Sanctum khác JWT thế nào?</b> Token Sanctum là opaque (chuỗi vô nghĩa, phải tra DB mới biết của ai) — nên thu hồi được ngay lập tức bằng cách xoá dòng trong DB. JWT là self-contained (chứa payload, verify bằng chữ ký, không cần tra DB) — nhanh hơn nhưng không thu hồi được trước khi hết hạn. Với API thường, Sanctum là lựa chọn mặc định đúng. Cần OAuth2 đầy đủ thì mới dùng Laravel Passport.</div>
+
+<h2>9.2 Chuẩn bị model User</h2>
+<code-block lang="php">
+use Laravel\Sanctum\HasApiTokens;
+
+class User extends Authenticatable
+{
+    use HasApiTokens, HasFactory, Notifiable;     // thêm HasApiTokens
+}
+</code-block>
+<p>Trait <c>HasApiTokens</c> mang lại: <c>createToken()</c>, quan hệ <c>tokens()</c>, <c>currentAccessToken()</c>, <c>tokenCan()</c>. Trait <c>Notifiable</c> (có sẵn) sẽ dùng ở Part 20.</p>
+
+<h2>9.3 Luồng đầy đủ</h2>
+<div class="diagram">1. POST /api/register    Validate → hash password → tạo user → (tuỳ chọn) cấp token luôn
+        ▼
+2. POST /api/login       Tìm user theo email → Hash::check() so password → khớp thì createToken()
+                         → trả plainTextToken
+        ▼
+3. Client lưu token      Mọi request sau gửi header Authorization: Bearer &lt;token&gt;
+        ▼
+4. auth:sanctum          Middleware hash token nhận được, tra bảng personal_access_tokens
+                         → hợp lệ thì gán user vào $request->user(); sai/hết hạn → 401
+        ▼
+5. POST /api/logout      $request->user()->currentAccessToken()->delete() → token đó chết ngay</div>
+
+<h2>9.4 Code các endpoint</h2>
+<code-block lang="php">
+// Đăng nhập — cách docs Laravel khuyến nghị
+public function login(LoginRequest $request)
+{
+    $user = User::where('email', $request->email)->first();
+
+    if (! $user || ! Hash::check($request->password, $user->password)) {
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.'],
+        ]);                              // → 422 với format lỗi chuẩn
+    }
+
+    return [
+        'token' => $user->createToken($request->device_name)->plainTextToken,
+    ];
+}
+</code-block>
+<div class="note">Vì sao báo lỗi chung "credentials are incorrect" thay vì "email không tồn tại"? Nếu phân biệt hai thông báo, kẻ tấn công có thể dò xem email nào đã đăng ký (user enumeration). Luôn trả cùng một message cho cả hai trường hợp.</div>
+<code-block lang="php">
+// routes/api.php
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login',    [AuthController::class, 'login'])->middleware('throttle:login');
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/me',      fn (Request $r) => $r->user());
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::apiResource('posts', PostController::class)->except(['index', 'show']);
+});
+</code-block>
+
+<h2>9.5 Hash password — nguyên lý</h2>
+<p>Laravel dùng bcrypt (mặc định) qua <c>Hash::make($password)</c>. Đặc điểm: <b>một chiều</b> — không có hàm nào "giải mã" hash về lại password, khi login ta hash lại rồi so 2 hash (<c>Hash::check()</c>); <b>có salt ngẫu nhiên</b> — cùng một password hash 2 lần cho 2 chuỗi khác nhau ⇒ chống rainbow table; <b>chậm có chủ đích</b> — cost factor cao làm brute-force tốn kém.</p>
+<code-block lang="php">
+// Cách gọn nhất: dùng cast 'hashed' — Laravel tự hash khi gán
+protected function casts(): array
+{
+    return ['password' => 'hashed'];           // User model mặc định đã có sẵn dòng này
+}
+
+// Nhờ vậy chỉ cần:
+User::create(['password' => $request->password]);   // tự hash, KHÔNG lưu plain text
+</code-block>
+
+<h2>9.6 Token abilities, hết hạn, thu hồi</h2>
+<code-block lang="php">
+// Cấp token kèm quyền (giống scope của OAuth)
+$user->createToken('mobile', ['post:create', 'post:update'])->plainTextToken;
+
+// Kiểm tra quyền trong code
+if ($request->user()->tokenCan('post:create')) { /* ... */ }
+
+// Hết hạn: config/sanctum.php → 'expiration' => 525600 (phút) — mặc định null = không hết hạn
+// Dọn token hết hạn định kỳ (routes/console.php — Part 17):
+Schedule::command('sanctum:prune-expired --hours=24')->daily();
+
+// Thu hồi
+$request->user()->currentAccessToken()->delete();   // logout thiết bị hiện tại
+$user->tokens()->delete();                            // logout mọi thiết bị
+</code-block>
+
+<h2>9.7 Phân quyền: Policy (giới thiệu — chi tiết ở Part 19)</h2>
+<p>Authentication = "bạn là ai". Authorization = "bạn có được làm việc này không". Việc thứ hai dùng Policy:</p>
+<code-block lang="bash">
+php artisan make:policy PostPolicy --model=Post
+</code-block>
+<code-block lang="php">
+public function update(User $user, Post $post): bool
+{
+    return $user->id === $post->user_id;           // chỉ tác giả được sửa
+}
+
+// Trong controller — 3 cách tương đương, chọn 1 và dùng nhất quán:
+Gate::authorize('update', $post);                  // không có quyền → AuthorizationException → 403
+if ($request->user()->cannot('update', $post)) abort(403);
+
+#[Authorize('update', 'post')]                     // attribute (Laravel 13) — gọn nhất
+public function update(UpdatePostRequest $request, Post $post) { /* ... */ }
+</code-block>
+<div class="audit"><b>⚠ Đã sửa so với bản gốc:</b> bản trước dùng <c>$this->authorize('update', $post)</c> trong controller. Từ Laravel 11, class <c>Controller</c> gốc <b>không còn</b> trait <c>AuthorizesRequests</c> mặc định — gọi <c>$this->authorize()</c> sẽ lỗi "method does not exist" trừ khi bạn tự thêm <c>use AuthorizesRequests;</c> vào base Controller. Cách docs 13.x dùng là <c>Gate::authorize()</c>, <c>$request->user()->can()/cannot()</c>, middleware <c>can:update,post</c>, hoặc attribute <c>#[Authorize]</c> như trên.</div>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Thêm trait <c>HasApiTokens</c> vào model User, chạy migration cho bảng <c>personal_access_tokens</c></li>
+<li>Viết <c>AuthController</c> với 3 action: register, login, logout (+ route <c>/me</c>)</li>
+<li>Tạo <c>RegisterRequest</c> / <c>LoginRequest</c> (email <c>unique:users</c>, password <c>confirmed</c>, <c>min:8</c>)</li>
+<li>Bọc các route ghi (store/update/destroy) trong <c>auth:sanctum</c></li>
+<li>Test bằng curl: gọi <c>POST /api/posts</c> không token → phải nhận 401; có token → 201</li>
+<li>Mở bảng <c>personal_access_tokens</c> trong DB, xác nhận cột <c>token</c> là hash chứ không phải chuỗi bạn nhận được</li>
+<li>Thêm cột <c>user_id</c> vào posts + <c>PostPolicy</c>: chỉ tác giả được sửa/xoá. Test bằng 2 user khác nhau → user B sửa post của A phải nhận 403</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 10 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge">PART 10</div>
+<h1>Chuẩn hoá REST API cho production</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Biến API "chạy được" thành API "dùng được thật": status code đúng, filter / sort an toàn, versioning, rate limit, CORS, và checklist trước khi deploy.</div>
+</div>
+
+<h2>10.1 Status code — dùng đúng, đừng trả 200 cho mọi thứ</h2>
+<table>
+<tr><th>Code</th><th>Tên</th><th>Dùng khi</th></tr>
+<tr><td>200</td><td>OK</td><td>GET thành công, PUT/PATCH thành công (trả bản ghi sau khi sửa)</td></tr>
+<tr><td>201</td><td>Created</td><td>POST tạo mới thành công — nên kèm header Location</td></tr>
+<tr><td>202</td><td>Accepted</td><td>Đã nhận yêu cầu nhưng xử lý nền chưa xong (đẩy vào queue — Part 14)</td></tr>
+<tr><td>204</td><td>No Content</td><td>DELETE thành công, không có body trả về</td></tr>
+<tr><td>400</td><td>Bad Request</td><td>Request hỏng về mặt cú pháp (JSON sai định dạng)</td></tr>
+<tr><td>401</td><td>Unauthorized</td><td>Chưa đăng nhập / token sai (thực chất là "unauthenticated")</td></tr>
+<tr><td>403</td><td>Forbidden</td><td>Đã đăng nhập nhưng không có quyền</td></tr>
+<tr><td>404</td><td>Not Found</td><td>Không tồn tại resource</td></tr>
+<tr><td>409</td><td>Conflict</td><td>Xung đột trạng thái (publish 2 lần, trùng dữ liệu)</td></tr>
+<tr><td>422</td><td>Unprocessable Content</td><td>Cú pháp đúng nhưng dữ liệu không hợp lệ (validation)</td></tr>
+<tr><td>429</td><td>Too Many Requests</td><td>Vượt rate limit</td></tr>
+<tr><td>500</td><td>Server Error</td><td>Lỗi phía server — không bao giờ được lộ stack trace ra client</td></tr>
+</table>
+<div class="note"><b>Mẹo phân biệt 401 vs 403:</b> 401 = "tôi không biết bạn là ai" (thiếu/sai token → client nên đi đăng nhập lại). 403 = "tôi biết bạn là ai, nhưng bạn không được phép" (đăng nhập lại vô ích).</div>
+
+<h2>10.2 Filter, sort an toàn (pagination chi tiết ở Part 12)</h2>
+<code-block lang="php">
+// GET /api/posts?page=2&per_page=20&search=nest&sort=-created_at
+public function index(Request $request)
+{
+    $perPage = min($request->integer('per_page', 15), 100);          // CHẶN TRẦN
+
+    $posts = Post::query()
+        ->when($request->filled('search'), fn ($q) =>
+            $q->where('title', 'like', '%'.$request->string('search').'%'))
+        ->withCount('comments')
+        ->latest()
+        ->paginate($perPage)
+        ->withQueryString();        // giữ lại query param trong link phân trang
+
+    return PostResource::collection($posts);
+}
+</code-block>
+<div class="note"><b>Ba lỗi bảo mật/hiệu năng hay gặp ở endpoint list:</b> (1) không chặn trần <c>per_page</c> → client gọi <c>?per_page=999999</c> làm sập DB; (2) cho sort theo tên cột client tự gửi mà không whitelist → SQL injection qua <c>orderBy</c>; (3) trả <c>Post::all()</c> không phân trang.</div>
+<code-block lang="php">
+// Sort an toàn: LUÔN whitelist tên cột
+$sortable = ['created_at', 'title'];
+$sort = $request->string('sort', '-created_at');
+$dir  = str_starts_with($sort, '-') ? 'desc' : 'asc';
+$col  = ltrim($sort, '-');
+
+if (in_array($col, $sortable, true)) {
+    $query->orderBy($col, $dir);
+}
+</code-block>
+
+<h2>10.3 Rate limiting</h2>
+<p>Nhớ Part 07: nhóm <c>api</c> của Laravel 13 không bật throttle sẵn. Làm 2 bước:</p>
+<code-block lang="php">
+// Bước 1 — định nghĩa limiter trong AppServiceProvider::boot()
+RateLimiter::for('api', fn (Request $request) =>
+    Limit::perMinute(60)->by($request->user()?->id ?: $request->ip()));
+
+// Giới hạn chặt hơn cho login (chống brute-force) — nhiều Limit cùng lúc
+RateLimiter::for('login', fn (Request $request) => [
+    Limit::perMinute(5)->by($request->input('email')),
+    Limit::perMinute(20)->by($request->ip()),
+]);
+
+// Tuỳ biến response 429 nếu muốn
+RateLimiter::for('api', fn (Request $request) =>
+    Limit::perMinute(60)->response(fn (Request $r, array $headers) =>
+        response()->json(['message' => 'Slow down.'], 429, $headers)));
+
+// Bước 2 — gắn vào route hoặc nhóm api
+$middleware->api(prepend: ['throttle:api']);                // bootstrap/app.php
+Route::post('/login', ...)->middleware('throttle:login');   // routes/api.php
+</code-block>
+<p>Vượt hạn mức → Laravel tự trả 429 kèm header <c>Retry-After</c> và <c>X-RateLimit-Remaining</c>. Rate limiter lưu bộ đếm trong cache (Part 16) — nên cache driver phải dùng chung giữa các server nếu chạy nhiều máy.</p>
+
+<h2>10.4 CORS</h2>
+<p>Middleware <c>HandleCors</c> đã nằm trong stack global sẵn. Chỉ khi cần tuỳ biến mới publish config:</p>
+<code-block lang="bash">
+php artisan config:publish cors         # → tạo config/cors.php
+</code-block>
+<p>Trong đó khai <c>allowed_origins</c> (đừng để <c>['*']</c> ở production nếu API có auth bằng cookie), <c>allowed_headers</c>, <c>supports_credentials</c>.</p>
+
+<h2>10.5 API versioning</h2>
+<code-block lang="php">
+// Cách 1: prefix trong routes/api.php
+Route::prefix('v1')->group(function () {
+    Route::apiResource('posts', V1\PostController::class);
+});     // → /api/v1/posts
+
+// Cách 2: đổi prefix mặc định trong bootstrap/app.php
+->withRouting(api: __DIR__.'/../routes/api.php', apiPrefix: 'api/v1')
+</code-block>
+<p>Nguyên tắc: khi đã public API, không phá vỡ hợp đồng cũ — đổi tên/xoá field là breaking change, phải ra v2 chứ không sửa v1.</p>
+
+<h2>10.6 Checklist trước khi deploy (chi tiết vận hành ở Part 22)</h2>
+<table>
+<tr><th>Việc</th><th>Vì sao</th></tr>
+<tr><td><c>APP_DEBUG=false</c></td><td>Quan trọng nhất. True ở production = lộ config, DB credential, stack trace</td></tr>
+<tr><td><c>APP_ENV=production</c></td><td>Bật các tối ưu &amp; tắt hành vi dev</td></tr>
+<tr><td><c>php artisan key:generate</c></td><td>Phải có APP_KEY riêng, không dùng chung với repo</td></tr>
+<tr><td><c>php artisan optimize</c> (= config/route/view/event cache)</td><td>Tăng tốc rõ rệt. Nhớ: sau khi cache thì <c>env()</c> ngoài config trả null</td></tr>
+<tr><td><c>composer install --no-dev --optimize-autoloader</c></td><td>Bỏ package dev, tối ưu autoload</td></tr>
+<tr><td>Document root trỏ vào <c>public/</c></td><td>Trỏ sai = phơi <c>.env</c> ra internet</td></tr>
+<tr><td>Bật HTTPS + rate limit</td><td>Token gửi qua HTTP là token bị lộ</td></tr>
+<tr><td>Kiểm tra <c>storage/</c> ghi được</td><td>Không ghi được log/cache = lỗi 500 bí ẩn</td></tr>
+<tr><td>Queue worker + scheduler đang chạy</td><td>Không có worker thì job "đẩy vào queue" nằm im mãi (Part 14, 17, 22)</td></tr>
+</table>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Rà lại toàn bộ endpoint: status code đúng chuẩn bảng 10.1 chưa (đặc biệt 201 và 204)</li>
+<li>Endpoint index: thêm <c>per_page</c> (có chặn trần), search, sort có whitelist</li>
+<li>Định nghĩa limiter <c>api</c> và <c>login</c>, gắn throttle, test bằng cách gọi liên tục cho tới khi nhận 429</li>
+<li>Thêm prefix version v1 cho toàn bộ route</li>
+<li>Chạy <c>php artisan optimize</c> ở local, xác nhận app vẫn chạy, rồi <c>optimize:clear</c></li>
+<li>Viết file <c>.env.example</c> đầy đủ và một mục "API endpoints" trong README (method, path, body, response mẫu)</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 11 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge">PART 11 — TUỲ CHỌN (nhưng nên làm)</div>
+<h1>Testing (Pest / PHPUnit)</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Viết test gọi thẳng vào API và kiểm tra response — cách nhanh nhất để không bao giờ phải mở Postman test tay lại lần thứ hai. Từ Part 12 trở đi, mỗi phần đều có task viết test tương ứng.</div>
+</div>
+
+<h2>11.1 Pest hay PHPUnit?</h2>
+<p>Laravel 11+ mặc định dùng Pest (cú pháp function, gọn), nhưng vẫn chạy trên PHPUnit bên dưới nên mọi assertion đều giống nhau. Chọn kiểu nào cũng được — đừng trộn 2 kiểu trong cùng dự án.</p>
+<code-block lang="bash">
+php artisan make:test PostApiTest                  # feature test (mặc định)
+php artisan make:test PostServiceTest --unit       # unit test
+php artisan test                                   # chạy toàn bộ
+php artisan test --filter=PostApiTest              # chạy 1 file
+php artisan test --parallel                        # chạy song song (nhanh hơn nhiều khi test lớn)
+</code-block>
+
+<h2>11.2 Feature test cho API</h2>
+<code-block lang="php">
+// tests/Feature/PostApiTest.php (Pest)
+use App\Models\{Post, User};
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
+
+uses(RefreshDatabase::class);      // mỗi test chạy trên DB sạch, tự rollback sau đó
+
+test('ai cũng xem được danh sách post', function () {
+    Post::factory()->count(3)->create();
+
+    $this->getJson('/api/v1/posts')
+        ->assertOk()
+        ->assertJsonCount(3, 'data')
+        ->assertJsonStructure(['data' => [['id', 'title', 'body']], 'meta', 'links']);
+});
+
+test('chưa đăng nhập thì không tạo được post', function () {
+    $this->postJson('/api/v1/posts', ['title' => 'X', 'body' => 'Y'])
+        ->assertUnauthorized();             // 401
+});
+
+test('validate báo lỗi 422 đúng field', function () {
+    Sanctum::actingAs(User::factory()->create());
+
+    $this->postJson('/api/v1/posts', ['title' => ''])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors(['title', 'body']);
+});
+
+test('tác giả tạo post thành công', function () {
+    Sanctum::actingAs($user = User::factory()->create());
+
+    $this->postJson('/api/v1/posts', ['title' => 'Hello', 'body' => 'Nội dung đủ dài'])
+        ->assertCreated()                   // 201
+        ->assertJsonPath('data.title', 'Hello');
+
+    $this->assertDatabaseHas('posts', ['title' => 'Hello', 'user_id' => $user->id]);
+});
+</code-block>
+
+<h2>11.3 Assertion hay dùng</h2>
+<table>
+<tr><th>Assertion</th><th>Kiểm tra</th></tr>
+<tr><td><c>assertOk()</c> / <c>assertStatus(n)</c></td><td>200 / status bất kỳ</td></tr>
+<tr><td><c>assertCreated()</c> / <c>assertNoContent()</c></td><td>201 / 204</td></tr>
+<tr><td><c>assertUnauthorized()</c> / <c>assertForbidden()</c> / <c>assertNotFound()</c></td><td>401 / 403 / 404</td></tr>
+<tr><td><c>assertJson([...])</c></td><td>JSON chứa đoạn này (không cần khớp hết)</td></tr>
+<tr><td><c>assertExactJson([...])</c></td><td>JSON khớp chính xác toàn bộ</td></tr>
+<tr><td><c>assertJsonStructure([...])</c></td><td>Đúng "hình dạng" key, không quan tâm giá trị</td></tr>
+<tr><td><c>assertJsonPath('data.title', 'X')</c></td><td>Giá trị tại một đường dẫn cụ thể</td></tr>
+<tr><td><c>assertJsonCount(3, 'data')</c></td><td>Số phần tử trong mảng</td></tr>
+<tr><td><c>assertJsonValidationErrors([...])</c></td><td>Có lỗi validation ở đúng các field này</td></tr>
+<tr><td><c>assertDatabaseHas / Missing / Count</c></td><td>Trạng thái thật trong database</td></tr>
+</table>
+<div class="note"><b>RefreshDatabase làm gì:</b> bọc mỗi test trong một transaction và rollback khi test kết thúc → các test độc lập, không rác dữ liệu. Cấu hình DB test riêng trong <c>phpunit.xml</c> (thường dùng SQLite in-memory: <c>DB_DATABASE=:memory:</c>) để chạy cực nhanh và không đụng vào DB dev.</div>
+<div class="audit"><b>Bổ sung — các Fake sẽ dùng ở Part sau:</b> <c>Queue::fake()</c> (Part 14), <c>Event::fake()</c> (Part 15), <c>Storage::fake()</c> (Part 18), <c>Notification::fake()</c> (Part 20), <c>Bus::fake()</c> cho chain/batch. Chúng thay implementation thật bằng bản ghi nhận, rồi bạn <c>assert...</c> xem có được gọi đúng không — đây là lý do Part 00 nhấn mạnh Facade "mock được".</div>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Cấu hình <c>phpunit.xml</c> dùng SQLite in-memory cho test</li>
+<li>Viết feature test cho đủ 5 endpoint của posts (index, show, store, update, destroy)</li>
+<li>Viết test cho 3 case lỗi: 401 (không token), 403 (không phải tác giả), 422 (validate sai)</li>
+<li>Viết 1 test chứng minh không còn N+1: dùng <c>DB::listen()</c> đếm query của endpoint index</li>
+<li>Chạy <c>php artisan test</c> — mục tiêu: toàn bộ xanh</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 12 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge new">PART 12 — MỚI</div>
+<h1>Pagination chuyên sâu &amp; xử lý dữ liệu lớn</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Biết 3 kiểu phân trang của Laravel khác nhau ở tầng SQL như thế nào, chọn đúng kiểu cho đúng bài toán, và biết cách duyệt bảng hàng triệu dòng mà không "nổ" RAM.</div>
+</div>
+
+<h2>12.1 Ba kiểu phân trang — khác nhau ở câu SQL</h2>
+<table>
+<tr><th>Method</th><th>SQL sinh ra</th><th>Có tổng số trang?</th><th>Dùng khi</th></tr>
+<tr><td><c>paginate(15)</c></td><td><c>SELECT COUNT(*)</c> + <c>SELECT ... LIMIT 15 OFFSET 30</c> (2 query)</td><td>Có (<c>total</c>, <c>last_page</c>)</td><td>UI có số trang 1, 2, 3... — mặc định cho API admin</td></tr>
+<tr><td><c>simplePaginate(15)</c></td><td>Chỉ <c>SELECT ... LIMIT 16 OFFSET 30</c> (1 query, lấy dư 1 dòng để biết còn trang sau không)</td><td>Không</td><td>Chỉ cần nút Prev/Next, bảng lớn mà <c>COUNT(*)</c> chậm</td></tr>
+<tr><td><c>cursorPaginate(15)</c></td><td><c>SELECT ... WHERE id > 15 ORDER BY id LIMIT 15</c> (không OFFSET)</td><td>Không</td><td>Infinite scroll, feed thời gian thực, bảng cực lớn</td></tr>
+</table>
+<code-block lang="php">
+// Offset pagination — trang 2
+select * from posts order by id asc limit 15 offset 15;
+
+// Cursor pagination — "trang 2" = mọi thứ sau bản ghi cuối của trang 1
+select * from posts where id > 15 order by id asc limit 15;
+</code-block>
+<div class="note"><b>Vì sao cursor nhanh hơn với bảng lớn:</b> <c>OFFSET 100000</c> bắt database đọc và bỏ qua 100.000 dòng đầu rồi mới lấy 15 dòng bạn cần — càng về sau càng chậm. Cursor dùng <c>WHERE id > x</c> nên nhảy thẳng bằng index. Ngoài ra khi dữ liệu thay đổi liên tục (feed mạng xã hội), offset có thể trả trùng/thiếu bản ghi giữa 2 lần gọi; cursor thì không.</div>
+<div class="audit"><b>Ràng buộc của cursorPaginate (theo docs):</b> query bắt buộc có <c>orderBy</c>; cột sort phải thuộc bảng đang phân trang và phải unique (hoặc tổ hợp cột unique), không được chứa null; không hỗ trợ trang số (chỉ prev/next). URL sinh ra dạng <c>?cursor=eyJpZCI6MTUs...</c> — client chỉ việc gửi lại nguyên chuỗi đó.</div>
+
+<h2>12.2 Cấu trúc JSON trả về — 2 dạng khác nhau, đừng nhầm</h2>
+<code-block lang="php">
+return Post::paginate(15);                          // trả paginator THẲNG → JSON phẳng (dạng A)
+return PostResource::collection(Post::paginate(15));  // qua Resource → data/links/meta (dạng B, Part 06)
+</code-block>
+<code-block lang="json">
+// Dạng A — paginator thẳng: mọi thứ ở cấp 1
+{ "total": 50, "per_page": 15, "current_page": 1, "last_page": 4,
+  "first_page_url": "...?page=1", "next_page_url": "...?page=2", "prev_page_url": null,
+  "path": "http://.../api/posts", "from": 1, "to": 15,
+  "data": [ {...}, {...} ] }
+
+// Dạng B — qua Resource collection: gom vào links/meta
+{ "data": [...],
+  "links": { "first": "...", "last": "...", "prev": null, "next": "..." },
+  "meta":  { "current_page": 1, "from": 1, "last_page": 4, "per_page": 15, "to": 15, "total": 50 } }
+</code-block>
+<p>Với API, luôn dùng dạng B (qua Resource) để field bên trong <c>data</c> được kiểm soát (Part 06). Nhớ <c>->withQueryString()</c> để link <c>next</c> giữ lại <c>?search=...&sort=...</c> của request hiện tại; hoặc <c>->appends(['sort' => 'votes'])</c> để thêm tay.</p>
+
+<h2>12.3 Chặn trần per_page &amp; page hợp lệ</h2>
+<code-block lang="php">
+// Form Request cho query string — cùng cơ chế với body
+class IndexPostRequest extends FormRequest
+{
+    public function rules(): array
+    {
+        return [
+            'page'     => ['sometimes', 'integer', 'min:1'],
+            'per_page' => ['sometimes', 'integer', 'min:1', 'max:100'],
+            'sort'     => ['sometimes',
+                Rule::in(['created_at', '-created_at', 'title', '-title'])],
+            'search'   => ['sometimes', 'string', 'max:100'],
+        ];
+    }
+}
+
+public function index(IndexPostRequest $request)
+{
+    return Post::query()
+        ->latest()
+        ->paginate($request->integer('per_page', 15))
+        ->withQueryString()
+        ->toResourceCollection();
+}
+</code-block>
+<div class="note"><b>Đối chiếu NestJS:</b> bên Nest bạn phải thêm <c>@Type(() => Number)</c> vì query string luôn là chuỗi. Bên Laravel rule <c>integer</c> chấp nhận chuỗi số, và <c>$request->integer('per_page', 15)</c> tự ép kiểu + có default — đỡ một tầng boilerplate.</div>
+
+<h2>12.4 Duyệt dữ liệu lớn KHÔNG phân trang — chunk / lazy / cursor</h2>
+<p>Pagination là cho client. Khi chính bạn cần đi qua 1 triệu dòng (export CSV, gửi mail hàng loạt, migrate dữ liệu), <c>Post::all()</c> sẽ nạp cả triệu model vào RAM và chết. Laravel có 3 công cụ:</p>
+<code-block lang="php">
+// 1) chunkById — lấy từng lô 500, callback xử lý, giải phóng RAM sau mỗi lô
+Post::where('published_at', null)->chunkById(500, function ($posts) {
+    foreach ($posts as $post) { /* ... */ }
+});
+// dùng chunkById (theo id) thay vì chunk() khi bạn UPDATE chính bảng đang duyệt — chunk() theo OFFSET sẽ bỏ sót dòng
+
+// 2) lazyById — trả LazyCollection, viết như foreach thường nhưng bên dưới vẫn chunk
+foreach (Post::lazyById(500) as $post) { /* ... */ }
+
+// 3) cursor — 1 query duy nhất, stream từng dòng; RAM thấp nhất nhưng KHÔNG eager load được
+foreach (Post::cursor() as $post) { /* ... */ }
+</code-block>
+<table>
+<tr><th></th><th><c>chunkById</c></th><th><c>lazyById</c></th><th><c>cursor</c></th></tr>
+<tr><td>Số query</td><td>N/500 query</td><td>N/500 query</td><td>1 query</td></tr>
+<tr><td>RAM</td><td>500 model mỗi lúc</td><td>500 model mỗi lúc</td><td>1 model mỗi lúc</td></tr>
+<tr><td>Eager load <c>with()</c></td><td>✅</td><td>✅</td><td>❌ (mỗi dòng 1 query → N+1)</td></tr>
+<tr><td>Phù hợp</td><td>Xử lý theo lô, có thể sửa dữ liệu</td><td>Code đọc như vòng lặp thường</td><td>Chỉ đọc, không cần quan hệ</td></tr>
+</table>
+<div class="note">Việc export/xử lý lớn thế này <b>không bao giờ</b> nên chạy trong request HTTP (timeout, chiếm worker PHP-FPM). Đẩy nó vào Job (Part 14) — đó là lý do Part 12 nằm ngay trước Part 14.</div>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Seed 5.000 post (<c>Post::factory()->count(5000)->create()</c> trong tinker — dùng <c>chunk</c> nếu chậm)</li>
+<li>Endpoint index: nhận <c>page</c>, <c>per_page</c> (max 100), <c>sort</c> có whitelist qua Form Request như mục 12.3</li>
+<li>Thêm endpoint <c>GET /api/posts/feed</c> dùng <c>cursorPaginate(20)</c> theo <c>id</c>, test gọi liên tiếp bằng chuỗi <c>cursor</c> trả về</li>
+<li>Dùng <c>DB::listen()</c> so sánh SQL sinh ra của <c>paginate</c> vs <c>cursorPaginate</c> ở trang 200</li>
+<li>Viết Artisan command <c>posts:export</c> ghi 5.000 post ra CSV bằng <c>lazyById</c>; đo RAM bằng <c>memory_get_peak_usage()</c> so với <c>Post::all()</c></li>
+<li>Test: <c>?per_page=1000</c> phải nhận 422; <c>?sort=password</c> phải nhận 422</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 13 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge new">PART 13 — MỚI</div>
+<h1>Database Transactions</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Đảm bảo nhiều thao tác ghi "thành công cùng nhau hoặc thất bại cùng nhau" (atomicity), hiểu bẫy deadlock, và — quan trọng nhất trong Laravel — hiểu vì sao job/event bắn ra <b>bên trong</b> transaction có thể chạy trước khi dữ liệu được commit.</div>
+</div>
+
+<h2>13.1 Vấn đề transaction giải quyết</h2>
+<p>Tạo 1 <c>Post</c>, đồng thời tạo <c>Comment</c> chào mừng đầu tiên và cộng <c>posts_count</c> cho user. Nếu bước 2 hoặc 3 lỗi, bạn còn lại dữ liệu nửa vời. Transaction đảm bảo: hoặc cả 3 cùng được ghi (COMMIT), hoặc cả 3 cùng bị hoàn tác (ROLLBACK) như chưa từng xảy ra.</p>
+
+<h2>13.2 Cách chuẩn — <c>DB::transaction()</c></h2>
+<code-block lang="php">
+use Illuminate\Support\Facades\DB;
+
+public function publish(User $author, array $data): Post
+{
+    return DB::transaction(function () use ($author, $data) {
+        $post = $author->posts()->create($data);
+        $post->comments()->create(['body' => 'Chào mừng bài viết đầu tiên!']);
+        $author->increment('posts_count');
+
+        return $post;      // giá trị return của closure = giá trị return của DB::transaction()
+    });
+}
+</code-block>
+<p>Cơ chế: <c>BEGIN</c> → chạy closure → không lỗi thì <c>COMMIT</c>; closure <c>throw</c> bất kỳ exception nào thì <c>ROLLBACK</c> rồi <b>ném lại exception đó</b> cho bạn (không nuốt). Không cần try/catch. Mọi query Eloquent/Query Builder bên trong closure đều nằm trong cùng transaction (Laravel dùng chung 1 connection).</p>
+<div class="audit"><b>Đối chiếu NestJS:</b> bên TypeORM bạn phải gọi mọi thứ qua <c>manager</c> được truyền vào callback, dùng nhầm repository thường là "thoát" khỏi transaction. Laravel không có vấn đề đó — vì transaction gắn với connection, và mọi model đều đi qua connection đó trong cùng request. Đơn giản hơn hẳn.</div>
+
+<h2>13.3 Deadlock &amp; retry</h2>
+<code-block lang="php">
+DB::transaction(function () {
+    // ...
+}, attempts: 5);      // gặp deadlock → tự chạy lại tối đa 5 lần trước khi ném lỗi
+</code-block>
+<p>Deadlock xảy ra khi 2 transaction chờ khoá của nhau (A giữ dòng 1 chờ dòng 2, B giữ dòng 2 chờ dòng 1). Database sẽ tự giết 1 trong 2. Tham số <c>attempts</c> cho Laravel tự chạy lại transaction bị giết — với điều kiện closure của bạn <b>idempotent</b> (chạy lại không gây tác dụng phụ kép: không gửi mail, không dispatch job bên trong closure).</p>
+
+<h2>13.4 Thủ công — khi cần kiểm soát từng bước</h2>
+<code-block lang="php">
+DB::beginTransaction();
+try {
+    // ...
+    DB::commit();
+} catch (\Throwable $e) {
+    DB::rollBack();
+    throw $e;
+}
+</code-block>
+<p>Chỉ dùng khi thực sự cần (ví dụ commit từng phần trong vòng lặp lớn). 95% trường hợp <c>DB::transaction()</c> đủ và an toàn hơn — quên <c>rollBack()</c> trong catch là để lại transaction treo, khoá bảng cho tới khi request kết thúc.</p>
+
+<h2>13.5 Bẫy lớn nhất: job/event bắn ra TRONG transaction</h2>
+<div class="diagram">DB::transaction(function () {
+    $post = Post::create([...]);          // ① INSERT — nhưng CHƯA commit
+    ProcessPost::dispatch($post);         // ② job vào queue NGAY LẬP TỨC
+});                                       // ③ COMMIT ở đây
+
+Queue worker (process khác) nhận job ở giữa ② và ③:
+    → SELECT * FROM posts WHERE id = 42   → KHÔNG THẤY (chưa commit) → ModelNotFoundException
+    → hoặc tệ hơn: transaction rollback, job vẫn chạy với dữ liệu không tồn tại</div>
+<p>Cách xử lý (theo docs Queues 13.x):</p>
+<code-block lang="php">
+// Cách 1 — từng job: chỉ đẩy vào queue sau khi transaction ngoài cùng commit
+ProcessPost::dispatch($post)->afterCommit();
+
+// Cách 2 — toàn cục: config/queue.php, connection đang dùng
+'after_commit' => true,
+
+// Event cũng vậy: implement ShouldDispatchAfterCommit trên class Event (Part 15)
+// Listener queued: implement ShouldQueueAfterCommit
+</code-block>
+<p>Nếu transaction rollback, job/event có <c>afterCommit</c> sẽ bị <b>bỏ luôn</b> — đúng như mong muốn. Nếu không có transaction nào đang mở, chúng được dispatch ngay như thường.</p>
+
+<h2>13.6 Implicit commit — lệnh làm transaction "tự commit" mà bạn không biết</h2>
+<p>Trong MySQL, các lệnh DDL (<c>CREATE TABLE</c>, <c>ALTER TABLE</c>, <c>TRUNCATE</c>...) gây implicit commit: chạy chúng qua <c>DB::statement()</c> bên trong transaction sẽ commit toàn bộ transaction ngầm, Laravel không hay biết. Đừng chạy migration/schema trong transaction nghiệp vụ.</p>
+
+<h2>13.7 Quan sát query — công cụ debug hiệu năng</h2>
+<code-block lang="php">
+// AppServiceProvider::boot()
+DB::listen(function (QueryExecuted $query) {
+    Log::debug($query->toRawSql(), ['ms' => $query->time]);   // toRawSql: SQL đã gắn binding
+});
+
+// Cảnh báo khi 1 request tốn > 500ms cho database
+DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {
+    Log::warning('Slow request: total DB time > 500ms');
+});
+</code-block>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Viết <c>PostService::publish()</c> tạo Post + Comment đầu tiên + tăng <c>posts_count</c> trong 1 <c>DB::transaction()</c></li>
+<li>Test rollback: tạm <c>throw new \RuntimeException('test')</c> sau bước tạo Comment → gọi API → xác nhận cả Post lẫn Comment đều KHÔNG có trong DB (<c>assertDatabaseMissing</c>)</li>
+<li>Viết test Pest chứng minh <c>DB::transaction()</c> ném lại đúng exception gốc (<c>expect(fn () => ...)->toThrow(RuntimeException::class)</c>)</li>
+<li>Thêm <c>DB::listen()</c> log ra <c>storage/logs</c>, gọi endpoint index và đếm số query — dùng lại cho task N+1 ở Part 08</li>
+<li>Đọc trước mục 13.5, giữ lại trong đầu — Part 14 sẽ tái hiện đúng bug này bằng job thật</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 14 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge new">PART 14 — MỚI (chuyên sâu)</div>
+<h1>Queue &amp; Jobs</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Đưa mọi việc chậm (gửi mail, xử lý ảnh, gọi API bên thứ 3, export) ra khỏi request HTTP; hiểu trọn vòng đời một job từ <c>dispatch()</c> tới worker, retry, fail; và vận hành worker đúng cách. Đây là phần phân biệt rõ nhất "biết Laravel" và "làm Laravel thật".</div>
+</div>
+
+<h2>14.1 Mô hình: queue là gì trong bức tranh PHP</h2>
+<div class="diagram">Request HTTP (PHP-FPM, chết sau vài chục ms)          Worker (php artisan queue:work — process sống mãi)
+┌───────────────────────────────┐                  ┌──────────────────────────────────┐
+│ Controller nhận POST /posts   │                  │ vòng lặp vô tận:                 │
+│ Post::create(...)             │   ghi 1 dòng     │   pop job từ queue               │
+│ ProcessPost::dispatch($post) ─┼──────────────►   │   unserialize → new ProcessPost  │
+│ return 202 Accepted (ngay)    │   vào jobs table │   gọi handle()                   │
+└───────────────────────────────┘   / Redis list    │   OK → xoá job │ lỗi → retry/fail│
+                                                    └──────────────────────────────────┘</div>
+<p>Vì PHP-FPM không có event loop, "chạy nền" đồng nghĩa với <b>ghi mô tả công việc vào một kho (queue)</b> để một process PHP khác (worker) lấy ra chạy. Đây là câu trả lời của Laravel cho <c>async</c> của Node — và nó có lợi thế: worker crash không kéo theo web, scale worker độc lập với web.</p>
+
+<h2>14.2 Cấu hình driver</h2>
+<table>
+<tr><th><c>QUEUE_CONNECTION</c></th><th>Kho chứa job</th><th>Dùng khi</th></tr>
+<tr><td><c>sync</c></td><td>Không có kho — chạy ngay trong request</td><td>Chỉ để dev nhanh/test; KHÔNG phải queue thật</td></tr>
+<tr><td><c>database</c></td><td>Bảng <c>jobs</c> trong DB của bạn</td><td>Mặc định của project mới, đủ tốt cho app vừa</td></tr>
+<tr><td><c>redis</c></td><td>Redis list</td><td>Production tải cao, dùng kèm Horizon (Part 22)</td></tr>
+<tr><td><c>sqs</c> / <c>beanstalkd</c></td><td>Dịch vụ ngoài</td><td>Hạ tầng AWS / có sẵn beanstalkd</td></tr>
+<tr><td><c>failover</c></td><td>Tự chuyển sang connection dự phòng khi connection chính lỗi</td><td>High availability</td></tr>
+</table>
+<code-block lang="bash">
+# Driver database cần bảng jobs (project mới thường đã có migration này sẵn)
+php artisan make:queue-table
+php artisan migrate
+</code-block>
+<div class="note"><b>Bẫy số 1 của người mới:</b> để <c>QUEUE_CONNECTION=sync</c> rồi tưởng job "chạy nền" — thực ra nó chạy ngay trong request, request vẫn chậm y nguyên. Và ngược lại: đổi sang <c>database</c> mà quên bật worker → job nằm im trong bảng <c>jobs</c> mãi mãi, mail không bao giờ gửi.</div>
+
+<h2>14.3 Viết job</h2>
+<code-block lang="bash">
+php artisan make:job ProcessPost
+</code-block>
+<code-block lang="php">
+namespace App\Jobs;
+
+use App\Models\Post;
+use App\Services\ImageOptimizer;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\Attributes\Tries;
+use Illuminate\Queue\Attributes\Timeout;
+use Illuminate\Queue\Attributes\Backoff;
+
+#[Tries(3)]                 // tối đa 3 lần thử
+#[Timeout(120)]             // 1 lần chạy tối đa 120s
+#[Backoff([10, 60, 300])]   // chờ 10s, rồi 60s, rồi 300s giữa các lần retry
+class ProcessPost implements ShouldQueue
+{
+    use Queueable;
+
+    public function __construct(
+        public Post $post,      // Eloquent model: chỉ serialize ID, worker tự load lại từ DB
+    ) {}
+
+    // Container inject dependency vào handle() y như controller
+    public function handle(ImageOptimizer $optimizer): void
+    {
+        $optimizer->optimize($this->post->cover_path);
+        $this->post->update(['processed_at' => now()]);
+    }
+
+    // Gọi khi job THẤT BẠI HẲN (hết số lần thử)
+    public function failed(\Throwable $e): void
+    {
+        $this->post->update(['processing_error' => $e->getMessage()]);
+    }
+}
+</code-block>
+<ul>
+<li><c>ShouldQueue</c> — interface đánh dấu "đẩy vào queue" (không có nó, <c>dispatch()</c> sẽ chạy đồng bộ).</li>
+<li><c>Queueable</c> — trait mang các method <c>onQueue()</c>, <c>delay()</c>, <c>afterCommit()</c>... và lo việc serialize.</li>
+<li><b>SerializesModels:</b> model trong constructor chỉ được lưu <b>ID + class</b> vào payload; khi worker chạy, nó query lại DB. Hệ quả: dữ liệu luôn mới nhất, nhưng nếu bản ghi đã bị xoá thì job fail với <c>ModelNotFoundException</c>. Quan hệ đã <c>load()</c> cũng được serialize kèm — dùng <c>#[WithoutRelations]</c> để payload nhẹ.</li>
+</ul>
+<div class="audit"><b>Đã đối chiếu docs Queues 13.x:</b> các attribute <c>#[Tries]</c>, <c>#[Timeout]</c>, <c>#[Backoff]</c>, <c>#[MaxExceptions]</c>, <c>#[FailOnTimeout]</c>, <c>#[WithoutRelations]</c> đều chính thức (namespace <c>Illuminate\Queue\Attributes\*</c>). Cách cũ <c>public int $tries = 3;</c> / <c>public function backoff(): array</c> / <c>retryUntil(): DateTime</c> vẫn hoạt động. <b>Quy tắc quan trọng:</b> <c>timeout</c> của job phải <b>nhỏ hơn</b> <c>retry_after</c> trong <c>config/queue.php</c> (mặc định 90s) — nếu không, job đang chạy dở có thể bị worker khác nhặt lên chạy trùng.</div>
+
+<h2>14.4 Dispatch — mọi biến thể</h2>
+<code-block lang="php">
+// Đẩy vào queue mặc định
+ProcessPost::dispatch($post);
+
+// Queue riêng (để worker ưu tiên) / connection riêng
+ProcessPost::dispatch($post)->onQueue('media');
+ProcessPost::dispatch($post)->onConnection('redis');
+
+// Chạy sau 10 phút
+ProcessPost::dispatch($post)->delay(now()->addMinutes(10));
+
+// Chờ transaction ngoài cùng commit rồi mới vào queue (Part 13.5)
+ProcessPost::dispatch($post)->afterCommit();
+
+// Có điều kiện
+ProcessPost::dispatchIf($post->hasCover(), $post);
+
+// Ép chạy ngay trong request, bỏ qua queue (debug / test)
+ProcessPost::dispatchSync($post);
+
+// Chạy sau khi đã trả response, trong CÙNG process — chỉ cho việc dưới vài giây
+ProcessPost::dispatchAfterResponse($post);
+
+// Laravel 13 — định tuyến tập trung trong AppServiceProvider::boot():
+Queue::route(ProcessPost::class, connection: 'redis', queue: 'media');
+Queue::route([
+    ProcessPost::class  => ['redis', 'media'],
+    SendDigest::class   => 'emails',
+]);
+</code-block>
+<div class="note"><b>Controller nên trả 202:</b> khi bạn <c>dispatch</c> rồi return, việc chưa xong. Trả <c>202 Accepted</c> + id để client hỏi lại trạng thái, đừng trả 200 như thể đã hoàn tất.</div>
+
+<h2>14.5 Vòng đời một job — retry, fail, timeout</h2>
+<div class="diagram">dispatch() ──► [pending trong queue] ──► worker pop ──► handle()
+                                                        │
+                            ┌───────────────────────────┼───────────────────────────┐
+                            ▼                           ▼                           ▼
+                        thành công                  throw exception             chạy quá timeout
+                        → xoá job                   → attempts++                → worker kill process
+                                                    → attempts &lt; tries?         → FailOnTimeout? fail : retry
+                                                       có: release lại queue
+                                                           (chờ backoff giây)
+                                                       không: → failed_jobs table
+                                                               → gọi failed($e)</div>
+<table>
+<tr><th>Lệnh</th><th>Tác dụng</th></tr>
+<tr><td><c>php artisan queue:failed</c></td><td>Liệt kê job đã fail (id, class, lý do, thời điểm)</td></tr>
+<tr><td><c>php artisan queue:retry <id></c> / <c>--all</c></td><td>Đẩy job fail trở lại queue để thử lại</td></tr>
+<tr><td><c>php artisan queue:forget <id></c> / <c>queue:flush</c></td><td>Xoá 1 / xoá hết job fail</td></tr>
+<tr><td><c>php artisan queue:prune-failed --hours=48</c></td><td>Dọn job fail cũ (đặt vào Schedule — Part 17)</td></tr>
+</table>
+<div class="note"><b>Retry chỉ có ích khi lỗi là tạm thời</b> (mạng, API ngoài quá tải). Lỗi logic (dữ liệu sai) retry 3 lần vẫn sai — với loại đó hãy <c>$this->fail($e)</c> ngay trong <c>handle()</c> để khỏi phí tài nguyên, hoặc dùng <c>#[MaxExceptions(1)]</c>.</div>
+
+<h2>14.6 Chạy worker đúng cách</h2>
+<code-block lang="bash">
+php artisan queue:work                                   # worker cơ bản
+php artisan queue:work --queue=media,default --tries=3   # ưu tiên queue 'media' trước 'default'
+php artisan queue:work --max-jobs=1000 --max-time=3600   # tự thoát sau 1000 job / 1 giờ (chống rò rỉ RAM)
+php artisan queue:listen                                 # nạp lại code mỗi job — CHẬM, chỉ để dev
+php artisan queue:restart                                # báo mọi worker thoát êm sau job hiện tại
+</code-block>
+<div class="audit"><b>Điểm sống còn khi deploy (theo docs):</b> <c>queue:work</c> nạp code app <b>một lần</b> rồi chạy mãi trong RAM — sửa code xong mà không <c>queue:restart</c> thì worker vẫn chạy code CŨ. Mọi script deploy phải có dòng <c>php artisan queue:restart</c>. Lệnh này chỉ "ra hiệu", nên cần Supervisor (Part 22) để tự khởi động worker mới.</div>
+<p>Ở local, mở terminal thứ 2 chạy <c>php artisan queue:work</c> song song với <c>php artisan serve</c>. Hoặc <c>php artisan queue:listen</c> nếu đang sửa code job liên tục (nó tự nạp lại code, đổi lại chậm hơn).</p>
+
+<h2>14.7 Job middleware — kiểm soát cách job chạy</h2>
+<code-block lang="php">
+use Illuminate\Queue\Middleware\{WithoutOverlapping, RateLimited};
+use Illuminate\Queue\Middleware\{ThrottlesExceptions, Skip};
+
+public function middleware(): array
+{
+    return [
+        // Không cho 2 job của cùng 1 post chạy song song; job đến sau được release, thử lại sau 60s
+        (new WithoutOverlapping($this->post->id))->releaseAfter(60),
+
+        // Giới hạn tốc độ (ví dụ API bên thứ 3 cho 100 req/phút) — limiter khai trong RateLimiter::for('external-api', ...)
+        new RateLimited('external-api'),
+
+        // Nếu 10 exception trong 5 phút → tạm dừng job loại này 5 phút (circuit breaker)
+        new ThrottlesExceptions(10, 5 * 60),
+
+        // Bỏ qua job khi điều kiện đúng (ví dụ post đã bị xoá)
+        Skip::when(fn () => $this->post->trashed()),
+    ];
+}
+</code-block>
+<div class="note"><b>Khi nào dùng cái nào:</b> <c>WithoutOverlapping</c> cho tài nguyên chỉ được 1 người sửa (ví dụ số dư, file); <c>RateLimited</c> khi gọi API ngoài có quota; <c>ThrottlesExceptions</c> khi dịch vụ ngoài đang sập — thay vì 1.000 job cùng fail và retry dồn dập, tạm "ngắt cầu dao".</div>
+
+<h2>14.8 Unique, debounce, encrypted</h2>
+<code-block lang="php">
+use Illuminate\Contracts\Queue\{ShouldBeUnique, ShouldBeEncrypted};
+use Illuminate\Queue\Attributes\{UniqueFor, DebounceFor};
+
+// Chỉ 1 job "reindex post #42" tồn tại trong queue tại một thời điểm (khoá 1 giờ)
+#[UniqueFor(3600)]
+class ReindexPost implements ShouldQueue, ShouldBeUnique
+{
+    public function uniqueId(): string { return (string) $this->post->id; }
+}
+
+// Debounce (Laravel 13): gom nhiều lần dispatch trong 30s thành 1 lần chạy; tối đa chờ 120s
+#[DebounceFor(30, maxWait: 120)]
+class UpdateSearchIndex implements ShouldQueue
+{
+    public function debounceId(): string { return (string) $this->postId; }
+}
+
+// Payload chứa dữ liệu nhạy cảm → mã hoá trong queue
+class SendInvoice implements ShouldQueue, ShouldBeEncrypted { }
+</code-block>
+
+<h2>14.9 Chain &amp; Batch — nhiều job phối hợp</h2>
+<code-block lang="php">
+use Illuminate\Support\Facades\Bus;
+
+// Chain: chạy TUẦN TỰ, job trước fail thì dừng cả chuỗi
+Bus::chain([
+    new OptimizeCover($post),
+    new GenerateThumbnails($post),
+    new PublishPost($post),
+])->catch(function (\Throwable $e) {
+    // 1 job trong chuỗi fail
+})->dispatch();
+
+// Batch: chạy SONG SONG nhiều job, theo dõi tiến độ tổng
+// (cần bảng: php artisan make:queue-batches-table && php artisan migrate; job dùng trait Batchable)
+$batch = Bus::batch([
+    new ImportCsvChunk(1),
+    new ImportCsvChunk(2),
+    new ImportCsvChunk(3),
+])->then(fn (Batch $b) => Log::info('all done'))
+  ->catch(fn (Batch $b, \Throwable $e) => Log::error('first failure'))
+  ->finally(fn (Batch $b) => Log::info('finished'))
+  ->name('import-posts')
+  ->dispatch();
+
+return ['batch_id' => $batch->id];   // client gọi lại: Bus::findBatch($id)->progress()  (0-100)
+</code-block>
+<p>Kết hợp với Part 12: export 1 triệu dòng = chia thành 200 job <c>ExportChunk</c> (mỗi job 5.000 dòng, dùng <c>lazyById</c>), gom vào 1 batch, <c>then()</c> ghép file và gửi notification (Part 20). Đây là kiến trúc chuẩn cho mọi việc nặng.</p>
+
+<h2>14.10 Test job — không cần chạy worker</h2>
+<code-block lang="php">
+test('publish post đẩy job xử lý vào queue media', function () {
+    Queue::fake();                                   // chặn queue thật, chỉ ghi nhận
+
+    Sanctum::actingAs(User::factory()->create());
+    $this->postJson('/api/v1/posts', [...])->assertAccepted();   // 202
+
+    Queue::assertPushedOn('media', ProcessPost::class);
+    Queue::assertPushed(ProcessPost::class, fn ($job) => $job->post->title === 'Hello');
+});
+
+test('job xử lý post đúng logic', function () {
+    $post = Post::factory()->create();
+
+    (new ProcessPost($post))->handle(app(ImageOptimizer::class));   // gọi thẳng, không qua queue
+
+    expect($post->fresh()->processed_at)->not->toBeNull();
+});
+</code-block>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Đặt <c>QUEUE_CONNECTION=database</c>, chạy <c>make:queue-table</c> + migrate, mở bảng <c>jobs</c> trong DevDb/DB viewer</li>
+<li>Viết job <c>ProcessPost</c> (giả lập việc chậm bằng <c>sleep(3)</c>), dispatch từ <c>store()</c>, trả 202. Gọi API và xác nhận response về ngay lập tức, bảng <c>jobs</c> có 1 dòng</li>
+<li>Chạy <c>php artisan queue:work</c> ở terminal 2 → quan sát job được xử lý, dòng trong bảng biến mất</li>
+<li>Tái hiện bug Part 13.5: bọc <c>store()</c> trong <c>DB::transaction()</c> có <c>sleep(5)</c> sau khi dispatch, worker chạy song song → job fail vì chưa thấy post. Sửa bằng <c>->afterCommit()</c></li>
+<li>Cho job throw exception, đặt <c>#[Tries(3)]</c> + <c>#[Backoff([2, 5, 10])]</c>, quan sát <c>queue:failed</c> sau 3 lần; <c>queue:retry</c> lại</li>
+<li>Thêm <c>WithoutOverlapping</c> theo <c>post_id</c>, dispatch 3 job cùng post → chứng minh chúng chạy lần lượt</li>
+<li>Viết batch export 5.000 post ra CSV chia 10 job, endpoint <c>GET /api/exports/{batchId}</c> trả <c>progress</c></li>
+<li>Viết 2 test như mục 14.10; đảm bảo <c>php artisan test</c> không cần worker vẫn xanh</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 15 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge new">PART 15 — MỚI</div>
+<h1>Events, Listeners &amp; Observers</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Tách "chuyện gì vừa xảy ra" khỏi "ai cần phản ứng" — để thêm hành vi mới (gửi mail, ghi log, cập nhật thống kê) mà không sửa lại service gốc. Và hiểu event kết hợp với queue/transaction thế nào.</div>
+</div>
+
+<h2>15.1 Vì sao cần event</h2>
+<p>Không có event, <c>PostService::publish()</c> sẽ phình ra: tạo post → gửi mail cho follower → cập nhật search index → bắn webhook → ghi audit log... Mỗi tính năng mới lại phải sửa hàm này. Với event, service chỉ nói "PostPublished" rồi xong; mỗi listener tự lo phần mình, thêm/bớt listener không đụng service.</p>
+
+<h2>15.2 Tạo event &amp; listener</h2>
+<code-block lang="bash">
+php artisan make:event PostPublished
+php artisan make:listener SendPostPublishedNotification --event=PostPublished
+</code-block>
+<code-block lang="php">
+// app/Events/PostPublished.php — chỉ là "túi dữ liệu"
+class PostPublished
+{
+    use Dispatchable, SerializesModels;
+
+    public function __construct(public Post $post) {}
+}
+
+// app/Listeners/SendPostPublishedNotification.php
+class SendPostPublishedNotification implements ShouldQueue    // queued → chạy ở worker (Part 14)
+{
+    public function handle(PostPublished $event): void
+    {
+        $event->post->author->notify(new PostPublishedNotification($event->post));   // Part 20
+    }
+}
+
+// Bắn event — trong service
+PostPublished::dispatch($post);          // hoặc event(new PostPublished($post));
+</code-block>
+<div class="audit"><b>Đã đối chiếu docs Events 13.x — Event Discovery:</b> Laravel <b>tự quét</b> thư mục <c>app/Listeners</c>, thấy method <c>handle()</c> hoặc <c>__invoke()</c> có type-hint event nào thì tự đăng ký cho event đó — <b>không cần</b> khai báo trong <c>EventServiceProvider</c> như Laravel ≤10 (file đó không còn tồn tại). Muốn quét thêm thư mục khác: <c>->withEvents(discover: [__DIR__.'/../app/Domain/*/Listeners'])</c> trong <c>bootstrap/app.php</c>. Kiểm tra bằng <c>php artisan event:list</c>. Production nên chạy <c>php artisan event:cache</c> (có trong <c>optimize</c>).</div>
+
+<h2>15.3 Listener chạy nền — cấu hình queue ngay trên listener</h2>
+<code-block lang="php">
+use Illuminate\Queue\Attributes\{Connection, Queue, Delay};
+
+#[Queue('notifications')]
+#[Delay(60)]
+class SendPostPublishedNotification implements ShouldQueue
+{
+    // Quyết định lúc runtime có nên queue không
+    public function shouldQueue(PostPublished $event): bool
+    {
+        return $event->post->author->wants_notifications;
+    }
+
+    public function failed(PostPublished $event, \Throwable $e): void { /* ... */ }
+}
+</code-block>
+<p>Listener queued về bản chất là một job (Part 14): có retry, backoff, middleware, <c>failed()</c>, <c>ShouldBeUnique</c>, <c>ShouldBeEncrypted</c>, và cả debounce (<c>#[DebounceFor]</c>) y hệt.</p>
+
+<h2>15.4 Event &amp; transaction — bài học từ Part 13.5</h2>
+<code-block lang="php">
+use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
+
+// Event chỉ được dispatch SAU khi transaction đang mở commit; rollback thì bỏ event
+class PostPublished implements ShouldDispatchAfterCommit { /* ... */ }
+
+// Hoặc ở phía listener queued:
+use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
+class SendPostPublishedNotification implements ShouldQueueAfterCommit { /* ... */ }
+
+// Gom nhiều event trong 1 khối, chỉ bắn khi khối chạy xong không lỗi (Laravel 13)
+Event::defer(function () use ($data) {
+    $post = Post::create($data);
+    $post->comments()->create([...]);
+});   // model event "created" của cả post lẫn comment chỉ bắn ở đây
+</code-block>
+
+<h2>15.5 Model events &amp; Observer — event có sẵn của Eloquent</h2>
+<p>Eloquent tự bắn event ở mỗi bước vòng đời: <c>creating/created</c>, <c>updating/updated</c>, <c>saving/saved</c>, <c>deleting/deleted</c>, <c>restoring/restored</c>. Gom listener cho một model vào 1 class Observer:</p>
+<code-block lang="bash">
+php artisan make:observer PostObserver --model=Post
+</code-block>
+<code-block lang="php">
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+
+#[ObservedBy([PostObserver::class])]        // Laravel 13: đăng ký ngay trên model
+class Post extends Model { }
+
+class PostObserver
+{
+    public function creating(Post $post): void
+    {
+        $post->slug ??= Str::slug($post->title);   // tự sinh slug trước khi INSERT
+    }
+
+    public function deleted(Post $post): void
+    {
+        Cache::forget("post:{$post->id}");         // Part 16
+    }
+}
+</code-block>
+<div class="note"><b>Cẩn thận:</b> model event KHÔNG bắn khi bạn dùng query hàng loạt (<c>Post::where(...)->update([...])</c>, <c>->delete()</c> trên builder) — chỉ bắn khi thao tác trên instance model. Nếu logic trong Observer là bắt buộc (ví dụ audit), đừng dùng mass update.</div>
+
+<h2>15.6 Test</h2>
+<code-block lang="php">
+test('publish bắn event PostPublished', function () {
+    Event::fake([PostPublished::class]);       // chỉ fake event này, event khác (model events) vẫn chạy
+
+    app(PostService::class)->publish($author, $data);
+
+    Event::assertDispatched(PostPublished::class, fn ($e) => $e->post->title === 'Hello');
+});
+
+test('listener gửi notification', function () {
+    Notification::fake();
+
+    (new SendPostPublishedNotification)->handle(new PostPublished($post));
+
+    Notification::assertSentTo($post->author, PostPublishedNotification::class);
+});
+</code-block>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo event <c>PostPublished</c> + 2 listener: <c>SendPostPublishedNotification</c> (queued) và <c>UpdateAuthorStats</c> (đồng bộ). Chạy <c>event:list</c> xác nhận discovery đã nhận</li>
+<li>Bắn event từ <c>PostService::publish()</c> (bên trong <c>DB::transaction</c> của Part 13) — implement <c>ShouldDispatchAfterCommit</c></li>
+<li>Tạo <c>PostObserver</c> tự sinh slug ở <c>creating</c>, đăng ký bằng <c>#[ObservedBy]</c></li>
+<li>Thử <c>Post::query()->update(['title' => 'x'])</c> và chứng minh Observer KHÔNG chạy</li>
+<li>Viết 2 test như 15.6 với <c>Event::fake()</c> / <c>Notification::fake()</c></li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 16 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge new">PART 16 — MỚI</div>
+<h1>Cache &amp; Atomic Locks</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Giảm tải database bằng cache đúng cách (và biết khi nào cache gây hại), dùng atomic lock để chống race condition — thứ mà PHP "mỗi request một process" đặc biệt dễ dính.</div>
+</div>
+
+<h2>16.1 Vì sao PHP cần cache ngoài process</h2>
+<p>Nhớ P.1: mỗi request là process mới, biến static/RAM không sống qua request. Muốn "nhớ" kết quả tính toán giữa các request, phải cất ở nơi ngoài process: database, file, Redis, Memcached. Laravel gom tất cả sau một API duy nhất — <c>Cache</c> facade — đổi driver chỉ cần đổi <c>.env</c>.</p>
+<table>
+<tr><th><c>CACHE_STORE</c></th><th>Đặc điểm</th><th>Tags?</th><th>Locks?</th></tr>
+<tr><td><c>database</c></td><td>Mặc định project mới, bảng <c>cache</c> (<c>make:cache-table</c> nếu thiếu)</td><td>❌</td><td>✅</td></tr>
+<tr><td><c>file</c></td><td>Đơn giản, chỉ 1 server</td><td>❌</td><td>✅</td></tr>
+<tr><td><c>redis</c></td><td>Nhanh nhất, chia sẻ giữa nhiều server — chuẩn production</td><td>✅</td><td>✅</td></tr>
+<tr><td><c>memcached</c></td><td>Tương tự Redis, ít tính năng hơn</td><td>✅</td><td>✅</td></tr>
+<tr><td><c>array</c></td><td>Chỉ trong 1 request — dùng cho test</td><td>✅</td><td>✅</td></tr>
+<tr><td><c>failover</c></td><td>Tự chuyển sang store dự phòng khi store chính lỗi (mới)</td><td>—</td><td>—</td></tr>
+</table>
+
+<h2>16.2 API cốt lõi</h2>
+<code-block lang="php">
+Cache::put('key', $value, 600);                     // TTL giây, hoặc now()->addMinutes(10)
+Cache::get('key', 'default');                       // không có → default
+Cache::add('key', $value, 600);                     // chỉ ghi nếu CHƯA có — atomic, trả true/false
+Cache::forget('key');
+Cache::increment('views:post:42');                  // đếm atomic
+
+// Pattern hay dùng nhất: có thì lấy, không thì tính rồi cất
+$posts = Cache::remember('posts:latest', 300, fn () =>
+    Post::with('author')->latest()->limit(10)->get()
+);
+
+// Laravel 13: gia hạn TTL mà không phải đọc-ghi lại giá trị
+Cache::touch('posts:latest', 3600);
+</code-block>
+
+<h2>16.3 Stale-while-revalidate — <c>Cache::flexible()</c></h2>
+<code-block lang="php">
+// [5, 10]: 0-5s trả cache ngay; 5-10s vẫn trả cache CŨ nhưng âm thầm tính lại sau khi trả response;
+// quá 10s mới bắt user chờ tính lại
+$stats = Cache::flexible('dashboard:stats', [300, 600], fn () => $this->computeStats());
+</code-block>
+<p>Giải quyết vấn đề "cache hết hạn đúng lúc 100 request cùng tới → 100 request cùng tính lại" (cache stampede). Việc tính lại chạy trong deferred function sau khi response đã gửi.</p>
+
+<h2>16.4 Xoá cache đúng lúc (cache invalidation)</h2>
+<p>Câu hỏi khó nhất của cache không phải "cất thế nào" mà "xoá khi nào". Ba chiến lược, kết hợp với Observer (Part 15):</p>
+<code-block lang="php">
+// 1) TTL ngắn — chấp nhận dữ liệu trễ vài phút, đơn giản nhất
+Cache::remember('posts:latest', 60, ...);
+
+// 2) Xoá chủ động khi dữ liệu đổi — trong PostObserver::saved / deleted
+Cache::forget('posts:latest');
+Cache::forget("post:{$post->id}");
+
+// 3) Tags — xoá cả nhóm (chỉ redis/memcached)
+Cache::tags(['posts'])->put("post:{$post->id}", $post, 3600);
+Cache::tags(['posts'])->flush();       // xoá mọi key gắn tag 'posts'
+</code-block>
+<div class="note"><b>Đừng cache quá sớm.</b> Cache là lớp phức tạp thêm (bug "sửa rồi mà vẫn thấy cũ" là kinh điển). Thứ tự đúng: (1) sửa N+1 và thêm index, (2) đo bằng Telescope/Pulse, (3) chỉ cache chỗ thật sự nóng. Và <b>không bao giờ</b> cache dữ liệu theo user mà không đưa user id vào key.</div>
+
+<h2>16.5 Atomic lock — chống race condition</h2>
+<p>Tình huống: 2 request cùng lúc "thanh toán đơn #42". Cả 2 đọc <c>status = pending</c>, cả 2 chuyển sang <c>paid</c>, trừ tiền 2 lần. Transaction (Part 13) không đủ nếu logic có gọi API ngoài. Cần khoá:</p>
+<code-block lang="php">
+$lock = Cache::lock("order:{$order->id}:pay", 10);     // khoá tối đa 10s
+
+if ($lock->get()) {                                     // lấy được khoá → xử lý
+    try {
+        $this->charge($order);
+    } finally {
+        $lock->release();
+    }
+} else {
+    throw new ConflictException('Đơn hàng đang được xử lý.');   // 409
+}
+
+// Gọn hơn: closure tự release
+Cache::lock("order:{$order->id}:pay", 10)->get(fn () => $this->charge($order));
+
+// Chờ tối đa 5s để lấy khoá thay vì từ chối ngay
+Cache::lock('report', 10)->block(5, fn () => $this->generate());
+
+// Laravel 13: giới hạn đồng thời — tối đa 3 tiến trình cùng chạy
+Cache::funnel('image-processing')->limit(3)->releaseAfter(60)->block(10)
+    ->then(fn () => $this->process(), fn () => throw new TooManyRequestsHttpException());
+</code-block>
+<p>Job middleware <c>WithoutOverlapping</c> (Part 14.7) và <c>Schedule::withoutOverlapping()</c> (Part 17) đều dùng chính cơ chế lock này bên dưới. Lock cần store hỗ trợ (database/redis/memcached/file/array) và phải là store <b>chung</b> giữa mọi server.</p>
+
+<h2>16.6 Memo — cache trong 1 request</h2>
+<code-block lang="php">
+Cache::memo()->get('settings');   // lần 1 đọc từ store; các lần sau trong CÙNG request đọc từ RAM
+</code-block>
+<p>Giải quyết việc gọi <c>Cache::get('settings')</c> 50 lần trong 1 request (50 round-trip Redis) — <c>memo()</c> ghi nhớ trong bộ nhớ process cho tới hết request/job.</p>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Cache endpoint <c>GET /api/posts</c> (trang 1, không filter) bằng <c>Cache::remember</c> 60s; đo thời gian response trước/sau bằng middleware <c>LogRequests</c> (Part 07)</li>
+<li>Xoá cache đó trong <c>PostObserver</c> khi post được tạo/sửa/xoá — chứng minh "tạo post mới → GET thấy ngay"</li>
+<li>Đổi <c>Cache::remember</c> thành <c>Cache::flexible([60, 300], ...)</c>, đọc log để thấy việc tính lại chạy sau response</li>
+<li>Viết endpoint <c>POST /api/posts/{post}/publish</c> dùng <c>Cache::lock</c>; gọi 2 lần song song bằng <c>curl &</c> → 1 thành công, 1 nhận 409</li>
+<li>Test: dùng <c>Cache::spy()</c> hoặc <c>config(['cache.default' => 'array'])</c> để assert key được ghi/xoá đúng</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 17 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge new">PART 17 — MỚI</div>
+<h1>Task Scheduling (cron)</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Định nghĩa mọi việc định kỳ (dọn token, gửi digest, prune job fail) ngay trong code — server chỉ cần đúng 1 dòng cron.</div>
+</div>
+
+<h2>17.1 Khai báo lịch — <c>routes/console.php</c></h2>
+<code-block lang="php">
+// routes/console.php (Laravel 11+ — không còn app/Console/Kernel.php)
+use Illuminate\Support\Facades\Schedule;
+
+Schedule::command('sanctum:prune-expired --hours=24')->daily();          // Part 09
+Schedule::command('queue:prune-failed --hours=48')->daily();             // Part 14
+Schedule::command('queue:prune-batches --hours=48')->daily();
+Schedule::command('posts:export')->dailyAt('02:00')->timezone('Asia/Ho_Chi_Minh');
+
+Schedule::job(new SendWeeklyDigest)->weeklyOn(1, '08:00');               // đẩy job vào queue (Part 14)
+
+Schedule::call(fn () => Post::where('published_at', '<', now()->subYear())->delete())
+    ->name('purge-old-posts')      // BẮT BUỘC đặt name cho closure nếu dùng onOneServer
+    ->daily()
+    ->onOneServer();
+</code-block>
+<div class="audit"><b>Đã đối chiếu docs Scheduling 13.x:</b> lịch định nghĩa trong <c>routes/console.php</c> bằng facade <c>Schedule</c>; nếu muốn tách riêng, dùng <c>->withSchedule(function (Schedule $schedule) {...})</c> trong <c>bootstrap/app.php</c>. Xem toàn bộ lịch + lần chạy kế tiếp: <c>php artisan schedule:list</c>.</div>
+
+<h2>17.2 Tần suất &amp; ràng buộc hay dùng</h2>
+<table>
+<tr><th>Method</th><th>Ý nghĩa</th></tr>
+<tr><td><c>everyMinute()</c> / <c>everyFiveMinutes()</c> / <c>hourly()</c></td><td>Theo phút / giờ</td></tr>
+<tr><td><c>daily()</c> / <c>dailyAt('13:00')</c> / <c>twiceDaily(1, 13)</c></td><td>Theo ngày</td></tr>
+<tr><td><c>weeklyOn(1, '8:00')</c> / <c>monthlyOn(4, '15:00')</c></td><td>Thứ 2 hàng tuần / ngày 4 hàng tháng</td></tr>
+<tr><td><c>cron('0 */6 * * *')</c></td><td>Biểu thức cron tuỳ ý</td></tr>
+<tr><td><c>everyTenSeconds()</c></td><td>Sub-minute: <c>schedule:run</c> sẽ chạy hết phút đó thay vì thoát ngay</td></tr>
+<tr><td><c>weekdays()</c> / <c>between('8:00','17:00')</c> / <c>when(fn)</c> / <c>environments(['production'])</c></td><td>Ràng buộc thêm</td></tr>
+<tr><td><c>timezone('Asia/Ho_Chi_Minh')</c></td><td>Múi giờ riêng cho task (hoặc <c>schedule_timezone</c> trong <c>config/app.php</c>)</td></tr>
+</table>
+
+<h2>17.3 Ba flag không được quên ở production</h2>
+<code-block lang="php">
+Schedule::command('reports:build')
+    ->hourly()
+    ->withoutOverlapping()     // task giờ trước chưa xong → bỏ qua lần này (dùng cache lock, Part 16)
+    ->onOneServer()            // nhiều server cùng chạy cron → chỉ 1 server thực thi
+    ->runInBackground();       // task dài không chặn task khác cùng thời điểm (chỉ command/exec)
+</code-block>
+<p><c>onOneServer()</c> cần cache driver dùng chung (database/redis/memcached) — đây là lý do Part 16 nằm trước Part 17.</p>
+
+<h2>17.4 Chạy scheduler</h2>
+<code-block lang="bash">
+# Server: đúng 1 dòng crontab, chạy mỗi phút — Laravel tự quyết task nào tới giờ
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+
+# Local: không cài cron, chạy foreground
+php artisan schedule:work
+
+# Deploy: nếu có sub-minute task, ngắt schedule:run đang chạy để nó nạp code mới
+php artisan schedule:interrupt
+</code-block>
+<div class="note"><b>Lỗi hay gặp:</b> "lịch không chạy" — 95% là chưa thêm dòng crontab (hoặc thêm với user khác không có quyền đọc <c>.env</c>), hoặc <c>schedule:work</c> đã tắt. <c>schedule:list</c> chỉ cho biết lịch <b>được định nghĩa</b>, không cho biết cron có đang gọi hay không — kiểm tra bằng <c>->onSuccess(fn () => Log::info(...))</c>.</div>
+
+<h2>17.5 Theo dõi kết quả</h2>
+<code-block lang="php">
+Schedule::command('posts:export')->daily()
+    ->appendOutputTo(storage_path('logs/export.log'))
+    ->emailOutputOnFailure('dev@example.com')
+    ->onFailure(fn (Stringable $output) => Log::error("export failed: {$output}"))
+    ->pingOnSuccess($healthcheckUrl);     // báo cho dịch vụ giám sát (vd healthchecks.io)
+</code-block>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Đưa 3 lệnh prune (sanctum, failed jobs, batches) vào lịch <c>daily()</c>; chạy <c>schedule:list</c></li>
+<li>Viết Artisan command <c>posts:publish-scheduled</c> (publish các post có <c>scheduled_at <= now()</c>), lịch <c>everyMinute()->withoutOverlapping()</c></li>
+<li>Chạy <c>php artisan schedule:work</c>, tạo post có <c>scheduled_at</c> 2 phút tới, xác nhận nó tự publish</li>
+<li>Thêm <c>->onFailure()</c> ghi log và cố tình làm command lỗi để thấy log</li>
+<li>Test command bằng <c>$this->artisan('posts:publish-scheduled')->assertSuccessful()</c> + <c>travelTo()</c> để giả lập thời gian</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 18 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge new">PART 18 — MỚI</div>
+<h1>File Storage &amp; Upload</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Nhận file upload an toàn (validate, đặt tên, lưu ngoài <c>public/</c>), phục vụ file qua URL, và đổi từ ổ đĩa local sang S3 mà không sửa code.</div>
+</div>
+
+<h2>18.1 Disk — trừu tượng hoá nơi lưu</h2>
+<table>
+<tr><th>Disk (config/filesystems.php)</th><th>Lưu ở đâu</th><th>Dùng cho</th></tr>
+<tr><td><c>local</c></td><td><c>storage/app/private</c></td><td>File riêng tư (hoá đơn, tài liệu) — không truy cập được qua URL</td></tr>
+<tr><td><c>public</c></td><td><c>storage/app/public</c> → symlink <c>public/storage</c></td><td>File công khai (ảnh bìa, avatar)</td></tr>
+<tr><td><c>s3</c></td><td>Amazon S3 / mọi dịch vụ S3-compatible (MinIO, R2, Spaces)</td><td>Production nhiều server</td></tr>
+</table>
+<code-block lang="bash">
+php artisan storage:link      # tạo symlink public/storage → storage/app/public (chạy 1 lần, cả trên server)
+</code-block>
+<div class="note"><b>Quy tắc bảo mật:</b> file người dùng upload KHÔNG BAO GIỜ ghi thẳng vào <c>public/</c> (kẻ tấn công upload <c>shell.php</c> rồi gọi qua URL = chiếm server). Luôn đi qua disk; disk <c>public</c> cũng chỉ là symlink tới <c>storage/app/public</c> và PHP ở đó không được thực thi bởi web server nếu cấu hình đúng.</div>
+
+<h2>18.2 Nhận upload</h2>
+<code-block lang="php">
+// Form Request
+public function rules(): array
+{
+    return [
+        'cover' => ['required', File::image()->max(2 * 1024)],   // ảnh, tối đa 2MB (KB)
+        // hoặc: ['required', 'file', 'mimes:jpg,png,webp', 'max:2048']
+    ];
+}
+
+// Controller
+public function uploadCover(UploadCoverRequest $request, Post $post)
+{
+    // store(): tự sinh tên file duy nhất, đuôi theo MIME thật (không tin đuôi client gửi)
+    $path = $request->file('cover')->store('covers', 'public');     // → "covers/a1b2c3.jpg"
+
+    // storeAs(): tự đặt tên
+    $path = $request->file('cover')->storeAs('covers', "post-{$post->id}.jpg", 'public');
+
+    $post->update(['cover_path' => $path]);        // lưu ĐƯỜNG DẪN tương đối, không lưu URL
+
+    ProcessPost::dispatch($post);                  // resize/optimize ở worker (Part 14)
+
+    return ['url' => Storage::disk('public')->url($path)];
+}
+</code-block>
+<div class="audit"><b>Đã đối chiếu docs Filesystem 13.x:</b> <c>store($dir, $disk)</c> / <c>storeAs($dir, $name, $disk)</c> trên <c>UploadedFile</c>, hoặc <c>Storage::putFile($dir, $file)</c> / <c>putFileAs</c>. Tên file tự sinh là ID duy nhất; phần mở rộng lấy từ MIME thực tế. Đường dẫn được chuẩn hoá (loại ký tự lạ) — nhưng vẫn nên tự sanitize tên nếu dùng <c>storeAs</c> với tên do client cung cấp.</div>
+
+<h2>18.3 Đọc, tải, xoá, URL tạm</h2>
+<code-block lang="php">
+Storage::disk('public')->url($path);                       // URL công khai
+Storage::disk('local')->download($path, 'invoice.pdf');    // response tải file riêng tư (qua controller có auth)
+Storage::disk('s3')->temporaryUrl($path, now()->addMinutes(5));   // link S3 có hạn — không cần đi qua PHP
+Storage::disk('public')->exists($path);
+Storage::disk('public')->delete($path);                    // nhớ gọi trong PostObserver::deleted
+</code-block>
+<p>Đổi <c>FILESYSTEM_DISK=s3</c> + biến AWS trong <c>.env</c> → toàn bộ code trên chạy với S3 mà không sửa gì. Đây là giá trị của tầng trừu tượng Flysystem.</p>
+
+<h2>18.4 Test upload không cần đĩa thật</h2>
+<code-block lang="php">
+test('upload cover cho post', function () {
+    Storage::fake('public');                                   // disk giả trong bộ nhớ tạm
+    Queue::fake();
+    Sanctum::actingAs($user = User::factory()->create());
+    $post = Post::factory()->for($user)->create();
+
+    $this->postJson("/api/v1/posts/{$post->id}/cover", [
+        'cover' => UploadedFile::fake()->image('cover.jpg', 800, 600),
+    ])->assertOk();
+
+    Storage::disk('public')->assertExists($post->fresh()->cover_path);
+    Queue::assertPushed(ProcessPost::class);
+});
+
+test('từ chối file không phải ảnh', function () {
+    $this->postJson(..., ['cover' => UploadedFile::fake()->create('virus.php', 10)])
+        ->assertStatus(422);
+});
+</code-block>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Chạy <c>storage:link</c>; thêm cột <c>cover_path</c> vào posts</li>
+<li>Endpoint <c>POST /api/v1/posts/{post}/cover</c> với Form Request validate ảnh ≤ 2MB, lưu vào disk <c>public</c>, chỉ tác giả được upload (Policy — Part 19)</li>
+<li>Resource trả thêm <c>cover_url</c> (dùng <c>Storage::url</c>), null nếu chưa có</li>
+<li>Xoá file trong <c>PostObserver::deleted</c></li>
+<li>(Tuỳ chọn) Cài MinIO bằng Docker, đổi disk sang <c>s3</c>, xác nhận code không đổi</li>
+<li>Viết 2 test như 18.4</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 19 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge new">PART 19 — MỚI</div>
+<h1>Authorization chuyên sâu: Gate &amp; Policy</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Tập trung mọi câu hỏi "ai được làm gì" vào một chỗ (Policy), không rải <c>if ($user->id === ...)</c> khắp controller; biết trả 403 hay 404 cho đúng; và biết dùng Form Request <c>authorize()</c> đúng cách.</div>
+</div>
+
+<h2>19.1 Gate vs Policy</h2>
+<table>
+<tr><th></th><th>Gate</th><th>Policy</th></tr>
+<tr><td>Hình thức</td><td>Closure đặt tên, khai trong <c>AppServiceProvider::boot()</c></td><td>Class gom logic quanh 1 model</td></tr>
+<tr><td>Dùng cho</td><td>Quyền không gắn model: "xem dashboard admin", "xuất báo cáo"</td><td>Quyền trên bản ghi: sửa/xoá/xem post này</td></tr>
+<tr><td>Ví dụ</td><td><c>Gate::define('view-dashboard', fn (User $u) => $u->is_admin)</c></td><td><c>PostPolicy::update(User $u, Post $p)</c></td></tr>
+</table>
+<p>Docs ví Gate/Policy như Route/Controller: bắt đầu bằng Gate để hiểu, nhưng app thật nên dùng Policy.</p>
+
+<h2>19.2 Viết Policy đầy đủ</h2>
+<code-block lang="bash">
+php artisan make:policy PostPolicy --model=Post    # sinh sẵn viewAny/view/create/update/delete/restore/forceDelete
+</code-block>
+<code-block lang="php">
+namespace App\Policies;
+
+use Illuminate\Auth\Access\Response;
+
+class PostPolicy
+{
+    // Chạy TRƯỚC mọi method: admin được làm tất cả; return null → rơi xuống method thường
+    public function before(User $user, string $ability): ?bool
+    {
+        return $user->is_admin ? true : null;
+    }
+
+    public function viewAny(?User $user): bool { return true; }          // ?User: cho phép khách (guest)
+
+    public function view(?User $user, Post $post): bool
+    {
+        return $post->published_at !== null || $user?->id === $post->user_id;
+    }
+
+    public function create(User $user): bool { return $user->hasVerifiedEmail(); }
+
+    public function update(User $user, Post $post): Response
+    {
+        return $user->id === $post->user_id
+            ? Response::allow()
+            : Response::deny('Bạn không phải tác giả bài viết này.');   // message đi ra response 403
+    }
+
+    public function delete(User $user, Post $post): Response
+    {
+        return $user->id === $post->user_id
+            ? Response::allow()
+            : Response::denyAsNotFound();     // trả 404 thay vì 403: không tiết lộ bài viết tồn tại
+    }
+}
+</code-block>
+<div class="audit"><b>Đã đối chiếu docs Authorization 13.x:</b> Policy được <b>tự động phát hiện</b> khi tên khớp quy ước (<c>Post</c> → <c>PostPolicy</c> trong <c>app/Policies</c> hoặc <c>app/Models/Policies</c>); không cần đăng ký. Nếu tên không theo quy ước: <c>#[UsePolicy(PostPolicy::class)]</c> trên model hoặc <c>Gate::policy(Post::class, PostPolicy::class)</c>. Khách (chưa đăng nhập) mặc định luôn bị từ chối — muốn cho phép phải khai <c>?User $user</c>.</div>
+
+<h2>19.3 Gọi Policy — 4 cách, dùng nhất quán</h2>
+<code-block lang="php">
+// 1) Attribute trên controller (Laravel 13) — gọn nhất, chạy như middleware 'can'
+use Illuminate\Routing\Attributes\Controllers\Authorize;
+
+#[Authorize('update', 'post')]                  // 'post' = tên route parameter
+public function update(UpdatePostRequest $request, Post $post) { }
+
+#[Authorize('create', Post::class)]             // không có model instance
+public function store(StorePostRequest $request) { }
+
+#[Authorize('create', [Comment::class, 'post'])] // policy nhận thêm tham số (post cha)
+public function storeComment(Post $post) { }
+
+// 2) Route
+Route::put('/posts/{post}', [PostController::class, 'update'])->can('update', 'post');
+
+// 3) Trong code — throw AuthorizationException → 403 (hoặc 404 nếu denyAsNotFound)
+Gate::authorize('update', $post);
+
+// 4) Form Request — gộp "được phép không" và "dữ liệu hợp lệ không" vào 1 chỗ
+class UpdatePostRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return $this->user()->can('update', $this->route('post'));
+    }
+}
+</code-block>
+<div class="note"><b>Thứ tự chạy khi dùng Form Request:</b> <c>authorize()</c> chạy TRƯỚC <c>rules()</c>. Nghĩa là user không có quyền nhận 403 ngay, không bị lộ lỗi validation. Với API, cách 1 hoặc 4 là đủ — đừng làm cả hai cho cùng 1 action (kiểm tra 2 lần vô ích).</div>
+
+<h2>19.4 Quyền trên danh sách — lọc thay vì từ chối</h2>
+<code-block lang="php">
+// Sai: lấy hết rồi kiểm tra từng cái (N lần policy, lộ số lượng)
+// Đúng: giới hạn ngay từ query
+public function index(Request $request)
+{
+    return Post::query()
+        ->when(! $request->user()?->is_admin, fn ($q) =>
+            $q->whereNotNull('published_at')->orWhere('user_id', $request->user()?->id))
+        ->paginate();
+}
+</code-block>
+
+<h2>19.5 Test policy</h2>
+<code-block lang="php">
+test('tác giả sửa được post của mình', function () {
+    $author = User::factory()->create();
+    $post = Post::factory()->for($author)->create();
+
+    expect($author->can('update', $post))->toBeTrue();
+    expect(User::factory()->create()->can('update', $post))->toBeFalse();
+});
+
+test('user khác xoá post nhận 404', function () {
+    Sanctum::actingAs(User::factory()->create());
+    $post = Post::factory()->create();
+
+    $this->deleteJson("/api/v1/posts/{$post->id}")->assertNotFound();   // denyAsNotFound
+});
+</code-block>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Hoàn thiện <c>PostPolicy</c> với <c>before</c>, <c>viewAny/view</c> (cho guest), <c>create</c>, <c>update</c> (deny có message), <c>delete</c> (<c>denyAsNotFound</c>)</li>
+<li>Thêm cột <c>is_admin</c> cho users; chứng minh admin sửa được post của người khác nhờ <c>before()</c></li>
+<li>Chuyển toàn bộ kiểm tra quyền trong controller sang <c>#[Authorize]</c> (hoặc Form Request <c>authorize()</c>) — xoá hết <c>if ($user->id === ...)</c> rải rác</li>
+<li>Viết <c>CommentPolicy</c>: chỉ tác giả comment hoặc tác giả post được xoá comment</li>
+<li>Viết test cho 4 case: tác giả OK, người khác 403 (update), người khác 404 (delete), admin OK</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 20 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge new">PART 20 — MỚI</div>
+<h1>Mail &amp; Notifications (queued)</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Gửi thông báo qua nhiều kênh (mail, database, Slack...) bằng một class duy nhất, luôn đẩy qua queue, và test được mà không gửi mail thật.</div>
+</div>
+
+<h2>20.1 Notification vs Mailable</h2>
+<p><b>Mailable</b> = 1 email cụ thể (template, subject). <b>Notification</b> = "một thông báo" có thể đi qua nhiều kênh (<c>mail</c>, <c>database</c>, <c>broadcast</c>, <c>slack</c>, <c>vonage</c>), kênh mail bên trong vẫn dùng <c>MailMessage</c>. Với ứng dụng thật, gần như luôn viết Notification — nó bao trùm Mailable và cho user tự chọn kênh.</p>
+
+<h2>20.2 Viết notification</h2>
+<code-block lang="bash">
+php artisan make:notification PostPublishedNotification
+php artisan make:notifications-table && php artisan migrate    # nếu dùng kênh database
+</code-block>
+<code-block lang="php">
+namespace App\Notifications;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+
+class PostPublishedNotification extends Notification implements ShouldQueue   // luôn queue
+{
+    use Queueable;
+
+    public function __construct(public Post $post)
+    {
+        $this->afterCommit();          // chờ transaction commit (Part 13.5)
+    }
+
+    public function via(object $notifiable): array
+    {
+        return $notifiable->prefers_email ? ['mail', 'database'] : ['database'];
+    }
+
+    public function toMail(object $notifiable): MailMessage
+    {
+        return (new MailMessage)
+            ->subject("Bài viết \"{$this->post->title}\" đã được đăng")
+            ->greeting("Chào {$notifiable->name},")
+            ->line('Bài viết của bạn đã xuất bản thành công.')
+            ->action('Xem bài viết', url("/posts/{$this->post->slug}"))
+            ->line('Cảm ơn bạn!');
+    }
+
+    public function toArray(object $notifiable): array      // kênh database: lưu JSON này
+    {
+        return ['post_id' => $this->post->id, 'title' => $this->post->title];
+    }
+}
+</code-block>
+
+<h2>20.3 Gửi</h2>
+<code-block lang="php">
+$user->notify(new PostPublishedNotification($post));                      // 1 người (trait Notifiable)
+Notification::send($followers, new PostPublishedNotification($post));     // nhiều người
+Notification::route('mail', 'ops@example.com')->notify(new SystemAlert($e));  // không cần model User
+
+$user->notify((new PostPublishedNotification($post))->delay(now()->addMinutes(10)));
+</code-block>
+<p>Kết nối với Part 15: listener <c>SendPostPublishedNotification</c> chỉ có đúng 1 dòng <c>notify()</c>. Vì notification đã <c>ShouldQueue</c>, listener có thể để đồng bộ (không cần queue 2 lớp).</p>
+
+<h2>20.4 Đọc notification trong app (kênh database)</h2>
+<code-block lang="php">
+$user->notifications;                        // tất cả (bảng notifications, cột data = JSON toArray)
+$user->unreadNotifications;                  // chưa đọc
+$user->unreadNotifications->markAsRead();
+
+// API: GET /api/v1/notifications → NotificationResource::collection($request->user()->notifications()->paginate())
+</code-block>
+
+<h2>20.5 Local: xem mail mà không gửi thật</h2>
+<p>Đặt <c>MAIL_MAILER=log</c> (mail ghi vào <c>storage/logs/laravel.log</c>) hoặc dùng Mailpit (Docker, có giao diện web xem mail). Production dùng SMTP/Resend/Postmark/SES qua <c>config/mail.php</c>.</p>
+
+<h2>20.6 Test</h2>
+<code-block lang="php">
+test('publish gửi notification cho tác giả', function () {
+    Notification::fake();
+
+    app(PostService::class)->publish($author, $data);
+
+    Notification::assertSentTo($author, PostPublishedNotification::class,
+        fn ($n, array $channels) => in_array('mail', $channels) && $n->post->title === 'Hello');
+    Notification::assertCount(1);
+});
+</code-block>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo <c>PostPublishedNotification</c> (mail + database), <c>ShouldQueue</c>, <c>afterCommit()</c></li>
+<li>Gửi từ listener Part 15; chạy worker và xem mail trong log / Mailpit</li>
+<li>Endpoint <c>GET /api/v1/notifications</c> + <c>POST /api/v1/notifications/{id}/read</c></li>
+<li>Thêm cột <c>prefers_email</c> cho users, <c>via()</c> theo cột đó</li>
+<li>Test với <c>Notification::fake()</c> cho cả 2 nhánh của <c>via()</c></li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 21 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge new">PART 21 — MỚI</div>
+<h1>Kiến trúc dự án lớn: Service, Action, DTO, Enum</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Biết đặt logic ở đâu khi controller và model bắt đầu phình. Không có "kiến trúc đúng duy nhất" — mục tiêu là code dễ tìm, dễ test, dễ đổi.</div>
+</div>
+
+<h2>21.1 Bản đồ "cái gì ở đâu"</h2>
+<table>
+<tr><th>Loại logic</th><th>Đặt ở</th><th>Ví dụ</th></tr>
+<tr><td>Nhận request, trả response</td><td>Controller (mỏng)</td><td><c>PostController::store</c> — 3 dòng</td></tr>
+<tr><td>Hợp lệ hoá input + quyền</td><td>Form Request + Policy</td><td><c>StorePostRequest</c>, <c>PostPolicy</c></td></tr>
+<tr><td>Định dạng output</td><td>API Resource</td><td><c>PostResource</c></td></tr>
+<tr><td>Một nghiệp vụ hoàn chỉnh (nhiều bước)</td><td>Action class (1 class = 1 việc) hoặc Service</td><td><c>PublishPostAction</c></td></tr>
+<tr><td>Truy vấn phức tạp, tái dùng</td><td>Query scope (<c>#[Scope]</c>) hoặc Query class</td><td><c>Post::published()->popular()</c></td></tr>
+<tr><td>Phản ứng phụ (mail, log, index)</td><td>Event + Listener / Observer</td><td>Part 15</td></tr>
+<tr><td>Việc chậm</td><td>Job</td><td>Part 14</td></tr>
+<tr><td>Dữ liệu truyền giữa các lớp</td><td>DTO (readonly class) / Enum</td><td><c>PublishPostData</c>, <c>PostStatus</c></td></tr>
+<tr><td>Vòng đời model (slug, cache)</td><td>Observer</td><td><c>PostObserver</c></td></tr>
+</table>
+
+<h2>21.2 Action class — đơn vị nghiệp vụ test được</h2>
+<code-block lang="php">
+namespace App\Actions\Posts;
+
+final class PublishPostAction
+{
+    public function __construct(
+        private readonly ImageOptimizer $images,   // container inject như mọi class khác
+    ) {}
+
+    public function handle(User $author, PublishPostData $data): Post
+    {
+        return DB::transaction(function () use ($author, $data) {
+            $post = $author->posts()->create($data->toArray());
+            ProcessPost::dispatch($post)->afterCommit();
+            PostPublished::dispatch($post);                 // ShouldDispatchAfterCommit
+            return $post;
+        });
+    }
+}
+
+// Controller
+public function store(StorePostRequest $request, PublishPostAction $action)
+{
+    $post = $action->handle($request->user(), PublishPostData::fromRequest($request));
+    return $post->toResource()->response()->setStatusCode(202);
+}
+</code-block>
+<p>Action vs Service: Service = 1 class nhiều method quanh 1 chủ đề (<c>PostService</c>); Action = 1 class 1 method (<c>PublishPostAction</c>). Action dễ test và dễ đặt tên hơn khi nghiệp vụ nhiều; Service đủ tốt khi ít. Cùng một Action có thể được gọi từ Controller, Artisan command, Job — đó là mục đích: tách nghiệp vụ khỏi cổng vào.</p>
+
+<h2>21.3 DTO bằng readonly class</h2>
+<code-block lang="php">
+namespace App\Data;
+
+final readonly class PublishPostData
+{
+    public function __construct(
+        public string $title,
+        public string $body,
+        public PostStatus $status = PostStatus::Draft,
+        public ?\DateTimeImmutable $scheduledAt = null,
+    ) {}
+
+    public static function fromRequest(StorePostRequest $request): self
+    {
+        return new self(
+            title: $request->validated('title'),
+            body: $request->validated('body'),
+            status: PostStatus::from($request->validated('status', 'draft')),
+            scheduledAt: $request->date('scheduled_at')?->toImmutable(),
+        );
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'title'        => $this->title,
+            'body'         => $this->body,
+            'status'       => $this->status,
+            'scheduled_at' => $this->scheduledAt,
+        ];
+    }
+}
+</code-block>
+<p>Lợi ích so với mảng <c>$request->validated()</c>: IDE gợi ý được field, sai tên field là lỗi ngay, kiểu dữ liệu chắc chắn (enum, DateTime chứ không phải string). Đây chính là vai trò DTO bên NestJS — nhưng tách khỏi validation (validation nằm ở Form Request).</p>
+
+<h2>21.4 Enum cho trạng thái — hết "magic string"</h2>
+<code-block lang="php">
+enum PostStatus: string
+{
+    case Draft = 'draft';
+    case Scheduled = 'scheduled';
+    case Published = 'published';
+
+    public function canTransitionTo(self $next): bool
+    {
+        return match($this) {
+            self::Draft     => in_array($next, [self::Scheduled, self::Published]),
+            self::Scheduled => $next === self::Published,
+            self::Published => false,
+        };
+    }
+}
+
+// Model: cast → đọc ra enum, ghi vào string
+protected function casts(): array { return ['status' => PostStatus::class]; }
+
+// Validation: Rule::enum(PostStatus::class)
+// Query: Post::where('status', PostStatus::Published)
+// Route binding: /posts/status/{status} với type-hint PostStatus $status → tự ép, sai → 404
+</code-block>
+
+<h2>21.5 Query scope — đặt tên cho truy vấn</h2>
+<code-block lang="php">
+use Illuminate\Database\Eloquent\Attributes\Scope;
+
+class Post extends Model
+{
+    #[Scope]
+    protected function published(Builder $query): void
+    {
+        $query->whereNotNull('published_at')->where('published_at', '<=', now());
+    }
+
+    #[Scope]
+    protected function popular(Builder $query, int $min = 100): void
+    {
+        $query->where('views', '>=', $min);
+    }
+}
+
+Post::published()->popular(500)->latest()->paginate();
+</code-block>
+<div class="audit"><b>Đã đối chiếu docs Eloquent 13.x:</b> <c>#[Scope]</c> trên method <c>protected</c> là cách mới; cách cũ <c>public function scopePublished(Builder $query)</c> vẫn chạy. Global scope (áp mọi query) dùng <c>#[ScopedBy([TenantScope::class])]</c>.</div>
+
+<h2>21.6 Cấu trúc thư mục gợi ý cho app vừa &amp; lớn</h2>
+<div class="diagram">app/
+├── Actions/Posts/PublishPostAction.php     ← nghiệp vụ
+├── Data/PublishPostData.php                ← DTO
+├── Enums/PostStatus.php
+├── Events/  Listeners/  Jobs/  Notifications/  Observers/  Policies/
+├── Http/Controllers/  Requests/  Resources/  Middleware/
+├── Models/
+├── Services/                                ← tích hợp bên ngoài (PaymentGateway, ImageOptimizer)
+└── Support/                                 ← helper thuần, không phụ thuộc framework
+
+Dự án rất lớn → nhóm theo domain: app/Domain/Posts/{Actions,Data,Models,Policies...}
+(nhớ withEvents(discover: [...]) để listener ngoài app/Listeners vẫn được tìm thấy — Part 15)</div>
+
+<h2>21.7 Công cụ giữ chất lượng code</h2>
+<table>
+<tr><th>Công cụ</th><th>Làm gì</th><th>Lệnh</th></tr>
+<tr><td>Laravel Pint</td><td>Format code theo PSR-12 (có sẵn)</td><td><c>./vendor/bin/pint</c></td></tr>
+<tr><td>Larastan (PHPStan)</td><td>Phân tích tĩnh: bắt lỗi kiểu, method không tồn tại — trước khi chạy</td><td><c>composer require --dev larastan/larastan</c> → <c>./vendor/bin/phpstan analyse</c></td></tr>
+<tr><td>Pest</td><td>Test (Part 11) — mục tiêu: mọi Action/Policy/Job có test</td><td><c>php artisan test --parallel</c></td></tr>
+<tr><td>Rector</td><td>Tự nâng cú pháp PHP/Laravel mới (vd chuyển <c>$fillable</c> → attribute)</td><td><c>./vendor/bin/rector</c></td></tr>
+</table>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tách <c>PostService::publish()</c> thành <c>PublishPostAction</c> + <c>PublishPostData</c> (readonly DTO)</li>
+<li>Thêm <c>PostStatus</c> enum với <c>canTransitionTo()</c>; ném exception 409 (Part 07) khi chuyển trạng thái sai</li>
+<li>Viết scope <c>published()</c> bằng <c>#[Scope]</c>, dùng ở index và feed</li>
+<li>Cài Larastan, chạy level 5, sửa hết lỗi báo</li>
+<li>Viết unit test cho <c>PublishPostAction</c> (không qua HTTP) và cho <c>PostStatus::canTransitionTo</c></li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 22 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge new">PART 22 — MỚI</div>
+<h1>Production: deploy, worker, Octane, quan sát hệ thống</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Hiểu một app Laravel chạy thật cần những process nào, deploy sao cho không mất job, và nhìn thấy được chuyện gì đang xảy ra bên trong.</div>
+</div>
+
+<h2>22.1 Một app Laravel production gồm 3 loại process</h2>
+<div class="diagram">Nginx ──► PHP-FPM (nhiều worker)   : xử lý HTTP request          ← Part 00
+          php artisan queue:work   : xử lý job (Supervisor giữ sống) ← Part 14
+          cron → schedule:run      : mỗi phút, chạy task tới giờ     ← Part 17
+          Redis                    : cache + queue + lock            ← Part 14, 16
+          MySQL/PostgreSQL         : dữ liệu</div>
+<p>Thiếu bất kỳ mảnh nào: web vẫn lên nhưng mail không gửi, lịch không chạy, lock không hoạt động — lỗi "âm thầm" khó thấy nhất.</p>
+
+<h2>22.2 Supervisor — giữ worker luôn sống</h2>
+<code-block lang="ini">
+; /etc/supervisor/conf.d/laravel-worker.conf
+[program:laravel-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/app/artisan queue:work redis --queue=media,default --tries=3 --timeout=90 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+numprocs=4                      ; 4 worker song song
+redirect_stderr=true
+stdout_logfile=/var/www/app/storage/logs/worker.log
+stopwaitsecs=3600               ; đợi job dài chạy xong khi stop
+</code-block>
+<code-block lang="bash">
+sudo supervisorctl reread && sudo supervisorctl update
+sudo supervisorctl start "laravel-worker:*"
+</code-block>
+<div class="audit"><b>Theo docs Queues:</b> <c>stopwaitsecs</c> phải lớn hơn thời gian chạy của job dài nhất, nếu không Supervisor kill job giữa chừng khi restart. <c>--max-time</c> cho worker tự thoát định kỳ (Supervisor khởi động lại) — chống rò rỉ bộ nhớ ở process sống lâu.</div>
+
+<h2>22.3 Script deploy chuẩn</h2>
+<code-block lang="bash">
+php artisan down --retry=30                     # (tuỳ chọn) maintenance mode
+git pull
+composer install --no-dev --optimize-autoloader --no-interaction
+php artisan migrate --force                     # --force: không hỏi xác nhận ở production
+php artisan optimize                            # config + route + view + event cache
+php artisan queue:restart                       # worker nạp code mới (Supervisor tự start lại)
+php artisan schedule:interrupt                  # nếu có sub-minute task
+php artisan up
+</code-block>
+<div class="note"><b>Thứ tự quan trọng:</b> <c>migrate</c> trước <c>queue:restart</c> — worker mới phải chạy trên schema mới. Và luôn <c>optimize:clear</c> khi debug "sửa config mà không ăn".</div>
+
+<h2>22.4 Horizon — dashboard cho queue Redis</h2>
+<p><c>composer require laravel/horizon</c> → <c>php artisan horizon:install</c>. Horizon thay <c>queue:work</c> bằng <c>php artisan horizon</c> (1 process quản lý nhiều worker, tự cân bằng theo tải), kèm dashboard <c>/horizon</c>: job đang chạy, fail, thời gian chờ, throughput. Chỉ dùng với driver <c>redis</c>. Với app có queue nghiêm túc, đây là mặc định.</p>
+
+<h2>22.5 Octane — khi PHP-FPM không đủ nhanh</h2>
+<p><c>composer require laravel/octane</c> → chạy app bằng Swoole/FrankenPHP/RoadRunner: app <b>boot 1 lần rồi giữ trong RAM</b>, mỗi request không phải nạp lại framework → nhanh gấp nhiều lần. Đổi lại, mô hình P.1 thay đổi: singleton sống qua nhiều request, biến static "dính" giữa các request. Vì thế Part 03 nhấn mạnh <c>scoped()</c> và Octane docs có danh sách "dependency injection pitfalls". Chỉ cân nhắc Octane khi đã đo và biết bottleneck là bootstrap chứ không phải DB.</p>
+
+<h2>22.6 Quan sát hệ thống</h2>
+<table>
+<tr><th>Công cụ</th><th>Cho biết</th><th>Dùng ở</th></tr>
+<tr><td>Telescope</td><td>Từng request: query (kèm N+1), job, mail, exception, cache hit/miss</td><td>Local / staging (nặng, không nên bật production)</td></tr>
+<tr><td>Pulse</td><td>Tổng quan production: request chậm, job chậm, query chậm, server load</td><td>Production (nhẹ)</td></tr>
+<tr><td>Nightwatch</td><td>Dịch vụ giám sát chính chủ (trace, log, alert)</td><td>Production, có phí</td></tr>
+<tr><td><c>storage/logs/laravel.log</c> + <c>LOG_STACK</c></td><td>Log — cấu hình <c>config/logging.php</c>, gửi Slack/Sentry khi error</td><td>Mọi nơi</td></tr>
+<tr><td><c>/up</c></td><td>Health check cho load balancer</td><td>Production</td></tr>
+</table>
+
+<h2>22.7 Checklist bảo mật &amp; cấu hình</h2>
+<ul>
+<li><c>APP_DEBUG=false</c>, <c>APP_KEY</c> riêng, <c>.env</c> không commit, document root = <c>public/</c></li>
+<li><c>SESSION_SECURE_COOKIE=true</c>, HTTPS bắt buộc, <c>TrustProxies</c> cấu hình đúng khi sau load balancer (nếu không, <c>$request->ip()</c> là IP của LB → rate limit sai)</li>
+<li>Rate limit (Part 10), CORS whitelist, validate mọi input (Part 05), policy mọi hành động ghi (Part 19)</li>
+<li>Backup DB có kiểm tra restore; <c>php artisan db:monitor</c> cảnh báo connection</li>
+<li>Không dùng <c>DB::raw</c>/<c>whereRaw</c> với input người dùng; không <c>unprepared()</c></li>
+</ul>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Cài Telescope ở local, mở <c>/telescope</c>, xem lại request index + job <c>ProcessPost</c> + mail — đối chiếu số query với Part 08</li>
+<li>Viết <c>deploy.sh</c> theo 22.3; chạy thử trên máy local với <c>APP_ENV=production</c>, <c>APP_DEBUG=false</c></li>
+<li>Cài Supervisor (hoặc Docker) chạy 2 worker; kill 1 worker giữa chừng và chứng minh job được retry bởi worker còn lại</li>
+<li>(Tuỳ chọn) Cài Redis + Horizon, chuyển <c>QUEUE_CONNECTION=redis</c>, xem dashboard khi chạy batch export</li>
+<li>Viết README mục "Vận hành": các process cần chạy, lệnh deploy, chỗ xem log</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART 23 ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge new">PART 23 — MỚI</div>
+<h1>Lộ trình master Laravel — làm gì tiếp theo</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Sau khi xong Part PHP–22, bạn đã vượt mức "biết dùng". Phần này là bản đồ để đi tiếp tới mức thiết kế được hệ thống và đọc được mã nguồn framework.</div>
+</div>
+
+<h2>23.1 Ba tầng năng lực</h2>
+<table>
+<tr><th>Tầng</th><th>Bạn làm được gì</th><th>Tài liệu này phủ</th></tr>
+<tr><td><b>1. Dùng được</b></td><td>CRUD API có auth, validate, resource, test cơ bản</td><td>Part PHP–11</td></tr>
+<tr><td><b>2. Làm thật được</b></td><td>Việc nền, event, cache, lịch, file, quyền, thông báo; deploy và vận hành; kiến trúc code khi app lớn</td><td>Part 12–22</td></tr>
+<tr><td><b>3. Master</b></td><td>Thiết kế hệ thống nhiều dịch vụ, tối ưu ở tầng DB/Redis, đọc &amp; mở rộng mã nguồn framework, viết package, mentor người khác</td><td>Lộ trình dưới đây</td></tr>
+</table>
+
+<h2>23.2 Chủ đề tiếp theo, theo thứ tự nên học</h2>
+<table>
+<tr><th>Chủ đề</th><th>Vì sao</th><th>Docs</th></tr>
+<tr><td>Query Builder nâng cao: subquery, <c>whereExists</c>, window function, index &amp; EXPLAIN</td><td>90% vấn đề hiệu năng thật nằm ở DB, không phải PHP</td><td>queries, eloquent-relationships (subquery selects)</td></tr>
+<tr><td>Broadcasting + Reverb + Echo</td><td>Realtime (thông báo, chat) — WebSocket server chính chủ</td><td>broadcasting, reverb</td></tr>
+<tr><td>Sanctum SPA auth / Passport / Socialite</td><td>Cookie-based auth cho SPA cùng domain; OAuth2; đăng nhập Google/GitHub</td><td>sanctum, passport, socialite</td></tr>
+<tr><td>Multi-tenancy, global scope, database per tenant</td><td>SaaS — bài toán kiến trúc kinh điển</td><td>eloquent (global scopes), package spatie/laravel-multitenancy</td></tr>
+<tr><td>Laravel AI SDK + vector search (Laravel 13)</td><td>Agent, embedding, <c>whereVectorSimilarTo</c> với pgvector — tính năng mới nhất</td><td>ai-sdk, search</td></tr>
+<tr><td>Scout (full-text search với Meilisearch/Typesense)</td><td>Tìm kiếm thật, thay <c>LIKE '%...%'</c></td><td>scout</td></tr>
+<tr><td>Concurrency, Context, Process facade, HTTP client</td><td>Chạy song song, log có ngữ cảnh, gọi lệnh hệ thống, gọi API ngoài có retry</td><td>concurrency, context, processes, http-client</td></tr>
+<tr><td>Pennant (feature flags), Cashier (thanh toán)</td><td>Bật tắt tính năng theo user; Stripe/Paddle</td><td>pennant, billing</td></tr>
+<tr><td>Viết package riêng (Service Provider, publish config, testbench)</td><td>Hiểu framework từ phía "người mở rộng"</td><td>packages</td></tr>
+</table>
+
+<h2>23.3 Dự án nên tự xây để lên tầng 3</h2>
+<ol>
+<li><b>Blog API hoàn chỉnh</b> (chính dự án này) — thêm tag (belongsToMany), search (Scout), realtime comment (Reverb), soft delete + restore, versioning v2.</li>
+<li><b>Hệ thống đặt hàng</b> — giỏ hàng, thanh toán (Cashier), tồn kho với atomic lock, email hoá đơn PDF qua queue, báo cáo doanh thu theo lịch. Đây là bài luyện transaction + lock + queue nặng nhất.</li>
+<li><b>SaaS multi-tenant nhỏ</b> — mỗi công ty 1 workspace, global scope theo tenant, invite user qua signed URL, feature flag bằng Pennant.</li>
+<li><b>Một package Composer</b> — ví dụ <c>your-vendor/laravel-audit-log</c>: Observer ghi mọi thay đổi model, có config publish, có test bằng Orchestra Testbench, publish lên Packagist.</li>
+</ol>
+
+<h2>23.4 Thói quen của người master</h2>
+<ul>
+<li><b>Đọc mã nguồn framework</b> khi thắc mắc: <c>vendor/laravel/framework/src/Illuminate/</c>. Bắt đầu từ <c>Foundation/Application.php</c>, <c>Container/Container.php</c>, <c>Routing/Router.php</c>, <c>Queue/Worker.php</c>. Mọi "phép thuật" đều là PHP thường trong đó.</li>
+<li><b>Đo trước khi tối ưu</b>: Telescope/Pulse → tìm query chậm → EXPLAIN → index → rồi mới cache.</li>
+<li><b>Test là mặc định</b>: mỗi Action/Policy/Job/Listener có test; CI chạy <c>pint --test</c>, <c>phpstan</c>, <c>pest</c>.</li>
+<li><b>Theo dõi release</b>: <c>laravel.com/docs/releases</c> mỗi Q1, upgrade guide, Laravel News, Laracasts (Laravel From Scratch, Learn Laravel Queues), tài khoản GitHub <c>laravel/framework</c> (đọc PR để biết tính năng mới hình thành thế nào).</li>
+<li><b>Viết lại tài liệu này bằng lời của bạn</b> sau khi xong — dạy lại là cách kiểm tra hiểu chắc nhất.</li>
+</ul>
+
+<h2>23.5 Checklist tự đánh giá "đã master chưa"</h2>
+<table>
+<tr><th>Câu hỏi</th><th>Trả lời được không?</th></tr>
+<tr><td>Vì sao singleton trong PHP-FPM chỉ sống 1 request, và Octane thay đổi điều đó thế nào?</td><td></td></tr>
+<tr><td>Job dispatch trong transaction có thể chạy trước khi commit — tại sao, và 3 cách xử lý?</td><td></td></tr>
+<tr><td>Khi nào <c>cursorPaginate</c> thay <c>paginate</c>? Ràng buộc của nó?</td><td></td></tr>
+<tr><td><c>timeout</c> của job và <c>retry_after</c> của queue liên quan gì nhau?</td><td></td></tr>
+<tr><td>Vì sao <c>Post::query()->update()</c> không bắn model event?</td><td></td></tr>
+<tr><td>Cache stampede là gì, <c>Cache::flexible</c> giải quyết thế nào?</td><td></td></tr>
+<tr><td><c>onOneServer()</c> hoạt động nhờ cơ chế nào, cần điều kiện gì?</td><td></td></tr>
+<tr><td>Vì sao <c>env()</c> trả null sau <c>config:cache</c>?</td><td></td></tr>
+<tr><td>Deploy xong mà mail cũ vẫn gửi bằng template cũ — nguyên nhân và lệnh sửa?</td><td></td></tr>
+<tr><td>Khác nhau giữa 401 và 403; giữa <c>Response::deny()</c> và <c>denyAsNotFound()</c>?</td><td></td></tr>
+</table>
+<p>Trả lời trôi chảy cả 10 câu bằng lời của bạn, kèm ví dụ từ dự án đã làm — bạn đã ở tầng 3.</p>
+</div>
+
+</body>
+</html>

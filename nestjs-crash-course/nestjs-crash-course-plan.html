@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>NestJS Crash Course - Lộ trình học chi tiết</title>
+<style>
+  @page { size: A4; margin: 17mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    color: #1a1a1a;
+    line-height: 1.5;
+    font-size: 13.5px;
+  }
+  .cover {
+    height: 245mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    page-break-after: always;
+  }
+  .cover .tag {
+    background: #E0234E;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+  }
+  .cover h1 { font-size: 40px; margin: 0 0 8px 0; color: #111; }
+  .cover h2 { font-size: 18px; font-weight: 400; color: #555; margin: 0 0 40px 0; }
+  .cover .meta { color: #888; font-size: 13px; }
+  .cover .meta div { margin-bottom: 4px; }
+  h1 { font-size: 22px; border-bottom: 3px solid #E0234E; padding-bottom: 8px; margin-top: 0; color: #111; }
+  h2 { font-size: 16px; color: #E0234E; margin-top: 22px; border-left: 4px solid #E0234E; padding-left: 10px; }
+  h3 { font-size: 14px; color: #222; margin-top: 16px; }
+  h4 { font-size: 13px; color: #333; margin-bottom: 4px; }
+  p { margin: 6px 0; }
+  .part { margin-top: 34px; padding-top: 18px; border-top: 2px dashed #d9d9d9; }
+  .part.first { page-break-before: always; border-top: none; margin-top: 0; padding-top: 6px; }
+  .part-head { break-inside: avoid; page-break-inside: avoid; break-after: avoid; page-break-after: avoid; }
+  .part-badge, h1 { break-after: avoid; page-break-after: avoid; }
+  .goal-box { break-before: avoid; page-break-before: avoid; }
+  .part-badge {
+    display: inline-block;
+    background: #111;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+  .goal-box, .note, .audit, pre, .diagram { page-break-inside: avoid; break-inside: avoid; }
+  .task-box ol { break-before: avoid; page-break-before: avoid; }
+  .task-box li, tr { break-inside: avoid; page-break-inside: avoid; }
+  h2, h3 { break-after: avoid; page-break-after: avoid; }
+  .goal-box { background: #fff4f6; border-left: 4px solid #E0234E; padding: 8px 12px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+  .goal-box b { color: #E0234E; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12.5px; }
+  th, td { border: 1px solid #ddd; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #f5f5f5; }
+  code {
+    background: #f2f2f2;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: "Cascadia Code", Consolas, monospace;
+    font-size: 12px;
+    color: #c7254e;
+  }
+  pre {
+    background: #1e1e2e;
+    color: #e0e0e0;
+    padding: 12px 14px;
+    border-radius: 6px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-x: visible;
+    font-size: 11.5px;
+    line-height: 1.5;
+    margin: 10px 0;
+  }
+  pre code { background: none; color: inherit; padding: 0; }
+  .diagram {
+    background: #0f172a;
+    color: #a5f3fc;
+    padding: 14px 16px;
+    border-radius: 6px;
+    font-family: Consolas, monospace;
+    font-size: 11.5px;
+    white-space: pre;
+    line-height: 1.5;
+    margin: 12px 0;
+    overflow-x: auto;
+  }
+  .note { background: #fffbe6; border: 1px solid #ffe58f; padding: 8px 12px; border-radius: 4px; margin: 10px 0; font-size: 12.5px; }
+  .note b { color: #ad6800; }
+  .task-box { background: #f0fdf4; border-left: 4px solid #16a34a; padding: 8px 12px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+  .task-box b { color: #16a34a; }
+  .audit { background: #eff6ff; border-left: 4px solid #2563eb; padding: 8px 12px; margin: 10px 0; border-radius: 0 4px 4px 0; font-size: 12.5px; }
+  .audit b { color: #2563eb; }
+  ul, ol { margin: 6px 0; padding-left: 22px; }
+  li { margin: 3px 0; }
+  .toc-list { list-style: none; padding-left: 0; }
+  .toc-list li { display: flex; justify-content: space-between; border-bottom: 1px dotted #ccc; padding: 6px 0; font-size: 13.5px; }
+  .toc-list .n { color: #E0234E; font-weight: 700; margin-right: 8px; }
+  .footer-note { color: #999; font-size: 11px; margin-top: 30px; text-align: center; }
+  .cli { color: #7ee787; }
+  .kw { color: #f97583; }
+  .cls { color: #b392f0; }
+  .str { color: #9ecbff; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="tag">CRASH COURSE PLAN — v2 (đã audit)</div>
+  <h1>NestJS Crash Course</h1>
+  <h2>Lộ trình học chi tiết từng phần — kèm giải thích cơ chế hoạt động bên trong</h2>
+  <div class="meta">
+    <div>Repo: crash-course / nestjs-crash-course</div>
+    <div>Bản audit: đối chiếu lại với code thật đã chạy qua Part 1-9, sửa các điểm sai/thiếu, bổ sung Part 12-13</div>
+  </div>
+</div>
+
+<h1>Mục lục</h1>
+<ul class="toc-list">
+  <li><span><span class="n">00</span> Kiến trúc tổng thể & Request Lifecycle</span></li>
+  <li><span><span class="n">01</span> Khởi tạo & cấu trúc dự án</span></li>
+  <li><span><span class="n">02</span> Controllers & Routing</span></li>
+  <li><span><span class="n">03</span> Providers, Services & Dependency Injection</span></li>
+  <li><span><span class="n">04</span> Modules</span></li>
+  <li><span><span class="n">05</span> DTO & Validation</span></li>
+  <li><span><span class="n">06</span> Pipes & Exception Filters</span></li>
+  <li><span><span class="n">07</span> Middleware, Guards, Interceptors</span></li>
+  <li><span><span class="n">08</span> Kết nối Database với TypeORM</span></li>
+  <li><span><span class="n">09</span> Quan hệ dữ liệu (Relations)</span></li>
+  <li><span><span class="n">10</span> Authentication (JWT + Passport)</span></li>
+  <li><span><span class="n">11</span> Testing (Jest)</span></li>
+  <li><span><span class="n">12</span> Pagination — MỚI</span></li>
+  <li><span><span class="n">13</span> Transactions — MỚI</span></li>
+</ul>
+<div class="note"><b>Cách dùng tài liệu này:</b> Bạn tự code 100% từng phần. Mỗi phần có mục "Việc cần làm" (task) — không có code giải sẵn để copy, chỉ có ví dụ cú pháp minh hoạ để hiểu cách viết. Khi xong một phần, quay lại chat để mình review và giải thích tiếp phần sau.</div>
+<div class="audit"><b>Bản audit này khác gì bản gốc:</b> mọi phần đã được đối chiếu lại với code THẬT đã chạy qua trong quá trình học (Part 1-9), sửa các chỗ sai do phiên bản package đổi khác (đặc biệt Part 08), bổ sung các bài học rút ra từ lỗi thực tế đã gặp (đánh dấu bằng khung màu xanh này), và thêm 2 phần mới: Pagination, Transactions.</div>
+
+<!-- PART 0 -->
+<div class="part first">
+<div class="part-head"><div class="part-badge">PART 00 — NỀN TẢNG</div>
+<h1>Kiến trúc tổng thể & Request Lifecycle</h1></div>
+
+<p>Đây là phần quan trọng nhất để hiểu "mọi thứ hoạt động thế nào" trước khi đi vào từng phần nhỏ. NestJS không phải một framework hoàn toàn mới — nó là một lớp kiến trúc (architecture layer) xây trên nền HTTP server có sẵn (mặc định là <b>Express</b>, có thể đổi sang <b>Fastify</b>). NestJS lấy cảm hứng từ Angular: dùng <b>TypeScript decorators</b>, <b>Dependency Injection (DI)</b>, và tổ chức code theo <b>Module</b>.</p>
+
+<h2>1. Decorator & Reflection Metadata — "phép màu" đằng sau NestJS</h2>
+<p>Toàn bộ NestJS hoạt động dựa trên một cơ chế của TypeScript gọi là <b>decorator</b> kết hợp thư viện <code>reflect-metadata</code>. Khi bạn viết:</p>
+<pre><code><span class="kw">@Controller</span>(<span class="str">'posts'</span>)
+<span class="kw">export class</span> <span class="cls">PostsController</span> { }</pre></code>
+<p>Decorator <code>@Controller('posts')</code> thực chất là một hàm chạy tại thời điểm class được định nghĩa (compile/load time). Nó không "chạy logic nghiệp vụ" — nó chỉ <b>gắn metadata</b> (dữ liệu mô tả) vào class đó, kiểu như dán nhãn: "class này là một Controller, prefix route là <code>/posts</code>". NestJS lưu metadata này bằng <code>Reflect.defineMetadata()</code>.</p>
+<p>Khi ứng dụng khởi động (<code>bootstrap()</code>), NestJS quét toàn bộ metadata đã được gắn (dùng <code>Reflect.getMetadata()</code>) để biết: class nào là Controller, class nào là Provider, route nào ứng với method nào, cần inject dependency gì vào constructor... Đây chính là lý do NestJS gọi là "declarative" — bạn <i>khai báo</i> ý định bằng decorator, framework tự đọc và ráp nối lại.</p>
+
+<div class="audit"><b>Bài học thực tế:</b> vì decorator/class chỉ là 1 identifier bình thường trong TypeScript, việc đặt tên Entity/DTO trùng tên với 1 decorator import từ <code>@nestjs/common</code> (ví dụ đặt Entity tên <code>Post</code>, trùng decorator <code>@Post()</code>) là cái bẫy rất dễ gặp — xem cảnh báo chi tiết ở Part 08.</div>
+
+<h2>2. Module Graph & Dependency Injection Container (IoC Container)</h2>
+<p>Khi app khởi động, NestJS xây dựng một <b>cây module</b> (module tree) bắt đầu từ <code>AppModule</code> (root module). Với mỗi module, nó đọc metadata trong <code>@Module({...})</code>:</p>
+<ul>
+<li><code>imports</code>: các module khác mà module này cần dùng</li>
+<li><code>controllers</code>: các controller thuộc module này</li>
+<li><code>providers</code>: các service/class sẽ được đăng ký vào DI container</li>
+<li><code>exports</code>: các provider mà module này "cho phép" module khác dùng lại</li>
+</ul>
+<p>NestJS tạo ra một <b>IoC Container</b> (Inversion of Control) — một "kho chứa instance". Mỗi provider (mặc định là <b>singleton</b>) chỉ được khởi tạo <b>một lần duy nhất</b> trong toàn bộ vòng đời app. Khi class A cần class B trong constructor:</p>
+<pre><code><span class="kw">@Injectable</span>()
+<span class="kw">export class</span> <span class="cls">PostsController</span> {
+  <span class="kw">constructor</span>(<span class="kw">private</span> <span class="kw">readonly</span> postsService: PostsService) {}
+}</pre></code>
+<p>NestJS nhìn vào <b>type</b> của tham số constructor (nhờ TypeScript compile ra metadata kiểu dữ liệu), tra trong container xem đã có instance của <code>PostsService</code> chưa — nếu có thì tái sử dụng, nếu chưa thì tạo mới rồi lưu lại. Đây gọi là <b>constructor-based injection</b>. Bạn không bao giờ tự viết <code>new PostsService()</code> — NestJS làm việc đó cho bạn. Lợi ích: dễ test (mock được), dễ thay thế implementation, giảm coupling giữa các class.</p>
+
+<div class="note"><b>Encapsulation theo module:</b> Provider trong module A <i>không</i> tự động dùng được ở module B — trừ khi A <code>export</code> nó ra và B <code>import</code> module A vào. Đây là ranh giới đóng gói (giống package-private), giúp kiến trúc lớn không bị rối.</div>
+
+<h2>3. Request Lifecycle — thứ tự một request đi qua hệ thống</h2>
+<p>Đây là sơ đồ quan trọng nhất cần thuộc lòng. Khi một HTTP request đến, nó đi qua các lớp theo đúng thứ tự sau:</p>
+<div class="diagram">Client Request
+     │
+     ▼
+┌─────────────┐
+│  Middleware  │  ← chạy sớm nhất (giống Express middleware), có thể sửa req/res thô
+└─────┬────────┘
+      ▼
+┌─────────────┐
+│    Guards    │  ← quyết định CHO PHÉP hay TỪ CHỐI request (return true/false)
+└─────┬────────┘     dùng cho Authorization (vd: kiểm tra JWT hợp lệ)
+      ▼
+┌───────────────────┐
+│ Interceptors (pre) │  ← chạy TRƯỚC khi vào handler (vd: log, đo thời gian bắt đầu)
+└─────┬──────────────┘
+      ▼
+┌─────────────┐
+│    Pipes     │  ← biến đổi / validate dữ liệu đầu vào (params, body, query)
+└─────┬────────┘     trước khi truyền vào tham số của route handler
+      ▼
+┌───────────────────┐
+│ Route Handler       │  ← method trong Controller (@Get, @Post...) thực thi
+│ (gọi Service bên trong)│
+└─────┬──────────────┘
+      ▼
+┌────────────────────┐
+│ Interceptors (post)  │  ← chạy SAU khi handler trả kết quả, có thể transform response
+└─────┬───────────────┘
+      ▼
+   Response về Client
+
+   ⚠ Nếu BẤT KỲ bước nào ném lỗi (throw)
+   → nhảy thẳng tới Exception Filters để xử lý và trả response lỗi
+   (Interceptor KHÔNG được chạy lại ở nhánh lỗi — 2 nhánh tách biệt hoàn toàn)</div>
+
+<p>Sơ đồ này trả lời hầu hết câu hỏi "tại sao": Guard chạy trước Controller để chặn truy cập trái phép sớm; Pipe chạy trước handler để data luôn sạch/hợp lệ; Interceptor "bọc" được cả input lẫn output vì nó chạy cả trước và sau.</p>
+
+<h2>4. Provider Scope (phạm vi sống của instance)</h2>
+<p>99% trường hợp trong crash course này bạn sẽ dùng Singleton (mặc định) — không cần khai báo gì thêm. Bảng dưới để biết còn 2 lựa chọn khác khi cần:</p>
+<table>
+<tr><th>Scope</th><th>Mặc định?</th><th>Giải thích</th></tr>
+<tr><td><code>DEFAULT</code> (Singleton)</td><td>✅ Có</td><td>Một instance duy nhất, dùng chung cho toàn bộ app suốt vòng đời server</td></tr>
+<tr><td><code>REQUEST</code></td><td>Không</td><td>Tạo instance mới cho <b>mỗi request</b> — dùng khi cần lưu state riêng theo request (vd: multi-tenant)</td></tr>
+<tr><td><code>TRANSIENT</code></td><td>Không</td><td>Tạo instance mới <b>mỗi lần được inject</b> — hiếm dùng</td></tr>
+</table>
+
+</div>
+
+<!-- PART 1 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 01</div>
+<h1>Khởi tạo & cấu trúc dự án</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Hiểu Nest CLI tạo ra những gì, và luồng khởi động (bootstrap) của một app NestJS.</div></div>
+
+<h2>1.1 Cài đặt & tạo project</h2>
+<pre><code><span class="cli">npm i -g @nestjs/cli</span>
+<span class="cli">nest new nestjs-crash-course</span></pre></code>
+<p>Nest CLI dùng schematics (khuôn mẫu code) để sinh ra cấu trúc chuẩn, tương tự <code>create-react-app</code> hay <code>vue create</code>.</p>
+
+<h2>1.2 Cấu trúc thư mục mặc định</h2>
+<table>
+<tr><th>File</th><th>Vai trò</th></tr>
+<tr><td><code>src/main.ts</code></td><td>Entry point — nơi app thực sự khởi động</td></tr>
+<tr><td><code>src/app.module.ts</code></td><td>Root Module — gốc của cây module</td></tr>
+<tr><td><code>src/app.controller.ts</code></td><td>Controller mẫu, xử lý route <code>/</code></td></tr>
+<tr><td><code>src/app.service.ts</code></td><td>Service mẫu, chứa logic nghiệp vụ</td></tr>
+<tr><td><code>nest-cli.json</code></td><td>Cấu hình Nest CLI (build, schematics...)</td></tr>
+<tr><td><code>tsconfig.json</code></td><td>Cấu hình TypeScript — chú ý <code>experimentalDecorators</code> và <code>emitDecoratorMetadata</code> phải bật (đây là 2 cờ TS bắt buộc để decorator + DI hoạt động)</td></tr>
+</table>
+
+<div class="audit"><b>Lưu ý về <code>tsconfig.json</code>:</b> nếu không khai báo tường minh mảng <code>"lib"</code>, TypeScript sẽ tự nạp thêm cả bộ type của <b>DOM</b> (dành cho browser) bên cạnh target ES bạn chọn. Điều này gây ra 1 bug rất khó phát hiện ở Part 09 (biến toàn cục <code>Comment</code> của DOM trùng tên với Entity tự viết) — cứ để mặc định lúc học, nhưng nhớ lại phần này khi gặp lỗi "tsc sạch nhưng chạy vẫn lỗi".</div>
+
+<h2>1.3 Giải phẫu main.ts</h2>
+<pre><code><span class="kw">async function</span> bootstrap() {
+  <span class="kw">const</span> app = <span class="kw">await</span> NestFactory.<span class="cls">create</span>(AppModule);
+  <span class="kw">await</span> app.<span class="cls">listen</span>(process.env.PORT ?? 3000);
+}
+bootstrap();</pre></code>
+<p><code>NestFactory.create(AppModule)</code> chính là bước NestJS đọc <code>AppModule</code>, duyệt toàn bộ <code>imports</code> đệ quy, đăng ký hết Controllers/Providers vào IoC container, resolve toàn bộ dependency injection — tất cả xảy ra <b>trước</b> khi <code>listen()</code> được gọi. Nếu có lỗi thiếu dependency hoặc circular dependency, app sẽ crash ngay tại bước <code>create()</code> này (rất hữu ích để debug).</p>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo project bằng <code>nest new nestjs-crash-course</code></li>
+<li>Chạy <code>npm run start:dev</code>, mở <code>http://localhost:3000</code>, xác nhận thấy "Hello World!"</li>
+<li>Đọc kỹ 4 file: main.ts, app.module.ts, app.controller.ts, app.service.ts — thử tự vẽ lại sơ đồ ai gọi ai</li>
+<li>Thử đổi cổng bằng biến môi trường <code>PORT=4000 npm run start:dev</code></li>
+</ol>
+</div>
+</div>
+
+<!-- PART 2 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 02</div>
+<h1>Controllers & Routing</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Hiểu cách NestJS map một HTTP request tới đúng method trong Controller, và cách lấy dữ liệu từ request.</div></div>
+
+<h2>2.1 Cơ chế map route</h2>
+<p><code>@Controller('posts')</code> đăng ký prefix <code>/posts</code>. Mỗi method bên trong gắn thêm decorator HTTP method:</p>
+<pre><code><span class="kw">@Controller</span>(<span class="str">'posts'</span>)
+<span class="kw">export class</span> <span class="cls">PostsController</span> {
+  <span class="kw">@Get</span>()          <span class="kw">// GET /posts</span>
+  <span class="kw">@Get</span>(<span class="str">':id'</span>)     <span class="kw">// GET /posts/:id</span>
+  <span class="kw">@Post</span>()         <span class="kw">// POST /posts</span>
+  <span class="kw">@Put</span>(<span class="str">':id'</span>)     <span class="kw">// PUT /posts/:id</span>
+  <span class="kw">@Delete</span>(<span class="str">':id'</span>)  <span class="kw">// DELETE /posts/:id</span>
+}</pre></code>
+<p>Khi bootstrap, NestJS quét toàn bộ Controller đã đăng ký trong <code>controllers: []</code> của module, đọc metadata của từng method, rồi đăng ký route đó thẳng vào Express router bên dưới. Về bản chất, NestJS chỉ là một lớp "khai báo" đặt lên trên <code>app.get()</code>, <code>app.post()</code> của Express.</p>
+
+<h2>2.2 Param Decorators — lấy dữ liệu từ request</h2>
+<table>
+<tr><th>Decorator</th><th>Lấy gì</th><th>Ví dụ</th></tr>
+<tr><td><code>@Param('id')</code></td><td>Route param</td><td><code>/posts/5</code> → <code>id = "5"</code></td></tr>
+<tr><td><code>@Query('search')</code></td><td>Query string</td><td><code>/posts?search=abc</code> → <code>"abc"</code></td></tr>
+<tr><td><code>@Body()</code></td><td>Toàn bộ request body (JSON)</td><td>dùng cho POST/PUT</td></tr>
+<tr><td><code>@Headers('authorization')</code></td><td>HTTP header</td><td>lấy token</td></tr>
+<tr><td><code>@Req()</code></td><td>Object request thô của Express</td><td>ít dùng, phá vỡ tính "framework-agnostic"</td></tr>
+</table>
+<p>Các decorator này thực chất cũng chỉ là metadata — NestJS đọc metadata đó, biết phải lấy giá trị nào từ <code>req</code> gốc của Express, rồi <b>tự động truyền đúng thứ tự</b> vào tham số hàm của bạn khi gọi handler. Đây là lý do bạn không cần viết <code>req.params.id</code> thủ công như Express thuần.</p>
+
+<div class="audit"><b>Đúc kết từ thực tế:</b> <code>@Param('id')</code> LUÔN trả về <code>string</code>, kể cả khi route param là số. Route <code>GET /posts/:id</code> viết đơn giản nhất chỉ nhận <code>id: string</code> rồi tự <code>Number(id)</code> — nhưng cách chuẩn hơn (Part 06) là gắn <code>ParseIntPipe</code> ngay tại decorator để Nest tự ép kiểu, tự trả 400 nếu id không phải số. Nếu bạn thấy so sánh <code>post.id === id</code> luôn <code>false</code> dù nhìn "giống nhau" trên console.log — 99% là do 1 bên <code>number</code> 1 bên <code>string</code>.</div>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo <code>PostsController</code> bằng <code>nest g controller posts</code></li>
+<li>Viết 5 route CRUD cơ bản (GET all, GET one, POST, PUT, DELETE) — trả về mảng cứng trong bộ nhớ (chưa cần service/database)</li>
+<li>Test bằng Postman/curl/Thunder Client cho từng route</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 3 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 03</div>
+<h1>Providers, Services & Dependency Injection</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Tách logic nghiệp vụ ra khỏi Controller, hiểu sâu cách DI container resolve dependency.</div></div>
+
+<h2>3.1 Tại sao tách Service?</h2>
+<p>Nguyên tắc <b>Separation of Concerns</b>: Controller chỉ nên lo việc "nhận request → gọi service → trả response". Toàn bộ logic nghiệp vụ (tính toán, thao tác dữ liệu, gọi database) nằm trong Service. Điều này giúp: Controller dễ đọc, Service tái sử dụng được ở nơi khác (vd: một cron job cũng gọi lại service đó), và quan trọng nhất — <b>dễ test</b> (test Service không cần giả lập HTTP request).</p>
+
+<h2>3.2 @Injectable() nghĩa là gì?</h2>
+<pre><code><span class="kw">@Injectable</span>()
+<span class="kw">export class</span> <span class="cls">PostsService</span> {
+  <span class="kw">private</span> posts = [ ... ];
+  findAll() { <span class="kw">return</span> <span class="kw">this</span>.posts; }
+}</pre></code>
+<p><code>@Injectable()</code> đánh dấu class này <b>có thể được đưa vào DI container</b> để inject cho class khác. Bản thân từ "Injectable" nghĩa là "có thể tiêm vào" — không phải class này tự tiêm, mà là nó <i>đủ điều kiện để bị tiêm vào constructor của class khác</i>.</p>
+
+<h2>3.3 Luồng resolve dependency chi tiết</h2>
+<div class="diagram">1. App bootstrap → NestJS đọc @Module({ providers: [PostsService] })
+2. NestJS thấy PostsController có constructor(private postsService: PostsService)
+3. NestJS tra IoC container: "đã có instance PostsService chưa?"
+   → Chưa có → tạo mới new PostsService() → LƯU VÀO container (singleton)
+   → Đã có → lấy lại instance cũ, KHÔNG tạo mới
+4. NestJS gán instance đó vào this.postsService của PostsController
+5. Toàn bộ app dùng CHUNG 1 instance PostsService này</div>
+
+<div class="note"><b>Vì sao phải khai báo providers trong @Module?</b> Nếu bạn quên thêm <code>PostsService</code> vào mảng <code>providers</code> của module, NestJS sẽ báo lỗi <code>Nest can't resolve dependencies</code> ngay lúc khởi động — vì nó không biết class đó tồn tại trong container.</div>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo <code>PostsService</code> bằng <code>nest g service posts</code></li>
+<li>Chuyển toàn bộ logic (mảng posts, các hàm CRUD) từ Controller sang Service</li>
+<li>Inject Service vào Controller qua constructor, Controller chỉ gọi lại các method của Service</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 4 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 04</div>
+<h1>Modules</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Tổ chức app lớn theo feature module thay vì nhồi hết vào AppModule.</div></div>
+
+<h2>4.1 Feature Module là gì?</h2>
+<p>Khi app lớn dần, bạn không nhét tất cả Controller/Service vào <code>AppModule</code>. Thay vào đó, mỗi "tính năng" (feature) có module riêng — vd <code>PostsModule</code>, <code>UsersModule</code>, <code>AuthModule</code> — rồi <code>AppModule</code> chỉ <code>import</code> các module con này lại.</p>
+<pre><code><span class="kw">@Module</span>({
+  controllers: [PostsController],
+  providers: [PostsService],
+  exports: [PostsService], <span class="kw">// cho module khác dùng lại PostsService</span>
+})
+<span class="kw">export class</span> <span class="cls">PostsModule</span> {}</pre></code>
+<p><code>nest g resource posts</code> là lệnh "tất cả trong một" — tự sinh Controller, Service, Module, DTO, Entity cùng lúc và tự động import vào AppModule. Rất hay dùng trong thực tế.</p>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Refactor <code>PostsController</code>/<code>PostsService</code> đã làm ở Part 2-3 vào một <code>PostsModule</code> riêng</li>
+<li>Import <code>PostsModule</code> vào <code>AppModule</code>, xoá bớt khai báo trùng lặp ở AppModule</li>
+<li>Thử tạo thêm 1 module mới bằng <code>nest g resource users</code> để quen tay với CLI</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 5 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 05</div>
+<h1>DTO & Validation</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Đảm bảo dữ liệu client gửi lên luôn đúng định dạng trước khi vào tới Service.</div></div>
+
+<h2>5.1 DTO (Data Transfer Object) là gì?</h2>
+<p>DTO là một class mô tả "hình dạng" dữ liệu được truyền giữa client và server (khác với Entity — mô tả bảng trong database, sẽ học ở Part 8). Ví dụ <code>CreatePostDto</code> mô tả body hợp lệ khi tạo post mới.</p>
+
+<h2>5.2 class-validator + ValidationPipe hoạt động thế nào</h2>
+<pre><code><span class="kw">export class</span> <span class="cls">CreatePostDto</span> {
+  <span class="kw">@IsString</span>() <span class="kw">@IsNotEmpty</span>()
+  title: <span class="kw">string</span>;
+  <span class="kw">@IsString</span>() <span class="kw">@IsNotEmpty</span>()
+  body: <span class="kw">string</span>;
+}</pre></code>
+<p>Decorator như <code>@IsString()</code> gắn metadata validation lên từng field (thư viện <code>class-validator</code>). Khi request tới, <b><code>ValidationPipe</code></b> (chạy ở bước "Pipes" trong request lifecycle — xem Part 0) sẽ:</p>
+<ol>
+<li>Lấy raw JSON body, <code>class-transformer</code> biến nó thành instance thật của class DTO (<code>plainToInstance</code>)</li>
+<li><code>class-validator</code> chạy tất cả rule decorator đã khai báo, thu thập lỗi</li>
+<li>Nếu có lỗi → tự động throw <code>BadRequestException</code> (HTTP 400) kèm danh sách lỗi chi tiết, request <b>không bao giờ chạm tới Controller</b></li>
+<li>Nếu hợp lệ → object sạch được truyền vào <code>@Body()</code> của handler</li>
+</ol>
+<p>Đăng ký global (áp dụng cho toàn bộ app) trong <code>main.ts</code>:</p>
+<pre><code>app.<span class="cls">useGlobalPipes</span>(<span class="kw">new</span> ValidationPipe({
+  whitelist: <span class="kw">true</span>,        <span class="kw">// tự động loại bỏ field lạ không khai báo trong DTO</span>
+  forbidNonWhitelisted: <span class="kw">true</span>, <span class="kw">// field lạ → throw lỗi thay vì âm thầm bỏ qua</span>
+}));</pre></code>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Cài <code>class-validator</code> <code>class-transformer</code></li>
+<li>Tạo <code>CreatePostDto</code> và <code>UpdatePostDto</code> (dùng <code>PartialType</code> từ <code>@nestjs/mapped-types</code> để field đều optional)</li>
+<li>Gắn <code>ValidationPipe</code> global trong main.ts</li>
+<li>Test gửi body thiếu field / sai kiểu dữ liệu → xác nhận nhận về lỗi 400 rõ ràng</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 6 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 06</div>
+<h1>Pipes & Exception Filters</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Tự viết pipe/filter riêng, hiểu cách NestJS xử lý lỗi tập trung.</div></div>
+
+<h2>6.1 Custom Pipe / Pipe có sẵn</h2>
+<p>Pipe là class implement interface <code>PipeTransform</code> với method <code>transform(value, metadata)</code> — nhận giá trị đầu vào, trả về giá trị đã biến đổi (hoặc throw lỗi nếu không hợp lệ). Pipe có sẵn hay dùng nhất: <code>ParseIntPipe</code> — ép <code>:id</code> từ string sang number ngay tại tầng Pipe, tự throw <code>BadRequestException</code> nếu không parse được:</p>
+<pre><code><span class="kw">@Get</span>(<span class="str">':id'</span>)
+findOne(<span class="kw">@Param</span>(<span class="str">'id'</span>, ParseIntPipe) id: <span class="kw">number</span>) {
+  <span class="kw">// id đã là number thật, không cần Number(id) nữa</span>
+  <span class="kw">return</span> <span class="kw">this</span>.postsService.<span class="cls">findOne</span>(id);
+}</pre></code>
+
+<h2>6.2 Exception hierarchy</h2>
+<p>NestJS có sẵn class <code>HttpException</code> và các class con tương ứng mã HTTP: <code>NotFoundException</code> (404), <code>BadRequestException</code> (400), <code>UnauthorizedException</code> (401), <code>ForbiddenException</code> (403)... Khi bạn <code>throw new NotFoundException('Post not found')</code> ở bất kỳ đâu (Service hay Controller), NestJS có sẵn một <b>Exception Filter mặc định</b> bắt lấy, format thành JSON response chuẩn và trả về client — bạn không cần try/catch thủ công trong từng route.</p>
+
+<h2>6.3 Custom Exception Filter — bản đã audit</h2>
+<pre><code><span class="kw">@Catch</span>(HttpException)
+<span class="kw">export class</span> <span class="cls">HttpExceptionFilter</span> <span class="kw">implements</span> ExceptionFilter {
+  catch(exception: HttpException, host: ArgumentsHost) {
+    <span class="kw">const</span> ctx = host.<span class="cls">switchToHttp</span>();
+    <span class="kw">const</span> response = ctx.<span class="cls">getResponse</span>&lt;Response&gt;();
+    <span class="kw">const</span> request = ctx.<span class="cls">getRequest</span>&lt;Request&gt;();
+    <span class="kw">const</span> status = exception.<span class="cls">getStatus</span>();
+
+    <span class="kw">// getResponse() trả về string (khi throw new NotFoundException('msg'))</span>
+    <span class="kw">// HOẶC object { message, error, statusCode } (khi Nest tự tạo payload).</span>
+    <span class="kw">// Phải bóc ra, nếu không client sẽ phải đọc body.message.message.</span>
+    <span class="kw">const</span> payload = exception.<span class="cls">getResponse</span>();
+    <span class="kw">const</span> message =
+      <span class="kw">typeof</span> payload === <span class="str">'string'</span>
+        ? payload
+        : (payload <span class="kw">as</span> { message?: <span class="kw">string</span> }).message ?? exception.message;
+
+    response.<span class="cls">status</span>(status).<span class="cls">json</span>({
+      success: <span class="kw">false</span>,   <span class="kw">// khớp key "success" với TransformInterceptor ở Part 07</span>
+      statusCode: status,
+      path: request.url,
+      timestamp: <span class="kw">new</span> Date().<span class="cls">toISOString</span>(),
+      message,
+    });
+  }
+}</pre></code>
+<div class="audit"><b>Bài học từ thực tế:</b> phiên bản đầu tiên (chỉ nhét nguyên <code>exception.getResponse()</code> vào field <code>message</code>) tạo ra response lồng 2 lớp <code>message: { message: '...', error, statusCode }</code> — rất khó dùng ở client. <code>getResponse()</code> có thể trả về <code>string</code> (khi bạn tự <code>throw new NotFoundException('text')</code>) hoặc <code>object</code> (khi Nest tự sinh payload lỗi mặc định) — luôn phải kiểm tra <code>typeof</code> trước khi dùng. Field <code>success: false</code> ở đây cũng nên khớp với <code>success: true</code> mà Interceptor gắn ở Part 07, để client chỉ cần check 1 field duy nhất cho cả 2 nhánh thành công/lỗi.</div>
+
+<p><code>@Catch(HttpException)</code> nghĩa là filter này chỉ bắt lỗi thuộc loại <code>HttpException</code> (và các class con) — nếu bạn <code>throw new Error(...)</code> thường (không kế thừa <code>HttpException</code>), filter này <b>không bắt được</b>, sẽ rơi vào handler lỗi 500 mặc định của Nest. Đây là lý do luôn dùng <code>NotFoundException</code>/<code>BadRequestException</code>... thay vì tự <code>throw new Error()</code>.</p>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Trong <code>PostsService</code>, khi không tìm thấy post theo id → throw <code>NotFoundException</code></li>
+<li>Gắn <code>ParseIntPipe</code> vào mọi route nhận <code>:id</code></li>
+<li>Viết exception filter như trên, đăng ký global bằng <code>app.useGlobalFilters()</code></li>
+</ol>
+</div>
+</div>
+
+<!-- PART 7 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 07</div>
+<h1>Middleware, Guards, Interceptors</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Nắm 3 lớp còn lại trong request lifecycle, biết dùng đúng công cụ cho đúng việc.</div></div>
+
+<h2>7.1 Middleware — chạy sớm nhất, gần Express nhất</h2>
+<pre><code><span class="kw">@Injectable</span>()
+<span class="kw">export class</span> <span class="cls">LoggerMiddleware</span> <span class="kw">implements</span> NestMiddleware {
+  use(req: Request, res: Response, next: NextFunction) {
+    <span class="kw">const</span> start = Date.<span class="cls">now</span>();
+    res.<span class="cls">on</span>(<span class="str">'finish'</span>, () =&gt; {
+      <span class="kw">const</span> ms = Date.<span class="cls">now</span>() - start;
+      console.<span class="cls">log</span>(<span class="str">`${req.method} ${req.originalUrl} ${res.statusCode} - ${ms}ms`</span>);
+    });
+    next(); <span class="kw">// bắt buộc gọi next() để đi tiếp, nếu không request sẽ treo</span>
+  }
+}</pre></code>
+<div class="audit"><b>Tại sao log trong <code>res.on('finish')</code> chứ không log ngay sau <code>next()</code>:</b> ngay sau <code>next()</code>, response chưa thực sự được gửi xong — <code>res.statusCode</code> lúc đó vẫn chưa phải giá trị cuối cùng. Lắng nghe event <code>'finish'</code> đảm bảo log đúng status code thật và đo được thời gian xử lý toàn bộ request.</div>
+<p>Middleware KHÔNG khai báo trong <code>@Module({...})</code> như Controller/Provider — nó được gắn thủ công qua method <code>configure()</code> trong module, dùng <code>MiddlewareConsumer</code> để chỉ định áp dụng cho route nào (<code>consumer.apply(LoggerMiddleware).forRoutes('*')</code> = áp dụng toàn app).</p>
+
+<h2>7.2 Guards — trả lời câu hỏi "có được vào không?"</h2>
+<pre><code><span class="kw">@Injectable</span>()
+<span class="kw">export class</span> <span class="cls">AuthGuard</span> <span class="kw">implements</span> CanActivate {
+  canActivate(context: ExecutionContext): <span class="kw">boolean</span> {
+    <span class="kw">const</span> request = context.<span class="cls">switchToHttp</span>().<span class="cls">getRequest</span>();
+    <span class="kw">if</span> (!request.headers.authorization) {
+      <span class="kw">throw new</span> UnauthorizedException(<span class="str">'Missing Authorization header'</span>);
+    }
+    <span class="kw">return</span> <span class="kw">true</span>;
+  }
+}</pre></code>
+<p>Guard implement <code>CanActivate</code>, trả về <code>true</code>/<code>false</code> (hoặc <code>Promise&lt;boolean&gt;</code>) — mặc định trả <code>false</code> sẽ bị Nest tự trả 403; ở đây chủ động <code>throw UnauthorizedException</code> để kiểm soát status 401 rõ ràng hơn. Đây là nơi chuẩn để đặt logic <b>Authorization</b> — khác với Middleware ở chỗ Guard có quyền truy cập <code>ExecutionContext</code> (biết được đang gọi tới Controller/handler nào, hữu ích để đọc thêm metadata custom qua <code>Reflector</code>, ví dụ decorator <code>@Roles('admin')</code> tự viết).</p>
+
+<h2>7.3 Interceptors — bọc quanh cả input lẫn output</h2>
+<pre><code><span class="kw">@Injectable</span>()
+<span class="kw">export class</span> <span class="cls">TransformInterceptor</span> <span class="kw">implements</span> NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable&lt;<span class="kw">any</span>&gt; {
+    <span class="kw">return</span> next.<span class="cls">handle</span>().<span class="cls">pipe</span>(
+      map(data =&gt; ({ success: <span class="kw">true</span>, data }))
+    );
+  }
+}</pre></code>
+<p>Interceptor dùng <b>RxJS Observable</b>. <code>next.handle()</code> trả về Observable đại diện cho kết quả của route handler — bạn có thể <code>.pipe(map(...))</code> để biến đổi response trước khi trả về client. Đăng ký global bằng <code>app.useGlobalInterceptors(new TransformInterceptor())</code> trong <code>main.ts</code>.</p>
+
+<div class="audit"><b>Đã kiểm chứng bằng test thật:</b> sau khi bật Interceptor này, response LỖI (từ <code>HttpExceptionFilter</code> Part 06) <b>không</b> bị bọc theo format <code>{success, data}</code> — vì Interceptor chỉ bọc nhánh <code>next.handle()</code> (thành công), nhánh lỗi đi thẳng qua Exception Filter, bỏ qua Interceptor hoàn toàn (đúng như sơ đồ Part 00). Đây là lý do <code>HttpExceptionFilter</code> phải tự thêm field <code>success: false</code> bằng tay — không có Interceptor nào làm việc đó cho nhánh lỗi.</div>
+
+<h2>7.4 So sánh nhanh</h2>
+<table>
+<tr><th>Công cụ</th><th>Dùng khi nào</th><th>Chạy ở đâu trong lifecycle</th></tr>
+<tr><td>Middleware</td><td>Logging, đọc/sửa raw request sớm</td><td>Sớm nhất, trước routing</td></tr>
+<tr><td>Guard</td><td>Authorization (được phép truy cập không?)</td><td>Sau routing, trước Interceptor</td></tr>
+<tr><td>Interceptor</td><td>Transform response, logging có ngữ cảnh handler, cache</td><td>Bọc quanh route handler</td></tr>
+<tr><td>Pipe</td><td>Validate/transform input</td><td>Ngay trước khi vào handler</td></tr>
+<tr><td>Exception Filter</td><td>Xử lý lỗi tập trung</td><td>Bất cứ khi nào có exception</td></tr>
+</table>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Viết <code>LoggerMiddleware</code> log method + url + status + thời gian, áp dụng cho toàn bộ route</li>
+<li>Viết <code>AuthGuard</code> đơn giản kiểm tra header <code>Authorization</code> có tồn tại, áp lên route tạo/sửa/xoá post</li>
+<li>Viết <code>TransformInterceptor</code> bọc mọi response thành công theo format <code>{ success: true, data }</code>, đăng ký global</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 8 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 08</div>
+<h1>Kết nối Database với TypeORM</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Thay mảng dữ liệu cứng trong bộ nhớ bằng database thật (SQLite để đơn giản, có thể nâng cấp Postgres sau).</div></div>
+
+<h2>8.1 TypeORM là gì</h2>
+<p>TypeORM là một <b>ORM</b> (Object-Relational Mapping) — cho phép thao tác database bằng object/class TypeScript thay vì viết SQL tay. NestJS tích hợp sẵn qua package <code>@nestjs/typeorm</code>.</p>
+
+<div class="audit"><b>⚠ Đã sửa so với bản gốc:</b> bản trước hướng dẫn dùng <code>type: 'sqlite'</code> + package <code>sqlite3</code> — đây là API TypeORM CŨ. Bản TypeORM hiện tại (kiểm tra bằng <code>npm view typeorm version</code>) đã <b>bỏ hẳn driver <code>"sqlite"</code></b>, chỉ còn <code>"better-sqlite3"</code> cho SQLite. Luôn kiểm tra <code>node_modules/typeorm/driver/types/DatabaseType.d.ts</code> nếu nghi ngờ danh sách driver hợp lệ đã đổi.</div>
+
+<h2>8.2 Entity — class ánh xạ tới bảng</h2>
+<pre><code><span class="kw">@Entity</span>()
+<span class="kw">export class</span> <span class="cls">Post</span> {
+  <span class="kw">@PrimaryGeneratedColumn</span>()
+  id: <span class="kw">number</span>;
+
+  <span class="kw">@Column</span>()
+  title: <span class="kw">string</span>;
+
+  <span class="kw">@Column</span>()
+  body: <span class="kw">string</span>;
+}</pre></code>
+<p><code>@Entity()</code> đánh dấu class này ánh xạ tới một bảng — TypeORM tự đặt tên bảng bằng cách lowercase tên class (<code>Post</code> → bảng <code>post</code>, KHÔNG tự thêm "s"). Mỗi <code>@Column()</code> là một cột. TypeORM đọc metadata này để tự sinh câu SQL <code>CREATE TABLE</code> (nếu bật <code>synchronize: true</code> — chỉ nên dùng khi dev, không dùng ở production vì có thể mất dữ liệu khi đổi schema).</p>
+
+<div class="note"><b>⚠ Bẫy trùng tên — RẤT dễ gặp:</b> Entity thường được đặt tên số ít khớp domain (<code>Post</code>, <code>Comment</code>, <code>User</code>) — nhưng <code>Post</code> lại trùng tên với decorator <code>@Post()</code> import từ <code>@nestjs/common</code>! Trong Controller/Service cần dùng cả 2, phải <b>alias khi import</b>:
+<pre><code><span class="kw">import</span> { Post <span class="kw">as</span> PostEntity } <span class="kw">from</span> <span class="str">'./entities/post.entity'</span>;</pre></code>
+Nếu bạn thấy TypeScript báo <code>error TS2749: 'Post' refers to a value, but is being used as a type here</code> — chính xác là bug này. Alias theo chiều nào (đổi tên decorator hay Entity) tuỳ bạn, chỉ cần nhất quán trong 1 file.</div>
+
+<h2>8.3 Repository Pattern</h2>
+<pre><code><span class="kw">constructor</span>(
+  <span class="kw">@InjectRepository</span>(PostEntity)
+  <span class="kw">private readonly</span> postsRepository: Repository&lt;PostEntity&gt;,
+) {}
+
+<span class="kw">// find() ĐÃ tự trả Promise → chỉ forward ra, KHÔNG cần async</span>
+findAll(): Promise&lt;PostEntity[]&gt; {
+  <span class="kw">return this</span>.postsRepository.<span class="cls">find</span>();
+}
+
+<span class="kw">// BẮT BUỘC async/await: cần giá trị thật của post để kiểm tra if (!post)</span>
+<span class="kw">async</span> findOne(id: <span class="kw">number</span>): Promise&lt;PostEntity&gt; {
+  <span class="kw">const</span> post = <span class="kw">await this</span>.postsRepository.<span class="cls">findOneBy</span>({ id });
+  <span class="kw">if</span> (!post) {
+    <span class="kw">throw new</span> NotFoundException(<span class="str">`Post with id ${id} not found`</span>);
+  }
+  <span class="kw">return</span> post;
+}
+
+create(dto: CreatePostDto): Promise&lt;PostEntity&gt; {
+  <span class="kw">// create() ĐỒNG BỘ: chỉ tạo object JS trong RAM, chưa chạm DB</span>
+  <span class="kw">const</span> post = <span class="kw">this</span>.postsRepository.<span class="cls">create</span>(dto);
+  <span class="kw">// save() BẤT ĐỒNG BỘ: trả Promise → return thẳng, không cần await</span>
+  <span class="kw">return this</span>.postsRepository.<span class="cls">save</span>(post);
+}</pre></code>
+<p><code>@InjectRepository(PostEntity)</code> là một biến thể đặc biệt của DI — thay vì inject trực tiếp một class do bạn viết, bạn inject một <b>Repository object</b> mà TypeORM tự sinh ra cho Entity <code>PostEntity</code>. Repository này có sẵn các method <code>find</code>, <code>findOneBy</code>, <code>save</code>, <code>remove</code>... — về bản chất đây vẫn là DI container, chỉ là "provider" ở đây được đăng ký bởi <code>TypeOrmModule.forFeature([Post])</code> thay vì bạn tự viết <code>@Injectable()</code>.</p>
+
+<div class="audit"><b>Quy tắc chung khi nào cần <code>async/await</code>:</b> chỉ cần khi bạn phải <i>dùng giá trị đã resolve</i> của 1 Promise ngay trong thân hàm (so sánh <code>if</code>, <code>Object.assign</code>, truyền làm tham số cho hàm khác cần entity thật...). Nếu chỉ nhận 1 Promise rồi trả thẳng ra ngoài (không đụng vào giá trị) — không cần <code>async/await</code>, cứ <code>return</code> Promise đó, người gọi tự lo. Ví dụ cụ thể: <code>findAll()</code>/<code>create()</code> không cần async (chỉ forward Promise), <code>findOne()</code>/<code>update()</code>/<code>remove()</code> bắt buộc cần (phải <code>if (!post)</code>, hoặc cần entity thật để gọi <code>repository.remove(entity)</code>).</div>
+
+<div class="note"><b>Bug nguy hiểm nếu quên await ở Controller:</b>
+<pre><code><span class="kw">// SAI — không await, không return:</span>
+remove(id: number) {
+  <span class="kw">this</span>.postsService.<span class="cls">remove</span>(id); <span class="kw">// Promise bị "bỏ rơi"</span>
+  <span class="kw">return</span> { message: <span class="str">'deleted'</span> };  <span class="kw">// trả response NGAY, chưa chắc đã xoá xong</span>
+}</pre></code>
+Nếu <code>id</code> không tồn tại, <code>service.remove()</code> sẽ <code>throw</code> <b>bên trong 1 Promise không ai await</b> — thành "unhandled promise rejection", Nest không bắt được, và tuỳ phiên bản Node.js có thể <b>crash cả server</b>. Luôn <code>await</code> Promise trước khi return trong Controller.</div>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Cài <code>@nestjs/typeorm typeorm better-sqlite3</code> (KHÔNG dùng <code>sqlite3</code> — xem cảnh báo ở trên)</li>
+<li>Cấu hình <code>TypeOrmModule.forRoot({ type: 'better-sqlite3', database: 'db.sqlite3', autoLoadEntities: true, synchronize: true })</code> trong AppModule</li>
+<li>Tạo <code>Post</code> entity thay cho mảng cứng, nhớ alias khi import vào Controller/Service (mục 8.2)</li>
+<li>Đăng ký <code>TypeOrmModule.forFeature([Post])</code> trong PostsModule, inject Repository vào PostsService</li>
+<li>Chuyển toàn bộ hàm CRUD trong service sang gọi Repository, thêm <code>async/await</code> đúng chỗ (mục 8.3)</li>
+<li>Thêm <code>db.sqlite3</code> vào <code>.gitignore</code> — không commit file database lên git</li>
+<li>Kiểm chứng persistence: tạo 1 post, restart hẳn server (<code>Ctrl+C</code> rồi chạy lại), <code>GET</code> lại — post phải còn nguyên</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 9 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 09</div>
+<h1>Quan hệ dữ liệu (Relations)</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Thêm entity thứ 2 (Comment) và liên kết với Post — hiểu cách TypeORM quản lý khoá ngoại.</div></div>
+
+<h2>9.1 One-to-Many / Many-to-One</h2>
+<pre><code><span class="kw">// Trong Post entity</span>
+<span class="kw">@OneToMany</span>(() =&gt; Comment, (comment) =&gt; comment.post)
+comments: Comment[];
+
+<span class="kw">// Trong Comment entity</span>
+<span class="kw">@ManyToOne</span>(() =&gt; Post, (post) =&gt; post.comments, { onDelete: <span class="str">'CASCADE'</span> })
+post: Post;</pre></code>
+<p>Một <code>Post</code> có nhiều <code>Comment</code> (OneToMany), mỗi <code>Comment</code> thuộc về đúng một <code>Post</code> (ManyToOne) — hai decorator này luôn đi thành cặp, tham số thứ 2 là hàm trỏ ngược lại field ở phía bên kia để TypeORM biết đây là 2 đầu của cùng 1 quan hệ. <b>Khoá ngoại thật (<code>postId</code>) chỉ nằm ở bảng phía "Many"</b> (<code>comment</code>) — <code>@OneToMany</code> không tạo cột nào cả. <code>onDelete: 'CASCADE'</code> — xoá <code>Post</code> thì mọi <code>Comment</code> của nó tự bị xoá theo, tránh dữ liệu "mồ côi".</p>
+
+<div class="note"><b>⚠ Bẫy cực tinh vi — global <code>Comment</code> của DOM:</b> nếu bạn <code>import { Comment } from './entities/comment.entity'</code> nhưng lỡ <b>quên import</b> ở nơi khác dùng đến (ví dụ trong <code>@Module({ imports: [TypeOrmModule.forFeature([Comment, Post])] })</code>), TypeScript <b>sẽ không báo lỗi gì</b>! Lý do: khi <code>tsconfig.json</code> không giới hạn <code>"lib"</code>, TypeScript tự nạp thêm type của DOM — trong đó có sẵn 1 biến toàn cục tên <code>Comment</code> (constructor của "comment node" trong HTML, giống <code>Document</code>). Compile "sạch", nhưng chạy trong Node.js sẽ <code>ReferenceError: Comment is not defined</code> ngay khi module được nạp — vì Node.js không có global đó. <b>Bài học:</b> "tsc không báo lỗi" không đồng nghĩa "chắc chắn đúng" khi có tên trùng global ambient type/value có sẵn trong lib mặc định. Luôn để ý gợi ý "Add import" của IDE khi gõ tên class — nếu nó không hiện gợi ý dù bạn chưa import, hãy nghi ngờ.</div>
+
+<h2>9.2 Eager vs Lazy loading</h2>
+<p><code>eager: true</code> trong decorator quan hệ nghĩa là mỗi lần query Post, TypeORM tự động JOIN kèm luôn Comment. Nếu không bật, bạn phải chủ động yêu cầu bằng <code>relations: ['comments']</code> khi query — cách này kiểm soát hiệu năng tốt hơn (tránh JOIN thừa khi không cần, ví dụ <code>GET /posts</code> danh sách không cần tải hết comments của từng post).</p>
+
+<h2>9.3 Kiểm tra parent tồn tại trước khi tạo con</h2>
+<pre><code><span class="kw">async</span> create(postId: <span class="kw">number</span>, dto: CreateCommentDto): Promise&lt;Comment&gt; {
+  <span class="kw">const</span> post = <span class="kw">await this</span>.postsRepository.<span class="cls">findOneBy</span>({ id: postId });
+  <span class="kw">if</span> (!post) {
+    <span class="kw">throw new</span> NotFoundException(<span class="str">`Post with id ${postId} not found`</span>);
+  }
+  <span class="kw">// gán cả object post vào field quan hệ, KHÔNG phải postId</span>
+  <span class="kw">const</span> comment = <span class="kw">this</span>.commentsRepository.<span class="cls">create</span>({ ...dto, post });
+  <span class="kw">return this</span>.commentsRepository.<span class="cls">save</span>(comment);
+}</pre></code>
+<p>Gán trực tiếp <b>object <code>post</code></b> (không phải <code>postId</code>) vào field quan hệ — TypeORM tự hiểu cần lưu <code>post.id</code> vào cột khoá ngoại bên dưới. Luôn kiểm tra parent tồn tại trước — nếu không sẽ tạo ra comment "mồ côi" ngay từ đầu ở tầng nghiệp vụ (dù DB không cấm).</p>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo <code>Comment</code> entity + <code>CommentsModule</code> (dùng <code>nest g resource comments</code>)</li>
+<li>Thiết lập quan hệ OneToMany/ManyToOne giữa Post và Comment — nhớ import <code>Comment</code> đầy đủ ở MỌI nơi dùng đến (mục 9.1)</li>
+<li><code>CommentsModule</code> đăng ký <code>TypeOrmModule.forFeature([Comment, Post])</code> — cần cả <code>Post</code> vì Service phải tự tra Post cha có tồn tại</li>
+<li>Viết route <code>GET /posts/:id</code> trả về post kèm danh sách comment của nó (<code>relations: ['comments']</code>)</li>
+<li>Viết route lồng <code>POST /posts/:postId/comments</code> để tạo comment cho 1 post cụ thể</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 10 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 10</div>
+<h1>Authentication (JWT + Passport)</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Hiểu toàn bộ luồng đăng ký → đăng nhập → cấp token → bảo vệ route bằng token.</div></div>
+
+<h2>10.1 Luồng tổng quan</h2>
+<div class="diagram">1. POST /auth/register
+   → hash password bằng bcrypt (KHÔNG BAO GIỜ lưu plain text password)
+   → lưu user vào database
+2. POST /auth/login
+   → tìm user theo email
+   → so sánh password gửi lên với hash đã lưu (bcrypt.compare)
+   → nếu khớp → tạo JWT token (chứa payload: userId, email...) ký bằng secret key
+   → trả token về client
+3. Client lưu token, gửi kèm mọi request sau đó:
+   Header: Authorization: Bearer <token>
+4. Route được bảo vệ gắn @UseGuards(AuthGuard('jwt'))
+   → PassportStrategy tự động verify chữ ký token bằng secret key
+   → nếu hợp lệ → giải mã payload, gắn vào request.user
+   → nếu không hợp lệ/hết hạn → tự động trả 401 Unauthorized</div>
+
+<h2>10.2 Vì sao dùng Passport?</h2>
+<p><code>@nestjs/passport</code> là lớp tích hợp giữa NestJS và thư viện Passport.js (chuẩn công nghiệp cho authentication ở Node.js). Bạn định nghĩa một <code>JwtStrategy</code> (kế thừa <code>PassportStrategy</code>) khai báo cách lấy token (từ header), secret key để verify, và hàm <code>validate(payload)</code> chạy sau khi token đã được xác minh hợp lệ — trả về gì trong <code>validate()</code> thì thứ đó sẽ được gán vào <code>request.user</code>.</p>
+
+<h2>10.3 Vì sao hash password bằng bcrypt</h2>
+<p>Bcrypt là hash <b>một chiều</b> (không giải mã ngược được) có "salt" ngẫu nhiên tích hợp — cùng 1 password hash 2 lần ra 2 chuỗi khác nhau, chống rainbow table. Khi login không "giải mã" hash, mà hash lại password vừa nhập rồi so sánh (<code>bcrypt.compare</code> làm việc này).</p>
+
+<div class="note"><b>Liên hệ với <code>AuthGuard</code> giả lập ở Part 07:</b> Guard ở Part 07 chỉ kiểm tra "có header Authorization hay không", không verify token. Part này thay nó bằng <code>AuthGuard('jwt')</code> của Passport (verify chữ ký JWT thật) — nên bỏ Guard giả đi khi đã có Guard thật, tránh nhầm lẫn.</div>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo <code>User</code> entity, <code>AuthModule</code></li>
+<li>Cài <code>bcrypt</code>, <code>@nestjs/jwt</code>, <code>@nestjs/passport</code>, <code>passport-jwt</code></li>
+<li>Viết route <code>register</code> (hash password trước khi lưu) và <code>login</code> (verify + trả JWT)</li>
+<li>Viết <code>JwtStrategy</code> + <code>JwtAuthGuard</code>, áp dụng lên các route cần đăng nhập (vd tạo/xoá post phải đăng nhập)</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 11 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 11 — TUỲ CHỌN</div>
+<h1>Testing với Jest</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Viết unit test cho Service mà không cần khởi động cả app.</div></div>
+
+<h2>11.1 Unit test Service</h2>
+<p>Nest CLI tích hợp sẵn Jest. Với unit test, bạn dùng <code>Test.createTestingModule()</code> để tạo một "module giả lập" chỉ chứa đúng provider cần test — có thể <b>mock</b> Repository/dependency khác thay vì dùng database thật, giúp test chạy nhanh và độc lập.</p>
+
+<h2>11.2 e2e test</h2>
+<p>e2e (end-to-end) test khởi động toàn bộ app thật (dùng <code>supertest</code> để gửi HTTP request thật tới app trong bộ nhớ), kiểm tra toàn bộ luồng từ HTTP request tới response — gần với hành vi thực tế nhất nhưng chạy chậm hơn unit test.</p>
+
+<div class="task-box"><b>Việc cần làm (tuỳ chọn, làm sau khi xong Part 1-10):</b>
+<ol>
+<li>Viết unit test cho <code>PostsService.findAll()</code> và <code>findOne()</code> với repository được mock</li>
+<li>Viết 1 e2e test đơn giản cho route <code>GET /posts</code></li>
+</ol>
+</div>
+</div>
+
+<!-- PART 12 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 12 — MỚI</div>
+<h1>Pagination</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Không trả về toàn bộ bảng cùng lúc — chia trang, giới hạn số lượng bản ghi mỗi lần trả về client.</div></div>
+
+<h2>12.1 Vì sao cần pagination</h2>
+<p>Ở Part 8-9, <code>GET /posts</code> luôn trả <b>toàn bộ</b> bảng. Với 20 post thì không vấn đề gì, nhưng với 200,000 post — mỗi request sẽ kéo hết dữ liệu, tốn băng thông, tốn RAM, chậm cả server và client. Pagination giải quyết bằng cách chỉ trả về 1 "trang" (page) nhỏ mỗi lần, kèm thông tin để client biết còn bao nhiêu trang.</p>
+
+<h2>12.2 Query DTO cho pagination</h2>
+<pre><code><span class="kw">import</span> { Type } <span class="kw">from</span> <span class="str">'class-transformer'</span>;
+<span class="kw">import</span> { IsInt, IsOptional, Max, Min } <span class="kw">from</span> <span class="str">'class-validator'</span>;
+
+<span class="kw">export class</span> <span class="cls">PaginationQueryDto</span> {
+  <span class="kw">@IsOptional</span>()
+  <span class="kw">@Type</span>(() =&gt; Number)
+  <span class="kw">@IsInt</span>()
+  <span class="kw">@Min</span>(1)
+  page: <span class="kw">number</span> = 1;
+
+  <span class="kw">@IsOptional</span>()
+  <span class="kw">@Type</span>(() =&gt; Number)
+  <span class="kw">@IsInt</span>()
+  <span class="kw">@Min</span>(1)
+  <span class="kw">@Max</span>(100)
+  limit: <span class="kw">number</span> = 10;
+}</pre></code>
+<div class="audit"><b>Vì sao bắt buộc phải có <code>@Type(() => Number)</code> ở đây:</b> query string trong URL (<code>?page=2&limit=10</code>) luôn được Express/Nest parse thành <b>string</b>, kể cả khi bạn khai <code>page: number</code> trong DTO. Khác với body JSON (nơi <code>class-transformer</code> tự suy ra kiểu số nếu JSON gửi số), query string cần <code>@Type(() => Number)</code> tường minh để <code>class-transformer</code> biết ép <code>"2"</code> thành <code>2</code> trước khi <code>class-validator</code> chạy <code>@IsInt()</code> — thiếu dòng này, <code>@IsInt()</code> luôn fail vì nhận vào string.</div>
+<p><code>@Max(100)</code> ở <code>limit</code> — chặn client tự ý xin <code>?limit=999999</code> (biến pagination thành vô nghĩa, lại quay về vấn đề tải hết bảng).</p>
+
+<h2>12.3 Dùng <code>skip</code>/<code>take</code> với TypeORM</h2>
+<pre><code><span class="kw">async</span> findAll(query: PaginationQueryDto) {
+  <span class="kw">const</span> { page, limit } = query;
+  <span class="kw">const</span> [data, total] = <span class="kw">await this</span>.postsRepository.<span class="cls">findAndCount</span>({
+    skip: (page - 1) * limit,
+    take: limit,
+    order: { id: <span class="str">'DESC'</span> },
+  });
+
+  <span class="kw">return</span> {
+    data,
+    meta: { total, page, limit, totalPages: Math.<span class="cls">ceil</span>(total / limit) },
+  };
+}</pre></code>
+<p><code>findAndCount()</code> chạy 2 việc trong 1 lần gọi: lấy đúng <code>limit</code> bản ghi bắt đầu từ vị trí <code>skip</code> (SQL <code>LIMIT</code>/<code>OFFSET</code>), <b>và</b> đếm tổng số bản ghi thoả điều kiện (không tính <code>LIMIT</code>) — cần cả 2 số này để tính <code>totalPages</code>. Nếu chỉ dùng <code>find({ skip, take })</code> thường, bạn sẽ không biết tổng cộng có bao nhiêu trang.</p>
+
+<div class="note"><b>Route Controller — nhớ dùng <code>@Query()</code>, không phải <code>@Param()</code>:</b>
+<pre><code><span class="kw">@Get</span>()
+findAll(<span class="kw">@Query</span>() query: PaginationQueryDto) {
+  <span class="kw">return this</span>.postsService.<span class="cls">findAll</span>(query);
+}</pre></code>
+<code>ValidationPipe</code> global (Part 5) tự áp dụng luôn cho <code>@Query()</code>, không cần cấu hình thêm — nhưng phải đảm bảo <code>transform: true</code> đã bật (mặc định của <code>ValidationPipe</code> khi bạn dùng <code>class-transformer</code>) để <code>@Type()</code> ở mục 12.2 thực sự chạy.</div>
+
+<h2>12.4 Tương tác với TransformInterceptor (Part 07)</h2>
+<p><code>TransformInterceptor</code> đang bọc mọi response thành <code>{ success: true, data }</code>. Khi Service pagination tự trả về <code>{ data, meta }</code>, Interceptor sẽ bọc thêm 1 lớp thành <code>{ success: true, data: { data, meta } }</code> — lồng 2 lần chữ <code>data</code>, khó đọc. Không có đáp án "đúng tuyệt đối" — bạn tự chọn trade-off giữa "1 format nhất quán toàn app" (Part 07) và "pagination cần thêm field":</p>
+<ul>
+<li><b>Cách 1:</b> Sửa Interceptor để nếu payload đã có sẵn field <code>meta</code> thì spread thẳng ra <code>{ success: true, data: result.data, meta: result.meta }</code> thay vì bọc thêm.</li>
+<li><b>Cách 2:</b> Bỏ qua vấn đề, chấp nhận cấu trúc lồng — client đọc <code>response.data.data</code> và <code>response.data.meta</code>.</li>
+</ul>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo <code>PaginationQueryDto</code> với <code>page</code>, <code>limit</code> có default + validate</li>
+<li>Sửa <code>PostsService.findAll()</code> dùng <code>findAndCount()</code> với <code>skip</code>/<code>take</code></li>
+<li>Trả kèm <code>meta: { total, page, limit, totalPages }</code></li>
+<li>Tự quyết định và xử lý vấn đề lồng response với <code>TransformInterceptor</code> (mục 12.4)</li>
+<li>Test <code>GET /posts?page=2&limit=5</code>, xác nhận đúng số lượng và đúng trang</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 13 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 13 — MỚI</div>
+<h1>Transactions</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Đảm bảo nhiều thao tác ghi database "thành công cùng nhau hoặc thất bại cùng nhau" (atomicity).</div></div>
+
+<h2>13.1 Vấn đề transaction giải quyết</h2>
+<p>Hình dung: tạo 1 <code>Post</code> mới, đồng thời cũng cần tạo sẵn 1 <code>Comment</code> chào mừng đầu tiên gắn với post đó. Nếu <code>save(post)</code> thành công nhưng <code>save(comment)</code> thất bại (lỗi mạng, lỗi validate, crash giữa chừng...) — bạn còn lại 1 <code>Post</code> "mồ côi" không có comment đi kèm như thiết kế, dữ liệu ở trạng thái nửa vời. Transaction đảm bảo: <b>hoặc cả 2 lệnh cùng thành công (commit), hoặc cả 2 cùng bị hoàn tác (rollback)</b> như chưa từng xảy ra.</p>
+
+<h2>13.2 Cách đơn giản — <code>DataSource.transaction()</code></h2>
+<pre><code><span class="kw">import</span> { DataSource } <span class="kw">from</span> <span class="str">'typeorm'</span>;
+
+<span class="kw">@Injectable</span>()
+<span class="kw">export class</span> <span class="cls">PostsService</span> {
+  <span class="kw">constructor</span>(<span class="kw">private readonly</span> dataSource: DataSource) {}
+
+  <span class="kw">async</span> createWithFirstComment(dto: CreatePostDto, firstComment: <span class="kw">string</span>) {
+    <span class="kw">return this</span>.dataSource.<span class="cls">transaction</span>(<span class="kw">async</span> (manager) =&gt; {
+      <span class="kw">const</span> post = <span class="kw">await</span> manager.<span class="cls">save</span>(PostEntity, dto);
+      <span class="kw">await</span> manager.<span class="cls">save</span>(Comment, { content: firstComment, post });
+      <span class="kw">// throw ở BẤT KỲ đâu trong callback này → toàn bộ tự rollback</span>
+      <span class="kw">return</span> post;
+    });
+  }
+}</pre></code>
+<p><code>DataSource</code> (inject trực tiếp qua constructor, không cần <code>@InjectRepository</code>) đại diện cho kết nối database gốc. <code>.transaction(callback)</code> tự động: mở transaction (SQL <code>BEGIN</code>) → chạy callback → nếu callback chạy xong không lỗi thì <code>COMMIT</code> (ghi thật vào DB) → nếu callback <code>throw</code> bất kỳ đâu thì tự <code>ROLLBACK</code> (hoàn tác mọi thay đổi, như chưa từng chạy).</p>
+
+<div class="note"><b>Lưu ý bắt buộc:</b> mọi lệnh ghi database trong callback phải gọi qua <code>manager</code> được truyền vào (KHÔNG dùng <code>this.postsRepository.save()</code> như bình thường) — vì <code>manager</code> chính là "phiên làm việc" đang nằm trong transaction đó. Nếu lỡ tay dùng lại Repository thường bên ngoài, lệnh đó sẽ chạy trong 1 transaction/connection KHÁC, không được rollback cùng nhóm.</div>
+
+<h2>13.3 Cách kiểm soát tay — <code>QueryRunner</code></h2>
+<pre><code><span class="kw">async</span> createWithFirstComment(dto: CreatePostDto, firstComment: <span class="kw">string</span>) {
+  <span class="kw">const</span> queryRunner = <span class="kw">this</span>.dataSource.<span class="cls">createQueryRunner</span>();
+  <span class="kw">await</span> queryRunner.<span class="cls">connect</span>();
+  <span class="kw">await</span> queryRunner.<span class="cls">startTransaction</span>();
+
+  <span class="kw">try</span> {
+    <span class="kw">const</span> post = <span class="kw">await</span> queryRunner.manager.<span class="cls">save</span>(PostEntity, dto);
+    <span class="kw">await</span> queryRunner.manager.<span class="cls">save</span>(Comment, { content: firstComment, post });
+    <span class="kw">await</span> queryRunner.<span class="cls">commitTransaction</span>();
+    <span class="kw">return</span> post;
+  } <span class="kw">catch</span> (err) {
+    <span class="kw">await</span> queryRunner.<span class="cls">rollbackTransaction</span>();
+    <span class="kw">throw</span> err;
+  } <span class="kw">finally</span> {
+    <span class="kw">// LUÔN release, kể cả khi lỗi — tránh rò rỉ connection</span>
+    <span class="kw">await</span> queryRunner.<span class="cls">release</span>();
+  }
+}</pre></code>
+<p>Cách này viết dài hơn <code>DataSource.transaction()</code> nhưng cho kiểm soát chi tiết hơn — cần khi bạn phải truyền <b>cùng 1 <code>queryRunner</code></b> xuyên qua nhiều Service khác nhau (ví dụ 1 luồng nghiệp vụ gọi cả <code>PostsService</code> và <code>CommentsService</code>, cả 2 phải nằm trong đúng 1 transaction). <code>DataSource.transaction()</code> ở mục 13.2 không làm được việc này vì <code>manager</code> chỉ tồn tại trong phạm vi callback, không truyền tự nhiên qua lời gọi Service khác được.</p>
+
+<h2>13.4 So sánh nhanh</h2>
+<table>
+<tr><th></th><th><code>DataSource.transaction()</code></th><th><code>QueryRunner</code> thủ công</th></tr>
+<tr><td>Độ dài code</td><td>Ngắn</td><td>Dài hơn, nhiều bước tay</td></tr>
+<tr><td>Tự rollback khi throw</td><td>✅ Tự động</td><td>Phải tự viết try/catch/rollback</td></tr>
+<tr><td>Dùng chung qua nhiều Service</td><td>Khó (manager giới hạn trong callback)</td><td>✅ Dễ — truyền <code>queryRunner</code> làm tham số</td></tr>
+<tr><td>Phù hợp</td><td>Transaction đơn giản, gọn trong 1 Service</td><td>Transaction phức tạp, nhiều Service tham gia</td></tr>
+</table>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Viết method <code>createWithFirstComment()</code> trong <code>PostsService</code> dùng <code>DataSource.transaction()</code></li>
+<li>Test case thành công: gọi API, xác nhận cả <code>Post</code> và <code>Comment</code> đều xuất hiện trong database</li>
+<li>Test case rollback: chủ động sửa tạm code để <code>throw new Error('test rollback')</code> ngay sau khi save comment — gọi lại API, xác nhận <b>cả Post cũng KHÔNG được lưu</b> (kiểm tra bằng DevDb/SQLite Viewer hoặc <code>GET /posts</code>) — đây là bằng chứng transaction hoạt động đúng</li>
+<li>Xoá dòng <code>throw</code> test sau khi xác nhận xong</li>
+</ol>
+</div>
+</div>
+
+
+</body>
+</html>
