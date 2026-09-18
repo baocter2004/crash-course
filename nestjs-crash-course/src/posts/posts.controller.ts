@@ -12,8 +12,8 @@ import {
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { AuthGuard } from 'src/common/guards/auth.guard';
 import { Post as PostEntity } from './enities/post.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('posts')
 export class PostsController {
@@ -31,14 +31,14 @@ export class PostsController {
   }
 
   // [POST] /posts
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createPostDto: CreatePostDto): Promise<PostEntity> {
     return this.postsService.create(createPostDto);
   }
 
   // [PUT] /posts/:id
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -48,7 +48,7 @@ export class PostsController {
   }
 
   // [DELETE] /posts/:id
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(
     @Param('id', ParseIntPipe) id: number,
