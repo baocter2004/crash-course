@@ -4,6 +4,8 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post as PostEntity } from './enities/post.entity';
 import { Repository } from 'typeorm';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { Paginated } from 'src/common/pagination';
 
 @Injectable()
 export class PostsService {
@@ -12,8 +14,18 @@ export class PostsService {
     private readonly postsRepository: Repository<PostEntity>,
   ) {}
 
-  findAll(): Promise<PostEntity[]> {
-    return this.postsRepository.find();
+  async findAll(query: PaginationQueryDto): Promise<Paginated<PostEntity>> {
+    const { page, limit } = query;
+    const [data, total] = await this.postsRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      order: { id: 'DESC' },
+    });
+
+    return {
+      data,
+      meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
+    };
   }
 
   async findOne(id: number): Promise<PostEntity> {

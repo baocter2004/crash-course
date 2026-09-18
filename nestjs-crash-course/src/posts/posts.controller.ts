@@ -8,20 +8,22 @@ import {
   Put,
   ParseIntPipe,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post as PostEntity } from './enities/post.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
   // [GET] /posts
   @Get()
-  async findAll(): Promise<PostEntity[]> {
-    return this.postsService.findAll();
+  findAll(@Query() query: PaginationQueryDto) {
+    return this.postsService.findAll(query);
   }
 
   // [GET] /posts/:id
