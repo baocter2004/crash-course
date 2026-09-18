@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { AuthGuard } from '../common/guards/auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('posts/:postId/comments')
 export class CommentsController {
@@ -20,7 +20,7 @@ export class CommentsController {
     return this.commentsService.findAllByPost(postId);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @HttpPost()
   create(
     @Param('postId', ParseIntPipe) postId: number,
