@@ -58,4 +58,22 @@ export class PostsController {
     await this.postsService.remove(id);
     return { message: `Post with id ${id} deleted` };
   }
+
+  // [POST] /posts/with-welcome-comment
+  @Post('with-welcome-comment')
+  @UseGuards(JwtAuthGuard)
+  async createPostWithComment(
+    @Body() createPostDto: CreatePostDto,
+  ): Promise<PostEntity> {
+    return this.postsService.createWithWelcomeComment(createPostDto);
+  }
+
+  // [POST] /posts/with-welcome-comment
+  @Post('with-welcome-comment-manual')
+  @UseGuards(JwtAuthGuard)
+  async createPostWithCommentManual(
+    @Body() createPostDto: CreatePostDto,
+  ): Promise<PostEntity> {
+    return this.postsService.createWithWelcomeCommentManual(createPostDto);
+  }
 }
