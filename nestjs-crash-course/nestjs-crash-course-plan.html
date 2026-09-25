@@ -633,7 +633,8 @@ post: Post;</pre></code>
 <div class="note"><b>⚠ Bẫy cực tinh vi — global <code>Comment</code> của DOM:</b> nếu bạn <code>import { Comment } from './entities/comment.entity'</code> nhưng lỡ <b>quên import</b> ở nơi khác dùng đến (ví dụ trong <code>@Module({ imports: [TypeOrmModule.forFeature([Comment, Post])] })</code>), TypeScript <b>sẽ không báo lỗi gì</b>! Lý do: khi <code>tsconfig.json</code> không giới hạn <code>"lib"</code>, TypeScript tự nạp thêm type của DOM — trong đó có sẵn 1 biến toàn cục tên <code>Comment</code> (constructor của "comment node" trong HTML, giống <code>Document</code>). Compile "sạch", nhưng chạy trong Node.js sẽ <code>ReferenceError: Comment is not defined</code> ngay khi module được nạp — vì Node.js không có global đó. <b>Bài học:</b> "tsc không báo lỗi" không đồng nghĩa "chắc chắn đúng" khi có tên trùng global ambient type/value có sẵn trong lib mặc định. Luôn để ý gợi ý "Add import" của IDE khi gõ tên class — nếu nó không hiện gợi ý dù bạn chưa import, hãy nghi ngờ.</div>
 
 <h2>9.2 Eager vs Lazy loading</h2>
-<p><code>eager: true</code> trong decorator quan hệ nghĩa là mỗi lần query Post, TypeORM tự động JOIN kèm luôn Comment. Nếu không bật, bạn phải chủ động yêu cầu bằng <code>relations: ['comments']</code> khi query — cách này kiểm soát hiệu năng tốt hơn (tránh JOIN thừa khi không cần, ví dụ <code>GET /posts</code> danh sách không cần tải hết comments của từng post).</p>
+<p><code>eager: true</code> trong decorator quan hệ nghĩa là mỗi lần query Post, TypeORM tự động JOIN kèm luôn Comment. Nếu không bật, bạn phải chủ động yêu cầu bằng <code>relations: { comments: true }</code> khi query — cách này kiểm soát hiệu năng tốt hơn (tránh JOIN thừa khi không cần, ví dụ <code>GET /posts</code> danh sách không cần tải hết comments của từng post).</p>
+<div class="audit"><b>Đã sửa so với bản gốc:</b> bản trước viết <code>relations: ['comments']</code> (mảng chuỗi) — đây là API TypeORM CŨ. Bản TypeORM hiện tại chỉ chấp nhận <b>object</b>: <code>relations: { comments: true }</code>, lồng sâu thì <code>{ comments: { author: true } }</code>. Dùng mảng chuỗi sẽ báo lỗi compile <code>Type 'string[]' has no properties in common with type 'FindOptionsRelations&lt;Post&gt;'</code>.</div>
 
 <h2>9.3 Kiểm tra parent tồn tại trước khi tạo con</h2>
 <pre><code><span class="kw">async</span> create(postId: <span class="kw">number</span>, dto: CreateCommentDto): Promise&lt;Comment&gt; {
@@ -647,13 +648,36 @@ post: Post;</pre></code>
 }</pre></code>
 <p>Gán trực tiếp <b>object <code>post</code></b> (không phải <code>postId</code>) vào field quan hệ — TypeORM tự hiểu cần lưu <code>post.id</code> vào cột khoá ngoại bên dưới. Luôn kiểm tra parent tồn tại trước — nếu không sẽ tạo ra comment "mồ côi" ngay từ đầu ở tầng nghiệp vụ (dù DB không cấm).</p>
 
+<h2>9.4 Đếm số bản ghi liên quan — không tải cả mảng chỉ để lấy <code>.length</code></h2>
+<p>Bài toán rất hay gặp: category có bao nhiêu product, post có bao nhiêu comment... <b>Cách sai</b> — tải nguyên bảng con rồi đếm:</p>
+<pre><code><span class="kw">// SAI — kéo hết dữ liệu product (name, price, description...) chỉ để đếm</span>
+<span class="kw">const</span> category = <span class="kw">await this</span>.categoriesRepository.<span class="cls">findOne</span>({
+  where: { id },
+  relations: { products: <span class="kw">true</span> },
+});
+<span class="kw">const</span> count = category.products.length; <span class="kw">// category có 10.000 product = kéo cả 10.000 dòng</span></pre></code>
+<p>Cách đúng: yêu cầu database tự đếm (<code>COUNT</code>), không kéo dữ liệu con về. TypeORM có 2 hàm cho việc này trên <code>QueryBuilder</code> — nhưng <b>chỉ 1 hàm còn tồn tại</b> ở bản bạn đang cài:</p>
+<pre><code><span class="kw">const</span> [rows, total] = <span class="kw">await this</span>.categoriesRepository
+  .createQueryBuilder(<span class="str">'category'</span>)
+  .loadRelationIdAndMap(<span class="str">'category.productsCount'</span>, <span class="str">'category.products'</span>)
+  .skip((page - 1) * limit)
+  .take(limit)
+  .getManyAndCount();
+
+<span class="kw">const</span> data = rows.<span class="cls">map</span>((category) =&gt; ({
+  ...category,
+  productsCount: (category.productsCount <span class="kw">as</span> <span class="kw">unknown</span> <span class="kw">as</span> <span class="kw">number</span>[])?.length ?? 0,
+}));</pre></code>
+<div class="audit"><b>⚠ Đã sửa so với bản gốc:</b> hàm "chuẩn sách giáo khoa" cho việc này tên là <code>loadRelationCountAndMap</code> (tự chạy <code>COUNT</code>, trả thẳng về số) — đây là hàm hầu hết tutorial/docs TypeORM nói tới. Nhưng ở bản TypeORM đang cài, hàm đó <b>không còn tồn tại</b> — bị bỏ hẳn, TS báo <code>Property 'loadRelationCountAndMap' does not exist</code>. Chỉ còn <code>loadRelationIdAndMap</code> — trả về <b>mảng id</b>, không phải số, phải tự <code>.length</code> ở tầng code như ví dụ trên.</div>
+
 <div class="task-box"><b>Việc cần làm:</b>
 <ol>
 <li>Tạo <code>Comment</code> entity + <code>CommentsModule</code> (dùng <code>nest g resource comments</code>)</li>
 <li>Thiết lập quan hệ OneToMany/ManyToOne giữa Post và Comment — nhớ import <code>Comment</code> đầy đủ ở MỌI nơi dùng đến (mục 9.1)</li>
 <li><code>CommentsModule</code> đăng ký <code>TypeOrmModule.forFeature([Comment, Post])</code> — cần cả <code>Post</code> vì Service phải tự tra Post cha có tồn tại</li>
-<li>Viết route <code>GET /posts/:id</code> trả về post kèm danh sách comment của nó (<code>relations: ['comments']</code>)</li>
+<li>Viết route <code>GET /posts/:id</code> trả về post kèm danh sách comment của nó (<code>relations: { comments: true }</code>)</li>
 <li>Viết route lồng <code>POST /posts/:postId/comments</code> để tạo comment cho 1 post cụ thể</li>
+<li>Thêm field <code>commentsCount</code> vào <code>GET /posts</code> (danh sách) bằng <code>loadRelationIdAndMap</code> + <code>.length</code> — xác nhận response không kéo theo nội dung comment nào</li>
 </ol>
 </div>
 </div>

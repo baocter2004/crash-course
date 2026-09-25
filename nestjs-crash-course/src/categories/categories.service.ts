@@ -16,11 +16,19 @@ export class CategoriesService {
 
   async findAll(query: PaginationQueryDto): Promise<Paginated<Category>> {
     const { page, limit } = query;
-    const [data, total] = await this.categoriesRepository.findAndCount({
-      skip: (page - 1) * limit,
-      take: limit,
-      order: { id: 'DESC' },
-    });
+    const [rows, total] = await this.categoriesRepository
+      .createQueryBuilder('category')
+      .loadRelationIdAndMap('category.productsCount', 'category.products')
+      .orderBy('category.id', 'DESC')
+      .skip((page - 1) * limit)
+      .take(limit)
+      .getManyAndCount();
+
+    const data = rows.map((category) => ({
+      ...category,
+      productsCount:
+        (category.productsCount as unknown as number[])?.length ?? 0,
+    }));
 
     return {
       data,
@@ -47,7 +55,7 @@ export class CategoriesService {
   }
 
   async update(id: number, data: UpdateCategoryDto): Promise<Category> {
-    const category = this.categoriesRepository.create(data);
+    const category = await this.findOne(id);
     Object.assign(category, data);
     return this.categoriesRepository.save(category);
   }
