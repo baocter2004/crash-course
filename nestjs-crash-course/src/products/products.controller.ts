@@ -9,10 +9,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { Product } from './enities/product.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateProductDto } from './dto/create-product.dto';
+import { ProductQueryDto } from './dto/get-product.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -20,7 +20,7 @@ export class ProductsController {
 
   // [GET] /products
   @Get()
-  findAll(@Query() query: PaginationQueryDto) {
+  findAll(@Query() query: ProductQueryDto) {
     return this.productsService.findAll(query);
   }
 
