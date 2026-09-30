@@ -1,8 +1,9 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common';
+import { DataSource } from 'typeorm';
 import { PostsService } from './posts.service';
-import { Post } from './enities/post.entity';
+import { Post } from './entities/post.entity';
 
 describe('PostsService', () => {
   let service: PostsService;
@@ -22,6 +23,7 @@ describe('PostsService', () => {
       providers: [
         PostsService,
         { provide: getRepositoryToken(Post), useValue: repo }, // thay Repository thật bằng mock
+        { provide: DataSource, useValue: { transaction: jest.fn() } },
       ],
     }).compile();
 

@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
-import { Category } from './enities/category.entity';
+import { Category } from './entities/category.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -52,7 +52,7 @@ export class CategoriesController {
     return this.categoriesService.update(id, updateCategoryDto);
   }
 
-  // [DELETE] /posts/:id
+  // [DELETE] /categories/:id
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(

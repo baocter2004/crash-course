@@ -3,6 +3,7 @@ import {
   ExecutionContext,
   Injectable,
   NestInterceptor,
+  StreamableFile,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -22,20 +23,23 @@ export interface PaginatedApiResponse<T> {
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor<
   T,
-  ApiResponse<T> | PaginatedApiResponse<unknown>
+  ApiResponse<T> | PaginatedApiResponse<unknown> | StreamableFile
 > {
   intercept(
     context: ExecutionContext,
     next: CallHandler<T>,
-  ): Observable<ApiResponse<T> | PaginatedApiResponse<unknown>> {
+  ): Observable<ApiResponse<T> | PaginatedApiResponse<unknown> | StreamableFile> {
     return next.handle().pipe(
-      map((payload) =>
-        isPaginated(payload)
+      map((payload) => {
+        if (payload instanceof StreamableFile) {
+          return payload;
+        }
+        return isPaginated(payload)
           ? // Service đã trả { data, meta } → trải phẳng, KHÔNG bọc thêm lớp data
             { success: true as const, data: payload.data, meta: payload.meta }
           : // Mọi response khác → bọc như cũ
-            { success: true as const, data: payload },
-      ),
+            { success: true as const, data: payload };
+      }),
     );
   }
 }

@@ -2,10 +2,10 @@ import { ProductQueryDto } from './dto/get-product.dto';
 import { Paginated } from './../common/pagination';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Product } from './enities/product.entity';
+import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
-import { Category } from 'src/categories/enities/category.entity';
+import { Category } from 'src/categories/entities/category.entity';
 
 @Injectable()
 export class ProductsService {
@@ -17,7 +17,7 @@ export class ProductsService {
   ) {}
 
   async findAll(query: ProductQueryDto): Promise<Paginated<Product>> {
-    const { page, limit, search, categoryId } = query;
+    const { page, limit, search, categoryId, minPrice, maxPrice } = query;
     // const [data, total] = await this.productsRepository.findAndCount({
     //   skip: (page - 1) * limit,
     //   take: limit,
@@ -44,6 +44,14 @@ export class ProductsService {
       qb.andWhere('category.id = :categoryId', {
         categoryId,
       });
+    }
+
+    if (minPrice !== undefined) {
+      qb.andWhere('product.price >= :minPrice', { minPrice });
+    }
+
+    if (maxPrice !== undefined) {
+      qb.andWhere('product.price <= :maxPrice', { maxPrice });
     }
 
     const [data, total] = await qb.getManyAndCount();

@@ -2,10 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { DataSource } from 'typeorm';
 import { AppModule } from './app.module';
 
-import { Post } from './posts/enities/post.entity';
-import { Comment } from './comments/enities/comment.enity';
-import { Category } from './categories/enities/category.entity';
-import { Product } from './products/enities/product.entity';
+import { Post } from './posts/entities/post.entity';
+import { Comment } from './comments/entities/comment.entity';
+import { Category } from './categories/entities/category.entity';
+import { Product } from './products/entities/product.entity';
 
 const POSTS = 20;
 const COMMENTS_PER_POST = 10;

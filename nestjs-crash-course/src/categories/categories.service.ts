@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Category } from './enities/category.entity';
+import { Category } from './entities/category.entity';
 import { Repository } from 'typeorm';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { Paginated } from 'src/common/pagination';
@@ -24,11 +24,12 @@ export class CategoriesService {
       .take(limit)
       .getManyAndCount();
 
-    const data = rows.map((category) => ({
-      ...category,
-      productsCount:
-        (category.productsCount as unknown as number[])?.length ?? 0,
-    }));
+    const data = rows.map((category) =>
+      Object.assign(category, {
+        productsCount:
+          (category.productsCount as unknown as number[])?.length ?? 0,
+      }),
+    );
 
     return {
       data,

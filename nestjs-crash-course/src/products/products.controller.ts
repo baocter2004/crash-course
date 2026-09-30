@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { Product } from './enities/product.entity';
+import { Product } from './entities/product.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateProductDto } from './dto/create-product.dto';
 import { ProductQueryDto } from './dto/get-product.dto';
@@ -25,7 +25,7 @@ export class ProductsController {
   }
 
   // [GET] /products/:id
-  @Get('id')
+  @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<Product> {
     return this.productsService.findOne(id);
   }

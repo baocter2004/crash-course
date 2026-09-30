@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Post } from 'src/posts/enities/post.entity';
-import { Comment } from './enities/comment.enity';
+import { Post } from 'src/posts/entities/post.entity';
+import { Comment } from './entities/comment.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class CommentsService {
   async create(postId: number, dto: CreateCommentDto): Promise<Comment> {
     const post = await this.postsRepository.findOneBy({ id: postId });
     if (!post) {
-      throw new NotFoundException(`Post with ${postId} not found`);
+      throw new NotFoundException(`Post with id ${postId} not found`);
     }
     const comment = this.commentsRepository.create({ ...dto, post });
     return this.commentsRepository.save(comment);
