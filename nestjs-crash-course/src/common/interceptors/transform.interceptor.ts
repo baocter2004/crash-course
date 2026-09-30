@@ -28,7 +28,9 @@ export class TransformInterceptor<T> implements NestInterceptor<
   intercept(
     context: ExecutionContext,
     next: CallHandler<T>,
-  ): Observable<ApiResponse<T> | PaginatedApiResponse<unknown> | StreamableFile> {
+  ): Observable<
+    ApiResponse<T> | PaginatedApiResponse<unknown> | StreamableFile
+  > {
     return next.handle().pipe(
       map((payload) => {
         if (payload instanceof StreamableFile) {
