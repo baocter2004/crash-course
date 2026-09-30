@@ -871,7 +871,47 @@ Post::firstOrCreate(['slug' => 'hello'], ['title' => 'Hello', 'body' => '...']);
 </code-block>
 <div class="note"><b>Active Record vs Data Mapper:</b> Eloquent là Active Record — bản thân object <c>$post</c> biết cách tự lưu/xoá chính nó (<c>$post->save()</c>). TypeORM bên NestJS là Data Mapper — entity chỉ là dữ liệu thuần, phải nhờ <c>repository.save(entity)</c>. Active Record viết nhanh hơn nhiều; đổi lại model gánh cả logic truy vấn nên dễ phình to — vì vậy dự án lớn hay tách bớt sang Service/Action/Query class (Part 21).</div>
 
-<h2>4.5 Factory &amp; Seeder — dữ liệu giả</h2>
+<h2>4.5 Eloquent hay Query Builder — 2 cách viết query, chọn đúng lúc nào</h2>
+<p>Laravel cho <b>2 cách viết query</b> hoàn toàn khác nhau cho cùng một việc "lấy dữ liệu từ DB". Người mới hay phân vân không biết dùng cái nào — thực ra chọn dựa trên 1 câu hỏi duy nhất: <b>bạn có cần kết quả trả về là Model không?</b></p>
+
+<h3>Cách 1 — Eloquent (<c>Post::where()</c>)</h3>
+<p>Trả về <b>Model instance</b> — có đầy đủ quan hệ, accessor/cast, mass assignment protection, tự bắn model event (<c>creating</c>, <c>updating</c>...). Đây là cách mặc định, dùng cho hầu hết mọi việc.</p>
+<code-block lang="php">
+Post::where('title', 'like', '%nest%')
+    ->where('published_at', '<=', now())
+    ->orderByDesc('id')
+    ->paginate(15);
+
+// Lọc/đếm qua quan hệ — Query Builder KHÔNG có API tương đương gọn như vậy
+Category::withCount('products')->get();                 // mỗi category có $category->products_count
+Post::whereHas('comments', fn ($q) =>
+    $q->where('is_approved', true))->get();              // chỉ lấy post có ít nhất 1 comment đã duyệt
+</code-block>
+
+<h3>Cách 2 — Query Builder (<c>DB::table()</c>)</h3>
+<p>Trả về <b>object/array thuần</b> (<c>stdClass</c>), không qua Model — không có quan hệ, không bắn event, không áp <c>$fillable</c>. Đổi lại: nhẹ hơn (không tốn công dựng Model), và join được nhiều bảng tự do mà không cần khai quan hệ Eloquent trước.</p>
+<code-block lang="php">
+use Illuminate\Support\Facades\DB;
+
+DB::table('users')
+    ->join('orders', 'users.id', '=', 'orders.user_id')
+    ->select('users.name', DB::raw('COUNT(orders.id) as total_orders'))
+    ->groupBy('users.id', 'users.name')
+    ->get();
+</code-block>
+<div class="audit"><b>Đã đối chiếu docs Query Builder 13.x:</b> cú pháp <c>DB::table('users')->where('name', 'like', 'T%')->get()</c>, <c>whereBetween('votes', [1, 100])</c>, <c>join('contacts', 'users.id', '=', 'contacts.user_id')</c> đều khớp nguyên văn ví dụ chính thức. Docs mô tả Query Builder là "convenient, fluent interface" hoạt động độc lập với Eloquent — không phải bản "cấp thấp hơn" của Eloquent, mà là 1 API riêng thao tác thẳng lên bảng.</div>
+
+<table>
+<tr><th>Nhu cầu</th><th>Cách 1: Eloquent</th><th>Cách 2: Query Builder</th></tr>
+<tr><td>Cần gọi tiếp <c>->update()</c>, <c>->delete()</c>, quan hệ trên kết quả</td><td>✅ Bắt buộc — Query Builder trả object thường, không có các method này</td><td>❌ Không có</td></tr>
+<tr><td>Đếm/lọc theo quan hệ (<c>withCount</c>, <c>whereHas</c>)</td><td>✅ Có sẵn, gọn</td><td>Phải tự viết <c>join</c> + <c>groupBy</c></td></tr>
+<tr><td>Mass assignment an toàn (<c>$fillable</c>), model event, cast</td><td>✅ Tự áp dụng</td><td>❌ Bỏ qua hoàn toàn — <c>DB::table()->insert()</c> ghi thẳng, không qua Model</td></tr>
+<tr><td>JOIN nhiều bảng thống kê/báo cáo, không map thành quan hệ Eloquent</td><td>Gượng ép, phải tự thêm quan hệ giả</td><td>✅ <c>join()</c> tự do, không ràng buộc</td></tr>
+<tr><td>Chỉ đọc dữ liệu để hiển thị/export, không cần thao tác tiếp</td><td>Tốn công dựng Model không cần thiết</td><td>✅ Nhẹ hơn, nhanh hơn</td></tr>
+</table>
+<p><b>Quy tắc thực dụng:</b> mặc định luôn dùng Eloquent. Chỉ rẽ sang <c>DB::table()</c> khi bạn chắc chắn không cần quan hệ/event/cast của Model cho kết quả đó — điển hình nhất là báo cáo, thống kê, export.</p>
+
+<h2>4.6 Factory &amp; Seeder — dữ liệu giả</h2>
 <code-block lang="php">
 // database/factories/PostFactory.php
 public function definition(): array

@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>React Crash Course - Lộ trình học chi tiết</title>
+<style>
+  @page { size: A4; margin: 17mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    color: #1a1a1a;
+    line-height: 1.5;
+    font-size: 13.5px;
+  }
+  .cover {
+    height: 245mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    page-break-after: always;
+  }
+  .cover .tag {
+    background: #087EA4;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+  }
+  .cover h1 { font-size: 40px; margin: 0 0 8px 0; color: #111; }
+  .cover h2 { font-size: 18px; font-weight: 400; color: #555; margin: 0 0 40px 0; }
+  .cover .meta { color: #888; font-size: 13px; }
+  .cover .meta div { margin-bottom: 4px; }
+  h1 { font-size: 22px; border-bottom: 3px solid #087EA4; padding-bottom: 8px; margin-top: 0; color: #111; }
+  h2 { font-size: 16px; color: #087EA4; margin-top: 22px; border-left: 4px solid #087EA4; padding-left: 10px; }
+  h3 { font-size: 14px; color: #222; margin-top: 16px; }
+  h4 { font-size: 13px; color: #333; margin-bottom: 4px; }
+  p { margin: 6px 0; }
+  .part { margin-top: 34px; padding-top: 18px; border-top: 2px dashed #d9d9d9; }
+  .part.first { page-break-before: always; border-top: none; margin-top: 0; padding-top: 6px; }
+  .part-head { break-inside: avoid; page-break-inside: avoid; break-after: avoid; page-break-after: avoid; }
+  .part-badge, h1 { break-after: avoid; page-break-after: avoid; }
+  .goal-box { break-before: avoid; page-break-before: avoid; }
+  .part-badge {
+    display: inline-block;
+    background: #087EA4;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+  .goal-box, .note, .audit, pre, .diagram { page-break-inside: avoid; break-inside: avoid; }
+  .task-box ol { break-before: avoid; page-break-before: avoid; }
+  .task-box li, tr { break-inside: avoid; page-break-inside: avoid; }
+  h2, h3 { break-after: avoid; page-break-after: avoid; }
+  .goal-box { background: #eaf7fb; border-left: 4px solid #087EA4; padding: 8px 12px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+  .goal-box b { color: #087EA4; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12.5px; }
+  th, td { border: 1px solid #ddd; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #f5f5f5; }
+  code {
+    background: #f2f2f2;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: "Noto Mono", "DejaVu Sans Mono", Consolas, monospace;
+    font-size: 12px;
+    color: #c7254e;
+  }
+  pre {
+    background: #1e1e2e;
+    color: #e0e0e0;
+    padding: 12px 14px;
+    border-radius: 6px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-x: visible;
+    font-size: 11.5px;
+    line-height: 1.5;
+    margin: 10px 0;
+    font-family: "Noto Mono", "DejaVu Sans Mono", Consolas, monospace;
+  }
+  pre code { background: none; color: inherit; padding: 0; }
+  .diagram {
+    background: #0f172a;
+    color: #a5f3fc;
+    padding: 14px 16px;
+    border-radius: 6px;
+    font-family: "Noto Mono", "DejaVu Sans Mono", Consolas, monospace;
+    font-size: 11.5px;
+    white-space: pre;
+    line-height: 1.5;
+    margin: 12px 0;
+    overflow-x: auto;
+  }
+  .note { background: #fffbe6; border: 1px solid #ffe58f; padding: 8px 12px; border-radius: 4px; margin: 10px 0; font-size: 12.5px; }
+  .note b { color: #ad6800; }
+  .task-box { background: #f0fdf4; border-left: 4px solid #16a34a; padding: 8px 12px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+  .task-box b { color: #16a34a; }
+  .audit { background: #eff6ff; border-left: 4px solid #2563eb; padding: 8px 12px; margin: 10px 0; border-radius: 0 4px 4px 0; font-size: 12.5px; }
+  .audit b { color: #2563eb; }
+  ul, ol { margin: 6px 0; padding-left: 22px; }
+  li { margin: 3px 0; }
+  .toc-list { list-style: none; padding-left: 0; }
+  .toc-list li { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dotted #ccc; padding: 6px 0; font-size: 13.5px; }
+  .toc-list .n { color: #087EA4; font-weight: 700; margin-right: 8px; }
+  .toc-list .tag { background: #087EA4; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 8px; letter-spacing: 0.5px; white-space: nowrap; }
+  .footer-note { color: #999; font-size: 11px; margin-top: 30px; text-align: center; }
+  .cli { color: #7ee787; }
+  .kw { color: #f97583; }
+  .cls { color: #b392f0; }
+  .str { color: #9ecbff; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="tag">CRASH COURSE PLAN — v2 (tái dựng + audit)</div>
+  <h1>React Crash Course</h1>
+  <h2>Lộ trình học chi tiết từng phần — kèm giải thích cơ chế render bên trong</h2>
+  <div class="meta">
+    <div>Repo: crash-course / react-crash-course-traversy</div>
+    <div>Tài liệu bám theo React 19.2 (phát hành 01/10/2025, bản ổn định mới nhất) + Vite + React Router — kiểm chứng lại theo react.dev &amp; reactrouter.com (09/2026)</div>
+    <div>Dự án hiện tại của bạn: react 19.2.5 · react-router-dom 7.14.2 · vite 8 · tailwindcss 4</div>
+    <div>Bản v2: tài liệu HTML gốc từng bị mất, PDF cũ là nguồn duy nhất còn lại — bản này tái dựng lại từ PDF đó và audit toàn bộ theo docs chính thức hiện tại</div>
+  </div>
+</div>
+
+<h1>Mục lục</h1>
+<ul class="toc-list">
+  <li><span><span class="n">JS</span> JavaScript ES6+ cho React</span><span class="tag">NỀN TẢNG NGÔN NGỮ</span></li>
+  <li><span><span class="n">00</span> React hoạt động thế nào (render &amp; reconciliation)</span><span class="tag">NỀN TẢNG</span></li>
+  <li><span><span class="n">01</span> Khởi tạo dự án với Vite &amp; cấu trúc thư mục</span></li>
+  <li><span><span class="n">02</span> JSX, Component &amp; Props</span></li>
+  <li><span><span class="n">03</span> State với useState — tư duy bất biến</span></li>
+  <li><span><span class="n">04</span> Render danh sách, key &amp; render có điều kiện</span></li>
+  <li><span><span class="n">05</span> Sự kiện &amp; Form (controlled component)</span></li>
+  <li><span><span class="n">06</span> useEffect — dùng đúng và dùng ít</span></li>
+  <li><span><span class="n">07</span> Gọi API &amp; Custom Hook</span></li>
+  <li><span><span class="n">08</span> Chia sẻ state: lifting up, Context, useReducer</span></li>
+  <li><span><span class="n">09</span> React Router (routing, loader, form action)</span></li>
+  <li><span><span class="n">10</span> Hiệu năng: re-render, memo &amp; React Compiler</span></li>
+  <li><span><span class="n">11</span> React 19: Actions, hooks mới &amp; use()</span></li>
+  <li><span><span class="n">12</span> Kết nối API thật (Laravel / NestJS) &amp; build production</span></li>
+  <li><span><span class="n">13</span> Testing với Vitest + Testing Library</span><span class="tag">TUỲ CHỌN</span></li>
+</ul>
+
+<div class="note"><b>Cách dùng tài liệu này:</b> Bạn tự code 100% từng phần. Mỗi phần có mục "Việc cần làm" (task) — không có code giải sẵn để copy, chỉ có ví dụ cú pháp minh hoạ để hiểu cách viết. Khi xong một phần, quay lại chat để mình review và giải thích tiếp phần sau.<br><br><b>Dự án xuyên suốt:</b> App quản lý tin tuyển dụng (job listings) — danh sách, chi tiết, thêm, sửa, xoá. Đúng dự án bạn đã làm theo Traversy, nhưng lần này đi sâu vào vì sao mỗi thứ hoạt động như vậy. Ở Part 12 ta sẽ thay json-server bằng API Laravel/NestJS thật mà bạn tự viết — đó là lúc bạn thành fullstack thật sự.</div>
+
+<div class="audit"><b>Bản v2 này khác gì bản PDF gốc:</b> file HTML gốc của tài liệu này đã bị mất (không commit vào git), chỉ còn PDF 39 trang — bản này tái dựng lại toàn bộ nội dung từ PDF đó, rồi audit từng phần theo docs chính thức hiện tại: <code>react.dev/learn</code>, <code>react.dev/reference/react</code>, <code>react.dev/reference/react-dom</code>, <code>react.dev/blog</code> (bài React 19, React 19.2, React Compiler v1.0), và <code>reactrouter.com</code>. Các chỗ đã sửa: (1) API xử lý lỗi của React Router — bản cũ dùng <code>errorElement</code> + <code>throw new Response()</code>, docs hiện tại khuyến nghị <code>ErrorBoundary</code> + <code>useRouteError</code> + <code>data()</code>; (2) import Data mode nên lấy từ <code>"react-router"</code> thay vì <code>"react-router-dom"</code>; (3) bổ sung ngày phát hành chính xác cho React 19.2 (01/10/2025) và React Compiler v1.0 (07/10/2025). Thêm 4 mục "so sánh 2 cách" mới (đánh dấu khung xanh): 7.4, 8.4, 9.1 (nâng cấp), 11.9.</div>
+
+<!-- PART J -->
+<div class="part first">
+<div class="part-head"><div class="part-badge">PART J — NỀN TẢNG NGÔN NGỮ</div>
+<h1>JavaScript ES6+ cho React</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Nắm chắc các tính năng JS mà React dùng ở mọi dòng code. Phần lớn lỗi "React khó hiểu" thực chất là lỗi chưa vững JS — đặc biệt là tham chiếu vs giá trị, closure và bất biến (immutability).</div></div>
+
+<h2>J.1 let / const và scope</h2>
+<pre><code><span class="kw">const</span> user = { name: <span class="str">'Nhat'</span> };              <span class="kw">// const = KHÔNG gán lại được biến</span>
+user.name = <span class="str">'Long'</span>;                           <span class="kw">// vẫn sửa được thuộc tính bên trong!</span>
+<span class="kw">// user = {}                     ✘ TypeError: Assignment to constant variable</span>
+
+<span class="kw">let</span> count = <span class="str">0</span>; count++;                    <span class="kw">// let khi cần gán lại</span>
+<span class="kw">// var: KHÔNG dùng nữa (scope theo function, bị hoisting khó lường)</span></code></pre>
+<div class="note"><b>Quy tắc:</b> mặc định dùng <code>const</code>, chỉ đổi sang <code>let</code> khi thật sự cần gán lại. Trong React bạn gần như chỉ dùng <code>const</code>.</div>
+
+<h2>J.2 Tham chiếu vs giá trị — gốc rễ của mọi bug React</h2>
+<pre><code><span class="kw">// Primitive (number, string, boolean, null, undefined) → so sánh theo GIÁ TRỊ</span>
+1 === 1                   <span class="kw">// true</span>
+<span class="str">'a'</span> === <span class="str">'a'</span>               <span class="kw">// true</span>
+
+<span class="kw">// Object / Array / Function → so sánh theo THAM CHIẾU (địa chỉ ô nhớ)</span>
+[] === []                  <span class="kw">// false !!</span>
+{} === {}                  <span class="kw">// false !!</span>
+<span class="kw">const</span> a = [1]; <span class="kw">const</span> b = a; a === b     <span class="kw">// true (cùng 1 địa chỉ)</span></code></pre>
+<div class="note"><b>Vì sao cực kỳ quan trọng:</b> React quyết định "có cần render lại không" bằng phép so sánh <code>Object.is</code> (gần như <code>===</code>). Nên: (1) sửa trực tiếp mảng/object trong state → React thấy vẫn cùng tham chiếu → không render lại; (2) truyền <code>{}</code> hay <code>[]</code> mới mỗi lần render vào props/dependency → React thấy luôn khác → render lại / chạy effect vô hạn. Hai lỗi này chiếm phần lớn bug của người mới.</div>
+
+<h2>J.3 Destructuring, spread &amp; rest</h2>
+<pre><code><span class="kw">// Destructuring object — cách nhận props chuẩn của React</span>
+<span class="kw">const</span> { title, salary = <span class="str">'Thoả thuận'</span> } = job;      <span class="kw">// có giá trị mặc định</span>
+<span class="kw">const</span> { company: { name } } = job;                  <span class="kw">// lồng nhau</span>
+
+<span class="kw">// Destructuring array — cách useState trả về</span>
+<span class="kw">const</span> [count, setCount] = <span class="cls">useState</span>(0);
+
+<span class="kw">// Spread — TẠO BẢN SAO MỚI (cốt lõi của immutability)</span>
+<span class="kw">const</span> updated  = { ...job, title: <span class="str">'Mới'</span> };        <span class="kw">// copy object + ghi đè 1 field</span>
+<span class="kw">const</span> appended = [...jobs, newJob];                 <span class="kw">// copy mảng + thêm phần tử</span>
+
+<span class="kw">// Rest — gom phần còn lại</span>
+<span class="kw">const</span> { id, ...rest } = job;
+<span class="kw">function</span> <span class="cls">Button</span>({ children, ...props }) { }         <span class="kw">// pattern rất hay dùng</span></code></pre>
+<div class="note">Spread chỉ copy NÔNG (shallow): <code>{...job}</code> copy được field cấp 1, nhưng <code>job.company</code> vẫn là cùng một object. Muốn sửa dữ liệu lồng nhau phải spread từng cấp: <code>{ ...job, company: { ...job.company, name: 'X' } }</code>.</div>
+
+<h2>J.4 Arrow function &amp; this</h2>
+<pre><code><span class="kw">const</span> double = (x) =&gt; x * 2;                <span class="kw">// return ngầm</span>
+<span class="kw">const</span> make   = (x) =&gt; ({ value: x });       <span class="kw">// trả object → PHẢI bọc ()</span>
+<span class="kw">const</span> sum    = (a, b) =&gt; { <span class="kw">return</span> a + b; };  <span class="kw">// có {} thì phải return tường minh</span></code></pre>
+<p>Arrow function không có <code>this</code> riêng — nó mượn <code>this</code> của scope bao ngoài. Với React function component (kiểu hiện đại) bạn gần như không đụng tới <code>this</code> nữa; chỉ cần nhớ điều này khi đọc code class component cũ.</p>
+
+<h2>J.5 Các method mảng phải thuộc lòng</h2>
+<table>
+<tr><th>Method</th><th>Trả về</th><th>Dùng trong React để</th></tr>
+<tr><td><code>map()</code></td><td>Mảng mới cùng độ dài</td><td>Render danh sách — dùng nhiều nhất</td></tr>
+<tr><td><code>filter()</code></td><td>Mảng mới ít phần tử hơn</td><td>Xoá item khỏi state, lọc kết quả</td></tr>
+<tr><td><code>find()</code></td><td>1 phần tử hoặc <code>undefined</code></td><td>Tìm item theo id</td></tr>
+<tr><td><code>some()</code> / <code>every()</code></td><td>boolean</td><td>Kiểm tra điều kiện tồn tại / toàn bộ</td></tr>
+<tr><td><code>reduce()</code></td><td>Giá trị gộp bất kỳ</td><td>Tính tổng, gom nhóm</td></tr>
+<tr><td><code>slice()</code></td><td>Mảng mới</td><td>An toàn — copy một đoạn</td></tr>
+<tr><td><code>splice()</code>, <code>push</code>, <code>sort</code>, <code>reverse</code></td><td>Sửa tại chỗ</td><td>KHÔNG dùng trực tiếp trên state — phải copy trước</td></tr>
+</table>
+<pre><code><span class="kw">// ✘ SAI — sửa tại chỗ, React không thấy thay đổi</span>
+jobs.push(newJob); setJobs(jobs);
+jobs.sort((a, b) =&gt; a.title.<span class="cls">localeCompare</span>(b.title));
+
+<span class="kw">// ✔ ĐÚNG — luôn tạo mảng mới</span>
+setJobs([...jobs, newJob]);
+setJobs([...jobs].sort((a, b) =&gt; a.title.<span class="cls">localeCompare</span>(b.title)));
+setJobs(jobs.filter((j) =&gt; j.id !== id));</code></pre>
+
+<h2>J.6 Toán tử hay dùng trong JSX</h2>
+<pre><code>{ isLoading &amp;&amp; &lt;Spinner /&gt; }                    <span class="kw">// short-circuit: true thì render</span>
+{ jobs.length &gt; 0 ? &lt;List /&gt; : &lt;Empty /&gt; }         <span class="kw">// ternary: if/else</span>
+{ job?.company?.name }                            <span class="kw">// optional chaining: null thì undefined</span>
+{ job.salary ?? <span class="str">'Thoả thuận'</span> }                   <span class="kw">// nullish: chỉ thay khi null/undefined</span></code></pre>
+<div class="note"><b>Bẫy kinh điển:</b> <code>{jobs.length &amp;&amp; &lt;List /&gt;}</code> — nếu <code>length === 0</code>, JS trả về số <code>0</code> và React sẽ in ra chữ "0" trên màn hình. Luôn ép sang boolean: <code>{jobs.length &gt; 0 &amp;&amp; ...}</code>. Ngoài ra: <code>??</code> khác <code>||</code> — <code>||</code> thay cả <code>0</code> và <code>''</code> (falsy), <code>??</code> chỉ thay <code>null</code>/<code>undefined</code>.</div>
+
+<h2>J.7 Module: import / export</h2>
+<pre><code><span class="kw">// export mặc định — 1 cái/file, import đặt tên tuỳ ý</span>
+<span class="kw">export default function</span> <span class="cls">JobCard</span>() { }
+<span class="kw">import</span> JobCard <span class="kw">from</span> <span class="str">'./components/JobCard'</span>;
+
+<span class="kw">// named export — nhiều cái/file, import phải đúng tên</span>
+<span class="kw">export const</span> API_URL = <span class="str">'/api/jobs'</span>;
+<span class="kw">export function</span> <span class="cls">formatSalary</span>() { }
+<span class="kw">import</span> { API_URL, formatSalary <span class="kw">as</span> fmt } <span class="kw">from</span> <span class="str">'./utils'</span>;</code></pre>
+
+<h2>J.8 Bất đồng bộ: Promise, async/await, fetch</h2>
+<pre><code><span class="kw">async function</span> <span class="cls">getJobs</span>() {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> res = <span class="kw">await</span> fetch(<span class="str">'/api/jobs'</span>);
+
+    <span class="kw">// QUAN TRỌNG: fetch KHÔNG throw khi server trả 404/500 — phải tự kiểm tra</span>
+    <span class="kw">if</span> (!res.ok) <span class="kw">throw new</span> Error(<span class="str">`HTTP ${res.status}`</span>);
+
+    <span class="kw">return await</span> res.<span class="cls">json</span>();
+  } <span class="kw">catch</span> (err) {
+    console.<span class="cls">error</span>(err);
+    <span class="kw">throw</span> err;
+  }
+}</code></pre>
+<p>Ba trạng thái của Promise: <code>pending → fulfilled / rejected</code>. <code>await</code> chỉ dùng được trong hàm <code>async</code>, và hàm <code>async</code> luôn trả về Promise. Đây là lý do bạn không được khai <code>async</code> cho callback của <code>useEffect</code> trực tiếp (Part 06).</p>
+
+<h2>J.9 Closure — nền tảng để hiểu Hooks</h2>
+<pre><code><span class="kw">function</span> <span class="cls">counter</span>() {
+  <span class="kw">let</span> count = 0;                    <span class="kw">// biến này "sống" nhờ closure</span>
+  <span class="kw">return</span> () =&gt; ++count;              <span class="kw">// hàm trong nhớ được biến ngoài</span>
+}
+<span class="kw">const</span> inc = counter();
+inc(); inc();                             <span class="kw">// 1, 2</span></code></pre>
+<p>Closure = hàm "nhớ" được môi trường nơi nó được tạo ra. React dùng closure cho toàn bộ hệ thống hook: mỗi lần render tạo ra một closure mới với giá trị state của lần render đó. Hiểu điều này là hiểu vì sao có hiện tượng "stale closure" — hàm trong <code>setTimeout</code> hay <code>useEffect</code> nhìn thấy giá trị state cũ của lần render mà nó được tạo (Part 03 &amp; 06).</p>
+
+<h2>J.10 Bảng tra: JS ↔ PHP (cho người học fullstack)</h2>
+<table>
+<tr><th>JavaScript</th><th>PHP</th></tr>
+<tr><td><code>const x = 1</code></td><td><code>$x = 1;</code></td></tr>
+<tr><td><code>obj.prop</code></td><td><code>$obj-&gt;prop</code></td></tr>
+<tr><td><code>{ a: 1 }</code> (object)</td><td><code>['a' =&gt; 1]</code> (associative array)</td></tr>
+<tr><td><code>arr.map(fn)</code></td><td><code>array_map($fn, $arr)</code></td></tr>
+<tr><td><code>`Hi ${name}`</code></td><td><code>"Hi $name"</code></td></tr>
+<tr><td><code>a ?? b</code>, <code>a?.b</code></td><td><code>$a ?? $b</code>, <code>$a?-&gt;b</code> (giống hệt)</td></tr>
+<tr><td><code>JSON.stringify / parse</code></td><td><code>json_encode / json_decode</code></td></tr>
+<tr><td><code>npm</code>, <code>package.json</code></td><td><code>composer</code>, <code>composer.json</code></td></tr>
+<tr><td>Async mặc định (event loop)</td><td>Đồng bộ mặc định</td></tr>
+</table>
+
+<div class="task-box"><b>Việc cần làm (JS thuần, chạy bằng Node hoặc console trình duyệt):</b>
+<ol>
+<li>Chứng minh <code>[] === []</code> là false, và giải thích được vì sao điều đó khiến React render lại</li>
+<li>Cho mảng 5 job, viết: lọc job có salary &gt; 100, map lấy title, sắp xếp A→Z — không được sửa mảng gốc (kiểm tra bằng cách in mảng gốc sau đó)</li>
+<li>Viết hàm cập nhật 1 job trong mảng theo id, dùng <code>map</code> + spread, giữ nguyên bất biến</li>
+<li>Sửa 1 field lồng 2 cấp (<code>job.company.name</code>) mà không mutate object gốc</li>
+<li>Viết <code>async function getJobs()</code> dùng <code>fetch</code> tới json-server, có kiểm tra <code>res.ok</code> và <code>try/catch</code></li>
+<li>Viết ví dụ closure của riêng bạn, giải thích được "stale closure" là gì</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 0 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 00 — NỀN TẢNG</div>
+<h1>React hoạt động thế nào</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Hiểu React thực sự làm gì trước khi viết component. React không phải framework đầy đủ như NestJS/Laravel — nó chỉ là thư viện dựng giao diện, với một ý tưởng trung tâm: <b>UI = f(state)</b>. Bạn mô tả "với state này thì giao diện trông thế nào", React lo phần cập nhật DOM.</div></div>
+
+<h2>0.1 Declarative vs Imperative</h2>
+<pre><code><span class="kw">// Imperative (DOM thuần) — bạn ra lệnh từng bước</span>
+<span class="kw">const</span> el = document.<span class="cls">createElement</span>(<span class="str">'div'</span>);
+el.textContent = count;
+document.body.<span class="cls">appendChild</span>(el);
+<span class="kw">// và mỗi lần count đổi, bạn phải TỰ tìm đúng node để sửa</span>
+
+<span class="kw">// Declarative (React) — bạn mô tả kết quả mong muốn</span>
+<span class="kw">return</span> &lt;div&gt;{count}&lt;/div&gt;;
+<span class="kw">// count đổi → React tự tính ra cần sửa gì trên DOM</span></code></pre>
+
+<h2>0.2 Virtual DOM &amp; Reconciliation</h2>
+<p>Mỗi lần render, component của bạn trả về một cây object mô tả UI (React element — chính là Virtual DOM). React so sánh cây mới với cây của lần render trước (<b>reconciliation</b>), tính ra tập thay đổi nhỏ nhất, rồi mới đụng vào DOM thật. DOM thật rất chậm; so sánh object trong RAM thì nhanh — đó là toàn bộ lý do Virtual DOM tồn tại.</p>
+<div class="diagram">    Trigger        Lần render đầu, hoặc setState được gọi
+       │
+       ▼
+  Render phase     React gọi hàm component của bạn để lấy cây element mới.
+                   Phase này phải THUẦN KHIẾT: không sửa biến ngoài, không
+                   gọi API, không đụng DOM. React có thể huỷ và chạy lại
+                   phase này bất cứ lúc nào
+       │
+       ▼
+  Diff/Reconcile   So cây mới với cây cũ theo vị trí và type;
+                   với danh sách thì so theo key
+       │
+       ▼
+  Commit phase     Áp thay đổi lên DOM thật, cập nhật ref,
+                   rồi chạy useEffect
+       │
+       ▼
+  Browser paint    Trình duyệt vẽ lại màn hình</div>
+<div class="note"><b>Hệ quả cần nhớ:</b> "render" không đồng nghĩa với "cập nhật DOM". React có thể gọi lại hàm component của bạn nhiều lần mà DOM không đổi gì cả. Vì vậy: không bao giờ đặt side-effect (gọi API, ghi localStorage, sửa biến toàn cục) trực tiếp trong thân component.</div>
+
+<h2>0.3 Luồng dữ liệu một chiều</h2>
+<p>Dữ liệu chảy từ cha xuống con qua props. Con không được sửa props. Muốn con tác động lên cha thì cha truyền xuống một hàm callback. Nhờ ràng buộc này, khi UI sai bạn luôn truy ngược được nguồn dữ liệu — khác hẳn kiểu two-way binding dễ rối.</p>
+
+<h2>0.4 StrictMode: vì sao code chạy 2 lần</h2>
+<pre><code><span class="kw">// src/main.jsx</span>
+&lt;StrictMode&gt;
+  &lt;App /&gt;
+&lt;/StrictMode&gt;</code></pre>
+<p>Ở chế độ development, <code>StrictMode</code> cố ý gọi component 2 lần và chạy effect 2 lần (mount → unmount → mount lại) để phát hiện sớm: component không thuần khiết, effect thiếu cleanup. Ở production nó không làm vậy. Thấy log in 2 lần là bình thường — đừng gỡ <code>StrictMode</code>, hãy sửa code cho đúng.</p>
+
+<h2>0.5 React 19 &amp; hệ sinh thái hiện tại</h2>
+<table>
+<tr><th>Thành phần</th><th>Vai trò</th></tr>
+<tr><td><code>react</code></td><td>Lõi: component, hook, element — không biết gì về trình duyệt</td></tr>
+<tr><td><code>react-dom</code></td><td>Renderer cho web (<code>createRoot</code>, các hook liên quan DOM/form)</td></tr>
+<tr><td>Vite</td><td>Dev server + bundler (thay thế Create React App đã ngừng phát triển)</td></tr>
+<tr><td>React Router</td><td>Điều hướng nhiều trang (Part 09)</td></tr>
+<tr><td>React Compiler v1.0</td><td>Phát hành 07/10/2025 — trình biên dịch tự memo hoá, giảm nhu cầu <code>useMemo</code>/<code>useCallback</code> viết tay (Part 10)</td></tr>
+</table>
+<div class="audit"><b>Đã kiểm chứng:</b> React 19.2 phát hành 01/10/2025 (blog chính thức <code>react.dev/blog/2025/10/01/react-19-2</code>), React Compiler v1.0 phát hành 07/10/2025 (<code>react.dev/blog/2025/10/07/react-compiler-1</code>) — cả hai đều là bản ổn định, không phải beta/RC.</div>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Chưa code — vẽ lại sơ đồ mục 0.2 ra giấy bằng ngôn từ của bạn</li>
+<li>Trả lời: vì sao React cần "key" khi render danh sách (gợi ý: liên quan tới bước Diff)</li>
+<li>Trả lời: "render" và "cập nhật DOM" khác nhau chỗ nào</li>
+<li>Mở app hiện có, thêm <code>console.log</code> trong thân một component rồi quan sát số lần in ra — giải thích bằng StrictMode</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 1 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 01</div>
+<h1>Khởi tạo dự án với Vite &amp; cấu trúc thư mục</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Hiểu Vite làm gì, mỗi file trong dự án đóng vai trò gì, và cách tổ chức thư mục để dự án lớn không loạn.</div></div>
+
+<h2>1.1 Tạo dự án</h2>
+<pre><code><span class="cli">npm create vite@latest react-crash-course -- --template react</span>
+<span class="cli">cd react-crash-course</span>
+<span class="cli">npm install</span>
+<span class="cli">npm run dev</span>           <span class="kw"># → http://localhost:5173</span></code></pre>
+<table>
+<tr><th>Script</th><th>Tác dụng</th></tr>
+<tr><td><code>npm run dev</code></td><td>Dev server, hot reload (HMR) — giữ nguyên state khi sửa code</td></tr>
+<tr><td><code>npm run build</code></td><td>Build production vào <code>dist/</code> (minify, tách chunk, hash tên file)</td></tr>
+<tr><td><code>npm run preview</code></td><td>Chạy thử bản build — kiểm tra trước khi deploy</td></tr>
+<tr><td><code>npm run lint</code></td><td>ESLint — bắt lỗi hook sai quy tắc</td></tr>
+</table>
+<div class="note"><b>Vì sao Vite nhanh:</b> ở dev, Vite không bundle — nó phục vụ file dưới dạng ES module gốc để trình duyệt tự nạp, nên khởi động gần như tức thì bất kể dự án lớn cỡ nào. Chỉ khi build nó mới bundle (bằng Rollup). Create React App (webpack) bundle lại toàn bộ mỗi lần khởi động — chậm hơn nhiều, và đã ngừng phát triển (không còn được đội React khuyến nghị).</div>
+
+<h2>1.2 Điểm khởi đầu</h2>
+<pre><code><span class="kw">// index.html — Vite dùng file này làm entry (không phải file JS)</span>
+&lt;div id=<span class="str">"root"</span>&gt;&lt;/div&gt;
+&lt;script type=<span class="str">"module"</span> src=<span class="str">"/src/main.jsx"</span>&gt;&lt;/script&gt;
+
+<span class="kw">// src/main.jsx</span>
+<span class="kw">import</span> { StrictMode } <span class="kw">from</span> <span class="str">'react'</span>;
+<span class="kw">import</span> { createRoot } <span class="kw">from</span> <span class="str">'react-dom/client'</span>;
+<span class="kw">import</span> App <span class="kw">from</span> <span class="str">'./App.jsx'</span>;
+<span class="kw">import</span> <span class="str">'./index.css'</span>;
+
+<span class="cls">createRoot</span>(document.<span class="cls">getElementById</span>(<span class="str">'root'</span>)).<span class="cls">render</span>(
+  &lt;StrictMode&gt;
+    &lt;App /&gt;
+  &lt;/StrictMode&gt;,
+);</code></pre>
+<p>Toàn bộ app React của bạn sống bên trong một thẻ <code>div</code> duy nhất — đó chính là ý nghĩa của "Single Page Application".</p>
+
+<h2>1.3 Cấu trúc thư mục nên theo</h2>
+<table>
+<tr><th>Thư mục</th><th>Chứa gì</th></tr>
+<tr><td><code>src/components/</code></td><td>Component tái sử dụng, không gắn với route (Card, Navbar, Spinner)</td></tr>
+<tr><td><code>src/pages/</code></td><td>Component tương ứng một route (HomePage, JobPage)</td></tr>
+<tr><td><code>src/layouts/</code></td><td>Khung chung bọc nhiều trang (MainLayout: Navbar + <code>&lt;Outlet /&gt;</code>)</td></tr>
+<tr><td><code>src/hooks/</code></td><td>Custom hook (<code>useJobs</code>, <code>useFetch</code>) — Part 07</td></tr>
+<tr><td><code>src/services/</code> hoặc <code>api/</code></td><td>Hàm gọi API — tách khỏi component</td></tr>
+<tr><td><code>src/context/</code></td><td>Context provider — Part 08</td></tr>
+<tr><td><code>src/assets/</code></td><td>Ảnh, icon (Vite tự hash khi build)</td></tr>
+</table>
+<p>Quy ước đặt tên: file component viết PascalCase (<code>JobCard.jsx</code>), hook bắt đầu bằng <code>use</code> (<code>useJobs.js</code>), hằng số viết UPPER_SNAKE. Nhất quán quan trọng hơn "chọn đúng" — chọn một kiểu rồi giữ nguyên.</p>
+
+<h2>1.4 Biến môi trường</h2>
+<pre><code><span class="kw"># .env — CHỈ biến có tiền tố VITE_ mới được lộ ra client</span>
+VITE_API_URL=http://localhost:8000/api/v1</code></pre>
+<pre><code><span class="kw">const</span> baseUrl = import.meta.env.VITE_API_URL;</code></pre>
+<div class="note"><b>Cảnh báo bảo mật:</b> mọi biến <code>VITE_*</code> đều bị nhúng thẳng vào file JS gửi xuống trình duyệt — ai cũng xem được. Không bao giờ đặt secret key, DB password, API secret vào đây. Client chỉ được biết những gì công khai được.</div>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo dự án Vite mới (hoặc dùng lại dự án job listings đang có)</li>
+<li>Sắp xếp lại thư mục theo bảng 1.3 — tách <code>components/</code>, <code>pages/</code>, <code>layouts/</code></li>
+<li>Đọc kỹ <code>index.html</code> + <code>main.jsx</code>, giải thích được app "gắn" vào DOM chỗ nào</li>
+<li>Tạo <code>.env</code> với <code>VITE_API_URL</code>, đọc ra và log — xác nhận nó xuất hiện trong bundle sau khi build (mở file trong <code>dist/</code> tìm chuỗi đó)</li>
+<li>Chạy <code>npm run build</code> + <code>npm run preview</code>, xem kích thước bundle</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 2 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 02</div>
+<h1>JSX, Component &amp; Props</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Viết component đúng chuẩn, hiểu JSX thực chất là gì, và nắm quy tắc truyền props.</div></div>
+
+<h2>2.1 JSX thực chất là gì</h2>
+<pre><code><span class="kw">// Bạn viết:</span>
+<span class="kw">const</span> el = &lt;h1 className=<span class="str">"title"</span>&gt;Xin chào&lt;/h1&gt;;
+
+<span class="kw">// Vite/Babel biên dịch thành lời gọi hàm (React 17+ dùng jsx runtime):</span>
+<span class="kw">const</span> el = <span class="cls">jsx</span>(<span class="str">'h1'</span>, { className: <span class="str">'title'</span>, children: <span class="str">'Xin chào'</span> });</code></pre>
+<p>Nghĩa là JSX chỉ là cú pháp đường để tạo object mô tả UI. Vì cuối cùng là JavaScript, nên có các quy tắc:</p>
+<table>
+<tr><th>Quy tắc</th><th>Vì sao</th></tr>
+<tr><td><code>className</code> thay <code>class</code></td><td><code>class</code> là từ khoá của JS</td></tr>
+<tr><td><code>htmlFor</code> thay <code>for</code></td><td>Tương tự</td></tr>
+<tr><td>Thuộc tính viết camelCase: <code>onClick</code>, <code>tabIndex</code></td><td>Đang là thuộc tính object JS</td></tr>
+<tr><td>Phải đóng mọi thẻ: <code>&lt;img /&gt;</code>, <code>&lt;br /&gt;</code></td><td>JSX nghiêm ngặt hơn HTML</td></tr>
+<tr><td>Chỉ trả về một node gốc</td><td>Một hàm chỉ <code>return</code> được 1 giá trị → dùng <code>&lt;&gt;...&lt;/&gt;</code> (Fragment)</td></tr>
+<tr><td><code>{ }</code> để nhúng biểu thức</td><td>Chỉ nhận biểu thức, không nhận <code>if</code> / <code>for</code></td></tr>
+</table>
+
+<h2>2.2 Component</h2>
+<pre><code><span class="kw">// Component = HÀM trả về JSX. Tên PHẢI viết hoa chữ đầu.</span>
+<span class="kw">export default function</span> <span class="cls">JobCard</span>({ title, type, salary }) {
+  <span class="kw">return</span> (
+    &lt;div className=<span class="str">"rounded-xl bg-white p-4 shadow"</span>&gt;
+      &lt;h3&gt;{title}&lt;/h3&gt;
+      &lt;p&gt;{type}&lt;/p&gt;
+      &lt;p&gt;{salary ?? <span class="str">'Thoả thuận'</span>}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<div class="note"><b>Vì sao tên component phải viết hoa:</b> JSX quy ước chữ thường (<code>&lt;div&gt;</code>) là thẻ HTML, chữ hoa (<code>&lt;JobCard&gt;</code>) là component. Đặt tên <code>jobCard</code> thì React sẽ đi tìm thẻ HTML tên "jobcard" và render ra trang trắng không báo lỗi rõ ràng.</div>
+
+<h2>2.3 Props</h2>
+<pre><code><span class="kw">// Cha truyền xuống</span>
+&lt;JobCard title={job.title} type={job.type} salary={job.salary} /&gt;
+&lt;JobCard {...job} /&gt;                        <span class="kw">// spread khi tên trùng khớp</span>
+
+<span class="kw">// Con nhận — destructure ngay ở tham số, có giá trị mặc định</span>
+<span class="kw">function</span> <span class="cls">JobCard</span>({ title, type = <span class="str">'Full-Time'</span> }) { }
+
+<span class="kw">// children: nội dung đặt giữa 2 thẻ</span>
+<span class="kw">function</span> <span class="cls">Card</span>({ children }) { <span class="kw">return</span> &lt;div className=<span class="str">"card"</span>&gt;{children}&lt;/div&gt;; }
+&lt;Card&gt;&lt;h3&gt;Tiêu đề&lt;/h3&gt;&lt;/Card&gt;</code></pre>
+<div class="note">Props là read-only. Component không được sửa props nhận vào (<code>props.title = 'x'</code> là sai). Nếu cần thay đổi dữ liệu → dữ liệu đó phải là state ở component cha, và cha truyền xuống hàm để con gọi ngược lên.</div>
+
+<h2>2.4 Truyền hàm xuống con</h2>
+<pre><code><span class="kw">// Cha</span>
+&lt;JobCard job={job} onDelete={() =&gt; handleDelete(job.id)} /&gt;
+
+<span class="kw">// Con</span>
+&lt;button onClick={onDelete}&gt;Xoá&lt;/button&gt;             <span class="kw">// ✔ truyền tham chiếu hàm</span>
+&lt;button onClick={onDelete()}&gt;Xoá&lt;/button&gt;           <span class="kw">// ✘ GỌI LUÔN khi render!</span></code></pre>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tách trang chủ thành các component nhỏ: Navbar, Hero, HomeCards, JobListings, JobListing</li>
+<li>Viết <code>Card</code> nhận <code>children</code> + prop <code>bg</code> có giá trị mặc định</li>
+<li>Truyền dữ liệu job xuống bằng props, thử cả cách liệt kê từng prop và cách <code>{...job}</code></li>
+<li>Cố tình đặt tên component chữ thường để thấy trang trắng — hiểu vì sao</li>
+<li>Cố tình viết <code>onClick={handleDelete()}</code> để thấy hàm chạy ngay khi render</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 3 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 03</div>
+<h1>State với useState — tư duy bất biến</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Hiểu state là gì, vì sao phải cập nhật bất biến, và 3 hiểu lầm phổ biến nhất về <code>setState</code>.</div></div>
+
+<h2>3.1 useState cơ bản</h2>
+<pre><code><span class="kw">const</span> [count, setCount] = <span class="cls">useState</span>(0);
+<span class="kw">//        ▲ giá trị hiện tại  ▲ hàm cập nhật    ▲ giá trị khởi tạo (chỉ dùng ở lần render ĐẦU)</span>
+
+setCount(count + 1);           <span class="kw">// yêu cầu React render lại với giá trị mới</span></code></pre>
+<div class="note"><b>Quy tắc Hook (bắt buộc):</b> chỉ gọi hook ở cấp cao nhất của component — không đặt trong <code>if</code>, vòng lặp, hàm lồng. Lý do: React nhận diện hook theo thứ tự gọi; đổi thứ tự giữa các lần render là hỏng toàn bộ state. ESLint plugin <code>react-hooks</code> sẽ bắt lỗi này.</div>
+
+<h2>3.2 Hiểu lầm 1: "setState cập nhật ngay lập tức"</h2>
+<pre><code><span class="kw">function</span> <span class="cls">handleClick</span>() {
+  setCount(count + 1);
+  console.<span class="cls">log</span>(count);       <span class="kw">// ✘ vẫn in ra giá trị CŨ</span>
+}</code></pre>
+<p>Vì <code>count</code> là hằng số của lần render này (closure — xem Part J). <code>setCount</code> chỉ lên lịch một lần render mới; giá trị mới chỉ xuất hiện ở lần render sau. Đây gọi là "state là một snapshot".</p>
+
+<h2>3.3 Hiểu lầm 2: gọi setState nhiều lần thì cộng dồn</h2>
+<pre><code>setCount(count + 1);
+setCount(count + 1);
+setCount(count + 1);           <span class="kw">// count = 0 → kết quả là 1, KHÔNG phải 3</span>
+
+<span class="kw">// ✔ Dùng dạng hàm cập nhật (updater) khi giá trị mới phụ thuộc giá trị cũ</span>
+setCount((prev) =&gt; prev + 1);
+setCount((prev) =&gt; prev + 1);
+setCount((prev) =&gt; prev + 1);      <span class="kw">// → 3 ✔</span></code></pre>
+<p>React gộp (batch) các lần <code>setState</code> trong cùng một sự kiện thành một lần render — đó là tối ưu, không phải bug. Dạng updater đọc giá trị mới nhất trong hàng đợi nên luôn đúng.</p>
+
+<h2>3.4 Hiểu lầm 3: sửa trực tiếp object/array trong state</h2>
+<pre><code><span class="kw">// ✘ SAI — mutate: React so sánh thấy CÙNG tham chiếu → không render lại</span>
+jobs.push(newJob);
+setJobs(jobs);
+form.title = <span class="str">'X'</span>;
+setForm(form);
+
+<span class="kw">// ✔ ĐÚNG — luôn tạo object/array MỚI</span>
+setJobs([...jobs, newJob]);                                      <span class="kw">// thêm</span>
+setJobs(jobs.filter((j) =&gt; j.id !== id));                        <span class="kw">// xoá</span>
+setJobs(jobs.map((j) =&gt; j.id === id ? { ...j, ...patch } : j));  <span class="kw">// sửa</span>
+setForm({ ...form, title: <span class="str">'X'</span> });                              <span class="kw">// sửa 1 field</span></code></pre>
+
+<h2>3.5 Chọn cấu trúc state cho tốt</h2>
+<ul>
+<li><b>Đừng lưu thứ tính được ra state.</b> Có <code>jobs</code> và <code>keyword</code> thì <code>filteredJobs</code> chỉ cần tính khi render, không cần state riêng (state thừa = nguồn dữ liệu lệch nhau).</li>
+<li><b>Đừng để state trùng lặp.</b> Lưu <code>selectedId</code> thay vì lưu cả object <code>selectedJob</code> đã copy.</li>
+<li><b>Nhóm state đi cùng nhau.</b> Form nhiều field → một object, hoặc dùng <code>useReducer</code> (Part 08).</li>
+<li><b>Đặt state ở đúng độ cao.</b> Càng gần nơi dùng càng tốt; chỉ nâng lên cha khi có 2 component cùng cần (Part 08).</li>
+</ul>
+<div class="note"><b>State vs biến thường:</b> biến thường (<code>let x = 0</code>) bị reset sau mỗi lần render và không kích hoạt render. State thì được React giữ lại giữa các lần render và kích hoạt render khi đổi. Cần giữ giá trị mà không muốn render lại (id của timer, tham chiếu DOM) → dùng <code>useRef</code>.</div>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Viết bộ đếm, chứng minh <code>setCount(count+1)</code> ×3 chỉ tăng 1, còn dạng updater tăng 3</li>
+<li>Log <code>count</code> ngay sau <code>setCount</code> để thấy giá trị cũ — giải thích bằng "snapshot"</li>
+<li>Làm ô tìm kiếm lọc danh sách job: không tạo state <code>filteredJobs</code>, chỉ tính khi render</li>
+<li>Viết 3 thao tác thêm / sửa / xoá job trong state theo đúng cách bất biến</li>
+<li>Cố tình mutate (<code>jobs.push</code>) để tận mắt thấy UI không cập nhật</li>
+<li>Làm form nhiều field bằng một object state + một handler <code>handleChange</code> dùng <code>[e.target.name]</code></li>
+</ol>
+</div>
+</div>
+
+<!-- PART 4 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 04</div>
+<h1>Render danh sách, key &amp; render có điều kiện</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Render danh sách đúng cách và hiểu thật sự key dùng để làm gì — đây là chỗ gây bug âm thầm nhiều nhất với người mới.</div></div>
+
+<h2>4.1 map để render danh sách</h2>
+<pre><code>&lt;div&gt;
+  {jobs.map((job) =&gt; (
+    &lt;JobListing key={job.id} job={job} /&gt;
+  ))}
+&lt;/div&gt;</code></pre>
+
+<h2>4.2 Key dùng để làm gì</h2>
+<p>Key không phải để "React biết thứ tự". Key là <b>danh tính</b> của phần tử: nó cho React biết "element này ở lần render trước và lần này là cùng một thứ". Nhờ đó React biết nên giữ lại DOM node cùng toàn bộ state bên trong component đó, hay huỷ đi tạo mới.</p>
+<table>
+<tr><th>Cách đặt key</th><th>Đánh giá</th></tr>
+<tr><td><code>key={job.id}</code></td><td>✔ Đúng — id ổn định từ dữ liệu</td></tr>
+<tr><td><code>key={index}</code></td><td>✘ Nguy hiểm khi danh sách có thể sắp xếp / thêm / xoá ở giữa</td></tr>
+<tr><td><code>key={Math.random()}</code></td><td>✘ Rất tệ — key đổi mỗi lần render → React huỷ và dựng lại toàn bộ, mất state, mất focus, chậm</td></tr>
+<tr><td>Không có key</td><td>React cảnh báo trong console và mặc định dùng index</td></tr>
+</table>
+<div class="note"><b>Bug thật khi dùng index làm key:</b> danh sách có ô input; bạn gõ vào ô thứ 2 rồi xoá phần tử thứ 1. Vì key là index, React tưởng phần tử 2 "chính là" phần tử 1 cũ → giữ nguyên state của ô cũ → nội dung bạn gõ nhảy sang dòng khác. Đây là loại bug rất khó truy vết nếu không hiểu key.</div>
+
+<h2>4.3 Render có điều kiện</h2>
+<pre><code>{ loading &amp;&amp; &lt;Spinner /&gt; }                                   <span class="kw">// hiện khi true</span>
+{ error ? &lt;Error msg={error} /&gt; : &lt;JobList jobs={jobs} /&gt; }
+
+{ jobs.length &gt; 0
+    ? jobs.map((j) =&gt; &lt;JobListing key={j.id} job={j} /&gt;)
+    : &lt;p&gt;Chưa có công việc nào&lt;/p&gt; }
+
+<span class="kw">// Logic phức tạp → tách ra biến trước khi return, đừng nhồi vào JSX</span>
+<span class="kw">let</span> content;
+<span class="kw">if</span> (loading)      content = &lt;Spinner /&gt;;
+<span class="kw">else if</span> (error) content = &lt;Error msg={error} /&gt;;
+<span class="kw">else</span>            content = &lt;JobList jobs={jobs} /&gt;;
+
+<span class="kw">return</span> &lt;div&gt;{content}&lt;/div&gt;;</code></pre>
+<div class="note">Nhắc lại bẫy từ Part J: <code>{jobs.length &amp;&amp; ...}</code> in ra số 0 khi mảng rỗng. Luôn viết <code>{jobs.length &gt; 0 &amp;&amp; ...}</code>. Ngoài ra <code>null</code>, <code>undefined</code>, <code>false</code> đều không render gì — nên <code>return null</code> là cách hợp lệ để "không hiện gì".</div>
+
+<h2>4.4 Key để chủ động reset state</h2>
+<pre><code><span class="kw">// Đổi key → React huỷ component cũ, tạo mới hoàn toàn (state về khởi tạo)</span>
+&lt;JobForm key={selectedJobId} job={selectedJob} /&gt;</code></pre>
+<p>Đây là mẹo chính thống được React khuyến nghị: thay vì viết <code>useEffect</code> để "reset form khi đổi job", chỉ cần đổi key.</p>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Render danh sách job bằng <code>map</code> + key là id</li>
+<li>Tái hiện bug <code>key=index</code>: danh sách có input, xoá phần tử đầu, quan sát giá trị input nhảy sai; sau đó sửa bằng <code>key=id</code></li>
+<li>Xử lý 3 trạng thái loading / error / empty cho danh sách</li>
+<li>Tạo bug <code>{jobs.length &amp;&amp; ...}</code> hiện số 0 rồi sửa lại</li>
+<li>Dùng mẹo key ở mục 4.4 để reset form khi chọn job khác</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 5 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 05</div>
+<h1>Sự kiện &amp; Form (controlled component)</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Xử lý sự kiện đúng cách và làm form theo mô hình controlled — nền tảng cho mọi trang thêm/sửa dữ liệu.</div></div>
+
+<h2>5.1 Sự kiện</h2>
+<pre><code>&lt;button onClick={handleClick}&gt;Lưu&lt;/button&gt;                       <span class="kw">// truyền tham chiếu</span>
+&lt;button onClick={() =&gt; handleDelete(job.id)}&gt;Xoá&lt;/button&gt;         <span class="kw">// cần tham số → bọc arrow</span>
+
+<span class="kw">function</span> <span class="cls">handleSubmit</span>(e) {
+  e.<span class="cls">preventDefault</span>();    <span class="kw">// chặn browser reload trang khi submit form</span>
+}</code></pre>
+<p>React dùng synthetic event — một lớp bọc chuẩn hoá sự kiện DOM để hoạt động giống nhau trên mọi trình duyệt. API dùng gần như y hệt DOM thật (<code>e.target</code>, <code>e.preventDefault()</code>, <code>e.stopPropagation()</code>).</p>
+
+<h2>5.2 Controlled component</h2>
+<pre><code><span class="kw">const</span> [title, setTitle] = <span class="cls">useState</span>(<span class="str">''</span>);
+
+&lt;input
+  value={title}                                   <span class="kw">// giá trị LUÔN lấy từ state</span>
+  onChange={(e) =&gt; setTitle(e.target.value)}       <span class="kw">// gõ → cập nhật state → render lại</span>
+/&gt;</code></pre>
+<p>"Controlled" nghĩa là React nắm quyền kiểm soát giá trị của input, DOM chỉ hiển thị lại state. Nhờ vậy bạn validate, format, disable nút submit... đều dễ dàng vì luôn có dữ liệu trong tay.</p>
+<div class="note"><b>Lỗi thường gặp:</b> đặt <code>value={title}</code> mà quên <code>onChange</code> → input bị "đơ", gõ không lên chữ, kèm cảnh báo trong console. Nếu thực sự muốn không kiểm soát thì dùng <code>defaultValue</code>.</div>
+
+<h2>5.3 Form nhiều field — một handler duy nhất</h2>
+<pre><code><span class="kw">const</span> [form, setForm] = <span class="cls">useState</span>({ title: <span class="str">''</span>, type: <span class="str">'Full-Time'</span>, salary: <span class="str">''</span> });
+
+<span class="kw">function</span> <span class="cls">handleChange</span>(e) {
+  <span class="kw">const</span> { name, value, type, checked } = e.target;
+
+  setForm((prev) =&gt; ({
+    ...prev,
+    [name]: type === <span class="str">'checkbox'</span> ? checked : value,   <span class="kw">// computed key</span>
+  }));
+}
+
+&lt;input name=<span class="str">"title"</span>  value={form.title}  onChange={handleChange} /&gt;
+&lt;input name=<span class="str">"salary"</span> value={form.salary} onChange={handleChange} /&gt;</code></pre>
+
+<h2>5.4 Submit</h2>
+<pre><code><span class="kw">async function</span> <span class="cls">handleSubmit</span>(e) {
+  e.<span class="cls">preventDefault</span>();
+
+  <span class="kw">if</span> (!form.title.<span class="cls">trim</span>()) {
+    setError(<span class="str">'Tiêu đề là bắt buộc'</span>);
+    <span class="kw">return</span>;
+  }
+
+  setSubmitting(<span class="kw">true</span>);
+  <span class="kw">try</span> {
+    <span class="kw">await</span> createJob(form);
+    navigate(<span class="str">'/jobs'</span>);
+  } <span class="kw">catch</span> (err) {
+    setError(err.message);
+  } <span class="kw">finally</span> {
+    setSubmitting(<span class="kw">false</span>);        <span class="kw">// finally: chạy cả khi lỗi</span>
+  }
+}
+
+&lt;button type=<span class="str">"submit"</span> disabled={submitting}&gt;
+  {submitting ? <span class="str">'Đang lưu...'</span> : <span class="str">'Lưu'</span>}
+&lt;/button&gt;</code></pre>
+<div class="note">Luôn khoá nút khi đang submit. Không khoá thì user bấm nhiều lần → tạo trùng bản ghi. React 19 có <code>useActionState</code> + <code>useFormStatus</code> làm việc này gọn hơn — xem Part 11, và mục 11.9 so sánh trực tiếp với cách viết ở đây.</div>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Làm trang AddJobPage với form controlled đầy đủ field</li>
+<li>Dùng một state object + một <code>handleChange</code> cho mọi input</li>
+<li>Validate phía client (bắt buộc nhập title, lương phải là số), hiện lỗi ngay dưới field</li>
+<li>Khoá nút submit + đổi chữ khi đang gửi</li>
+<li>Làm trang EditJobPage: đổ dữ liệu cũ vào form rồi cập nhật</li>
+<li>Bỏ <code>e.preventDefault()</code> một lần để thấy trang reload — hiểu vì sao cần nó</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 6 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 06</div>
+<h1>useEffect — dùng đúng và dùng ít</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Hiểu Effect thực sự dùng để làm gì (đồng bộ với hệ thống bên ngoài React), và nhận ra phần lớn <code>useEffect</code> người mới viết là không cần thiết.</div></div>
+
+<h2>6.1 Cú pháp &amp; 3 dạng dependency</h2>
+<pre><code><span class="cls">useEffect</span>(() =&gt; {
+  <span class="kw">// side effect: gọi API, subscribe, timer, đọc/ghi localStorage...</span>
+
+  <span class="kw">return</span> () =&gt; {
+    <span class="kw">// CLEANUP: chạy trước lần effect kế tiếp và khi component unmount</span>
+  };
+}, [deps]);</code></pre>
+<table>
+<tr><th>Dependency</th><th>Chạy khi nào</th></tr>
+<tr><td><code>[]</code></td><td>Chỉ sau lần render đầu (mount). Dev + StrictMode: chạy 2 lần</td></tr>
+<tr><td><code>[a, b]</code></td><td>Sau mount, và mỗi khi a hoặc b đổi tham chiếu/giá trị</td></tr>
+<tr><td>Không truyền</td><td>Sau MỌI lần render — hầu như luôn là lỗi</td></tr>
+</table>
+
+<h2>6.2 Cleanup — bắt buộc, không phải tuỳ chọn</h2>
+<pre><code><span class="cls">useEffect</span>(() =&gt; {
+  <span class="kw">const</span> id = <span class="cls">setInterval</span>(tick, 1000);
+  <span class="kw">return</span> () =&gt; <span class="cls">clearInterval</span>(id);       <span class="kw">// không có dòng này = rò rỉ timer</span>
+}, []);
+
+<span class="cls">useEffect</span>(() =&gt; {
+  window.<span class="cls">addEventListener</span>(<span class="str">'resize'</span>, onResize);
+  <span class="kw">return</span> () =&gt; window.<span class="cls">removeEventListener</span>(<span class="str">'resize'</span>, onResize);
+}, []);</code></pre>
+<p>StrictMode cố tình mount → unmount → mount lại ở dev chính là để ép bạn phát hiện thiếu cleanup. Nếu bật app thấy có 2 timer chạy, đó là effect của bạn chưa dọn dẹp.</p>
+
+<h2>6.3 Bẫy dependency: vòng lặp vô hạn</h2>
+<pre><code><span class="kw">// ✘ Object/array tạo mới mỗi lần render → deps LUÔN khác → effect chạy mãi</span>
+<span class="cls">useEffect</span>(() =&gt; { fetchJobs(filters); }, [filters]);  <span class="kw">// filters = {} inline ở cha</span>
+
+<span class="kw">// ✘ setState không điều kiện trong effect phụ thuộc chính state đó</span>
+<span class="cls">useEffect</span>(() =&gt; { setCount(count + 1); }, [count]);
+
+<span class="kw">// ✔ Dùng giá trị primitive làm dependency</span>
+<span class="cls">useEffect</span>(() =&gt; { fetchJobs(type, keyword); }, [type, keyword]);</code></pre>
+<div class="note">Đừng bao giờ "im lặng" ESLint bằng cách xoá bớt dependency hoặc thêm <code>// eslint-disable-next-line react-hooks/exhaustive-deps</code>. Cảnh báo đó gần như luôn đúng — nó đang chỉ ra rằng effect của bạn phụ thuộc thứ mà bạn chưa xử lý. Cách sửa đúng: chuyển hàm vào trong effect, dùng dạng updater của setState, hoặc dùng <code>useEffectEvent</code> (mục 6.5).</div>
+
+<h2>6.4 Khi nào KHÔNG cần useEffect</h2>
+<table>
+<tr><th>Tình huống</th><th>Cách đúng</th></tr>
+<tr><td>Tính giá trị dẫn xuất từ props/state (lọc, tổng, format)</td><td>Tính thẳng khi render — không cần effect + state</td></tr>
+<tr><td>Cập nhật state khi props đổi</td><td>Tính khi render, hoặc đổi key để reset (Part 04)</td></tr>
+<tr><td>Xử lý sau khi user bấm nút</td><td>Viết trong event handler, không phải effect</td></tr>
+<tr><td>Gửi request khi submit form</td><td>Trong <code>handleSubmit</code></td></tr>
+<tr><td>Fetch dữ liệu cho trang</td><td>Effect được — hoặc tốt hơn: loader của Router (Part 09) / thư viện data fetching (Part 07.4)</td></tr>
+<tr><td>Đồng bộ với hệ thống ngoài: timer, websocket, listener, thư viện DOM bên thứ ba</td><td>Đây mới là việc của Effect</td></tr>
+</table>
+<div class="note">Câu hỏi tự kiểm tra trước khi viết <code>useEffect</code>: "Việc này có phải là đồng bộ với thứ bên ngoài React không?" Nếu không — 90% là bạn không cần Effect.</div>
+
+<h2>6.5 useEffectEvent (React 19.2)</h2>
+<pre><code><span class="kw">import</span> { useEffectEvent, useEffect } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="kw">function</span> <span class="cls">ChatRoom</span>({ roomId, theme }) {
+  <span class="kw">// Tách phần "sự kiện" ra: đọc được theme MỚI NHẤT nhưng KHÔNG làm effect chạy lại</span>
+  <span class="kw">const</span> onConnected = <span class="cls">useEffectEvent</span>(() =&gt; {
+    showNotification(<span class="str">'Đã kết nối!'</span>, theme);
+  });
+
+  <span class="cls">useEffect</span>(() =&gt; {
+    <span class="kw">const</span> conn = <span class="cls">createConnection</span>(roomId);
+    conn.<span class="cls">on</span>(<span class="str">'connected'</span>, () =&gt; onConnected());
+    conn.<span class="cls">connect</span>();
+    <span class="kw">return</span> () =&gt; conn.<span class="cls">disconnect</span>();
+  }, [roomId]);      <span class="kw">// ✔ KHÔNG đưa onConnected vào deps — đúng theo quy định của hook này</span>
+}</code></pre>
+<div class="audit"><b>Đã kiểm chứng theo <code>react.dev/blog/2025/10/01/react-19-2</code> và <code>react.dev/reference/react/useEffectEvent</code>:</b> <code>useEffectEvent</code> là API mới của React 19.2, import trực tiếp từ <code>'react'</code>. Trước 19.2, đổi <code>theme</code> sẽ khiến effect chạy lại → ngắt và kết nối lại phòng chat một cách vô lý. Effect Event chỉ được gọi bên trong Effect (hoặc Effect Event khác) — không được gọi trong lúc render, không truyền xuống component/hook khác, và <b>không bao giờ</b> đưa vào dependency array (nó cố tình có "identity không ổn định" giữa các lần render). Cần <code>eslint-plugin-react-hooks</code> bản mới để lint đúng quy tắc này.</div>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Viết effect fetch danh sách job khi mount, có cleanup</li>
+<li>Cố tình bỏ <code>[]</code> để thấy vòng lặp fetch vô hạn (mở tab Network), rồi sửa</li>
+<li>Viết effect có <code>setInterval</code>, quan sát ở StrictMode chạy 2 timer khi thiếu cleanup</li>
+<li>Rà lại toàn bộ code cũ: tìm những <code>useEffect</code> chỉ để tính giá trị dẫn xuất và xoá chúng đi</li>
+<li>Viết effect có dependency là object inline để tái hiện vòng lặp, rồi sửa bằng dependency primitive</li>
+<li>Thử <code>useEffectEvent</code> cho một effect cần đọc state mới nhất mà không muốn chạy lại</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 7 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 07</div>
+<h1>Gọi API &amp; Custom Hook</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Fetch dữ liệu đúng chuẩn (loading / error / race condition), rồi đóng gói lại thành custom hook tái sử dụng — và biết khi nào nên đổi sang thư viện.</div></div>
+
+<h2>7.1 Mẫu fetch đầy đủ</h2>
+<pre><code><span class="kw">const</span> [jobs, setJobs] = <span class="cls">useState</span>([]);
+<span class="kw">const</span> [loading, setLoading] = <span class="cls">useState</span>(<span class="kw">true</span>);
+<span class="kw">const</span> [error, setError] = <span class="cls">useState</span>(<span class="kw">null</span>);
+
+<span class="cls">useEffect</span>(() =&gt; {
+  <span class="kw">const</span> controller = <span class="kw">new</span> AbortController();       <span class="kw">// để huỷ request cũ</span>
+
+  <span class="kw">async function</span> <span class="cls">load</span>() {               <span class="kw">// khai hàm async BÊN TRONG effect</span>
+    <span class="kw">try</span> {
+      setLoading(<span class="kw">true</span>);
+      setError(<span class="kw">null</span>);
+
+      <span class="kw">const</span> res = <span class="kw">await</span> fetch(url, { signal: controller.signal });
+      <span class="kw">if</span> (!res.ok) <span class="kw">throw new</span> Error(<span class="str">`HTTP ${res.status}`</span>);
+
+      setJobs(<span class="kw">await</span> res.<span class="cls">json</span>());
+    } <span class="kw">catch</span> (err) {
+      <span class="kw">if</span> (err.name !== <span class="str">'AbortError'</span>) setError(err.message);
+    } <span class="kw">finally</span> {
+      setLoading(<span class="kw">false</span>);
+    }
+  }
+
+  <span class="cls">load</span>();
+  <span class="kw">return</span> () =&gt; controller.<span class="cls">abort</span>();          <span class="kw">// cleanup: huỷ request khi deps đổi/unmount</span>
+}, [url]);</code></pre>
+<div class="note"><b>Hai lỗi bắt buộc phải tránh:</b> (1) Không viết <code>useEffect(async () =&gt; {...})</code> — hàm async trả về Promise, còn React mong nhận về hàm cleanup. Phải khai hàm async bên trong rồi gọi. (2) Race condition: user gõ tìm kiếm nhanh → nhiều request bay đi; response về không theo thứ tự → kết quả cũ ghi đè kết quả mới. <code>AbortController</code> trong cleanup giải quyết triệt để.</div>
+
+<h2>7.2 Tách tầng gọi API ra khỏi component</h2>
+<pre><code><span class="kw">// src/services/jobService.js — component KHÔNG nên biết chi tiết URL/header</span>
+<span class="kw">const</span> BASE = import.meta.env.VITE_API_URL;
+
+<span class="kw">async function</span> <span class="cls">request</span>(path, options = {}) {
+  <span class="kw">const</span> res = <span class="kw">await</span> fetch(<span class="str">`${BASE}${path}`</span>, {
+    headers: { <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span>, <span class="str">'Accept'</span>: <span class="str">'application/json'</span> },
+    ...options,
+  });
+
+  <span class="kw">if</span> (!res.ok) <span class="kw">throw new</span> Error((<span class="kw">await</span> res.<span class="cls">json</span>().<span class="cls">catch</span>(() =&gt; ({}))).message ?? <span class="str">'Request failed'</span>);
+  <span class="kw">return</span> res.status === 204 ? <span class="kw">null</span> : res.<span class="cls">json</span>();
+}
+
+<span class="kw">export const</span> getJobs    = () =&gt; request(<span class="str">'/jobs'</span>);
+<span class="kw">export const</span> getJob     = (id) =&gt; request(<span class="str">`/jobs/${id}`</span>);
+<span class="kw">export const</span> createJob  = (data) =&gt; request(<span class="str">'/jobs'</span>, { method: <span class="str">'POST'</span>, body: JSON.<span class="cls">stringify</span>(data) });
+<span class="kw">export const</span> deleteJob  = (id) =&gt; request(<span class="str">`/jobs/${id}`</span>, { method: <span class="str">'DELETE'</span> });</code></pre>
+
+<h2>7.3 Custom Hook — tái sử dụng logic có state</h2>
+<pre><code><span class="kw">// src/hooks/useFetch.js — tên PHẢI bắt đầu bằng "use"</span>
+<span class="kw">export function</span> <span class="cls">useFetch</span>(fetcher, deps = []) {
+  <span class="kw">const</span> [data, setData] = <span class="cls">useState</span>(<span class="kw">null</span>);
+  <span class="kw">const</span> [loading, setLoading] = <span class="cls">useState</span>(<span class="kw">true</span>);
+  <span class="kw">const</span> [error, setError] = <span class="cls">useState</span>(<span class="kw">null</span>);
+
+  <span class="cls">useEffect</span>(() =&gt; {
+    <span class="kw">let</span> alive = <span class="kw">true</span>;
+
+    setLoading(<span class="kw">true</span>);
+    fetcher()
+      .<span class="cls">then</span>((d) =&gt; alive &amp;&amp; setData(d))
+      .<span class="cls">catch</span>((e) =&gt; alive &amp;&amp; setError(e.message))
+      .<span class="cls">finally</span>(() =&gt; alive &amp;&amp; setLoading(<span class="kw">false</span>));
+
+    <span class="kw">return</span> () =&gt; { alive = <span class="kw">false</span>; };      <span class="kw">// chặn setState sau khi unmount</span>
+  }, deps);
+
+  <span class="kw">return</span> { data, loading, error };
+}
+
+<span class="kw">// Dùng</span>
+<span class="kw">const</span> { data: jobs, loading, error } = <span class="cls">useFetch</span>(getJobs, []);</code></pre>
+<div class="note">Custom hook chia sẻ LOGIC, không chia sẻ STATE. Hai component cùng gọi <code>useFetch</code> sẽ có hai bộ state riêng biệt. Muốn dùng chung một dữ liệu thì phải nâng state lên cha hoặc dùng Context (Part 08).</div>
+
+<h2>7.4 useEffect thủ công hay dùng thư viện (TanStack Query / SWR) — chọn đúng lúc nào</h2>
+<p>Bạn vừa tự viết <code>useFetch</code> ở mục 7.3 — nó chạy tốt cho crash course này. Nhưng dự án thật cần thêm: cache giữa các lần chuyển trang, tự refetch khi quay lại tab, chống gọi trùng request, retry khi lỗi mạng, tự invalidate sau khi tạo/sửa/xoá. Câu hỏi quyết định: <b>bạn có sẵn sàng tự viết và bảo trì toàn bộ phần cache/retry/dedupe đó bằng tay không?</b></p>
+
+<h3>Cách 1 — Tự viết bằng useEffect (<code>useFetch</code> ở 7.3)</h3>
+<p>Không thêm dependency, hiểu rõ 100% code đang chạy — đúng mục đích học của crash course này. Đổi lại: mỗi component gọi lại là một lần fetch mới (không cache), tự tay viết lại race condition/cleanup mỗi nơi cần, không tự động refetch.</p>
+
+<h3>Cách 2 — TanStack Query (<code>useQuery</code> / <code>useMutation</code>)</h3>
+<pre><code><span class="kw">import</span> { useQuery, useMutation, useQueryClient } <span class="kw">from</span> <span class="str">'@tanstack/react-query'</span>;
+
+<span class="kw">function</span> <span class="cls">JobsPage</span>() {
+  <span class="kw">const</span> { data: jobs, isLoading, error } = <span class="cls">useQuery</span>({
+    queryKey: [<span class="str">'jobs'</span>],
+    queryFn: getJobs,          <span class="kw">// hàm ở 7.2, không đổi gì cả</span>
+  });
+
+  <span class="kw">const</span> queryClient = <span class="cls">useQueryClient</span>();
+  <span class="kw">const</span> { mutate: remove } = <span class="cls">useMutation</span>({
+    mutationFn: deleteJob,
+    onSuccess: () =&gt; queryClient.<span class="cls">invalidateQueries</span>({ queryKey: [<span class="str">'jobs'</span>] }),
+  });
+}</code></pre>
+<p>Cache theo <code>queryKey</code>, tự dedupe request trùng, tự refetch khi focus lại tab, và <code>invalidateQueries</code> tự fetch lại sau khi mutate thành công — toàn bộ những thứ bạn phải tự viết tay ở Cách 1.</p>
+
+<div class="audit"><b>Đã kiểm chứng theo <code>tanstack.com/query/latest</code> và <code>swr.vercel.app/docs/getting-started</code>:</b> <code>useQuery({ queryKey, queryFn })</code> và <code>useMutation({ mutationFn, onSuccess })</code> là API hiện tại của <code>@tanstack/react-query</code>. SWR (thư viện nhẹ hơn, cùng của đội Vercel) dùng API tối giản hơn: <code>const { data, error, isLoading } = useSWR(key, fetcher)</code> — không có khái niệm mutation riêng, thiên về đọc dữ liệu là chính.</p></div>
+
+<table>
+<tr><th>Nhu cầu</th><th>Cách 1: tự viết</th><th>Cách 2: TanStack Query / SWR</th></tr>
+<tr><td>Học cơ chế fetch/loading/error/cleanup thật sự</td><td>✅ Bắt buộc — đây chính là mục đích</td><td>❌ Thư viện che hết chi tiết bên dưới</td></tr>
+<tr><td>Cache dữ liệu giữa các trang, tránh gọi lại API thừa</td><td>❌ Phải tự viết tầng cache riêng</td><td>✅ Có sẵn theo <code>queryKey</code></td></tr>
+<tr><td>Tự động refetch khi quay lại tab / mất mạng rồi có lại</td><td>❌ Không có sẵn</td><td>✅ Bật mặc định</td></tr>
+<tr><td>Đồng bộ UI sau khi tạo/sửa/xoá (mutate)</td><td>Tự gọi lại fetch thủ công</td><td>✅ <code>invalidateQueries</code> / SWR <code>mutate()</code></td></tr>
+<tr><td>Dự án nhỏ, ít màn hình, không cần chia sẻ cache</td><td>✅ Gọn, không thêm dependency</td><td>Hơi thừa cho quy mô nhỏ</td></tr>
+</table>
+<p><b>Quy tắc thực dụng:</b> tự viết ở crash course này trước để hiểu cơ chế (Cách 1) — đó là lý do Part 07 tồn tại. Khi lên dự án thật có nhiều trang cùng cần một dữ liệu, cần cache/retry/refetch, chuyển sang TanStack Query (đầy đủ tính năng hơn) hoặc SWR (nhẹ hơn, học nhanh hơn) thay vì tự mở rộng <code>useFetch</code> mãi.</p>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Tạo <code>src/services/jobService.js</code>, chuyển toàn bộ lời gọi fetch rải rác trong component về đây</li>
+<li>Viết mẫu fetch đầy đủ ở 7.1 cho trang danh sách (loading / error / dữ liệu rỗng)</li>
+<li>Tái hiện race condition: ô tìm kiếm gõ nhanh, log kết quả nhận về theo thứ tự, rồi sửa bằng <code>AbortController</code></li>
+<li>Đóng gói thành <code>useFetch</code> và dùng lại ở ít nhất 2 trang</li>
+<li>Thử tắt json-server để test nhánh lỗi hiển thị đúng</li>
+<li>(Tuỳ chọn, để so sánh) Cài <code>@tanstack/react-query</code>, viết lại trang danh sách bằng <code>useQuery</code>, tự cảm nhận sự khác biệt so với 7.3</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 8 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 08</div>
+<h1>Chia sẻ state: lifting up, Context, useReducer</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Biết chọn đúng công cụ khi nhiều component cần cùng một dữ liệu — và biết khi nào không nên dùng Context.</div></div>
+
+<h2>8.1 Lifting state up (nâng state lên cha)</h2>
+<p>Hai component cần cùng một dữ liệu → đưa state lên component cha gần nhất của cả hai, rồi truyền xuống bằng props. Đây là cách mặc định và nên là lựa chọn đầu tiên.</p>
+<pre><code><span class="kw">function</span> <span class="cls">JobsPage</span>() {
+  <span class="kw">const</span> [keyword, setKeyword] = <span class="cls">useState</span>(<span class="str">''</span>);      <span class="kw">// state ở cha</span>
+
+  <span class="kw">return</span> (
+    &lt;&gt;
+      &lt;SearchBar value={keyword} onChange={setKeyword} /&gt;
+      &lt;JobList keyword={keyword} /&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+
+<h2>8.2 Context — khi props phải xuyên quá nhiều tầng</h2>
+<p>Vấn đề "props drilling": truyền <code>user</code> từ App → Layout → Navbar → UserMenu, trong đó Layout và Navbar không dùng mà chỉ chuyển tiếp. Context giải quyết đúng chuyện đó.</p>
+<pre><code><span class="kw">// src/context/AuthContext.jsx</span>
+<span class="kw">import</span> { createContext, useContext, useState } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="kw">const</span> AuthContext = <span class="cls">createContext</span>(<span class="kw">null</span>);
+
+<span class="kw">export function</span> <span class="cls">AuthProvider</span>({ children }) {
+  <span class="kw">const</span> [user, setUser] = <span class="cls">useState</span>(<span class="kw">null</span>);
+  <span class="kw">const</span> [token, setToken] = <span class="cls">useState</span>(() =&gt; localStorage.<span class="cls">getItem</span>(<span class="str">'token'</span>));
+
+  <span class="kw">// React 19: dùng thẳng &lt;AuthContext&gt; làm provider, không cần .Provider</span>
+  <span class="kw">return</span> (
+    &lt;AuthContext value={{ user, token, setUser, setToken }}&gt;
+      {children}
+    &lt;/AuthContext&gt;
+  );
+}
+
+<span class="kw">// Hook tiện dụng + báo lỗi rõ ràng nếu dùng ngoài Provider</span>
+<span class="kw">export function</span> <span class="cls">useAuth</span>() {
+  <span class="kw">const</span> ctx = <span class="cls">useContext</span>(AuthContext);
+  <span class="kw">if</span> (!ctx) <span class="kw">throw new</span> Error(<span class="str">'useAuth phải dùng bên trong &lt;AuthProvider&gt;'</span>);
+  <span class="kw">return</span> ctx;
+}</code></pre>
+<div class="note">Context không phải state manager và không tối ưu hiệu năng. Khi giá trị context đổi, mọi component đang <code>useContext</code> đều render lại. Vì vậy: (1) đừng nhồi mọi thứ vào một context khổng lồ — tách theo mối quan tâm (Auth / Theme / Cart); (2) đừng dùng Context cho dữ liệu đổi liên tục (giá trị input đang gõ); (3) dữ liệu từ server thì nên dùng thư viện data fetching (Part 07.4) thay vì Context.</div>
+
+<h2>8.3 useReducer — gom nhiều state liên quan vào một nơi</h2>
+<pre><code><span class="kw">function</span> <span class="cls">jobsReducer</span>(state, action) {
+  <span class="kw">switch</span> (action.type) {
+    <span class="kw">case</span> <span class="str">'loading'</span>: <span class="kw">return</span> { ...state, loading: <span class="kw">true</span>, error: <span class="kw">null</span> };
+    <span class="kw">case</span> <span class="str">'success'</span>: <span class="kw">return</span> { loading: <span class="kw">false</span>, error: <span class="kw">null</span>, items: action.payload };
+    <span class="kw">case</span> <span class="str">'error'</span>:   <span class="kw">return</span> { ...state, loading: <span class="kw">false</span>, error: action.error };
+    <span class="kw">case</span> <span class="str">'remove'</span>:  <span class="kw">return</span> { ...state, items: state.items.<span class="cls">filter</span>((j) =&gt; j.id !== action.id) };
+    <span class="kw">default</span>:        <span class="kw">throw new</span> Error(<span class="str">`Unknown action: ${action.type}`</span>);
+  }
+}
+
+<span class="kw">const</span> [state, dispatch] = <span class="cls">useReducer</span>(jobsReducer, { items: [], loading: <span class="kw">true</span>, error: <span class="kw">null</span> });
+
+dispatch({ type: <span class="str">'success'</span>, payload: jobs });</code></pre>
+<p><code>useReducer</code> gom mọi cách state có thể thay đổi vào đúng một hàm thuần (<code>jobsReducer</code>) thay vì rải rác nhiều lệnh <code>setState</code> khắp component. Component chỉ <code>dispatch</code> "đã xảy ra chuyện gì" (<code>action</code>), reducer tự quyết định state mới trông ra sao — tách rời "cái gì xảy ra" khỏi "state đổi thế nào".</p>
+
+<h2>8.4 useState (+ Context) hay useReducer — chọn đúng lúc nào</h2>
+<p>Cả hai đều là cách quản lý state trong React — không cái nào "cao cấp hơn" cái nào. Câu hỏi quyết định: <b>state của bạn có nhiều cách chuyển đổi qua lại lẫn nhau không, hay chỉ là vài giá trị độc lập?</b></p>
+
+<h3>Cách 1 — nhiều <code>useState</code> độc lập (+ Context nếu cần chia sẻ)</h3>
+<pre><code><span class="kw">const</span> [loading, setLoading] = <span class="cls">useState</span>(<span class="kw">true</span>);
+<span class="kw">const</span> [error, setError] = <span class="cls">useState</span>(<span class="kw">null</span>);
+<span class="kw">const</span> [items, setItems] = <span class="cls">useState</span>([]);
+<span class="kw">// mỗi state độc lập, tự set — dễ đọc khi ít, dễ set SAI thứ tự khi nhiều</span></code></pre>
+<p>Đơn giản, không cần định nghĩa action/reducer, dễ đọc khi chỉ có 1-3 giá trị không liên quan chặt tới nhau.</p>
+
+<h3>Cách 2 — <code>useReducer</code> (như mục 8.3)</h3>
+<p>Gom cả loading/error/items vào 1 state object, mọi thay đổi đi qua đúng 1 hàm <code>jobsReducer</code> — không thể quên set <code>error: null</code> khi bắt đầu loading lại, vì logic đó nằm sẵn trong <code>case 'loading'</code>.</p>
+
+<div class="audit"><b>Đã đối chiếu <code>react.dev/reference/react/useReducer</code>:</b> docs chính thức khuyến nghị chuyển từ nhiều <code>useState</code> sang <code>useReducer</code> đúng khi "một state cập nhật kích hoạt cập nhật của state khác" hoặc số lượng <code>setState</code> rải rác trong nhiều handler đã gây khó theo dõi — không có "số lượng state" cụ thể nào là ngưỡng, đây là dấu hiệu định tính.</div>
+
+<table>
+<tr><th>Nhu cầu</th><th>Cách 1: useState</th><th>Cách 2: useReducer</th></tr>
+<tr><td>1-3 giá trị đơn giản, độc lập với nhau</td><td>✅ Gọn, dễ đọc</td><td>Rườm rà không cần thiết</td></tr>
+<tr><td>Nhiều giá trị liên quan chặt, nhiều nhánh chuyển trạng thái (loading/success/error)</td><td>❌ Dễ quên đồng bộ giữa các state</td><td>✅ Một hàm reducer kiểm soát toàn bộ nhánh</td></tr>
+<tr><td>Cần test riêng logic "state đổi thế nào" mà không cần render component</td><td>❌ Logic nằm rải trong handler</td><td>✅ reducer là hàm thuần, test độc lập dễ dàng</td></tr>
+<tr><td>Chia sẻ cho nhiều component ở xa nhau trong cây</td><td>Kết hợp với Context (8.2)</td><td>✅ Kết hợp Context + reducer rất hợp (state phức tạp + chia sẻ xa)</td></tr>
+<tr><td>Dữ liệu từ server, cần cache/refetch</td><td colspan="2">Không phải việc của cả hai — dùng thư viện data fetching (Part 07.4)</td></tr>
+</table>
+<p><b>Quy tắc thực dụng:</b> bắt đầu luôn bằng <code>useState</code>. Chỉ chuyển sang <code>useReducer</code> khi bạn thấy mình đang set nhiều state cùng lúc trong cùng một handler để giữ chúng "khớp" với nhau (ví dụ: bắt đầu fetch phải vừa <code>setLoading(true)</code> vừa <code>setError(null)</code>) — đó là dấu hiệu state đã đủ phức tạp để gom vào 1 reducer.</p>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Nâng state ô tìm kiếm lên cha, chia sẻ giữa SearchBar và JobList</li>
+<li>Tạo <code>AuthContext</code> + <code>useAuth</code> (chưa cần API thật, lưu token giả vào localStorage)</li>
+<li>Bọc <code>AuthProvider</code> ở App, đọc user trong Navbar bằng <code>useAuth</code> — xoá hết props drilling</li>
+<li>Cố tình gọi <code>useAuth</code> ở component ngoài Provider để thấy lỗi rõ ràng bạn tự throw</li>
+<li>Chuyển state loading/error/items của trang danh sách sang <code>useReducer</code>, so sánh xem code dễ đọc hơn không</li>
+<li>Tự trả lời câu hỏi ở mục 8.4 cho chính state bạn vừa chuyển: nó có đáng chuyển không?</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 9 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 09</div>
+<h1>React Router — routing, loader &amp; form action</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Làm app nhiều trang thật sự: URL đổi, nested layout, lấy tham số, và tải dữ liệu bằng loader thay vì <code>useEffect</code>.</div></div>
+
+<div class="audit"><b>Về phiên bản (đã kiểm chứng <code>reactrouter.com</code>, 09/2026):</b> từ v7, các package được gộp về tên duy nhất là <code>react-router</code> (<code>react-router-dom</code> vẫn còn để tương thích ngược, nhưng docs hiện tại import thẳng từ <code>"react-router"</code>). Bản mới nhất hiện tại là v8. API 3 mode dưới đây không đổi giữa v7 và v8, nên kiến thức phần này dùng được cho cả hai.</div>
+
+<h2>9.1 Ba "mode" của React Router — chọn mode nào cho dự án của bạn</h2>
+<p>React Router không phải một API duy nhất — nó cung cấp 3 cách dùng khác nhau, đủ khác để coi là 3 "chế độ" riêng biệt. Câu hỏi quyết định: <b>bạn có cần tải dữ liệu gắn liền với route (loader/action) không, và có cần SSR/type-safe routing không?</b></p>
+
+<h3>Cách 1 — Declarative mode (<code>&lt;BrowserRouter&gt;</code>, <code>&lt;Routes&gt;</code>)</h3>
+<p>Theo đúng nguyên văn docs: "Declarative mode enables basic routing features like matching URLs to components, navigating around the app, and providing active states" — dùng <code>&lt;Link&gt;</code>, <code>useNavigate</code>, <code>useLocation</code>. Không có loader/action.</p>
+
+<h3>Cách 2 — Data mode (<code>createBrowserRouter</code>, <code>loader</code>, <code>action</code>)</h3>
+<p>Theo đúng nguyên văn docs: "Data Mode adds data loading, actions, pending states and more" bằng cách chuyển cấu hình route ra ngoài quá trình render React. Đây là mode cả tài liệu này dùng — dự án job listings của bạn đang ở mode này.</p>
+
+<h3>Cách 3 — Framework mode (Vite plugin)</h3>
+<p>Theo đúng nguyên văn docs: "Framework Mode wraps Data Mode with a Vite plugin" — thêm type-safe <code>href</code>, Route Module API, code splitting tự động, và có thể bật SSR/SSG. Cần thiết lập dự án khác (không phải Vite React thuần).</p>
+
+<div class="audit"><b>Đã đối chiếu <code>reactrouter.com/start/modes</code>:</b> đúng 3 tên "Declarative / Data / Framework", trích nguyên văn mô tả từng mode ở trên. Docs nói rõ "every mode supports any architecture and deployment target" — nghĩa là không có luật cứng "SPA thì bắt buộc mode nào", nhưng với 1 SPA gọi API riêng (đúng bài toán job listings của khoá này), Data mode là lựa chọn thực tế nhất: có loader/action mà không cần đổi hẳn sang kiến trúc framework.</div>
+
+<table>
+<tr><th>Nhu cầu</th><th>Declarative</th><th>Data</th><th>Framework</th></tr>
+<tr><td>App nhỏ, chỉ cần đổi URL, không tải dữ liệu theo route</td><td>✅ Đủ dùng, ít khái niệm nhất</td><td>Thừa tính năng</td><td>Thừa rất nhiều</td></tr>
+<tr><td>Tải dữ liệu gắn với route (loader), submit form qua action</td><td>❌ Không có</td><td>✅ Đúng mục đích</td><td>✅ Có (bên trong Data mode)</td></tr>
+<tr><td>Type-safe params, code splitting tự động theo route</td><td>❌</td><td>❌</td><td>✅</td></tr>
+<tr><td>Cần SSR/SSG</td><td>❌</td><td>❌</td><td>✅ Bắt buộc nếu cần</td></tr>
+<tr><td>Dự án Vite SPA gọi API riêng (đúng bài toán khoá học này)</td><td>Được nhưng thiếu loader</td><td>✅ Vừa đủ</td><td>Cần đổi cấu trúc dự án</td></tr>
+</table>
+<p><b>Quy tắc thực dụng:</b> mới học → bắt đầu Declarative để hiểu <code>&lt;Link&gt;</code>/<code>useNavigate</code> cơ bản; ngay khi cần tải dữ liệu theo route → chuyển sang Data mode và ở lại đó (đây là mode khoá học dùng suốt Part 09-12). Chỉ cân nhắc Framework mode khi dự án thật sự cần SSR hoặc type-safe routing tự động — đừng chuyển "vì nghe nói mới hơn".</p>
+
+<h2>9.2 Cấu hình router (Data mode)</h2>
+<pre><code><span class="kw">import</span> { createBrowserRouter, RouterProvider } <span class="kw">from</span> <span class="str">'react-router'</span>;
+
+<span class="kw">const</span> router = <span class="cls">createBrowserRouter</span>([
+  {
+    path: <span class="str">'/'</span>,
+    element: &lt;MainLayout /&gt;,                 <span class="kw">// layout bọc mọi route con</span>
+    ErrorBoundary: RootErrorBoundary,        <span class="kw">// bắt lỗi loader/action/route không tồn tại</span>
+    children: [
+      { index: <span class="kw">true</span>, element: &lt;HomePage /&gt; },                     <span class="kw">// path '/'</span>
+      { path: <span class="str">'jobs'</span>, element: &lt;JobsPage /&gt; },
+      { path: <span class="str">'jobs/:id'</span>, element: &lt;JobPage /&gt;, loader: jobLoader },
+      { path: <span class="str">'add-job'</span>, element: &lt;AddJobPage /&gt; },
+      { path: <span class="str">'*'</span>, element: &lt;NotFoundPage /&gt; },                       <span class="kw">// catch-all</span>
+    ],
+  },
+]);
+
+<span class="kw">export default function</span> <span class="cls">App</span>() { <span class="kw">return</span> &lt;RouterProvider router={router} /&gt;; }</code></pre>
+<pre><code><span class="kw">// MainLayout — &lt;Outlet /&gt; là chỗ route con được render vào</span>
+<span class="kw">import</span> { Outlet } <span class="kw">from</span> <span class="str">'react-router'</span>;
+
+<span class="kw">export default function</span> <span class="cls">MainLayout</span>() {
+  <span class="kw">return</span> (
+    &lt;&gt;
+      &lt;Navbar /&gt;
+      &lt;main&gt;&lt;Outlet /&gt;&lt;/main&gt;
+      &lt;Toaster /&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<div class="audit"><b>Đã sửa so với bản gốc — đối chiếu <code>reactrouter.com/start/data/routing</code> và <code>reactrouter.com/how-to/error-boundary</code>:</b> import Data mode hiện tại lấy thẳng từ <code>"react-router"</code> (không phải <code>"react-router-dom"</code> — package đó vẫn tồn tại và re-export để không phá code cũ, nhưng docs hiện tại dùng <code>"react-router"</code>). Xử lý lỗi cũng đổi tên: docs hiện tại dùng property <code>ErrorBoundary</code> (một component, đọc lỗi bằng hook <code>useRouteError</code>) thay vì <code>errorElement</code> nhận thẳng 1 element — xem chi tiết mục 9.4.</div>
+
+<h2>9.3 Điều hướng</h2>
+<pre><code><span class="kw">// ✔ Link: điều hướng client-side, KHÔNG tải lại trang</span>
+&lt;Link to={<span class="str">`/jobs/${job.id}`</span>}&gt;Xem chi tiết&lt;/Link&gt;
+
+<span class="kw">// NavLink: tự biết mình có đang active không → tô sáng menu</span>
+&lt;NavLink to=<span class="str">"/jobs"</span> className={({ isActive }) =&gt; isActive ? <span class="str">'text-white'</span> : <span class="str">'text-gray-400'</span>}&gt;
+  Việc làm
+&lt;/NavLink&gt;
+
+<span class="kw">// Điều hướng bằng code (sau khi submit thành công)</span>
+<span class="kw">const</span> navigate = <span class="cls">useNavigate</span>();
+navigate(<span class="str">'/jobs'</span>);
+navigate(-1);                              <span class="kw">// quay lại như nút Back</span>
+navigate(<span class="str">'/jobs'</span>, { replace: <span class="kw">true</span> });      <span class="kw">// thay thế history, không back về được</span>
+
+<span class="kw">// ✘ &lt;a href="/jobs"&gt; — tải lại toàn bộ app, mất hết state</span></code></pre>
+
+<h2>9.4 Lấy tham số &amp; loader</h2>
+<pre><code><span class="kw">// Đọc :id từ URL</span>
+<span class="kw">const</span> { id } = <span class="cls">useParams</span>();
+
+<span class="kw">// Đọc query string ?type=Full-Time</span>
+<span class="kw">const</span> [searchParams, setSearchParams] = <span class="cls">useSearchParams</span>();
+<span class="kw">const</span> type = searchParams.<span class="cls">get</span>(<span class="str">'type'</span>);
+
+<span class="kw">// Loader: Router gọi TRƯỚC khi render component → không còn màn hình trắng nhấp nháy</span>
+<span class="kw">import</span> { data } <span class="kw">from</span> <span class="str">'react-router'</span>;
+
+<span class="kw">export async function</span> <span class="cls">jobLoader</span>({ params, request }) {
+  <span class="kw">const</span> res = <span class="kw">await</span> fetch(<span class="str">`/api/jobs/${params.id}`</span>, { signal: request.signal });
+
+  <span class="kw">if</span> (!res.ok) <span class="kw">throw</span> data(<span class="str">'Not Found'</span>, { status: 404 });   <span class="kw">// → ErrorBoundary</span>
+
+  <span class="kw">return</span> res.<span class="cls">json</span>();
+}
+
+<span class="kw">// Trong component</span>
+<span class="kw">const</span> job = <span class="cls">useLoaderData</span>();
+<span class="kw">const</span> { state } = <span class="cls">useNavigation</span>();         <span class="kw">// 'idle' | 'loading' | 'submitting'</span>
+
+<span class="kw">// RootErrorBoundary — ErrorBoundary KHÔNG nhận props, đọc lỗi qua hook</span>
+<span class="kw">import</span> { useRouteError, isRouteErrorResponse } <span class="kw">from</span> <span class="str">'react-router'</span>;
+
+<span class="kw">function</span> <span class="cls">RootErrorBoundary</span>() {
+  <span class="kw">const</span> error = <span class="cls">useRouteError</span>();
+
+  <span class="kw">if</span> (<span class="cls">isRouteErrorResponse</span>(error)) {
+    <span class="kw">return</span> &lt;h1&gt;{error.status} {error.statusText}&lt;/h1&gt;;   <span class="kw">// 404, 500...</span>
+  }
+  <span class="kw">return</span> &lt;h1&gt;Đã có lỗi xảy ra&lt;/h1&gt;;
+}</code></pre>
+<div class="audit"><b>Đã sửa so với bản gốc — đối chiếu <code>reactrouter.com/how-to/error-boundary</code>:</b> bản cũ dùng <code>throw new Response('Not Found', { status: 404 })</code> và <code>errorElement</code>. Docs hiện tại khuyến nghị helper <code>data(body, init)</code> (import từ <code>'react-router'</code>) để throw lỗi có status code, kết hợp property <code>ErrorBoundary</code> + hook <code>useRouteError()</code> + <code>isRouteErrorResponse()</code> để phân biệt "lỗi có status code" (404 do bạn chủ động throw) với "lỗi JS bất ngờ" (throw Error thường). Cách cũ (<code>errorElement</code> + <code>throw new Response()</code>) vẫn chạy được vì thư viện giữ tương thích ngược, nhưng không còn là API được docs trình bày làm chuẩn.</div>
+<p>Vì sao loader tốt hơn <code>useEffect</code> để fetch: loader chạy song song với việc tải code của trang và trước khi render, nên tránh được "waterfall" (render → effect → fetch → render lại) và không bị hiện tượng nháy loading. Router cũng tự huỷ request khi user điều hướng đi (nhờ <code>request.signal</code>) — chính là <code>AbortController</code> ở Part 07, nhưng miễn phí.</p>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Dựng router đủ 6 route: home, jobs, job detail, add, edit, 404 — có MainLayout + Outlet</li>
+<li>Thay mọi <code>&lt;a href&gt;</code> nội bộ bằng <code>Link</code>; dùng <code>NavLink</code> để tô sáng menu đang mở</li>
+<li>Trang chi tiết: dùng <code>loader</code> + <code>useLoaderData</code> thay cho <code>useEffect</code></li>
+<li>Thêm <code>ErrorBoundary</code> + <code>useRouteError</code>, test bằng cách vào <code>/jobs/99999</code></li>
+<li>Lọc theo <code>?type=</code> bằng <code>useSearchParams</code> (bộ lọc lưu trên URL để chia sẻ link được)</li>
+<li>Dùng <code>useNavigation()</code> hiện thanh loading khi đang chuyển trang</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 10 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 10</div>
+<h1>Hiệu năng: re-render, memo &amp; React Compiler</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Hiểu vì sao component render lại, và tối ưu đúng chỗ — chứ không rải <code>useMemo</code> khắp nơi.</div></div>
+
+<h2>10.1 Khi nào một component render lại</h2>
+<ul>
+<li>State của chính nó đổi</li>
+<li>Component cha render lại (mặc định con render theo, dù props không đổi)</li>
+<li>Context nó đang dùng đổi giá trị</li>
+</ul>
+<div class="note">Render lại không đồng nghĩa với chậm. React chỉ cập nhật DOM khi có khác biệt thật. Đừng tối ưu trước khi đo — dùng React DevTools Profiler hoặc Performance Tracks (mới có từ React 19.2, tab Performance của Chrome, có track "Scheduler" và "Components") để tìm đúng chỗ nghẽn.</div>
+
+<h2>10.2 Ba công cụ memo hoá</h2>
+<table>
+<tr><th>API</th><th>Ghi nhớ cái gì</th><th>Dùng khi</th></tr>
+<tr><td><code>useMemo(fn, deps)</code></td><td>Giá trị trả về</td><td>Tính toán nặng, hoặc cần object/array giữ nguyên tham chiếu</td></tr>
+<tr><td><code>useCallback(fn, deps)</code></td><td>Hàm</td><td>Truyền hàm xuống con đã bọc <code>memo</code>, hoặc làm dependency của effect</td></tr>
+<tr><td><code>memo(Component)</code></td><td>Kết quả render của component</td><td>Component nặng, nhận props ít đổi</td></tr>
+</table>
+<pre><code><span class="kw">const</span> filtered = <span class="cls">useMemo</span>(
+  () =&gt; jobs.<span class="cls">filter</span>((j) =&gt; j.title.<span class="cls">toLowerCase</span>().<span class="cls">includes</span>(keyword.<span class="cls">toLowerCase</span>())),
+  [jobs, keyword],
+);
+
+<span class="kw">const</span> handleDelete = <span class="cls">useCallback</span>((id) =&gt; deleteJob(id), []);
+
+<span class="kw">const</span> JobListing = <span class="cls">memo</span>(<span class="kw">function</span> <span class="cls">JobListing</span>({ job, onDelete }) { <span class="kw">/* ... */</span> });</code></pre>
+<div class="note">Đừng lạm dụng: <code>memo</code> chỉ có tác dụng khi props thật sự ổn định (referentially stable). Bọc <code>memo</code> mà cha vẫn truyền xuống <code>{...}</code> hoặc <code>() =&gt; ...</code> tạo mới mỗi render thì vô ích — còn tốn thêm chi phí so sánh props. Theo <code>react.dev/reference/react/memo</code>: nếu không bọc <code>useMemo</code>/<code>useCallback</code> ở phía cha, props luôn "mới" và <code>memo</code> ở con coi như vô hiệu.</div>
+
+<h2>10.3 React Compiler v1.0 — thay đổi cuộc chơi</h2>
+<p>React Compiler (bản 1.0, phát hành 07/10/2025) là trình biên dịch tự động memo hoá: nó phân tích code lúc build và tự chèn tối ưu tương đương <code>useMemo</code>/<code>useCallback</code>/<code>memo</code> ở những chỗ cần — kể cả những chỗ memo hoá có điều kiện mà bạn khó viết tay chuẩn xác được. Mục tiêu: bạn không phải tự viết memo nữa.</p>
+<pre><code><span class="cli">npm install --save-dev --save-exact babel-plugin-react-compiler@latest</span>
+<span class="cli">npm install --save-dev eslint-plugin-react-hooks@latest</span></code></pre>
+<pre><code><span class="kw">// vite.config.js</span>
+react({ babel: { plugins: [<span class="str">'babel-plugin-react-compiler'</span>] } })</code></pre>
+<div class="audit"><b>Đã kiểm chứng <code>react.dev/blog/2025/10/07/react-compiler-1</code>:</b> React Compiler v1.0 hoạt động cho cả React và React Native, đã chạy production tại Meta. Dự án tạo mới bằng <code>create-vite</code>, <code>create-next-app</code>, hoặc Expo SDK 54+ có thể bật compiler ngay từ template, không cần cấu hình tay như trên.</div>
+<div class="note"><b>Điều kiện để compiler hoạt động:</b> code phải thuần khiết theo đúng "Rules of React" — không mutate props/state, không side-effect trong thân component. Nói cách khác: viết React cho đúng thì được tối ưu miễn phí. Đây là lý do các quy tắc ở Part 00/03 quan trọng hơn bao giờ hết. <code>eslint-plugin-react-hooks</code> bản mới đã tích hợp sẵn các lint rule của chính compiler để cảnh báo trước khi build.</div>
+
+<h2>10.4 Chia nhỏ bundle: lazy + Suspense</h2>
+<pre><code><span class="kw">const</span> AddJobPage = <span class="cls">lazy</span>(() =&gt; import(<span class="str">'./pages/AddJobPage'</span>));
+
+&lt;Suspense fallback={&lt;Spinner /&gt;}&gt;
+  &lt;AddJobPage /&gt;
+&lt;/Suspense&gt;</code></pre>
+<p>Trang ít dùng (form thêm/sửa, trang admin) không cần nằm trong bundle đầu tiên. Đo bằng <code>npm run build</code> — Vite in ra kích thước từng chunk.</p>
+
+<h2>10.5 useTransition — giữ UI không đứng</h2>
+<pre><code><span class="kw">const</span> [isPending, startTransition] = <span class="cls">useTransition</span>();
+
+<span class="kw">function</span> <span class="cls">handleSearch</span>(value) {
+  setKeyword(value);                             <span class="kw">// cập nhật gấp: ô input phải phản hồi ngay</span>
+  <span class="cls">startTransition</span>(() =&gt; setQuery(value));         <span class="kw">// cập nhật "không gấp": lọc 5000 dòng</span>
+}</code></pre>
+<p>React sẽ ưu tiên cập nhật gấp trước, và có thể ngắt cập nhật trong transition nếu có việc gấp hơn tới — nhờ đó ô input không bị nghẽn khi danh sách lớn.</p>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Mở React DevTools Profiler, ghi lại một lần gõ tìm kiếm, tìm component render nhiều nhất</li>
+<li>Tạo 5000 job giả, đo độ trễ khi gõ; áp <code>useMemo</code> cho hàm lọc rồi đo lại</li>
+<li>Bọc <code>JobListing</code> bằng <code>memo</code>; chứng minh nó chỉ có tác dụng khi hàm truyền xuống được <code>useCallback</code></li>
+<li>Dùng <code>lazy</code> + <code>Suspense</code> cho trang add/edit, so sánh kích thước chunk trước/sau</li>
+<li>Áp <code>useTransition</code> cho ô tìm kiếm với danh sách lớn</li>
+<li>(Nâng cao) Bật React Compiler và bỏ bớt memo viết tay, đo lại xem còn nhanh không</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 11 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 11</div>
+<h1>React 19: Actions, hooks mới &amp; use()</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Nắm những thứ React 19 làm gọn đi so với cách viết cũ — để không học theo tutorial 2022 rồi viết code lỗi thời.</div></div>
+
+<h2>11.1 ref là prop bình thường — không cần forwardRef</h2>
+<pre><code><span class="kw">// React 19 ✔</span>
+<span class="kw">function</span> <span class="cls">Input</span>({ placeholder, ref }) {
+  <span class="kw">return</span> &lt;input placeholder={placeholder} ref={ref} /&gt;;
+}
+
+<span class="kw">// React 18 và cũ hơn: phải bọc forwardRef</span>
+<span class="kw">const</span> Input = <span class="cls">forwardRef</span>((props, ref) =&gt; &lt;input ref={ref} {...props} /&gt;);</code></pre>
+<p>Ngoài ra, callback ref giờ có thể trả về hàm cleanup: <code>ref={(node) =&gt; { ...; return () =&gt; {...} }}</code> — chạy khi component unmount.</p>
+
+<h2>11.2 Context dùng trực tiếp làm Provider</h2>
+<pre><code>&lt;ThemeContext value=<span class="str">"dark"</span>&gt;{children}&lt;/ThemeContext&gt;         <span class="kw">// React 19</span>
+&lt;ThemeContext.Provider value=<span class="str">"dark"</span>&gt;...&lt;/ThemeContext.Provider&gt; <span class="kw">// cách cũ, vẫn chạy</span></code></pre>
+
+<h2>11.3 Actions: form gọi hàm async trực tiếp</h2>
+<pre><code><span class="kw">// Truyền hàm vào action của &lt;form&gt; — React tự gọi, tự quản lý pending</span>
+<span class="kw">function</span> <span class="cls">AddJobForm</span>() {
+  <span class="kw">async function</span> <span class="cls">createAction</span>(formData) {
+    <span class="kw">await</span> createJob({
+      title: formData.<span class="cls">get</span>(<span class="str">'title'</span>),
+      salary: formData.<span class="cls">get</span>(<span class="str">'salary'</span>),
+    });
+  }
+
+  <span class="kw">return</span> (
+    &lt;form action={createAction}&gt;
+      &lt;input name=<span class="str">"title"</span> /&gt;
+      &lt;input name=<span class="str">"salary"</span> /&gt;
+      &lt;SubmitButton /&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+<div class="note">Form dùng <code>action</code> chạy trong một Transition, luôn dùng phương thức POST bất kể prop <code>method</code>, và <b>tự reset các field uncontrolled</b> sau khi hàm thành công — bạn không cần <code>onSubmit</code> + <code>e.preventDefault()</code> nữa.</div>
+
+<h2>11.4 useActionState — state + pending + error trong 1 hook</h2>
+<pre><code><span class="kw">import</span> { useActionState } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="kw">const</span> [state, formAction, isPending] = <span class="cls">useActionState</span>(
+  <span class="kw">async</span> (prevState, formData) =&gt; {
+    <span class="kw">try</span> {
+      <span class="kw">await</span> createJob({ title: formData.<span class="cls">get</span>(<span class="str">'title'</span>) });
+      <span class="kw">return</span> { ok: <span class="kw">true</span>, error: <span class="kw">null</span> };
+    } <span class="kw">catch</span> (e) {
+      <span class="kw">return</span> { ok: <span class="kw">false</span>, error: e.message };    <span class="kw">// trả lỗi về state, không cần useState riêng</span>
+    }
+  },
+  { ok: <span class="kw">false</span>, error: <span class="kw">null</span> },                     <span class="kw">// state khởi tạo</span>
+);
+
+&lt;form action={formAction}&gt;
+  &lt;input name=<span class="str">"title"</span> /&gt;
+  &lt;button disabled={isPending}&gt;{isPending ? <span class="str">'Đang lưu...'</span> : <span class="str">'Lưu'</span>}&lt;/button&gt;
+  {state.error &amp;&amp; &lt;p className=<span class="str">"text-red-600"</span>&gt;{state.error}&lt;/p&gt;}
+&lt;/form&gt;</code></pre>
+<p>Tham số thứ 3 (tuỳ chọn) là <code>permalink</code> — dùng cho progressive enhancement với Server Functions, crash course này không cần tới. So sánh: cách cũ ở Part 05 cần 3 state (<code>submitting</code>, <code>error</code>, dữ liệu) + <code>try/catch/finally</code> thủ công. Ở đây gói lại trong một hook.</p>
+
+<h2>11.5 useFormStatus — nút submit tự biết form đang gửi</h2>
+<pre><code><span class="kw">import</span> { useFormStatus } <span class="kw">from</span> <span class="str">'react-dom'</span>;           <span class="kw">// chú ý: từ react-dom, không phải react</span>
+
+<span class="kw">function</span> <span class="cls">SubmitButton</span>() {
+  <span class="kw">const</span> { pending } = <span class="cls">useFormStatus</span>();          <span class="kw">// đọc trạng thái của &lt;form&gt; CHA</span>
+
+  <span class="kw">return</span> &lt;button disabled={pending}&gt;{pending ? <span class="str">'Đang gửi...'</span> : <span class="str">'Gửi'</span>}&lt;/button&gt;;
+}</code></pre>
+<div class="note">Component gọi <code>useFormStatus</code> phải được render <b>bên trong</b> thẻ <code>&lt;form&gt;</code> — gọi ngay trong component render ra chính form đó sẽ không nhận được trạng thái (luôn thấy <code>pending: false</code>). Đó là lý do <code>SubmitButton</code> phải tách thành component riêng như trên. Nhờ vậy component nút dùng lại được ở mọi form, không cần truyền prop <code>isPending</code> xuống.</div>
+
+<h2>11.6 useOptimistic — cập nhật lạc quan</h2>
+<pre><code><span class="kw">const</span> [optimisticJobs, addOptimistic] = <span class="cls">useOptimistic</span>(
+  jobs,
+  (current, newJob) =&gt; [...current, { ...newJob, sending: <span class="kw">true</span> }],
+);
+
+<span class="kw">async function</span> <span class="cls">action</span>(formData) {
+  <span class="kw">const</span> draft = { title: formData.<span class="cls">get</span>(<span class="str">'title'</span>) };
+
+  <span class="cls">addOptimistic</span>(draft);           <span class="kw">// hiện NGAY trên UI</span>
+  <span class="kw">await</span> createJob(draft);          <span class="kw">// nếu lỗi → React tự rollback về state thật</span>
+}</code></pre>
+<p>Tham số thứ 2 là reducer tuỳ chọn <code>(currentState, action) =&gt; nextOptimisticState</code> — ví dụ trên dùng nó để thêm cờ <code>sending: true</code>. Khi action thất bại (throw lỗi), <code>optimisticJobs</code> tự quay về đúng giá trị thật (<code>jobs</code>) vì optimistic state chỉ tồn tại trong lúc action đang pending.</p>
+
+<h2>11.7 use() — đọc Promise / Context linh hoạt</h2>
+<pre><code><span class="kw">import</span> { use, Suspense } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="kw">function</span> <span class="cls">JobDetail</span>({ jobPromise }) {
+  <span class="kw">const</span> job = <span class="cls">use</span>(jobPromise);            <span class="kw">// "mở" promise; đang chờ → Suspense hiện fallback</span>
+  <span class="kw">return</span> &lt;h1&gt;{job.title}&lt;/h1&gt;;
+}
+
+&lt;Suspense fallback={&lt;Spinner /&gt;}&gt;&lt;JobDetail jobPromise={p} /&gt;&lt;/Suspense&gt;</code></pre>
+<div class="note">Khác biệt so với hook thường: <code>use()</code> được gọi trong <code>if</code> hoặc sau early return (các hook khác thì không). Nhưng đừng tạo Promise trong thân component (mỗi render tạo mới → loop vô hạn) — promise phải đến từ loader, từ cache, hoặc từ cha.</div>
+
+<h2>11.8 Metadata &amp; các tiện ích khác</h2>
+<pre><code><span class="kw">// React 19: đặt &lt;title&gt;, &lt;meta&gt;, &lt;link&gt; ngay trong component — React tự đưa lên &lt;head&gt;</span>
+<span class="kw">function</span> <span class="cls">JobPage</span>({ job }) {
+  <span class="kw">return</span> (
+    &lt;&gt;
+      &lt;title&gt;{job.title} | Job Board&lt;/title&gt;
+      &lt;meta name=<span class="str">"description"</span> content={job.description} /&gt;
+      &lt;h1&gt;{job.title}&lt;/h1&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<table>
+<tr><th>API</th><th>Tác dụng</th></tr>
+<tr><td><code>&lt;Activity mode="hidden"&gt;</code></td><td>React 19.2: giữ phần UI ẩn ở trạng thái "tạm dừng" (huỷ effect, hoãn cập nhật) để pre-render trước — hữu ích cho tab, modal</td></tr>
+<tr><td><code>useEffectEvent</code></td><td>React 19.2: tách logic sự kiện khỏi dependency của Effect (Part 06.5)</td></tr>
+<tr><td><code>useId</code></td><td>Sinh id ổn định cho label/input, an toàn khi SSR</td></tr>
+<tr><td>Error boundary tốt hơn</td><td>Không còn log lỗi trùng lặp; có <code>onCaughtError</code> / <code>onUncaughtError</code> ở <code>createRoot</code></td></tr>
+</table>
+
+<h2>11.9 Actions (React 19) hay controlled input + useState (Part 05) — chọn đúng lúc nào</h2>
+<p>Đây là điểm dễ gây rối nhất cho người mới, vì tutorial cũ trên mạng vẫn dạy đúng cách Part 05 và không hề nhắc tới Actions. Cả hai đều hợp lệ — câu hỏi quyết định: <b>bạn có cần đọc/validate giá trị input ngay trong lúc gõ (trước khi submit) không?</b></p>
+
+<h3>Cách 1 — Controlled input + useState + onSubmit (Part 05)</h3>
+<pre><code><span class="kw">const</span> [form, setForm] = <span class="cls">useState</span>({ title: <span class="str">''</span> });
+<span class="kw">const</span> [submitting, setSubmitting] = <span class="cls">useState</span>(<span class="kw">false</span>);
+
+&lt;input value={form.title} onChange={(e) =&gt; setForm({ ...form, title: e.target.value })} /&gt;
+<span class="kw">// → biết giá trị NGAY khi gõ: validate live, disable nút theo độ dài, đếm ký tự còn lại...</span></code></pre>
+<p>Component giữ toàn quyền kiểm soát giá trị mọi lúc — bắt buộc nếu bạn cần validate/format/preview trong lúc gõ (ví dụ: đếm ký tự, tự thêm dấu phẩy vào số tiền, disable nút "Lưu" khi form chưa hợp lệ dù chưa submit).</p>
+
+<h3>Cách 2 — Actions (<code>&lt;form action&gt;</code> + <code>useActionState</code>/<code>useFormStatus</code>, mục 11.3-11.5)</h3>
+<pre><code><span class="kw">const</span> [state, formAction, isPending] = <span class="cls">useActionState</span>(createAction, { error: <span class="kw">null</span> });
+
+&lt;form action={formAction}&gt;
+  &lt;input name=<span class="str">"title"</span> /&gt;   <span class="kw">{/* uncontrolled — không có value/onChange */}</span>
+  &lt;SubmitButton /&gt;
+&lt;/form&gt;
+<span class="kw">// → chỉ biết giá trị khi form được submit (FormData), không biết trong lúc gõ</span></code></pre>
+<p>Ít code hơn hẳn: không cần state cho từng field, không cần tự quản lý <code>submitting</code>/<code>error</code>, form tự reset sau khi thành công, nút submit tự biết pending qua <code>useFormStatus</code> mà không cần truyền prop.</p>
+
+<div class="audit"><b>Đã đối chiếu <code>react.dev/reference/react-dom/components/form</code> và <code>react.dev/blog/2024/12/05/react-19</code>:</b> hàm trong <code>action</code> nhận đúng 1 tham số <code>FormData</code> (hoặc <code>(prevState, formData)</code> khi dùng cùng <code>useActionState</code>), chạy trong 1 Transition, và tự reset các field <b>uncontrolled</b> sau khi thành công. Vì action đọc dữ liệu qua <code>FormData</code> lúc submit, field bên trong <code>&lt;form action&gt;</code> mặc định là uncontrolled (không set <code>value</code>) — muốn vừa dùng Actions vừa đọc giá trị realtime thì vẫn phải tự thêm <code>useState</code> + <code>onChange</code> song song, không có API nào miễn phí cho việc đó.</div>
+
+<table>
+<tr><th>Nhu cầu</th><th>Cách 1: controlled + useState</th><th>Cách 2: Actions</th></tr>
+<tr><td>Validate/format ngay trong lúc gõ (đếm ký tự, chặn ký tự lạ)</td><td>✅ Bắt buộc — có giá trị mọi lúc</td><td>❌ Chỉ có giá trị lúc submit</td></tr>
+<tr><td>Form đơn giản: vài field, chỉ validate lúc bấm Lưu</td><td>Chạy được nhưng nhiều boilerplate hơn</td><td>✅ Ít code nhất, tự quản lý pending/reset</td></tr>
+<tr><td>Nút submit tự disable khi đang gửi, dùng lại ở nhiều form</td><td>Phải tự truyền prop <code>isPending</code> xuống</td><td>✅ <code>useFormStatus</code> đọc thẳng từ form cha</td></tr>
+<tr><td>Cần đồng bộ 2 chiều với UI khác ngoài form (ví dụ preview trực tiếp)</td><td>✅ State ở component, dễ chia sẻ</td><td>❌ Giá trị "giấu" trong FormData tới lúc submit</td></tr>
+<tr><td>Dự án cũ, tutorial cũ đã lỡ viết theo Part 05</td><td>Không sai — vẫn là API hợp lệ, không bị xoá</td><td>Cân nhắc migrate dần cho form mới, không bắt buộc đổi hết code cũ</td></tr>
+</table>
+<p><b>Quy tắc thực dụng:</b> form mới, không cần validate realtime phức tạp → viết bằng Actions ngay từ đầu (ít code, đúng hướng React 19). Chỉ quay lại controlled + <code>useState</code> khi bạn thực sự cần biết giá trị input trước khi submit (đếm ký tự, preview, validate từng phím gõ) — hai cách có thể trộn trong cùng 1 form nếu cần.</p>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Viết lại form thêm job bằng <code>&lt;form action&gt;</code> + <code>useActionState</code>, so sánh số dòng với bản Part 05</li>
+<li>Tách <code>SubmitButton</code> dùng <code>useFormStatus</code>, dùng lại ở 2 form khác nhau</li>
+<li>Áp <code>useOptimistic</code> cho hành động xoá job: item biến mất ngay, lỗi thì hiện lại</li>
+<li>Đặt <code>&lt;title&gt;</code> động cho trang chi tiết, kiểm tra tab trình duyệt đổi tên</li>
+<li>Nếu code cũ còn <code>forwardRef</code> hoặc <code>.Provider</code> — viết lại theo cú pháp React 19</li>
+<li>Tự quyết định theo mục 11.9: form tìm kiếm (cần lọc realtime) nên giữ controlled, form thêm job (chỉ cần submit) nên chuyển sang Actions — làm cả hai để thấy khác biệt</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 12 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 12 — FULLSTACK</div>
+<h1>Kết nối API thật (Laravel / NestJS) &amp; build production</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Bỏ json-server, nối React vào API bạn tự viết. Đây là phần biến 3 crash course rời rạc thành một hệ thống fullstack.</div></div>
+
+<h2>12.1 Bản đồ hệ thống</h2>
+<div class="diagram">   Browser          React (Vite dev: localhost:5173 · production: file tĩnh trong dist/)
+       │
+       ▼ HTTP + JSON
+      API           Laravel (localhost:8000/api/v1) hoặc NestJS (localhost:3000)
+       │
+       ▼
+   Database         MySQL / PostgreSQL / SQLite</div>
+<p>Hai domain khác nhau (5173 ↔ 8000) = cross-origin → phải cấu hình CORS ở phía API, nếu không trình duyệt sẽ chặn response.</p>
+
+<h2>12.2 CORS — lỗi đầu tiên ai cũng gặp</h2>
+<pre><code><span class="kw">// Thông báo quen thuộc trong console:</span>
+Access to fetch at <span class="str">'http://localhost:8000/api/v1/jobs'</span> from origin
+<span class="str">'http://localhost:5173'</span> has been blocked by CORS policy</code></pre>
+<table>
+<tr><th>Phía</th><th>Cách xử lý</th></tr>
+<tr><td>Laravel</td><td><code>php artisan config:publish cors</code> → khai <code>allowed_origins =&gt; ['http://localhost:5173']</code></td></tr>
+<tr><td>NestJS</td><td><code>app.enableCors({ origin: 'http://localhost:5173' })</code> trong <code>main.ts</code></td></tr>
+<tr><td>React (dev, cách khác)</td><td>Dùng proxy của Vite — request cùng origin nên không cần CORS khi dev</td></tr>
+</table>
+<pre><code><span class="kw">// vite.config.js — proxy khi dev (mẹo rất tiện)</span>
+server: {
+  proxy: { <span class="str">'/api'</span>: { target: <span class="str">'http://localhost:8000'</span>, changeOrigin: <span class="kw">true</span> } },
+}
+<span class="kw">// Từ React chỉ cần fetch('/api/v1/jobs') — Vite chuyển tiếp sang backend</span></code></pre>
+<div class="note">Đừng để <code>allowed_origins: ['*']</code> ở production. Và nhớ: CORS là cơ chế của trình duyệt, không phải bảo mật server — nó không thay thế cho việc xác thực token.</div>
+
+<h2>12.3 Xác thực: lưu token ở đâu</h2>
+<table>
+<tr><th>Nơi lưu</th><th>Ưu</th><th>Nhược</th></tr>
+<tr><td>localStorage</td><td>Đơn giản, sống qua refresh</td><td>Đọc được bằng JS → bị đánh cắp nếu có lỗ hổng XSS</td></tr>
+<tr><td>Memory (state/context)</td><td>An toàn nhất với XSS</td><td>Mất khi refresh trang</td></tr>
+<tr><td>Cookie HttpOnly</td><td>JS không đọc được → chống XSS</td><td>Cần backend set cookie + lo CSRF; phải cùng site</td></tr>
+</table>
+<p>Với crash course: dùng localStorage + AuthContext (Part 08) cho đơn giản, nhưng phải biết đây là đánh đổi. Dự án thật nên dùng cookie HttpOnly do backend set (Sanctum SPA mode của Laravel làm đúng việc này).</p>
+<pre><code><span class="kw">// Gắn token vào mọi request — sửa hàm request() ở Part 07</span>
+<span class="kw">const</span> token = localStorage.<span class="cls">getItem</span>(<span class="str">'token'</span>);
+
+<span class="kw">const</span> res = <span class="kw">await</span> fetch(url, {
+  headers: {
+    <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span>,
+    <span class="str">'Accept'</span>: <span class="str">'application/json'</span>,                       <span class="kw">// BẮT BUỘC với Laravel để nhận lỗi JSON</span>
+    ...(token &amp;&amp; { Authorization: <span class="str">`Bearer ${token}`</span> }),
+  },
+});
+
+<span class="kw">if</span> (res.status === 401) {                               <span class="kw">// token hết hạn</span>
+  localStorage.<span class="cls">removeItem</span>(<span class="str">'token'</span>);
+  window.location.href = <span class="str">'/login'</span>;
+}</code></pre>
+
+<h2>12.4 Map lỗi API sang UI</h2>
+<table>
+<tr><th>Status</th><th>Ý nghĩa</th><th>UI nên làm gì</th></tr>
+<tr><td>422</td><td>Validation sai, có <code>errors</code> theo từng field</td><td>Hiện lỗi ngay dưới đúng field đó</td></tr>
+<tr><td>401</td><td>Chưa/không còn đăng nhập</td><td>Xoá token, chuyển tới trang login</td></tr>
+<tr><td>403</td><td>Không có quyền</td><td>Thông báo "bạn không có quyền", không chuyển login</td></tr>
+<tr><td>404</td><td>Không tồn tại</td><td>Trang "không tìm thấy"</td></tr>
+<tr><td>429</td><td>Quá nhiều request</td><td>Báo thử lại sau, đọc header <code>Retry-After</code></td></tr>
+<tr><td>500</td><td>Lỗi server</td><td>Thông báo chung + nút thử lại. Không hiện chi tiết lỗi cho user</td></tr>
+</table>
+<pre><code><span class="kw">// Nhận lỗi 422 của Laravel và đổ vào form</span>
+<span class="kw">if</span> (res.status === 422) {
+  <span class="kw">const</span> { message, errors } = <span class="kw">await</span> res.<span class="cls">json</span>();
+  setFieldErrors(errors);         <span class="kw">// { title: ['...'], salary: ['...'] }</span>
+  <span class="kw">return</span>;
+}</code></pre>
+
+<h2>12.5 Build &amp; deploy</h2>
+<pre><code><span class="cli">npm run build</span>         <span class="kw"># → dist/ : index.html + assets có hash</span>
+<span class="cli">npm run preview</span>       <span class="kw"># chạy thử bản build ở local</span></code></pre>
+<ul>
+<li><b>SPA fallback:</b> server phải trả <code>index.html</code> cho mọi đường dẫn, nếu không F5 tại <code>/jobs/5</code> sẽ ra 404. Nginx: <code>try_files $uri /index.html;</code></li>
+<li>Biến môi trường được nhúng lúc build — đổi <code>VITE_API_URL</code> thì phải build lại.</li>
+<li>Đặt React và API sau cùng một domain (vd <code>app.example.com</code> + <code>app.example.com/api</code>) để khỏi phải lo CORS và dùng được cookie HttpOnly.</li>
+</ul>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Chạy song song: API Laravel (hoặc NestJS) ở cổng 8000 và React ở 5173</li>
+<li>Sửa <code>jobService.js</code> trỏ sang API thật qua <code>VITE_API_URL</code></li>
+<li>Gặp lỗi CORS → sửa ở phía API; sau đó thử lại bằng cách dùng proxy của Vite, hiểu khác biệt hai cách</li>
+<li>Làm trang login gọi API thật, lưu token, gắn Bearer vào mọi request tiếp theo</li>
+<li>Xử lý 401 (tự logout), 403, 422 (đổ lỗi vào field), 500 (thông báo chung)</li>
+<li>Bảo vệ route: chưa đăng nhập thì <code>/add-job</code> tự chuyển sang <code>/login</code></li>
+<li>Build production, chạy preview, F5 tại URL con để kiểm tra SPA fallback</li>
+</ol>
+</div>
+</div>
+
+<!-- PART 13 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 13 — TUỲ CHỌN</div>
+<h1>Testing với Vitest + React Testing Library</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Test component theo cách người dùng thật tương tác, chứ không test chi tiết cài đặt bên trong.</div></div>
+
+<h2>13.1 Cài đặt</h2>
+<pre><code><span class="cli">npm i -D vitest @testing-library/react @testing-library/user-event \
+  @testing-library/jest-dom jsdom</span></code></pre>
+<pre><code><span class="kw">// vite.config.js</span>
+test: { environment: <span class="str">'jsdom'</span>, globals: <span class="kw">true</span>, setupFiles: <span class="str">'./src/setupTests.js'</span> }</code></pre>
+<pre><code><span class="kw">// src/setupTests.js</span>
+<span class="kw">import</span> <span class="str">'@testing-library/jest-dom'</span>;</code></pre>
+
+<h2>13.2 Triết lý: test như người dùng</h2>
+<pre><code><span class="kw">import</span> { render, screen } <span class="kw">from</span> <span class="str">'@testing-library/react'</span>;
+<span class="kw">import</span> userEvent <span class="kw">from</span> <span class="str">'@testing-library/user-event'</span>;
+
+test(<span class="str">'hiện tiêu đề job'</span>, () =&gt; {
+  <span class="cls">render</span>(&lt;JobListing job={{ id: 1, title: <span class="str">'React Dev'</span> }} /&gt;);
+  expect(screen.<span class="cls">getByText</span>(<span class="str">'React Dev'</span>)).<span class="cls">toBeInTheDocument</span>();
+});
+
+test(<span class="str">'gõ tìm kiếm thì lọc danh sách'</span>, <span class="kw">async</span> () =&gt; {
+  <span class="kw">const</span> user = userEvent.<span class="cls">setup</span>();
+  <span class="cls">render</span>(&lt;JobsPage /&gt;);
+
+  <span class="kw">await</span> user.<span class="cls">type</span>(screen.<span class="cls">getByRole</span>(<span class="str">'textbox'</span>, { name: /tìm/i }), <span class="str">'react'</span>);
+
+  expect(<span class="kw">await</span> screen.<span class="cls">findByText</span>(<span class="str">'React Dev'</span>)).<span class="cls">toBeInTheDocument</span>();
+  expect(screen.<span class="cls">queryByText</span>(<span class="str">'PHP Dev'</span>)).<span class="kw">not</span>.<span class="cls">toBeInTheDocument</span>();
+});</code></pre>
+<table>
+<tr><th>Query</th><th>Khi nào dùng</th></tr>
+<tr><td><code>getByRole</code></td><td>Ưu tiên số 1 — giống cách người dùng &amp; screen reader tìm phần tử</td></tr>
+<tr><td><code>getByLabelText</code></td><td>Input trong form (đồng thời kiểm tra accessibility)</td></tr>
+<tr><td><code>getByText</code></td><td>Nội dung hiển thị</td></tr>
+<tr><td><code>findBy*</code></td><td>Phần tử xuất hiện sau khi async xong (tự chờ)</td></tr>
+<tr><td><code>queryBy*</code></td><td>Khi cần khẳng định không tồn tại (không throw)</td></tr>
+<tr><td><code>getByTestId</code></td><td>Phương án cuối — dùng nhiều nghĩa là markup chưa accessible</td></tr>
+</table>
+<div class="note">Đừng test cái này: state nội bộ, tên hàm, số lần render. Hãy test hành vi: "gõ vào ô này thì thấy kết quả kia", "bấm xoá thì item biến mất". Nhờ vậy bạn refactor bên trong mà test vẫn xanh.</div>
+
+<h2>13.3 Mock API</h2>
+<pre><code><span class="kw">// Cách nhanh: mock fetch</span>
+global.fetch = vi.<span class="cls">fn</span>(() =&gt;
+  Promise.<span class="cls">resolve</span>({ ok: <span class="kw">true</span>, json: () =&gt; Promise.<span class="cls">resolve</span>([{ id: 1, title: <span class="str">'React Dev'</span> }]) }));
+
+<span class="kw">// Cách chuẩn hơn cho dự án thật: MSW (Mock Service Worker) — giả lập ở tầng network</span></code></pre>
+
+<div class="task-box"><b>Việc cần làm (tuỳ chọn):</b>
+<ol>
+<li>Cấu hình Vitest + jsdom, chạy được <code>npm run test</code></li>
+<li>Test <code>JobListing</code> render đúng title/type/salary</li>
+<li>Test form thêm job: bỏ trống title → hiện lỗi validate</li>
+<li>Test danh sách với fetch được mock: loading → có dữ liệu</li>
+<li>Test nhánh lỗi: fetch reject → hiện thông báo lỗi</li>
+</ol>
+</div>
+</div>
+
+<div class="footer-note">— Hết tài liệu — Quay lại chat khi bạn xong mỗi Part để được review &amp; giải thích tiếp phần sau —</div>
+
+</body>
+</html>
