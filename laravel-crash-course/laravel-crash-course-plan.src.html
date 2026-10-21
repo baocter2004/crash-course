@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Laravel Crash Course — Lộ trình học chi tiết (v2, đã audit)</title>
+<title>Laravel Crash Course — Lộ trình học chi tiết (v3, đã audit)</title>
 <style>
   @page { size: A4; margin: 17mm 16mm; }
   * { box-sizing: border-box; }
@@ -54,7 +54,7 @@
 <body>
 
 <div class="cover">
-  <div class="tag">CRASH COURSE PLAN — v2 (đã audit theo docs Laravel 13.x)</div>
+  <div class="tag">CRASH COURSE PLAN — v3 (đã audit theo docs Laravel 13.x)</div>
   <h1>Laravel Crash Course — REST API</h1>
   <h2>Lộ trình học chi tiết từng phần, kèm giải thích cơ chế bên trong — và lộ trình để master Laravel</h2>
   <div class="meta">
@@ -69,8 +69,10 @@
   <li><span><span class="n">PHP</span> PHP 8.3+ cho người viết Laravel</span><span class="tag">NỀN TẢNG NGÔN NGỮ</span></li>
   <li><span><span class="n">00</span> Kiến trúc tổng thể &amp; Request Lifecycle</span><span class="tag">NỀN TẢNG</span></li>
   <li><span><span class="n">01</span> Khởi tạo dự án &amp; cấu trúc thư mục</span></li>
+  <li><span><span class="n">SAIL</span> Chạy Laravel bằng Docker với Sail (tuỳ chọn)</span><span class="tag new">MỚI</span></li>
   <li><span><span class="n">02</span> Routing &amp; Controllers cho API</span></li>
   <li><span><span class="n">03</span> Service Container, DI &amp; Service Providers</span></li>
+  <li><span><span class="n">SQL</span> SQL nền tảng — học trước Part 04</span><span class="tag new">MỚI</span></li>
   <li><span><span class="n">04</span> Database: Migration, Model (Eloquent), Factory &amp; Seeder</span></li>
   <li><span><span class="n">05</span> Validation với Form Request</span></li>
   <li><span><span class="n">06</span> API Resources — tầng transform response</span></li>
@@ -78,6 +80,7 @@
   <li><span><span class="n">08</span> Quan hệ dữ liệu (Relationships) &amp; vấn đề N+1</span></li>
   <li><span><span class="n">09</span> Authentication với Laravel Sanctum</span></li>
   <li><span><span class="n">10</span> Chuẩn hoá REST API cho production</span></li>
+  <li><span><span class="n">SEC</span> Bảo mật ứng dụng API — tư duy &amp; kiểm tra</span><span class="tag new">MỚI</span></li>
   <li><span><span class="n">11</span> Testing (Pest / PHPUnit)</span></li>
   <li><span><span class="n">12</span> Pagination chuyên sâu &amp; xử lý dữ liệu lớn</span><span class="tag new">MỚI</span></li>
   <li><span><span class="n">13</span> Database Transactions</span><span class="tag new">MỚI</span></li>
@@ -94,6 +97,8 @@
 </ul>
 <div class="note"><b>Cách dùng tài liệu này:</b> Bạn tự code 100% từng phần. Mỗi phần có mục "Việc cần làm" (task) — không có code giải sẵn để copy, chỉ có ví dụ cú pháp minh hoạ để hiểu cách viết. Khi xong một phần, quay lại chat để mình review và giải thích tiếp phần sau.</div>
 <div class="audit"><b>Bản v2 khác gì bản gốc:</b> (1) mọi API/cú pháp đã đối chiếu lại với docs chính thức Laravel 13.x — các khung màu xanh như khung này đánh dấu chỗ đã sửa hoặc bổ sung sau audit; (2) thêm 12 phần mới (Part 12–23) đi sâu vào những thứ phân biệt "biết Laravel" với "master Laravel": pagination cho dữ liệu lớn, transaction, queue/job, event, cache, scheduling, storage, authorization, notification, kiến trúc dự án lớn, vận hành production; (3) phần cuối là lộ trình tự học tiếp để master.</div>
+<div class="audit"><b>Bản v3 bổ sung (sau khi rà các chỗ còn hở):</b> (1) <b>PART SQL</b> — SQL nền tảng (JOIN, GROUP BY, index, EXPLAIN, transaction) đặt ngay trước Part 04 vì không hiểu SQL thì Eloquent và N+1 chỉ là học thuộc; (2) <b>PART SAIL</b> — chạy Laravel bằng Docker (tuỳ chọn, hữu ích khi tới Part 14/20/22); (3) <b>PART SEC</b> — gom tư duy bảo mật vào một chỗ, kèm bài kiểm tra bằng test; (4) mục <b>1.6 Git cho dự án</b> trong Part 01; (5) ghi rõ <b>phạm vi</b>: tài liệu này chỉ làm API, giao diện (Blade, Livewire, Inertia, Vite, starter kit) nằm ngoài phạm vi. Các khối mới đã đối chiếu docs Laravel 13.x (Sail, installation, database, queries, csrf, releases) và <b>mọi câu SQL, kết quả, kế hoạch EXPLAIN trong Part SQL đã chạy thật</b> trên SQLite. Bài tập có đáp án đi kèm nằm ở file <c>php-bai-tap.pdf</c>: Chương 1–11 luyện PHP, <b>Chương 12 luyện SQL</b>.</div>
+<div class="note"><b>Phạm vi của tài liệu:</b> chỉ xây <b>REST API</b> (không làm giao diện). Nếu bạn muốn làm cả giao diện, Laravel có Blade, Livewire, Inertia, Vite và các starter kit chính thức; xem mục "Next Steps" trong trang Installation của docs và Part 23.2. Mọi thứ trong Part 00–22 (routing, Eloquent, queue, cache, test...) vẫn dùng nguyên cho cả hai kiểu dự án.</div>
 <div class="note"><b>Dự án xuyên suốt:</b> Xây một API quản lý bài viết — Post (tiêu đề, nội dung), Comment (bình luận thuộc về một Post), User (đăng ký / đăng nhập bằng token). Đây đúng là bài toán bạn đã làm bên NestJS, nên xuyên suốt tài liệu sẽ có các bảng đối chiếu NestJS ↔ Laravel để bạn thấy cùng một khái niệm được hai framework giải quyết thế nào. Các Part mới mở rộng chính dự án này: đăng bài xong thì đẩy job xử lý nền, bắn event, gửi notification, cache danh sách, dọn dẹp theo lịch.</div>
 
 <!-- ===================== PART PHP ===================== -->
@@ -465,6 +470,8 @@ php artisan serve           # → http://127.0.0.1:8000
 </code-block>
 <div class="note">Khi cài sẽ có bước hỏi chọn starter kit / testing framework. Với crash course API này, chọn không dùng starter kit (none) vì ta không làm giao diện. Phần test framework chọn Pest (mặc định) — sẽ dùng ở Part 11. Nếu chọn SQLite, installer tự tạo <c>database/database.sqlite</c> và chạy migration mặc định.</div>
 
+<div class="note"><b>Cách khác để có môi trường chạy:</b> nếu không muốn cài PHP/MySQL/Redis trực tiếp lên máy, bạn có thể chạy cả stack trong Docker bằng <b>Laravel Sail</b> (xem <b>PART SAIL</b> ngay sau Part này). Trên macOS và Windows còn có <b>Laravel Herd</b> (PHP + Nginx dựng sẵn). Trong tài liệu này mọi lệnh viết dạng <c>php artisan ...</c> / <c>composer ...</c>; khi dùng Sail, thay bằng <c>sail artisan ...</c> / <c>sail composer ...</c>.</div>
+
 <h2>1.2 Bật API — bước bắt buộc, rất nhiều người quên</h2>
 <p>Laravel 11+ không tạo sẵn file <c>routes/api.php</c>. Dự án mới chỉ có <c>routes/web.php</c>. Muốn làm API bạn phải chạy:</p>
 <code-block lang="bash">
@@ -526,6 +533,32 @@ CACHE_STORE=database         # Part 16
 <tr><td><c>php artisan about</c></td><td>Tổng quan môi trường: version, driver cache/queue/session đang dùng</td></tr>
 </table>
 
+<h2>1.6 Git cho dự án — thói quen cần có ngay từ đầu</h2>
+<p>Dự án này sẽ qua hơn 20 Part. Nếu không dùng Git đều đặn, bạn sẽ không thể quay lại khi một thay đổi làm hỏng mọi thứ, và cũng không có "lịch sử học" để xem lại. Quy tắc cốt lõi: <b>commit nhỏ, mỗi commit một việc, message nói rõ việc đó</b>.</p>
+<table>
+<tr><th>Lệnh</th><th>Dùng khi</th></tr>
+<tr><td><c>git status</c></td><td>Xem file nào đã đổi, file nào chưa theo dõi. Chạy trước mỗi lần commit</td></tr>
+<tr><td><c>git diff</c> / <c>git diff --staged</c></td><td>Xem chính xác dòng nào đã đổi (chưa add / đã add) — đọc lại trước khi commit</td></tr>
+<tr><td><c>git add -p</c></td><td>Chọn từng đoạn thay đổi để add, giúp mỗi commit chỉ chứa một việc</td></tr>
+<tr><td><c>git commit -m "..."</c></td><td>Lưu một mốc. Viết thể hiện việc đã làm, ví dụ <c>Part 04: thêm migration và model Post</c></td></tr>
+<tr><td><c>git log --oneline</c></td><td>Xem lịch sử gọn, mỗi commit một dòng</td></tr>
+<tr><td><c>git switch -c part-05-validation</c></td><td>Tạo nhánh mới để làm một Part mà không đụng <c>main</c></td></tr>
+<tr><td><c>git restore &lt;file&gt;</c></td><td>Bỏ thay đổi chưa commit của một file (cẩn thận: mất thay đổi đó)</td></tr>
+</table>
+<h3>Cái gì không bao giờ được commit</h3>
+<ul>
+<li><c>.env</c> — chứa mật khẩu DB, <c>APP_KEY</c>, khoá API. Docs Laravel nói rõ file này không được đưa vào source control vì đó là rủi ro bảo mật nếu repo bị lộ. Thay vào đó commit <c>.env.example</c> (không chứa bí mật thật).</li>
+<li><c>vendor/</c> và <c>node_modules/</c> — sinh lại được bằng <c>composer install</c> / <c>npm install</c>; project mới của Laravel đã ignore sẵn các thư mục này.</li>
+<li>File database SQLite thật (<c>database/database.sqlite</c>), file log, file upload trong <c>storage/</c>.</li>
+</ul>
+<div class="note"><b>Lỡ commit <c>.env</c> thì sao?</b> Xoá file khỏi commit là chưa đủ, vì nó vẫn nằm trong lịch sử. Phải coi mọi khoá trong đó là đã lộ: đổi mật khẩu DB, chạy <c>php artisan key:generate</c> tạo <c>APP_KEY</c> mới, thu hồi khoá API của bên thứ ba. Chỉ sau đó mới dọn lịch sử.</div>
+<h3>Quy ước làm việc đề nghị cho dự án này</h3>
+<ol>
+<li>Mỗi Part làm trên một nhánh <c>part-NN-ten</c>, test chạy xanh rồi mới gộp vào <c>main</c>.</li>
+<li>Mỗi lần xong một "Việc cần làm" thì commit một lần, không dồn cả Part vào một commit.</li>
+<li>Chạy <c>git status</c> và <c>git diff --staged</c> trước khi commit để chắc không lẫn <c>.env</c> hoặc file rác.</li>
+</ol>
+
 <div class="task-box"><b>Việc cần làm:</b>
 <ol>
 <li>Tạo project <c>laravel-crash-course</c> trong repo <c>crash-course</c></li>
@@ -534,6 +567,114 @@ CACHE_STORE=database         # Part 16
 <li>Chạy <c>php artisan route:list</c> và đọc hiểu output: cột Method / URI / Action / Middleware</li>
 <li>Mở <c>bootstrap/app.php</c> đọc kỹ 4 method <c>withRouting</c> / <c>withMiddleware</c> / <c>withExceptions</c> / <c>create</c></li>
 <li>Chạy <c>php artisan about</c>, ghi lại driver queue/cache/session đang dùng — sẽ cần ở Part 14/16</li>
+<li>Chạy <c>git ls-files | grep -E '^\.env$'</c> — lệnh này <b>không được in ra gì</b> (nghĩa là <c>.env</c> chưa bị theo dõi). Chạy <c>git check-ignore -v .env</c> để xem dòng nào trong <c>.gitignore</c> chặn nó</li>
+<li>Commit project vừa tạo với message rõ ràng, rồi tạo nhánh <c>part-02-routing</c> bằng <c>git switch -c</c> trước khi bắt đầu Part 02</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART SAIL ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge new">PART SAIL — CHẠY LARAVEL BẰNG DOCKER (TUỲ CHỌN) — MỚI</div>
+<h1>Laravel Sail: môi trường dev trong Docker</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Chạy được dự án Laravel cùng MySQL, Redis, Mailpit trong container mà không cài gì trực tiếp lên máy, biết chuyển mọi lệnh <c>php artisan</c> / <c>composer</c> sang dạng <c>sail ...</c>, và hiểu Docker ở mức đủ để đọc phần deploy ở Part 22. <b>Phần này tuỳ chọn</b>: nếu máy bạn đã có PHP 8.3+ và Composer chạy tốt, bạn có thể bỏ qua và quay lại khi cần Redis/MySQL/Mailpit mà không muốn cài tay.</div>
+</div>
+
+<h2>S.1 Sail là gì, cần gì</h2>
+<p><b>Laravel Sail</b> là một giao diện dòng lệnh nhẹ để dùng môi trường Docker mặc định của Laravel. Về bản chất nó chỉ gồm hai thứ nằm ở thư mục gốc dự án: file <c>compose.yaml</c> (khai báo các container) và script <c>sail</c> (gói các lệnh Docker thành lệnh ngắn). Bạn không cần biết Docker trước. Sail hỗ trợ macOS, Linux và Windows (qua <b>WSL2</b>); máy phải cài sẵn Docker.</p>
+<div class="diagram">Máy của bạn (host)                     Docker
+  trình duyệt  ──► http://localhost ──►  container laravel.test  (PHP + app của bạn)
+  sail artisan ...  ───────────────────►     │
+                                             ├─► container mysql    (database)
+                                             ├─► container redis    (cache / queue)
+                                             └─► container mailpit  (xem mail thử)</div>
+<p>Container chính tên là <c>laravel.test</c> chạy ứng dụng. Các service khác là container riêng, nói chuyện với nhau qua tên (xem S.4).</p>
+
+<h2>S.2 Cài Sail vào dự án có sẵn</h2>
+<code-block lang="bash">
+composer require laravel/sail --dev
+php artisan sail:install
+./vendor/bin/sail up
+</code-block>
+<ol>
+<li><c>composer require laravel/sail --dev</c>: cài package Sail (chỉ dùng khi phát triển).</li>
+<li><c>php artisan sail:install</c>: sinh file <c>compose.yaml</c> ở thư mục gốc và sửa <c>.env</c> thêm biến để kết nối các service Docker. Bước này cho bạn chọn các service cần dùng. Muốn thêm service sau này: <c>php artisan sail:add</c>.</li>
+<li><c>./vendor/bin/sail up</c>: khởi động mọi container. Lần đầu có thể mất vài phút vì phải tải image.</li>
+</ol>
+<div class="note"><b>Lưu ý trước khi <c>sail up</c>:</b> docs yêu cầu tắt các web server và database đang chạy trên máy bạn (cổng 80, 3306 bị chiếm sẽ gây xung đột). Nếu dùng Docker Desktop cho Linux, hãy dùng context mặc định: <c>docker context use default</c>; nếu gặp lỗi quyền file trong container, đặt biến <c>SUPERVISOR_PHP_USER</c> thành <c>root</c>.</div>
+
+<h2>S.3 Alias <c>sail</c> và vòng đời container</h2>
+<p>Gõ <c>./vendor/bin/sail</c> mỗi lần rất mệt. Docs đề nghị tạo alias (thêm vào <c>~/.bashrc</c> hoặc <c>~/.zshrc</c> rồi mở lại terminal):</p>
+<code-block lang="bash">
+alias sail='sh $([ -f sail ] &amp;&amp; echo sail || echo vendor/bin/sail)'
+</code-block>
+<table>
+<tr><th>Lệnh</th><th>Tác dụng</th></tr>
+<tr><td><c>sail up</c></td><td>Khởi động, giữ terminal; Ctrl+C để dừng</td></tr>
+<tr><td><c>sail up -d</c></td><td>Khởi động chạy nền (detached)</td></tr>
+<tr><td><c>sail stop</c></td><td>Dừng các container đang chạy nền</td></tr>
+<tr><td><c>sail build --no-cache</c></td><td>Build lại image từ đầu (sau khi sửa <c>compose.yaml</c>, đổi PHP/Node version)</td></tr>
+</table>
+<p>Khi <c>sail up</c> chạy xong, mở <c>http://localhost</c> (không phải cổng 8000) để xem ứng dụng.</p>
+
+<h2>S.4 Mọi lệnh phải chạy BÊN TRONG container</h2>
+<p>Đây là điểm người mới hay vấp nhất. Ứng dụng chạy trong container, tách biệt với máy bạn. Các ví dụ trong docs Laravel viết <c>php artisan ...</c> mặc định là chạy trên máy thật; khi dùng Sail phải thêm tiền tố <c>sail</c>:</p>
+<table>
+<tr><th>Không dùng Sail</th><th>Dùng Sail</th></tr>
+<tr><td><c>php artisan migrate</c></td><td><c>sail artisan migrate</c></td></tr>
+<tr><td><c>php artisan queue:work</c></td><td><c>sail artisan queue:work</c> (Part 14)</td></tr>
+<tr><td><c>composer require laravel/sanctum</c></td><td><c>sail composer require laravel/sanctum</c></td></tr>
+<tr><td><c>php script.php</c></td><td><c>sail php script.php</c></td></tr>
+<tr><td><c>php artisan test</c> / <c>./vendor/bin/pest</c></td><td><c>sail test</c> (Part 11) — dùng được mọi tuỳ chọn của Pest/PHPUnit</td></tr>
+<tr><td><c>php artisan tinker</c></td><td><c>sail tinker</c></td></tr>
+<tr><td><c>npm run dev</c></td><td><c>sail npm run dev</c></td></tr>
+<tr><td>(mở terminal trong container)</td><td><c>sail shell</c> (hoặc <c>sail root-shell</c> nếu cần quyền root)</td></tr>
+</table>
+<div class="note"><b>Lỗi kinh điển:</b> chạy <c>php artisan migrate</c> trên máy thật khi <c>.env</c> có <c>DB_HOST=mysql</c>. Tên <c>mysql</c> chỉ tồn tại <b>bên trong mạng Docker</b>, máy thật không phân giải được nên báo không kết nối được database. Hãy chạy <c>sail artisan migrate</c>.</div>
+
+<h2>S.5 Kết nối các service (khớp với các Part sau)</h2>
+<table>
+<tr><th>Service</th><th>Cấu hình trong <c>.env</c></th><th>Dùng ở Part</th></tr>
+<tr><td>MySQL</td><td><c>DB_HOST=mysql</c>. Từ máy thật (TablePlus...) kết nối <c>localhost:3306</c>, user/mật khẩu theo <c>DB_USERNAME</c>/<c>DB_PASSWORD</c>. Lần đầu khởi động Sail tạo sẵn database <c>DB_DATABASE</c> và một database tên <c>testing</c> để test không đụng dữ liệu dev</td><td>04, 11</td></tr>
+<tr><td>Redis</td><td><c>REDIS_HOST=redis</c>; từ máy thật: <c>localhost:6379</c></td><td>14, 16, 22</td></tr>
+<tr><td>Mailpit (bắt mail thử)</td><td><c>MAIL_HOST=mailpit</c>, <c>MAIL_PORT=1025</c>, <c>MAIL_ENCRYPTION=null</c>. Xem mail đã "gửi" tại <c>http://localhost:8025</c></td><td>20</td></tr>
+<tr><td>Dữ liệu</td><td>MySQL và Redis dùng <b>Docker volume</b> nên dữ liệu còn nguyên khi bạn stop rồi start lại container</td><td></td></tr>
+</table>
+<p>Về file upload: nếu muốn thử <c>disk s3</c> ở Part 18 mà không đụng AWS thật, Sail có thể cài service lưu trữ tương thích S3 (docs đề cập RustFS) và bạn chỉ đổi biến <c>AWS_*</c> trong <c>.env</c>. Cũng có thể thêm service bằng <c>sail:add</c>.</p>
+
+<h2>S.6 Đổi phiên bản PHP, Node, thêm extension</h2>
+<ul>
+<li>Sail hỗ trợ nhiều phiên bản PHP; mặc định hiện tại là <b>PHP 8.5</b> và Node 24. Đổi PHP bằng cách sửa <c>build.context</c> của service <c>laravel.test</c> trong <c>compose.yaml</c> (ví dụ <c>./vendor/laravel/sail/runtimes/8.4</c>), rồi <c>sail build --no-cache</c> và <c>sail up</c>.</li>
+<li>Thêm extension PHP: đặt build arg <c>PHP_EXTENSIONS</c> (danh sách cách nhau bằng dấu cách) cho <c>laravel.test</c>, rồi build lại.</li>
+<li>Laravel 13 yêu cầu <b>PHP 8.3 trở lên</b> — đừng chọn runtime thấp hơn.</li>
+</ul>
+
+<h2>S.7 Khi nào dùng Sail, khi nào cài trực tiếp</h2>
+<table>
+<tr><th>Tình huống</th><th>Nên chọn</th></tr>
+<tr><td>Máy đã có PHP 8.3+ và Composer chạy tốt, chỉ làm API với SQLite</td><td>Cài trực tiếp, dùng <c>php artisan serve</c>. Đơn giản và nhanh nhất</td></tr>
+<tr><td>Cần MySQL/PostgreSQL + Redis + Mailpit giống production, không muốn cài tay</td><td>Sail</td></tr>
+<tr><td>Làm việc nhóm, muốn mọi người có cùng phiên bản PHP/DB</td><td>Sail (cả nhóm chạy cùng <c>compose.yaml</c>)</td></tr>
+<tr><td>Dùng macOS/Windows, thích công cụ có giao diện, không cần Docker</td><td>Laravel Herd (PHP + Nginx dựng sẵn; bản Pro có thêm MySQL/Redis/Mailpit)</td></tr>
+</table>
+
+<h2>S.8 Docker bạn cần hiểu để đọc Part 22</h2>
+<ul>
+<li><b>Image</b>: khuôn dựng sẵn (PHP + extension + công cụ). <b>Container</b>: một thể hiện đang chạy của image.</li>
+<li><b>compose.yaml</b>: file khai báo nhiều container và mạng nối giữa chúng; <c>sail up</c> chính là chạy file này.</li>
+<li><b>Volume</b>: ổ lưu trữ tồn tại ngoài vòng đời container (dữ liệu DB nằm ở đây).</li>
+<li>Production dùng cùng ý tưởng: mỗi loại process ở Part 22.1 (web, worker, scheduler) là một container riêng cùng chạy một image ứng dụng.</li>
+</ul>
+
+<div class="task-box"><b>Việc cần làm (tuỳ chọn):</b>
+<ol>
+<li>Cài Docker, chạy <c>composer require laravel/sail --dev</c> và <c>php artisan sail:install</c>, chọn MySQL + Redis + Mailpit</li>
+<li>Tạo alias <c>sail</c>, chạy <c>sail up -d</c>, mở <c>http://localhost</c> và <c>http://localhost/up</c></li>
+<li>Chạy <c>sail artisan migrate</c>, kết nối MySQL từ máy thật bằng một GUI client (TablePlus, DBeaver...) tới <c>localhost:3306</c> để xem bảng vừa tạo</li>
+<li>Thử cố ý chạy <c>php artisan migrate</c> (không có <c>sail</c>) khi <c>DB_HOST=mysql</c>, ghi lại thông báo lỗi để nhận ra lần sau</li>
+<li>Gửi một mail thử (Part 20) và xem nó ở Mailpit <c>http://localhost:8025</c></li>
+<li>Chạy <c>sail test</c> và xác nhận test dùng database <c>testing</c>, không đụng dữ liệu dev</li>
+<li>Chạy <c>sail stop</c>, rồi <c>sail up -d</c> lại và kiểm tra dữ liệu MySQL vẫn còn (nhờ volume)</li>
 </ol></div>
 </div>
 
@@ -757,6 +898,198 @@ public function boot(): void
 </ol></div>
 </div>
 
+<!-- ===================== PART SQL ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge new">PART SQL — NỀN TẢNG DỮ LIỆU (HỌC TRƯỚC PART 04) — MỚI</div>
+<h1>SQL nền tảng: bảng, JOIN, index, EXPLAIN</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Hiểu những gì xảy ra ở tầng database bên dưới Eloquent: bảng, khoá chính/ngoại, <c>SELECT</c>/<c>WHERE</c>/<c>GROUP BY</c>, <c>JOIN</c>, index và kế hoạch thực thi. Xong phần này, N+1, <c>withCount</c>, <c>whereHas</c> và index trong migration không còn là "phép thuật", và bạn đọc được SQL mà Eloquent sinh ra.</div>
+</div>
+
+<h2>SQL.1 Vì sao phải học SQL trước khi học Eloquent</h2>
+<p>Eloquent và Query Builder chỉ là cách viết PHP để <b>sinh ra SQL</b>. 90% vấn đề hiệu năng của ứng dụng thật nằm ở câu SQL, không phải ở PHP. Nếu không biết SQL, bạn không thể trả lời "câu này chậm vì sao" hay "N+1 nghĩa là gì".</p>
+<table>
+<tr><th>Bạn viết (Eloquent / Query Builder)</th><th>SQL thực sự chạy</th></tr>
+<tr><td><c>Post::where('views', '&gt;', 100)-&gt;orderByDesc('views')-&gt;limit(2)-&gt;get()</c></td><td><c>SELECT * FROM posts WHERE views &gt; 100 ORDER BY views DESC LIMIT 2</c></td></tr>
+<tr><td><c>$post-&gt;comments</c> (lazy load)</td><td><c>SELECT * FROM comments WHERE post_id = ?</c> — <b>một câu cho mỗi post</b></td></tr>
+<tr><td><c>Post::with('comments')-&gt;get()</c></td><td>2 câu: lấy posts; <c>SELECT * FROM comments WHERE post_id IN (...)</c></td></tr>
+<tr><td><c>Post::withCount('comments')</c></td><td>Một truy vấn con <c>COUNT(*)</c> nằm trong <c>SELECT</c></td></tr>
+<tr><td><c>-&gt;paginate(15)</c></td><td><c>... LIMIT 15 OFFSET ...</c> kèm một câu <c>SELECT COUNT(*)</c> để biết tổng</td></tr>
+<tr><td><c>-&gt;whereNull('published_at')</c></td><td><c>WHERE published_at IS NULL</c></td></tr>
+<tr><td><c>$post-&gt;increment('views')</c></td><td><c>UPDATE posts SET views = views + 1 WHERE id = ?</c></td></tr>
+<tr><td><c>DB::transaction(fn () =&gt; ...)</c></td><td><c>BEGIN ... COMMIT</c> (hoặc <c>ROLLBACK</c> nếu có lỗi)</td></tr>
+</table>
+<div class="note"><b>Xem SQL thật mà Laravel sinh ra:</b> gắn <c>-&gt;dumpRawSql()</c> (in rồi chạy tiếp) hoặc <c>-&gt;ddRawSql()</c> (in rồi dừng) vào cuối một query để thấy câu SQL với giá trị đã thay vào. Muốn xem mọi câu của cả request, đăng ký <c>DB::listen()</c> trong <c>boot()</c> của <c>AppServiceProvider</c> (có <c>$query-&gt;sql</c>, <c>$query-&gt;time</c>...). Hai công cụ này là cách bạn đếm query khi săn N+1 ở Part 08.</div>
+<p><b>Cách luyện:</b> Laravel 13 mặc định dùng <b>SQLite</b> (project mới tự tạo file <c>database/database.sqlite</c>), nên bạn có database để thử ngay, không cần cài thêm. Hai cách chạy SQL: (1) <c>php artisan db</c> mở client dòng lệnh của database (cần có client tương ứng cài trên máy); (2) chạy bằng <c>PDO</c> của PHP — đây là cách <b>Chương 12 của file php-bai-tap.pdf</b> làm, có sẵn 11 bài kèm đáp án.</p>
+
+<h2>SQL.2 Bảng, khoá chính, khoá ngoại — schema blog</h2>
+<p>Dự án xuyên suốt của tài liệu là blog: <c>users</c>, <c>posts</c>, <c>comments</c>. Quan hệ: một user có nhiều post, một post có nhiều comment.</p>
+<div class="diagram">users (id, name, email)
+   1 ──── n  posts (id, user_id, title, views, published_at)
+                1 ──── n  comments (id, post_id, body)</div>
+<code-block lang="sql">
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    title TEXT NOT NULL,
+    views INTEGER NOT NULL DEFAULT 0,
+    published_at TEXT
+);
+
+CREATE TABLE comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER NOT NULL REFERENCES posts(id),
+    body TEXT NOT NULL
+);
+</code-block>
+<ul>
+<li><b>Khoá chính</b> (<c>PRIMARY KEY</c>): định danh duy nhất của mỗi dòng. <c>AUTOINCREMENT</c> tự tăng (MySQL viết <c>AUTO_INCREMENT</c>).</li>
+<li><b>Khoá ngoại</b> (<c>REFERENCES</c>): ràng buộc <c>posts.user_id</c> phải là một <c>users.id</c> có thật. Nhờ đó database không cho tồn tại bài viết "mồ côi". Trong migration: <c>$table-&gt;foreignId('user_id')-&gt;constrained()</c>.</li>
+<li><b>Ràng buộc</b> <c>NOT NULL</c>, <c>UNIQUE</c>, <c>DEFAULT</c> giúp database tự chặn dữ liệu sai, không phụ thuộc vào code PHP. Đây là lớp phòng thủ cuối cùng khi validation ở Part 05 bị bỏ sót.</li>
+<li>Docs Laravel: khoá ngoại <b>được bật mặc định</b> cho kết nối SQLite (tắt bằng <c>DB_FOREIGN_KEYS=false</c>). Nếu tự dùng SQLite ngoài Laravel (ví dụ client dòng lệnh hay PDO thuần) thì phải bật bằng <c>PRAGMA foreign_keys = ON</c>, vì SQLite mặc định <b>không</b> kiểm tra.</li>
+</ul>
+
+<h2>SQL.3 Đọc và lọc dữ liệu</h2>
+<p>Dữ liệu mẫu: 3 user (An, Bình, Chi — Chi chưa có bài), 5 post (<c>Học PHP</c> 120 view, <c>Học Laravel</c> 300, <c>Học SQL</c> 80 và chưa xuất bản, <c>Docker cơ bản</c> 150, <c>Redis là gì</c> 45), 6 comment (post 3 và 5 chưa có comment nào).</p>
+<code-block lang="sql">
+SELECT title, views FROM posts WHERE views &gt; 100 ORDER BY views DESC;
+
+SELECT title, views FROM posts ORDER BY views DESC LIMIT 2 OFFSET 2;
+
+SELECT title FROM posts WHERE title LIKE 'Học%';
+
+SELECT COUNT(*), COUNT(published_at) FROM posts;
+</code-block>
+<table>
+<tr><th>Câu</th><th>Kết quả thật khi chạy</th></tr>
+<tr><td>views &gt; 100, giảm dần</td><td><c>Học Laravel 300</c>, <c>Docker cơ bản 150</c>, <c>Học PHP 120</c></td></tr>
+<tr><td><c>LIMIT 2 OFFSET 2</c> (bỏ 2 dòng đầu, lấy 2 dòng)</td><td><c>Học PHP 120</c>, <c>Học SQL 80</c> — đây là cơ chế của phân trang</td></tr>
+<tr><td><c>COUNT(*)</c> và <c>COUNT(published_at)</c></td><td><c>5</c> và <c>4</c> — <c>COUNT(*)</c> đếm dòng, <c>COUNT(cột)</c> chỉ đếm dòng có giá trị khác NULL</td></tr>
+</table>
+<h3>Thứ tự thực thi của một câu SELECT</h3>
+<p>Viết theo thứ tự <c>SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY, LIMIT</c> nhưng database chạy theo thứ tự: <c>FROM</c> (chọn bảng) → <c>WHERE</c> (lọc dòng) → <c>GROUP BY</c> (gom nhóm) → <c>HAVING</c> (lọc nhóm) → <c>SELECT</c> (chọn cột) → <c>ORDER BY</c> → <c>LIMIT</c>. Hiểu thứ tự này giải thích vì sao <c>WHERE</c> không dùng được hàm gộp như <c>SUM()</c>.</p>
+<h3>NULL: cái bẫy lớn nhất</h3>
+<div class="note"><b>NULL nghĩa là "không biết giá trị"</b>, không phải 0 hay chuỗi rỗng. Hệ quả: <c>WHERE published_at = NULL</c> không bao giờ đúng với dòng nào (kết quả <b>0 dòng</b>) — phải viết <c>IS NULL</c> (tìm thấy 1 bài nháp). Tương tự <c>published_at != '2026-01-05'</c> <b>loại luôn</b> các dòng NULL, nên muốn lấy cả bài nháp phải thêm <c>OR published_at IS NULL</c>. Trong Laravel: <c>whereNull()</c>, và cột phải khai báo <c>-&gt;nullable()</c> trong migration mới chứa được NULL.</div>
+<p>Cẩn thận với <c>UPDATE</c> và <c>DELETE</c>: <b>luôn có <c>WHERE</c></b>. Thiếu nó thì mọi dòng bị sửa hoặc xoá mà database không hỏi lại. Khi tăng bộ đếm, dùng <c>UPDATE posts SET views = views + 1 WHERE id = 1</c> (một câu, nguyên tử) thay vì đọc ra PHP, cộng, rồi ghi lại — cách đó mất lượt xem khi hai request chạy cùng lúc.</p>
+
+<h2>SQL.4 Gộp dữ liệu: GROUP BY, HAVING</h2>
+<code-block lang="sql">
+SELECT user_id, COUNT(*) AS bai, SUM(views) AS tong_view
+FROM posts
+GROUP BY user_id
+HAVING SUM(views) &gt; 200;
+</code-block>
+<p>Kết quả: chỉ còn <c>user_id = 1</c> với <c>3</c> bài và <c>500</c> lượt xem (user 2 có <c>2</c> bài, <c>195</c> lượt nên bị loại).</p>
+<ul>
+<li><c>GROUP BY</c> gom các dòng cùng giá trị cột thành nhóm; hàm gộp (<c>COUNT</c>, <c>SUM</c>, <c>AVG</c>, <c>MIN</c>, <c>MAX</c>) tính trên từng nhóm.</li>
+<li><b><c>WHERE</c> lọc dòng trước khi gom, <c>HAVING</c> lọc nhóm sau khi gom.</b> Điều kiện trên kết quả hàm gộp bắt buộc để ở <c>HAVING</c>.</li>
+<li>Cột trong <c>SELECT</c> không nằm trong hàm gộp thì phải có trong <c>GROUP BY</c>.</li>
+</ul>
+
+<h2>SQL.5 JOIN: ghép bảng theo khoá ngoại</h2>
+<code-block lang="sql">
+SELECT p.title, u.name
+FROM posts p
+JOIN users u ON u.id = p.user_id;
+
+SELECT u.name, COUNT(p.id) AS so_bai
+FROM users u
+LEFT JOIN posts p ON p.user_id = u.id
+GROUP BY u.id;
+
+SELECT p.title
+FROM posts p
+LEFT JOIN comments c ON c.post_id = p.id
+WHERE c.id IS NULL;
+</code-block>
+<table>
+<tr><th>Loại</th><th>Giữ lại những dòng nào</th><th>Kết quả với dữ liệu mẫu</th></tr>
+<tr><td><b>INNER JOIN</b> (viết <c>JOIN</c>)</td><td>Chỉ dòng ghép được ở <b>cả hai</b> bảng</td><td>Câu 1: 5 bài kèm tên tác giả (An: 3 bài, Bình: 2 bài)</td></tr>
+<tr><td><b>LEFT JOIN</b></td><td><b>Mọi dòng bảng bên trái</b>; không ghép được thì cột bên phải là NULL</td><td>Câu 2: <c>An 3</c>, <c>Bình 2</c>, <c>Chi 0</c> — Chi vẫn có mặt với 0 bài</td></tr>
+<tr><td>LEFT JOIN + <c>WHERE ... IS NULL</c></td><td>Dòng bên trái <b>không có</b> dòng tương ứng bên phải (anti-join)</td><td>Câu 3: <c>Học SQL</c>, <c>Redis là gì</c> (hai bài chưa có comment)</td></tr>
+</table>
+<div class="note"><b>Hai điều hay nhầm:</b> (1) Với <c>LEFT JOIN</c>, dùng <c>COUNT(p.id)</c> chứ không phải <c>COUNT(*)</c>: dòng của Chi có <c>p.id</c> là NULL nên <c>COUNT(p.id)</c> cho <c>0</c> đúng, còn <c>COUNT(*)</c> đếm cả dòng đó và ra <c>1</c> sai. (2) Đặt điều kiện lọc của bảng bên phải trong <c>WHERE</c> sẽ biến <c>LEFT JOIN</c> thành <c>INNER JOIN</c> vì dòng NULL bị lọc mất; điều kiện đó nên để trong <c>ON</c>.</div>
+<p><b>Liên hệ:</b> <c>Post::doesntHave('comments')</c> là anti-join ở trên; <c>whereHas</c> / <c>withCount</c> (Part 08) sinh ra truy vấn con tương tự. Quan hệ <c>belongsTo</c>/<c>hasMany</c> của Eloquent <b>không dùng JOIN</b> mà chạy truy vấn riêng cho mỗi bảng (xem SQL.6).</p>
+
+<h2>SQL.6 N+1 nhìn ở tầng SQL</h2>
+<p>Muốn in 5 bài viết kèm tên tác giả. Có ba cách, đếm số câu SQL chạy thật:</p>
+<table>
+<tr><th>Cách</th><th>Câu SQL</th><th>Số query với 5 bài</th></tr>
+<tr><td><b>A — N+1</b></td><td>1 câu lấy posts, rồi <b>mỗi post</b> một câu <c>SELECT name FROM users WHERE id = ?</c></td><td><b>6</b> (1 + N)</td></tr>
+<tr><td><b>B — eager loading</b></td><td>1 câu lấy posts + 1 câu <c>SELECT ... FROM users WHERE id IN (1, 2)</c>, ghép trong PHP</td><td><b>2</b>, bất kể bao nhiêu bài</td></tr>
+<tr><td><b>C — JOIN</b></td><td>Một câu <c>JOIN</c> duy nhất</td><td><b>1</b></td></tr>
+</table>
+<p>Cách A với 1000 bài là <b>1001</b> lần gọi database. Cách B chính là điều <c>Post::with('author')-&gt;get()</c> làm: không phải phép màu, chỉ là một câu <c>IN</c> và một bước ghép. Với quan hệ một-nhiều (post và comment), JOIN nhân bản dòng cha theo số con nên Eloquent chọn cách B. Ở Part 08 bạn sẽ bật <c>Model::preventLazyLoading()</c> để Laravel ném lỗi khi có lazy load.</p>
+
+<h2>SQL.7 Index và EXPLAIN</h2>
+<p><b>Index</b> giống mục lục cuối sách: thay vì đọc từng trang để tìm một từ, bạn tra mục lục rồi nhảy thẳng tới trang. Về cấu trúc, index thường là <b>B-tree</b>, cho phép tìm trong cỡ <c>log n</c> bước thay vì <c>n</c> (cùng ý tưởng binary search). Thử trên bảng <c>logs</c> có 20000 dòng, lọc <c>user_id = 42</c>:</p>
+<code-block lang="sql">
+EXPLAIN QUERY PLAN SELECT * FROM logs WHERE user_id = 42;
+
+CREATE INDEX idx_logs_user_id ON logs (user_id);
+
+EXPLAIN QUERY PLAN SELECT * FROM logs WHERE user_id = 42;
+</code-block>
+<table>
+<tr><th>Tình huống</th><th>Kế hoạch thực thi (kết quả thật)</th><th>Nghĩa là</th></tr>
+<tr><td>Chưa có index</td><td><c>SCAN logs</c></td><td>Quét <b>toàn bộ</b> 20000 dòng</td></tr>
+<tr><td>Đã có index <c>user_id</c></td><td><c>SEARCH logs USING INDEX idx_logs_user_id (user_id=?)</c></td><td>Nhảy thẳng tới các dòng của user 42</td></tr>
+<tr><td>Lọc cột chưa có index (<c>action</c>)</td><td><c>SCAN logs</c></td><td>Index chỉ giúp đúng cột nó đánh</td></tr>
+<tr><td>Index hợp <c>(user_id, action)</c>, lọc cả hai cột</td><td><c>SEARCH logs USING COVERING INDEX idx_logs_user_action (user_id=? AND action=?)</c></td><td>Mọi cột cần dùng đã nằm sẵn trong index, không phải đọc thêm bảng</td></tr>
+</table>
+<ul>
+<li><b>Nên đánh index</b> cho cột hay xuất hiện ở <c>WHERE</c>, <c>JOIN ... ON</c> (khoá ngoại), <c>ORDER BY</c>. Trong migration: <c>$table-&gt;index('user_id')</c>, <c>$table-&gt;index(['user_id', 'action'])</c>, <c>$table-&gt;unique('email')</c>.</li>
+<li><b>Quy tắc tiền tố trái</b>: index <c>(a, b)</c> giúp <c>WHERE a = ?</c> và <c>WHERE a = ? AND b = ?</c>, nhưng <b>không</b> giúp <c>WHERE b = ?</c> đứng riêng. Thứ tự cột trong index hợp quan trọng.</li>
+<li><b>Cái giá của index</b>: tốn dung lượng và làm <c>INSERT/UPDATE/DELETE</c> chậm hơn vì phải cập nhật cả index. Đừng đánh index mọi cột.</li>
+<li>Mẫu <c>LIKE '%từ%'</c> (dấu <c>%</c> ở đầu) <b>không dùng được index B-tree thường</b>, đó là lý do Part 23 nhắc tới Scout cho full-text search.</li>
+<li>MySQL tự đánh index cho cột khoá ngoại; SQLite thì không, nên hãy chủ động <c>-&gt;index()</c> khi cần.</li>
+<li>Xem kế hoạch trên MySQL/PostgreSQL bằng <c>EXPLAIN SELECT ...</c> (trong client SQL hoặc <c>DB::select('EXPLAIN SELECT ...')</c>); tìm dòng quét toàn bảng (<c>type: ALL</c> ở MySQL). Xem các index hiện có: <c>php artisan db:table posts</c> hoặc <c>Schema::getIndexes('posts')</c>.</li>
+</ul>
+
+<h2>SQL.8 Transaction trong một đoạn</h2>
+<p><b>Transaction</b> gom nhiều câu lệnh thành một đơn vị: <b>hoặc tất cả thành công (<c>COMMIT</c>), hoặc không gì thay đổi (<c>ROLLBACK</c>)</b>. Ví dụ chuyển tiền: trừ ở tài khoản A rồi cộng ở tài khoản B; nếu bước hai lỗi mà không có transaction thì tiền biến mất. Trong Laravel, <c>DB::transaction(function () { ... })</c> tự commit khi chạy xong và tự rollback rồi ném lại exception khi có lỗi. Bẫy hay gặp (job bắn trong transaction chạy trước khi commit) được học kỹ ở Part 13.</p>
+
+<h2>SQL.9 SQL injection — chỉ cần nhớ ba quy tắc</h2>
+<ol>
+<li>Giá trị từ người dùng luôn đi qua <b>tham số</b> (<c>?</c> hoặc Query Builder/Eloquent). Docs Laravel: query builder dùng PDO parameter binding để chống SQL injection, bạn không cần làm sạch chuỗi.</li>
+<li><b>Tên cột, tên bảng, hướng sắp xếp</b> không tham số hoá được. Docs: "PDO does not support binding column names. Therefore, you should never allow user input to dictate the column names referenced by your queries, including order by columns." Luôn đi qua <b>danh sách cho phép (allowlist)</b>.</li>
+<li><b>Không bao giờ</b> nội suy <c>$biến</c> hay nối <c>.</c> vào câu SQL thô. Với <c>DB::raw</c>, <c>whereRaw</c>, <c>selectRaw</c>, <c>orderByRaw</c>, truyền giá trị qua tham số thứ hai: <c>whereRaw('views &gt; ?', [$min])</c>. Docs cảnh báo: Laravel không thể đảm bảo query dùng raw expression an toàn trước SQL injection.</li>
+</ol>
+<p>Chương 12.11 của <c>php-bai-tap.pdf</c> cho bạn thấy đầu vào <c>' OR '1'='1</c> lấy ra <b>cả 3 user</b> khi ghép chuỗi, nhưng <b>0 dòng</b> khi tham số hoá. Tổng hợp bảo mật: xem <b>PART SEC</b>.</p>
+
+<h2>SQL.10 Bảng tra nhanh</h2>
+<table>
+<tr><th>Việc</th><th>SQL</th><th>Query Builder / Eloquent</th></tr>
+<tr><td>Lọc, sắp xếp</td><td><c>WHERE ... ORDER BY ...</c></td><td><c>where()</c>, <c>orderBy()</c></td></tr>
+<tr><td>Phân trang</td><td><c>LIMIT n OFFSET m</c></td><td><c>paginate()</c>, <c>cursorPaginate()</c> (Part 12)</td></tr>
+<tr><td>Đếm / tổng theo nhóm</td><td><c>GROUP BY ... HAVING ...</c></td><td><c>groupBy()</c>, <c>having()</c>, <c>withCount()</c></td></tr>
+<tr><td>Ghép bảng</td><td><c>JOIN</c>, <c>LEFT JOIN</c></td><td><c>join()</c>, <c>leftJoin()</c>, <c>with()</c></td></tr>
+<tr><td>Dòng không có quan hệ</td><td><c>LEFT JOIN ... WHERE x.id IS NULL</c></td><td><c>doesntHave()</c></td></tr>
+<tr><td>Tìm nhanh theo cột</td><td><c>CREATE INDEX</c></td><td><c>$table-&gt;index()</c> trong migration</td></tr>
+<tr><td>Tất cả hoặc không gì</td><td><c>BEGIN</c> / <c>COMMIT</c> / <c>ROLLBACK</c></td><td><c>DB::transaction()</c></td></tr>
+</table>
+
+<div class="task-box"><b>Việc cần làm:</b> (không có đáp án chép sẵn trong phần này; kết quả mong đợi để bạn tự đối chiếu, lời giải chi tiết nằm ở <b>Chương 12</b> của <c>php-bai-tap.pdf</c>)
+<ol>
+<li>Dựng schema và dữ liệu mẫu như SQL.2–SQL.3 (bằng <c>php artisan db</c> hoặc bằng PDO như bài 12.1). Kiểm tra: <c>3</c> user, <c>5</c> post, <c>6</c> comment</li>
+<li>Viết SQL lấy 3 bài có nhiều view nhất. Mong đợi: <c>Học Laravel 300</c>, <c>Docker cơ bản 150</c>, <c>Học PHP 120</c></li>
+<li>Viết SQL lấy các bài chưa xuất bản bằng <c>IS NULL</c>, rồi thử <c>= NULL</c> và giải thích vì sao ra 0 dòng. Mong đợi: <c>IS NULL</c> ra <c>Học SQL</c></li>
+<li>Tổng view và số bài của mỗi user. Mong đợi: user 1 có <c>3</c> bài, <c>500</c> view; user 2 có <c>2</c> bài, <c>195</c> view. Thêm <c>HAVING</c> để chỉ giữ user có tổng view lớn hơn 200: còn lại user 1</li>
+<li>Liệt kê mọi user kèm số bài (kể cả 0). Mong đợi: <c>An 3</c>, <c>Bình 2</c>, <c>Chi 0</c>. Thử đổi <c>COUNT(p.id)</c> thành <c>COUNT(*)</c> và giải thích vì sao Chi ra 1</li>
+<li>Tìm các bài chưa có comment. Mong đợi: <c>Học SQL</c> và <c>Redis là gì</c></li>
+<li>Cài đặt ba cách ở SQL.6 và đếm số query. Mong đợi: <c>6</c>, <c>2</c>, <c>1</c></li>
+<li>Tạo bảng 20000 dòng, chạy <c>EXPLAIN QUERY PLAN</c> trước và sau khi thêm index, và chỉ ra chữ <c>SCAN</c> đổi thành <c>SEARCH</c></li>
+<li>Viết hàm chuyển tiền trong transaction; chứng minh khi chuyển quá số dư thì số dư hai tài khoản <b>không đổi</b></li>
+<li>Trong project Laravel: sau khi làm migration ở Part 04, chạy <c>php artisan db:table posts</c> và <c>Schema::getIndexes('posts')</c>, xác nhận cột <c>user_id</c> có index/khoá ngoại</li>
+</ol></div>
+</div>
+
 <!-- ===================== PART 04 ===================== -->
 <div class="part">
 <div class="part-head">
@@ -764,6 +1097,8 @@ public function boot(): void
 <h1>Database: Migration, Eloquent Model, Factory &amp; Seeder</h1>
 <div class="goal-box"><b>Mục tiêu:</b> Thay mảng cứng bằng database thật, hiểu Eloquent (Active Record) khác gì TypeORM Repository (Data Mapper), và biết bảo vệ ứng dụng khỏi lỗ hổng mass assignment.</div>
 </div>
+
+<div class="audit"><b>Học trước khi vào Part 04:</b> nếu bạn chưa quen <c>JOIN</c>, <c>GROUP BY</c>, khoá ngoại và index, hãy học <b>PART SQL</b> ngay phía trên (kèm Chương 12 của <c>php-bai-tap.pdf</c> có đáp án). Migration, quan hệ và N+1 ở Part 04/08 sẽ dễ hiểu hơn nhiều khi bạn đã biết chúng sinh ra SQL gì.</div>
 
 <h2>4.1 Migration — "git cho cấu trúc database"</h2>
 <p>Migration là file PHP mô tả một thay đổi cấu trúc bảng, chạy theo thứ tự thời gian. Nhờ nó, đồng đội chỉ cần <c>git pull</c> + <c>php artisan migrate</c> là có database giống hệt bạn.</p>
@@ -1281,6 +1616,8 @@ class PostAlreadyPublishedException extends Exception
 <div class="goal-box"><b>Mục tiêu:</b> Thêm entity Comment liên kết với Post, và hiểu N+1 query — lỗi hiệu năng phổ biến nhất của mọi ORM.</div>
 </div>
 
+<div class="audit"><b>Nền SQL của N+1:</b> ba cách lấy "bài kèm tác giả" (N+1 / <c>IN</c> / <c>JOIN</c>) và số query chạy thật (6 / 2 / 1) được minh hoạ ở <b>SQL.6</b>. Đọc lại đó nếu thấy <c>with()</c> như phép màu.</div>
+
 <h2>8.1 Khai báo quan hệ 1-N</h2>
 <code-block lang="php">
 // migration của bảng comments
@@ -1392,7 +1729,7 @@ public function store(StoreCommentRequest $request, Post $post)
 <h2>9.1 Sanctum là gì — và không phải là gì</h2>
 <p>Sanctum đã được cài sẵn khi bạn chạy <c>php artisan install:api</c> ở Part 01. Nó giải quyết 2 bài toán tách biệt:</p>
 <ul>
-<li><b>API token</b> (personal access token, giống token của GitHub): token là chuỗi random, được hash SHA-256 rồi lưu vào bảng <c>personal_access_tokens</c>. Client gửi kèm header <c>Authorization: Bearer <token></c>. → Đây là phần ta dùng.</li>
+<li><b>API token</b> (personal access token, giống token của GitHub): token là chuỗi random, được hash SHA-256 rồi lưu vào bảng <c>personal_access_tokens</c>. Client gửi kèm header <c>Authorization: Bearer &lt;token&gt;</c>. → Đây là phần ta dùng.</li>
 <li><b>SPA authentication</b>: dùng session cookie thay vì token, cho frontend cùng domain. Không dùng trong crash course này.</li>
 </ul>
 <div class="note"><b>Sanctum khác JWT thế nào?</b> Token Sanctum là opaque (chuỗi vô nghĩa, phải tra DB mới biết của ai) — nên thu hồi được ngay lập tức bằng cách xoá dòng trong DB. JWT là self-contained (chứa payload, verify bằng chữ ký, không cần tra DB) — nhanh hơn nhưng không thu hồi được trước khi hết hạn. Với API thường, Sanctum là lựa chọn mặc định đúng. Cần OAuth2 đầy đủ thì mới dùng Laravel Passport.</div>
@@ -1636,6 +1973,87 @@ Route::prefix('v1')->group(function () {
 <li>Thêm prefix version v1 cho toàn bộ route</li>
 <li>Chạy <c>php artisan optimize</c> ở local, xác nhận app vẫn chạy, rồi <c>optimize:clear</c></li>
 <li>Viết file <c>.env.example</c> đầy đủ và một mục "API endpoints" trong README (method, path, body, response mẫu)</li>
+</ol></div>
+</div>
+
+<!-- ===================== PART SEC ===================== -->
+<div class="part">
+<div class="part-head">
+<div class="part-badge new">PART SEC — BẢO MẬT ỨNG DỤNG API — MỚI</div>
+<h1>Bảo mật: tư duy mối đe doạ và các bài kiểm tra</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Gom các mảnh bảo mật đã rải rác ở Part 04, 06, 09, 10, 18, 19, 22 thành một bản đồ: <b>ai có thể làm gì sai, ở đâu Laravel đã bảo vệ sẵn, ở đâu bạn phải tự bảo vệ</b>. Phần này không dạy lại các Part kia mà cho bạn khung tư duy cùng các bài <b>kiểm tra bằng test</b> để chứng minh API của mình chống được những lỗi phổ biến nhất.</div>
+</div>
+
+<h2>SEC.1 Cách nghĩ: Laravel bảo vệ gì sẵn, bạn phải tự bảo vệ gì</h2>
+<table>
+<tr><th>Nguy cơ</th><th>Laravel đã lo</th><th>Bạn phải tự làm</th><th>Học ở</th></tr>
+<tr><td><b>SQL injection</b></td><td>Query Builder/Eloquent tự tham số hoá giá trị</td><td>Allowlist cho tên cột/<c>orderBy</c>; không nối chuỗi vào <c>DB::raw</c>/<c>whereRaw</c>; không <c>unprepared()</c> với dữ liệu người dùng</td><td>SQL.9, 10.2</td></tr>
+<tr><td><b>Mass assignment</b> (client gửi thêm field như <c>is_admin</c>)</td><td>Cơ chế <c>$fillable</c> / <c>#[Fillable]</c> chặn field lạ</td><td>Chỉ khai báo field thực sự cho phép; dùng <c>$request-&gt;validated()</c> thay vì <c>$request-&gt;all()</c></td><td>Part 04, 05</td></tr>
+<tr><td><b>Phân quyền hỏng (IDOR)</b>: user B sửa/xoá bài của user A bằng cách đổi <c>id</c> trên URL</td><td>Không tự biết ai sở hữu gì</td><td>Policy cho mọi hành động ghi và đọc dữ liệu riêng tư; quyết định trả 403 hay 404</td><td>Part 19</td></tr>
+<tr><td><b>Lộ dữ liệu nhạy cảm</b> trong response</td><td><c>$hidden</c> trên model; API Resource</td><td>Không trả model thô; chỉ liệt kê field công khai trong Resource</td><td>Part 06</td></tr>
+<tr><td><b>Lưu mật khẩu</b></td><td><c>Hash::make()</c>, cast <c>hashed</c></td><td>Không bao giờ tự mã hoá hay lưu rõ; không ghi mật khẩu/token vào log</td><td>Part 09</td></tr>
+<tr><td><b>Dò mật khẩu, spam</b></td><td>Cung cấp <c>RateLimiter</c>/<c>throttle</c></td><td>Định nghĩa và gắn limiter cho login, đăng ký, endpoint ghi</td><td>Part 10</td></tr>
+<tr><td><b>CSRF</b></td><td>Middleware chống giả mạo request cho nhóm <c>web</c> (xem SEC.2)</td><td>Hiểu API dùng token không bị CSRF; SPA dùng cookie phải theo luồng Sanctum</td><td>SEC.2, 09</td></tr>
+<tr><td><b>XSS</b></td><td>Blade tự escape <c>{{ }}</c> (nếu bạn có giao diện)</td><td>API không tự render HTML nhưng dữ liệu bạn lưu sẽ bị client hiển thị: không tin dữ liệu, escape khi hiển thị (xem SEC.3)</td><td>SEC.3</td></tr>
+<tr><td><b>Upload file độc hại</b></td><td>Rule validate file</td><td>Validate loại và kích thước, đặt tên do server sinh, lưu ngoài <c>public/</c></td><td>Part 18</td></tr>
+<tr><td><b>Cấu hình sai khi deploy</b></td><td>Mặc định an toàn nếu <c>APP_DEBUG=false</c></td><td><c>APP_DEBUG=false</c>, <c>APP_KEY</c> riêng, HTTPS, document root là <c>public/</c></td><td>10.6, 22.7</td></tr>
+<tr><td><b>Thư viện có lỗ hổng</b></td><td>Không</td><td>Chạy <c>composer audit</c> định kỳ và nâng cấp (xem SEC.5)</td><td>SEC.5</td></tr>
+</table>
+
+<h2>SEC.2 CSRF trong Laravel 13: API dùng token thì sao?</h2>
+<p><b>CSRF</b> (cross-site request forgery) là khi một website độc hại làm trình duyệt của người đã đăng nhập tự gửi request tới ứng dụng của bạn, với cookie phiên của họ. Điều kiện để dính: ứng dụng nhận diện người dùng bằng <b>cookie</b> mà trình duyệt tự đính kèm.</p>
+<ul>
+<li>Trong Laravel 13, middleware <c>Illuminate\Foundation\Http\Middleware\PreventRequestForgery</c> nằm trong nhóm <c>web</c> theo mặc định. Nó kiểm tra <b>hai lớp</b>: (1) header <c>Sec-Fetch-Site</c> mà trình duyệt hiện đại tự gắn — nếu cho biết request cùng origin thì cho qua ngay; (2) nếu không đạt (trình duyệt cũ, hoặc kết nối không phải HTTPS), quay về kiểm tra <b>CSRF token</b> truyền thống. Nó kiểm tra mọi request <c>POST</c>, <c>PUT</c>, <c>PATCH</c>, <c>DELETE</c>, <c>QUERY</c>.</li>
+<li>Route trong <c>routes/api.php</c> thuộc nhóm <c>api</c>, <b>không</b> có middleware này (xem bảng nhóm middleware ở Part 07). API xác thực bằng <b>Bearer token</b> trong header <c>Authorization</c> (Part 09) không bị CSRF, vì trình duyệt không tự gắn header đó.</li>
+<li>Nếu bạn làm SPA dùng <b>cookie</b> với cùng domain, phải theo luồng CSRF của Sanctum (docs Sanctum). Docs CSRF nói rõ: với SPA dùng Laravel làm API backend, hãy xem tài liệu Sanctum.</li>
+<li>Muốn loại trừ một URI khỏi kiểm tra (ví dụ webhook của bên thứ ba không biết gửi token), khai trong <c>bootstrap/app.php</c>: <c>$middleware-&gt;preventRequestForgery(except: ['stripe/*'])</c>. Docs khuyên ưu tiên đặt các route kiểu này <b>ngoài nhóm <c>web</c></b>. CSRF tự động tắt khi chạy test.</li>
+<li>Chế độ chỉ kiểm origin: <c>preventRequestForgery(originOnly: true)</c>; request không đạt nhận <b>403</b> thay vì <b>419</b> của token mismatch.</li>
+</ul>
+<div class="note"><b>Tên cũ:</b> các tài liệu và bài viết trước Laravel 13 gọi middleware này là <c>VerifyCsrfToken</c>. Laravel 13 chính thức hoá nó thành <c>PreventRequestForgery</c> và thêm kiểm tra origin, vẫn tương thích với CSRF token.</div>
+
+<h2>SEC.3 XSS và dữ liệu người dùng nhập</h2>
+<p><b>XSS</b> xảy ra khi dữ liệu do người dùng nhập (ví dụ nội dung comment <c>&lt;script&gt;...&lt;/script&gt;</c>) được hiển thị như HTML/JavaScript ở trình duyệt của người khác. Với API thuần JSON, server không render HTML nên lỗ hổng nằm ở <b>nơi hiển thị</b> (frontend, app mobile, email). Quy tắc:</p>
+<ul>
+<li>Lưu dữ liệu nguyên bản, <b>escape khi hiển thị</b> chứ không "làm sạch" lúc lưu: cùng một dữ liệu có thể được hiển thị ở nhiều nơi cần cách escape khác nhau.</li>
+<li>Laravel trả mảng/Resource với <c>Content-Type: application/json</c>, nên trình duyệt không thực thi nội dung như HTML.</li>
+<li>Nếu có giao diện Blade: <c>{{ $x }}</c> tự escape; <c>{!! $x !!}</c> <b>không</b> escape — chỉ dùng với nội dung bạn tin tưởng hoàn toàn.</li>
+<li>Nếu thực sự phải cho người dùng gửi HTML (rich text), dùng thư viện lọc HTML với danh sách thẻ cho phép; đừng tự viết bộ lọc bằng regex.</li>
+<li>Khi gửi email chứa nội dung người dùng (Part 20), escape tương tự.</li>
+</ul>
+
+<h2>SEC.4 Quản lý bí mật</h2>
+<ul>
+<li><b>Không commit <c>.env</c></b> (mục 1.6). Commit <c>.env.example</c> với giá trị giả. Lỡ commit thì coi như đã lộ: xoay khoá, đổi mật khẩu, tạo <c>APP_KEY</c> mới.</li>
+<li><c>APP_KEY</c> dùng để mã hoá cookie/phiên; mỗi môi trường một khoá riêng, không chia sẻ qua chat/ticket.</li>
+<li>Không in token, mật khẩu, thông tin thẻ vào log (<c>Log::info($request-&gt;all())</c> là lỗi kinh điển).</li>
+<li>Khoá API bên thứ ba lấy từ <c>.env</c> qua <c>config/services.php</c>, không viết cứng trong code.</li>
+</ul>
+
+<h2>SEC.5 Thư viện có lỗ hổng: composer audit</h2>
+<p>Ứng dụng Laravel kéo theo hàng trăm package. Lỗ hổng thường nằm ở dependency chứ không phải ở code bạn viết. Composer có lệnh <c>composer audit</c> kiểm tra các package đã cài với cơ sở dữ liệu cảnh báo bảo mật. Chạy định kỳ (và trong CI), khi báo có lỗ hổng thì <c>composer update tên-package</c> lên bản đã vá và chạy lại test. Theo dõi thêm thông báo release và security của Laravel (support policy: bản 13 nhận bug fix đến Q3 2027 và security fix đến 17/03/2028; hãy lên bản mới trước khi hết hạn).</p>
+
+<h2>SEC.6 Kiểm tra bằng test: chứng minh thay vì tin</h2>
+<p>Bảo mật chỉ có giá trị khi được kiểm chứng. Mỗi lỗi bên dưới đều viết được thành một test ngắn bằng Pest (Part 11). Mẫu cấu trúc: dựng dữ liệu bằng factory, gọi API như kẻ tấn công, kiểm tra response.</p>
+<table>
+<tr><th>Test</th><th>Kẻ tấn công làm gì</th><th>Phải thấy</th></tr>
+<tr><td>Sort injection</td><td><c>GET /api/v1/posts?sort=views;DROP TABLE posts</c></td><td>Bị chặn bởi allowlist (200 với sort mặc định, hoặc 422 nếu bạn chọn validate); bảng không bị ảnh hưởng</td></tr>
+<tr><td>Mass assignment</td><td><c>POST /api/v1/posts</c> kèm field thừa <c>user_id</c> hoặc <c>is_admin</c></td><td>Field thừa bị bỏ qua; <c>user_id</c> luôn là người đang đăng nhập</td></tr>
+<tr><td>IDOR</td><td>User B gọi <c>PATCH</c>/<c>DELETE</c> trên bài của user A</td><td>403 (hoặc 404 nếu bạn chọn giấu sự tồn tại) và dữ liệu không đổi</td></tr>
+<tr><td>Chưa đăng nhập</td><td>Gọi endpoint ghi không kèm token</td><td>401</td></tr>
+<tr><td>Lộ field</td><td>Đọc <c>GET /api/v1/users</c></td><td>Response không có <c>password</c>, <c>remember_token</c></td></tr>
+<tr><td>Brute force</td><td>Gọi <c>POST /api/v1/login</c> liên tục</td><td>Nhận 429 sau ngưỡng (Part 10)</td></tr>
+<tr><td>Token sau logout</td><td>Dùng lại token đã đăng xuất</td><td>401</td></tr>
+</table>
+
+<div class="task-box"><b>Việc cần làm:</b>
+<ol>
+<li>Chạy <c>composer audit</c> trên project, ghi lại kết quả (không có lỗ hổng cũng là một kết quả). Nếu có, nâng cấp package và chạy lại</li>
+<li>Chạy <c>git ls-files | grep -E '^\.env$'</c> (không được in gì) và <c>git log --all --oneline -- .env</c> (không được có commit nào) để xác nhận chưa từng commit <c>.env</c></li>
+<li>Viết 5 test từ bảng SEC.6: sort injection, mass assignment, IDOR, chưa đăng nhập, lộ field. Mỗi test chạy <b>đỏ</b> khi bạn cố ý gỡ biện pháp bảo vệ (gỡ allowlist, thêm field vào <c>$fillable</c>, bỏ <c>authorize</c>...) và <b>xanh</b> khi khôi phục</li>
+<li>Rà <c>routes/api.php</c>: mọi route ghi (<c>POST</c>, <c>PUT</c>, <c>PATCH</c>, <c>DELETE</c>) đã nằm trong nhóm có middleware xác thực chưa? Dùng <c>php artisan route:list --path=api</c> để kiểm tra cột Middleware</li>
+<li>Tìm trong code mọi chỗ dùng <c>DB::raw</c>, <c>whereRaw</c>, <c>selectRaw</c>, <c>orderByRaw</c>, <c>unprepared</c> (gợi ý: <c>grep -rn "Raw\|unprepared" app/</c>) và xác nhận không chỗ nào ghép dữ liệu người dùng vào chuỗi</li>
+<li>Đọc docs Laravel mục CSRF Protection, rồi tự trả lời bằng lời của bạn: vì sao request có header <c>Authorization: Bearer ...</c> không cần CSRF token, nhưng request dùng cookie phiên thì cần?</li>
+<li>Đọc OWASP Top 10 tại owasp.org để biết danh mục lỗ hổng web phổ biến nhất và đối chiếu với bảng SEC.1</li>
 </ol></div>
 </div>
 
@@ -2061,8 +2479,8 @@ Queue::route([
 <table>
 <tr><th>Lệnh</th><th>Tác dụng</th></tr>
 <tr><td><c>php artisan queue:failed</c></td><td>Liệt kê job đã fail (id, class, lý do, thời điểm)</td></tr>
-<tr><td><c>php artisan queue:retry <id></c> / <c>--all</c></td><td>Đẩy job fail trở lại queue để thử lại</td></tr>
-<tr><td><c>php artisan queue:forget <id></c> / <c>queue:flush</c></td><td>Xoá 1 / xoá hết job fail</td></tr>
+<tr><td><c>php artisan queue:retry &lt;id&gt;</c> / <c>--all</c></td><td>Đẩy job fail trở lại queue để thử lại</td></tr>
+<tr><td><c>php artisan queue:forget &lt;id&gt;</c> / <c>queue:flush</c></td><td>Xoá 1 / xoá hết job fail</td></tr>
 <tr><td><c>php artisan queue:prune-failed --hours=48</c></td><td>Dọn job fail cũ (đặt vào Schedule — Part 17)</td></tr>
 </table>
 <div class="note"><b>Retry chỉ có ích khi lỗi là tạm thời</b> (mạng, API ngoài quá tải). Lỗi logic (dữ liệu sai) retry 3 lần vẫn sai — với loại đó hãy <c>$this->fail($e)</c> ngay trong <c>handle()</c> để khỏi phí tài nguyên, hoặc dùng <c>#[MaxExceptions(1)]</c>.</div>
@@ -3006,6 +3424,8 @@ Dự án rất lớn → nhóm theo domain: app/Domain/Posts/{Actions,Data,Model
 <div class="goal-box"><b>Mục tiêu:</b> Hiểu một app Laravel chạy thật cần những process nào, deploy sao cho không mất job, và nhìn thấy được chuyện gì đang xảy ra bên trong.</div>
 </div>
 
+<div class="audit"><b>Docker ở local:</b> nếu bạn dùng <b>Laravel Sail</b> (PART SAIL), mỗi loại process ở 22.1 chính là một container chạy cùng một image ứng dụng; các lệnh dưới đây viết cho máy thật, thêm tiền tố <c>sail</c> khi chạy trong Sail. Phần bảo mật tổng hợp: <b>PART SEC</b>.</div>
+
 <h2>22.1 Một app Laravel production gồm 3 loại process</h2>
 <div class="diagram">Nginx ──► PHP-FPM (nhiều worker)   : xử lý HTTP request          ← Part 00
           php artisan queue:work   : xử lý job (Supervisor giữ sống) ← Part 14
@@ -3104,6 +3524,7 @@ php artisan up
 <table>
 <tr><th>Chủ đề</th><th>Vì sao</th><th>Docs</th></tr>
 <tr><td>Query Builder nâng cao: subquery, <c>whereExists</c>, window function, index &amp; EXPLAIN</td><td>90% vấn đề hiệu năng thật nằm ở DB, không phải PHP</td><td>queries, eloquent-relationships (subquery selects)</td></tr>
+<tr><td>Giao diện: Blade, Livewire, Inertia, Vite, starter kit</td><td>Tài liệu này chỉ xây API. Nếu muốn làm cả giao diện thì đây là các hướng chính thức của Laravel</td><td>blade, frontend, vite, starter-kits; Livewire và Inertia (package cộng đồng được docs giới thiệu)</td></tr>
 <tr><td>Broadcasting + Reverb + Echo</td><td>Realtime (thông báo, chat) — WebSocket server chính chủ</td><td>broadcasting, reverb</td></tr>
 <tr><td>Sanctum SPA auth / Passport / Socialite</td><td>Cookie-based auth cho SPA cùng domain; OAuth2; đăng nhập Google/GitHub</td><td>sanctum, passport, socialite</td></tr>
 <tr><td>Multi-tenancy, global scope, database per tenant</td><td>SaaS — bài toán kiến trúc kinh điển</td><td>eloquent (global scopes), package spatie/laravel-multitenancy</td></tr>

@@ -60,7 +60,7 @@ tr { break-inside: avoid; }
   <h1>PHP cho người học Laravel</h1>
   <h2>Bộ bài tập thực hành từ cơ bản đến nâng cao, kèm đáp án và giải thích chi tiết ở phần sau</h2>
   <div class="meta">
-    <div>Gồm 66 bài tập thuộc 11 chương</div>
+    <div>Gồm 77 bài tập thuộc 12 chương</div>
     <div>Mọi đáp án đã được chạy thật bằng PHP 8.5 — phần "Kết quả khi chạy" là output thực tế, không phải gõ tay</div>
     <div>Thư mục thực hành: laravel-crash-course/php-warmup</div>
   </div>
@@ -69,7 +69,7 @@ tr { break-inside: avoid; }
 <h1>Mục lục</h1>
 <ul class="toc-list">
   <li><span><span class="n">0</span> Cách dùng tài liệu này</span><span class="tag">ĐỌC TRƯỚC</span></li>
-  <li><span><span class="n">1</span> Nền tảng ngôn ngữ: chuỗi, so sánh, hằng, kiểu</span><span class="tag">5 bài</span></li><li><span><span class="n">2</span> Array cơ bản: indexed, associative, mảng lồng nhau</span><span class="tag">4 bài</span></li><li><span><span class="n">3</span> Truy cập mảng an toàn: ??, isset, array_key_exists</span><span class="tag">3 bài</span></li><li><span><span class="n">4</span> Hàm xử lý array: map, filter, reduce, column</span><span class="tag">9 bài</span></li><li><span><span class="n">5</span> Sắp xếp: &lt;=&gt;, usort và họ sort</span><span class="tag">5 bài</span></li><li><span><span class="n">6</span> Toán tử PHP 8: ??, ?:, ??=, ?-&gt;, match</span><span class="tag">6 bài</span></li><li><span><span class="n">7</span> Class và OOP cơ bản</span><span class="tag">6 bài</span></li><li><span><span class="n">8</span> File, CSV, JSON và xử lý lỗi</span><span class="tag">7 bài</span></li><li><span><span class="n">9</span> Luyện logic: sắp xếp, tìm kiếm, tìm cặp, nhóm</span><span class="tag">12 bài</span></li><li><span><span class="n">10</span> Closure và arrow function</span><span class="tag">7 bài</span></li><li><span><span class="n">11</span> Tổng hợp: mini project đơn hàng</span><span class="tag">2 bài</span></li>
+  <li><span><span class="n">1</span> Nền tảng ngôn ngữ: chuỗi, so sánh, hằng, kiểu</span><span class="tag">5 bài</span></li><li><span><span class="n">2</span> Array cơ bản: indexed, associative, mảng lồng nhau</span><span class="tag">4 bài</span></li><li><span><span class="n">3</span> Truy cập mảng an toàn: ??, isset, array_key_exists</span><span class="tag">3 bài</span></li><li><span><span class="n">4</span> Hàm xử lý array: map, filter, reduce, column</span><span class="tag">9 bài</span></li><li><span><span class="n">5</span> Sắp xếp: &lt;=&gt;, usort và họ sort</span><span class="tag">5 bài</span></li><li><span><span class="n">6</span> Toán tử PHP 8: ??, ?:, ??=, ?-&gt;, match</span><span class="tag">6 bài</span></li><li><span><span class="n">7</span> Class và OOP cơ bản</span><span class="tag">6 bài</span></li><li><span><span class="n">8</span> File, CSV, JSON và xử lý lỗi</span><span class="tag">7 bài</span></li><li><span><span class="n">9</span> Luyện logic: sắp xếp, tìm kiếm, tìm cặp, nhóm</span><span class="tag">12 bài</span></li><li><span><span class="n">10</span> Closure và arrow function</span><span class="tag">7 bài</span></li><li><span><span class="n">11</span> Tổng hợp: mini project đơn hàng</span><span class="tag">2 bài</span></li><li><span><span class="n">12</span> SQL nền tảng với SQLite (chạy bằng PDO)</span><span class="tag">11 bài</span></li>
   <li><span><span class="n">PL</span> Phụ lục: bảng hàm cần nhớ và lỗi hay gặp</span><span class="tag">TRA CỨU</span></li>
 </ul>
 <p class="note"><b>Cấu trúc:</b> Phần 1 là toàn bộ đề bài (kèm kết quả mong đợi cho bài viết code). Phần 2 ở nửa sau là đáp án và giải thích. Bấm vào liên kết "Xem đáp án" để nhảy đến đúng bài, và "Về đề bài" để quay lại.</p>
@@ -84,7 +84,7 @@ tr { break-inside: avoid; }
 <h4>Độ khó</h4>
 <p>Mỗi bài có ★ (dễ), ★★ (vừa), ★★★ (khó, cần suy nghĩ). Bài <strong>dự đoán output</strong> được đánh dấu rõ: chỉ có code, không có kết quả mong đợi, bạn phải tự đoán trước khi chạy.</p>
 <h4>Bảng chương và file thực hành tương ứng</h4>
-<table><tr><th>Chương</th><th>Nội dung</th><th>File bạn đã làm</th></tr><tr><td>1</td><td>Chuỗi, so sánh, hằng, kiểu</td><td><code>index.php</code></td></tr><tr><td>2</td><td>Array cơ bản</td><td><code>array-basics.php</code>, <code>array.php</code></td></tr><tr><td>3</td><td>Truy cập mảng an toàn</td><td><code>array-safe.php</code></td></tr><tr><td>4</td><td>map, filter, reduce, column</td><td><code>array-function.php</code>, <code>array-keys.php</code>, <code>array-column.php</code>, <code>array-excires.php</code></td></tr><tr><td>5</td><td>Sắp xếp</td><td><code>array-sort.php</code></td></tr><tr><td>6</td><td>Toán tử PHP 8</td><td><code>operators.php</code></td></tr><tr><td>7</td><td>Class và OOP</td><td><code>php-class/*.php</code></td></tr><tr><td>8</td><td>File, CSV, JSON, exception</td><td><code>file.php</code></td></tr><tr><td>9</td><td>Logic và thuật toán</td><td><code>logic.php</code></td></tr><tr><td>10</td><td>Closure</td><td><code>closure/closure.php</code>, <code>closure/excirse.php</code></td></tr><tr><td>11</td><td>Mini project tổng hợp</td><td>tự tạo <code>project/</code></td></tr></table>
+<table><tr><th>Chương</th><th>Nội dung</th><th>File bạn đã làm</th></tr><tr><td>1</td><td>Chuỗi, so sánh, hằng, kiểu</td><td><code>index.php</code></td></tr><tr><td>2</td><td>Array cơ bản</td><td><code>array-basics.php</code>, <code>array.php</code></td></tr><tr><td>3</td><td>Truy cập mảng an toàn</td><td><code>array-safe.php</code></td></tr><tr><td>4</td><td>map, filter, reduce, column</td><td><code>array-function.php</code>, <code>array-keys.php</code>, <code>array-column.php</code>, <code>array-excires.php</code></td></tr><tr><td>5</td><td>Sắp xếp</td><td><code>array-sort.php</code></td></tr><tr><td>6</td><td>Toán tử PHP 8</td><td><code>operators.php</code></td></tr><tr><td>7</td><td>Class và OOP</td><td><code>php-class/*.php</code></td></tr><tr><td>8</td><td>File, CSV, JSON, exception</td><td><code>file.php</code></td></tr><tr><td>9</td><td>Logic và thuật toán</td><td><code>logic.php</code></td></tr><tr><td>10</td><td>Closure</td><td><code>closure/closure.php</code>, <code>closure/excirse.php</code></td></tr><tr><td>11</td><td>Mini project tổng hợp</td><td>tự tạo <code>project/</code></td></tr><tr><td>12</td><td>SQL nền tảng (SQLite, PDO)</td><td>tự tạo <code>sql/</code></td></tr></table>
 <h4>Quy ước về đáp án</h4>
 <p>Có nhiều cách đúng cho cùng một bài. Đáp án trong tài liệu là <strong>một</strong> cách rõ ràng và an toàn, không phải cách duy nhất. Nếu code của bạn cho cùng kết quả (kể cả các trường hợp biên), nó vẫn đúng. Hãy so sánh hai cách, hiểu vì sao đáp án chọn như vậy.</p>
 <h4>Phần chưa có trong tài liệu này</h4>
@@ -480,7 +480,124 @@ Mã giảm giá không tồn tại: abc
 Số lượng phải lớn hơn 0</code></pre><p class="jump"><a href="#a-11-1">Xem đáp án bài 11.1 →</a></p></div><div class="ex" id="q-11-2"><div class="ex-head"><span class="ex-id">Bài 11.2</span><span class="ex-title">Báo cáo đơn hàng: sắp, lưu JSON, đọc lại</span><span class="ex-stars">★★★</span></div><p>Dùng lại <code>Product</code>, <code>Line</code> và đơn mẫu ở bài 11.1 (Áo 200000 × 2, Mũ 50000 × 1, thêm Quần 350000 × 1). Hãy:</p>
 <ol><li>Tạo mảng báo cáo từng dòng dạng <code>['name' =&gt; ..., 'qty' =&gt; ..., 'subtotal' =&gt; ...]</code>.</li><li>Sắp xếp theo <code>subtotal</code> <strong>giảm dần</strong> (dùng <code>usort</code> với <code>&lt;=&gt;</code>).</li><li>Ghi ra file <code>order.json</code> (đẹp, giữ tiếng Việt) cùng key <code>topProduct</code> là tên dòng đầu tiên.</li><li>Đọc lại file bằng <code>json_decode</code> thành mảng và in <code>topProduct</code> cùng số dòng.</li><li>Gọi đọc một file không tồn tại và bắt <code>RuntimeException</code>.</li></ol><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Áo
 3
-Không tìm thấy file: khong-co.json</code></pre><p class="jump"><a href="#a-11-2">Xem đáp án bài 11.2 →</a></p></div>
+Không tìm thấy file: khong-co.json</code></pre><p class="jump"><a href="#a-11-2">Xem đáp án bài 11.2 →</a></p></div><div class="chap"><div class="chap-badge">CHƯƠNG 12</div><h1>SQL nền tảng với SQLite (chạy bằng PDO)</h1><p>Eloquent và Query Builder chỉ là lớp bọc quanh SQL. Không hiểu SQL thì N+1, index, <code>withCount</code>, <code>groupBy</code> chỉ là học thuộc. Chương này luyện SQL thuần trên <strong>SQLite</strong> (cũng là database mặc định của Laravel 13) và chạy bằng <code>PDO</code> của PHP, nên bạn không cần cài thêm gì, chỉ cần extension <code>pdo_sqlite</code> (kiểm tra: <code>php -m | grep -i pdo_sqlite</code>).</p>
+<p>Dữ liệu mẫu bám theo dự án blog xuyên suốt của lộ trình Laravel:</p>
+<table><tr><th>Bảng</th><th>Cột</th><th>Ghi chú</th></tr><tr><td><code>users</code></td><td><code>id</code>, <code>name</code>, <code>email</code></td><td>3 người: An, Bình, Chi (Chi chưa có bài nào)</td></tr><tr><td><code>posts</code></td><td><code>id</code>, <code>user_id</code>, <code>title</code>, <code>views</code>, <code>published_at</code></td><td>5 bài, một bài nháp có <code>published_at</code> là NULL</td></tr><tr><td><code>comments</code></td><td><code>id</code>, <code>post_id</code>, <code>body</code></td><td>6 bình luận, bài 3 và bài 5 chưa có bình luận nào</td></tr></table>
+<p>Quan hệ: một <code>user</code> có nhiều <code>posts</code>, một <code>post</code> có nhiều <code>comments</code>. Cột <code>user_id</code> và <code>post_id</code> là <strong>khoá ngoại</strong> (foreign key).</p>
+<p>Hai hàm tiện ích dùng xuyên suốt chương: <code>makeDb()</code> (tạo database trong RAM với dữ liệu mẫu) và <code>show()</code> (chạy câu SQL và in từng dòng kết quả). Bài 12.1 cho bạn viết hai hàm này; các bài sau chạy kèm chúng.</p>
+<div class="warn"><b>Lưu ý:</b> Cú pháp khác biệt nhỏ giữa các hệ quản trị: SQLite dùng <code>AUTOINCREMENT</code>, MySQL dùng <code>AUTO_INCREMENT</code>; lệnh xem kế hoạch là <code>EXPLAIN QUERY PLAN</code> ở SQLite, còn <code>EXPLAIN</code> ở MySQL/PostgreSQL. Phần SELECT, JOIN, GROUP BY gần như giống hệt nhau.</div>
+<p>Ứng với Part SQL trong tài liệu lộ trình Laravel.</p></div><div class="ex" id="q-12-1"><div class="ex-head"><span class="ex-id">Bài 12.1</span><span class="ex-title">Dựng database mẫu bằng PDO</span><span class="ex-stars">★★☆</span></div><p>Viết hàm <code>makeDb(): PDO</code> tạo database SQLite <strong>trong RAM</strong> (<code>'sqlite::memory:'</code>) với ba bảng <code>users</code>, <code>posts</code>, <code>comments</code> và dữ liệu mẫu như mô tả ở đầu chương. Yêu cầu:</p>
+<ul><li>Bật chế độ ném exception khi lỗi SQL: <code>ATTR_ERRMODE</code> là <code>ERRMODE_EXCEPTION</code>.</li><li>Kết quả mặc định ở dạng mảng kết hợp: <code>ATTR_DEFAULT_FETCH_MODE</code> là <code>FETCH_ASSOC</code>.</li><li>Bật khoá ngoại: <code>PRAGMA foreign_keys = ON</code> (SQLite <strong>tắt</strong> kiểm tra khoá ngoại theo mặc định).</li></ul>
+<p>Viết thêm hàm <code>show(PDO $pdo, string $sql, array $params = []): void</code> chạy câu SQL (dùng <code>prepare</code> + <code>execute</code>) và in mỗi dòng kết quả trên một dòng, các cột cách nhau bằng <code> | </code>, giá trị <code>NULL</code> in là chữ <code>NULL</code>.</p>
+<p>Dùng chúng để in số dòng của mỗi bảng.</p><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>3
+5
+6
+1 | Học PHP | 120 | 2026-01-05
+2 | Học Laravel | 300 | 2026-02-10
+3 | Học SQL | 80 | NULL
+4 | Docker cơ bản | 150 | 2026-03-01
+5 | Redis là gì | 45 | 2026-03-15</code></pre><p class="jump"><a href="#a-12-1">Xem đáp án bài 12.1 →</a></p></div><div class="ex" id="q-12-2"><div class="ex-head"><span class="ex-id">Bài 12.2</span><span class="ex-title">SELECT, WHERE, ORDER BY, LIMIT</span><span class="ex-stars">★☆☆</span></div><p>Dùng <code>makeDb()</code> và <code>show()</code>. Viết các câu SQL để in:</p>
+<ol><li>Tiêu đề và lượt xem của các bài có <code>views &gt; 100</code>, <strong>sắp giảm dần</strong> theo <code>views</code>.</li><li>Hai bài có nhiều lượt xem nhất (<code>LIMIT</code>).</li><li>Hai bài có nhiều lượt xem tiếp theo, tức bỏ qua hai bài đầu (<code>LIMIT</code> kèm <code>OFFSET</code>), đây chính là cơ chế phân trang.</li><li>Các bài có tiêu đề bắt đầu bằng chữ <code>Học</code> (<code>LIKE</code>).</li><li>Các bài có <code>views</code> từ 80 đến 150 (<code>BETWEEN</code>) <strong>hoặc</strong> thuộc <code>user_id</code> 2, chỉ in <code>id</code>, sắp theo <code>id</code> (<code>IN</code>/<code>OR</code>).</li></ol>
+<p>Mỗi nhóm cách nhau bằng một dòng <code>---</code>.</p><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Học Laravel | 300
+Docker cơ bản | 150
+Học PHP | 120
+---
+Học Laravel | 300
+Docker cơ bản | 150
+---
+Học PHP | 120
+Học SQL | 80
+---
+Học PHP
+Học Laravel
+Học SQL
+---
+1
+3
+4
+5</code></pre><p class="jump"><a href="#a-12-2">Xem đáp án bài 12.2 →</a></p></div><div class="ex" id="q-12-3"><div class="ex-head"><span class="ex-id">Bài 12.3</span><span class="ex-title">NULL và COUNT</span><span class="ex-stars">★★★</span></div><p>NULL là chỗ khó nhất của SQL: nó nghĩa là "không biết giá trị", không phải 0 hay chuỗi rỗng. Dự đoán output của 6 câu truy vấn sau. Với mỗi câu, hãy nghĩ trước kết quả là bao nhiêu dòng.</p><div class="outlabel">Code đề bài</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+$pdo = makeDb();
+
+echo &quot;1: &quot;;
+show($pdo, &#x27;SELECT COUNT(*) FROM posts WHERE published_at = NULL&#x27;);
+echo &quot;2: &quot;;
+show($pdo, &#x27;SELECT COUNT(*) FROM posts WHERE published_at IS NULL&#x27;);
+echo &quot;3: &quot;;
+show($pdo, &#x27;SELECT COUNT(*) FROM posts WHERE published_at IS NOT NULL&#x27;);
+echo &quot;4: &quot;;
+show($pdo, &#x27;SELECT COUNT(*), COUNT(published_at) FROM posts&#x27;);
+echo &quot;5: &quot;;
+show($pdo, &#x27;SELECT COUNT(*) FROM posts WHERE published_at != \&#x27;2026-01-05\&#x27;&#x27;);
+echo &quot;6: &quot;;
+show($pdo, &#x27;SELECT title FROM posts WHERE published_at IS NULL OR published_at &lt; \&#x27;2026-03-01\&#x27; ORDER BY id&#x27;);</code></pre><p class="todo">Việc cần làm: ghi ra giấy kết quả bạn dự đoán, sau đó tự chạy để kiểm tra rồi mới xem đáp án.</p><p class="jump"><a href="#a-12-3">Xem đáp án bài 12.3 →</a></p></div><div class="ex" id="q-12-4"><div class="ex-head"><span class="ex-id">Bài 12.4</span><span class="ex-title">UPDATE, DELETE và ràng buộc khoá ngoại</span><span class="ex-stars">★★☆</span></div><ol><li>Tăng <code>views</code> của bài <code>id = 1</code> lên 1 bằng <strong>một câu UPDATE</strong> (không đọc ra rồi ghi lại bằng PHP). In <code>views</code> mới.</li><li>Thử xoá user <code>id = 1</code> (người đã có bài viết) trong <code>try/catch (PDOException $e)</code> và in thông báo lỗi.</li><li>Xoá user <code>id = 3</code> (Chi, chưa có bài) và in số dòng bị xoá bằng <code>rowCount()</code>. In số user còn lại.</li></ol><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>121
+SQLSTATE[23000]: Integrity constraint violation: 19 FOREIGN KEY constraint failed
+1
+2</code></pre><p class="jump"><a href="#a-12-4">Xem đáp án bài 12.4 →</a></p></div><div class="ex" id="q-12-5"><div class="ex-head"><span class="ex-id">Bài 12.5</span><span class="ex-title">GROUP BY, hàm gộp và HAVING</span><span class="ex-stars">★★☆</span></div><p>Viết SQL in ra:</p>
+<ol><li>Với mỗi <code>user_id</code>: số bài và tổng lượt xem, cột đặt tên <code>bai</code> và <code>tong_view</code>, sắp theo <code>user_id</code>.</li><li>Chỉ những user có <strong>tổng lượt xem lớn hơn 200</strong> (<code>HAVING</code>).</li><li>Trung bình lượt xem của <strong>các bài đã xuất bản</strong> (<code>AVG</code>, làm tròn 1 chữ số thập phân bằng <code>ROUND</code>), lượt xem cao nhất, thấp nhất.</li><li>Dùng <code>WHERE</code> và <code>HAVING</code> <strong>cùng lúc</strong>: chỉ tính các bài đã xuất bản, nhóm theo user, giữ lại nhóm có ít nhất 2 bài.</li></ol><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>1 | 3 | 500
+2 | 2 | 195
+---
+1 | 500
+---
+153.8 | 300 | 45
+---
+1 | 2
+2 | 2</code></pre><p class="jump"><a href="#a-12-5">Xem đáp án bài 12.5 →</a></p></div><div class="ex" id="q-12-6"><div class="ex-head"><span class="ex-id">Bài 12.6</span><span class="ex-title">INNER JOIN: ghép bảng theo khoá ngoại</span><span class="ex-stars">★★☆</span></div><p>Viết SQL dùng <code>JOIN</code> để in:</p>
+<ol><li>Mỗi bài viết kèm <strong>tên tác giả</strong>: <code>title | name</code>, sắp theo <code>posts.id</code>.</li><li>Mỗi bình luận kèm <strong>tiêu đề bài</strong> và <strong>tên tác giả bài</strong> (ghép <strong>ba</strong> bảng): <code>body | title | name</code>, sắp theo <code>comments.id</code>.</li><li>Số bình luận của mỗi bài <strong>chỉ tính các bài có ít nhất một bình luận</strong> (dùng <code>JOIN</code> + <code>GROUP BY</code>), sắp giảm dần theo số bình luận.</li></ol><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Học PHP | An
+Học Laravel | An
+Học SQL | An
+Docker cơ bản | Bình
+Redis là gì | Bình
+---
+Hay quá | Học PHP | An
+Cảm ơn bạn | Học PHP | An
+Rất chi tiết | Học Laravel | An
+Có ví dụ không? | Học Laravel | An
+Đã thử, chạy tốt | Học Laravel | An
+Cần thêm phần Sail | Docker cơ bản | Bình
+---
+Học Laravel | 3
+Học PHP | 2
+Docker cơ bản | 1</code></pre><p class="jump"><a href="#a-12-6">Xem đáp án bài 12.6 →</a></p></div><div class="ex" id="q-12-7"><div class="ex-head"><span class="ex-id">Bài 12.7</span><span class="ex-title">LEFT JOIN: giữ lại dòng không có bên kia</span><span class="ex-stars">★★★</span></div><p>Viết SQL dùng <code>LEFT JOIN</code> để in:</p>
+<ol><li><strong>Mọi user</strong> kèm số bài viết của họ (kể cả user có 0 bài), dạng <code>name | so_bai</code>, sắp theo <code>users.id</code>.</li><li>Những <strong>bài chưa có bình luận nào</strong> (chỉ in <code>title</code>): <code>LEFT JOIN comments</code> rồi lọc dòng không ghép được.</li><li>Mọi bài kèm số bình luận (kể cả 0), sắp theo số bình luận giảm dần rồi theo <code>id</code>.</li></ol><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>An | 3
+Bình | 2
+Chi | 0
+---
+Học SQL
+Redis là gì
+---
+Học Laravel | 3
+Học PHP | 2
+Docker cơ bản | 1
+Học SQL | 0
+Redis là gì | 0</code></pre><p class="jump"><a href="#a-12-7">Xem đáp án bài 12.7 →</a></p></div><div class="ex" id="q-12-8"><div class="ex-head"><span class="ex-id">Bài 12.8</span><span class="ex-title">Vấn đề N+1 ở tầng SQL</span><span class="ex-stars">★★★</span></div><p>Cần in danh sách bài viết kèm tên tác giả. Cài đặt <strong>ba cách</strong> và đếm xem mỗi cách chạy bao nhiêu câu SQL (dùng closure có <code>use (&amp;$queries)</code> để đếm, ôn lại bài closure):</p>
+<ul><li><strong>Cách A (N+1):</strong> lấy tất cả bài, rồi với <strong>từng bài</strong> chạy một câu <code>SELECT name FROM users WHERE id = ?</code>.</li><li><strong>Cách B (eager loading):</strong> lấy tất cả bài; lấy các <code>user_id</code> khác nhau; chạy <strong>một</strong> câu <code>WHERE id IN (?, ?, ...)</code> để lấy tên; ghép trong PHP.</li><li><strong>Cách C (JOIN):</strong> một câu <code>JOIN</code> duy nhất.</li></ul>
+<p>In số câu truy vấn của mỗi cách.</p><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>A (N+1): 6 câu
+B (IN): 2 câu
+C (JOIN): 1 câu</code></pre><p class="jump"><a href="#a-12-8">Xem đáp án bài 12.8 →</a></p></div><div class="ex" id="q-12-9"><div class="ex-head"><span class="ex-id">Bài 12.9</span><span class="ex-title">Index và EXPLAIN QUERY PLAN</span><span class="ex-stars">★★★</span></div><p>Tạo bảng <code>logs(id, user_id, action)</code> với <strong>20000 dòng</strong> (chèn trong <strong>một transaction</strong> cho nhanh; <code>user_id</code> lấy <code>$i % 1000</code>). Rồi:</p>
+<ol><li>In kế hoạch thực thi (<code>EXPLAIN QUERY PLAN</code>) của <code>SELECT * FROM logs WHERE user_id = 42</code> <strong>khi chưa có index</strong>.</li><li>Tạo index <code>idx_logs_user_id</code> trên <code>user_id</code>, in kế hoạch của <strong>cùng</strong> câu đó.</li><li>In kế hoạch của <code>SELECT * FROM logs WHERE action = 'login'</code> (cột chưa có index).</li><li>Tạo <strong>index hợp</strong> <code>(user_id, action)</code>, in kế hoạch của <code>WHERE user_id = 42 AND action = 'login'</code>.</li></ol>
+<p>Chỉ in cột <code>detail</code> của kế hoạch.</p><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>1. Chưa có index:
+SCAN logs
+2. Đã có index user_id:
+SEARCH logs USING INDEX idx_logs_user_id (user_id=?)
+3. Lọc theo cột chưa có index:
+SCAN logs
+4. Index hợp (user_id, action):
+SEARCH logs USING COVERING INDEX idx_logs_user_action (user_id=? AND action=?)</code></pre><p class="jump"><a href="#a-12-9">Xem đáp án bài 12.9 →</a></p></div><div class="ex" id="q-12-10"><div class="ex-head"><span class="ex-id">Bài 12.10</span><span class="ex-title">Transaction: tất cả hoặc không gì cả</span><span class="ex-stars">★★★</span></div><p>Bảng <code>accounts(id, name, balance)</code> có An 1000 và Bình 500. Viết hàm <code>transfer(PDO $pdo, int $from, int $to, int $amount): void</code> chuyển tiền: trừ ở tài khoản gửi, cộng ở tài khoản nhận, <strong>trong một transaction</strong>. Nếu số dư không đủ thì ném <code>RuntimeException</code> và <strong>huỷ</strong> (<code>rollBack</code>) mọi thay đổi.</p>
+<p>Chuyển 300 từ An sang Bình, in số dư. Rồi thử chuyển 5000 (không đủ tiền) và chứng minh số dư <strong>không đổi</strong> sau lỗi.</p><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Ban đầu: An=1000, Bình=500
+Sau khi chuyển 300: An=700, Bình=800
+Lỗi: Số dư không đủ
+Sau lần lỗi: An=700, Bình=800</code></pre><p class="jump"><a href="#a-12-10">Xem đáp án bài 12.10 →</a></p></div><div class="ex" id="q-12-11"><div class="ex-head"><span class="ex-id">Bài 12.11</span><span class="ex-title">SQL injection: ghép chuỗi và tham số hoá</span><span class="ex-stars">★★★</span></div><p>Với <code>makeDb()</code>, một hàm đăng nhập giả nhận <code>$email</code> từ người dùng. Chạy cùng đầu vào độc hại <code>$input = "' OR '1'='1"</code> bằng <strong>hai cách</strong>:</p>
+<ul><li><strong>Cách nguy hiểm:</strong> ghép thẳng <code>$input</code> vào câu SQL: <code>"SELECT name FROM users WHERE email = '$input'"</code>.</li><li><strong>Cách an toàn:</strong> <code>prepare</code> với dấu <code>?</code> và <code>execute([$input])</code>.</li></ul>
+<p>In kết quả cả hai. Sau đó viết hàm <code>safeSortColumn(string $input): string</code> chỉ chấp nhận cột trong <strong>danh sách cho phép</strong> (<code>id</code>, <code>title</code>, <code>views</code>), còn lại trả về <code>id</code>, và thử với <code>'views'</code> và với <code>'views; DROP TABLE posts'</code>.</p><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Ghép chuỗi:
+An
+Bình
+Chi
+Tham số hoá:
+views
+id</code></pre><p class="jump"><a href="#a-12-11">Xem đáp án bài 12.11 →</a></p></div>
 
 <div class="part-title"><div class="big">PHẦN 2</div><h1>ĐÁP ÁN VÀ GIẢI THÍCH CHI TIẾT</h1><p>Chỉ mở phần này sau khi đã thử ít nhất 15 phút cho mỗi bài.</p></div>
 <div class="chap ans"><div class="chap-badge">ĐÁP ÁN — CHƯƠNG 1</div><h1>Nền tảng ngôn ngữ: chuỗi, so sánh, hằng, kiểu</h1></div><div class="ex ans-ex" id="a-1-1"><div class="ex-head ans-head"><span class="ex-id">Đáp án 1.1</span><span class="ex-title">Nháy đơn và nháy kép</span></div><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Xin chào $name
@@ -2227,7 +2344,409 @@ try {
 Không tìm thấy file: khong-co.json</code></pre><h4>Giải thích</h4>
 <ul><li><code>array_map</code> biến mỗi <code>Line</code> (object) thành một <strong>mảng kết hợp</strong> gọn để lưu JSON. Object <code>readonly</code> có thuộc tính <code>public</code> nên đọc được bằng <code>-&gt;</code>, nhưng với những object phức tạp nên viết method <code>toArray()</code> riêng.</li><li><code>usort</code> với <code>$b['subtotal'] &lt;=&gt; $a['subtotal']</code> sắp giảm dần: Áo 400000, Quần 350000, Mũ 50000. <code>topProduct</code> là <code>Áo</code>.</li><li><code>json_decode($json, true, 512, JSON_THROW_ON_ERROR)</code>: tham số 3 là độ sâu tối đa, tham số 4 là cờ. <code>JSON_THROW_ON_ERROR</code> ném <code>JsonException</code> khi JSON hỏng thay vì trả <code>null</code> âm thầm.</li><li><code>loadOrder</code> ném <code>RuntimeException</code> khi file không có, <strong>không tự in lỗi</strong>; chỗ gọi quyết định.</li><li>Vòng đi-về: object, mảng, JSON, file, mảng. Đây là cách tạo và đọc dữ liệu API đơn giản.</li></ul>
 <h4>Kết nối với Laravel</h4>
-<p>Bài này chứa đủ ba tầng bạn sẽ thấy ở dự án Laravel: <strong>Model/Value Object</strong> (Product, Line), <strong>Service</strong> (checkout, tính toán), <strong>Resource/Response</strong> (mảng báo cáo, JSON). Chỉ khác framework lo phần định tuyến, database và HTTP.</p><p class="jump"><a href="#q-11-2">← Về đề bài 11.2</a></p></div>
+<p>Bài này chứa đủ ba tầng bạn sẽ thấy ở dự án Laravel: <strong>Model/Value Object</strong> (Product, Line), <strong>Service</strong> (checkout, tính toán), <strong>Resource/Response</strong> (mảng báo cáo, JSON). Chỉ khác framework lo phần định tuyến, database và HTTP.</p><p class="jump"><a href="#q-11-2">← Về đề bài 11.2</a></p></div><div class="chap ans"><div class="chap-badge">ĐÁP ÁN — CHƯƠNG 12</div><h1>SQL nền tảng với SQLite (chạy bằng PDO)</h1></div><div class="ex ans-ex" id="a-12-1"><div class="ex-head ans-head"><span class="ex-id">Đáp án 12.1</span><span class="ex-title">Dựng database mẫu bằng PDO</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+function makeDb(): PDO
+{
+    $pdo = new PDO(&#x27;sqlite::memory:&#x27;);
+    $pdo-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo-&gt;setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    $pdo-&gt;exec(&#x27;PRAGMA foreign_keys = ON&#x27;);
+
+    $pdo-&gt;exec(&#x27;CREATE TABLE users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE
+    )&#x27;);
+
+    $pdo-&gt;exec(&#x27;CREATE TABLE posts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL REFERENCES users(id),
+        title TEXT NOT NULL,
+        views INTEGER NOT NULL DEFAULT 0,
+        published_at TEXT
+    )&#x27;);
+
+    $pdo-&gt;exec(&#x27;CREATE TABLE comments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        post_id INTEGER NOT NULL REFERENCES posts(id),
+        body TEXT NOT NULL
+    )&#x27;);
+
+    $pdo-&gt;exec(&quot;INSERT INTO users (name, email) VALUES
+        (&#x27;An&#x27;, &#x27;an@x.vn&#x27;), (&#x27;Bình&#x27;, &#x27;binh@x.vn&#x27;), (&#x27;Chi&#x27;, &#x27;chi@x.vn&#x27;)&quot;);
+
+    $pdo-&gt;exec(&quot;INSERT INTO posts (user_id, title, views, published_at) VALUES
+        (1, &#x27;Học PHP&#x27;, 120, &#x27;2026-01-05&#x27;),
+        (1, &#x27;Học Laravel&#x27;, 300, &#x27;2026-02-10&#x27;),
+        (1, &#x27;Học SQL&#x27;, 80, NULL),
+        (2, &#x27;Docker cơ bản&#x27;, 150, &#x27;2026-03-01&#x27;),
+        (2, &#x27;Redis là gì&#x27;, 45, &#x27;2026-03-15&#x27;)&quot;);
+
+    $pdo-&gt;exec(&quot;INSERT INTO comments (post_id, body) VALUES
+        (1, &#x27;Hay quá&#x27;), (1, &#x27;Cảm ơn bạn&#x27;),
+        (2, &#x27;Rất chi tiết&#x27;), (2, &#x27;Có ví dụ không?&#x27;), (2, &#x27;Đã thử, chạy tốt&#x27;),
+        (4, &#x27;Cần thêm phần Sail&#x27;)&quot;);
+
+    return $pdo;
+}
+
+function show(PDO $pdo, string $sql, array $params = []): void
+{
+    $stmt = $pdo-&gt;prepare($sql);
+    $stmt-&gt;execute($params);
+
+    foreach ($stmt-&gt;fetchAll() as $row) {
+        echo implode(&#x27; | &#x27;, array_map(fn ($v) =&gt; $v === null ? &#x27;NULL&#x27; : (string) $v, $row)), &quot;\n&quot;;
+    }
+}
+
+$pdo = makeDb();
+
+show($pdo, &#x27;SELECT COUNT(*) FROM users&#x27;);
+show($pdo, &#x27;SELECT COUNT(*) FROM posts&#x27;);
+show($pdo, &#x27;SELECT COUNT(*) FROM comments&#x27;);
+show($pdo, &#x27;SELECT id, title, views, published_at FROM posts&#x27;);</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>3
+5
+6
+1 | Học PHP | 120 | 2026-01-05
+2 | Học Laravel | 300 | 2026-02-10
+3 | Học SQL | 80 | NULL
+4 | Docker cơ bản | 150 | 2026-03-01
+5 | Redis là gì | 45 | 2026-03-15</code></pre><h4>Giải thích</h4>
+<ul><li><code>new PDO('sqlite::memory:')</code> mở một database SQLite nằm hoàn toàn trong RAM. Không có file nào được tạo, tắt chương trình là mất, rất tiện để luyện SQL. Muốn lưu thành file thì viết <code>'sqlite:' . __DIR__ . '/blog.sqlite'</code>.</li><li><code>ERRMODE_EXCEPTION</code>: khi câu SQL sai, PDO ném <code>PDOException</code> thay vì im lặng trả <code>false</code>. Đây cũng là cách Laravel cấu hình PDO.</li><li><strong>Khoá chính</strong> <code>id INTEGER PRIMARY KEY AUTOINCREMENT</code>: định danh duy nhất của dòng, tự tăng. <strong>Khoá ngoại</strong> <code>user_id ... REFERENCES users(id)</code>: ràng buộc giá trị <code>user_id</code> phải là một <code>id</code> có thật trong <code>users</code>. Đó là thứ làm nên "quan hệ" giữa các bảng.</li><li><code>PRAGMA foreign_keys = ON</code> phải gọi <strong>mỗi lần mở kết nối</strong> vì SQLite mặc định không kiểm tra khoá ngoại (Laravel bật nó qua cấu hình <code>foreign_key_constraints</code>).</li><li><code>NOT NULL</code>, <code>UNIQUE</code>, <code>DEFAULT 0</code>: các ràng buộc để database tự chặn dữ liệu sai, không phụ thuộc vào code PHP.</li><li><code>prepare</code> rồi <code>execute($params)</code> là cách an toàn truyền giá trị vào câu SQL bằng dấu <code>?</code> (xem bài 12.11). <code>fetchAll()</code> lấy mọi dòng.</li><li>Dòng <code>published_at</code> của bài <code>Học SQL</code> in ra <code>NULL</code>, vì bài này chưa xuất bản.</li></ul><p class="jump"><a href="#q-12-1">← Về đề bài 12.1</a></p></div><div class="ex ans-ex" id="a-12-2"><div class="ex-head ans-head"><span class="ex-id">Đáp án 12.2</span><span class="ex-title">SELECT, WHERE, ORDER BY, LIMIT</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+$pdo = makeDb();
+
+show($pdo, &#x27;SELECT title, views FROM posts WHERE views &gt; 100 ORDER BY views DESC&#x27;);
+echo &quot;---\n&quot;;
+show($pdo, &#x27;SELECT title, views FROM posts ORDER BY views DESC LIMIT 2&#x27;);
+echo &quot;---\n&quot;;
+show($pdo, &#x27;SELECT title, views FROM posts ORDER BY views DESC LIMIT 2 OFFSET 2&#x27;);
+echo &quot;---\n&quot;;
+show($pdo, &quot;SELECT title FROM posts WHERE title LIKE &#x27;Học%&#x27; ORDER BY id&quot;);
+echo &quot;---\n&quot;;
+show($pdo, &#x27;SELECT id FROM posts WHERE views BETWEEN 80 AND 150 OR user_id = 2 ORDER BY id&#x27;);</code></pre><p class="todo">Đoạn code trên chạy kèm phần chuẩn bị chung (hàm <code>makeDb()</code> và <code>show()</code> ở bài 12.1). Hãy chép phần đó vào đầu file của bạn.</p><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Học Laravel | 300
+Docker cơ bản | 150
+Học PHP | 120
+---
+Học Laravel | 300
+Docker cơ bản | 150
+---
+Học PHP | 120
+Học SQL | 80
+---
+Học PHP
+Học Laravel
+Học SQL
+---
+1
+3
+4
+5</code></pre><h4>Giải thích</h4>
+<ul><li>Thứ tự viết một câu <code>SELECT</code>: <code>SELECT</code> (cột) rồi <code>FROM</code> (bảng) rồi <code>WHERE</code> (lọc dòng) rồi <code>GROUP BY</code> rồi <code>HAVING</code> rồi <code>ORDER BY</code> rồi <code>LIMIT</code>. Thứ tự <strong>thực thi</strong> khác: <code>FROM</code>, <code>WHERE</code>, <code>GROUP BY</code>, <code>HAVING</code>, <code>SELECT</code>, <code>ORDER BY</code>, <code>LIMIT</code>.</li><li><code>ORDER BY views DESC</code> giảm dần, mặc định là <code>ASC</code> (tăng dần). Có thể sắp nhiều cột: <code>ORDER BY views DESC, title ASC</code> (giống <code>usort</code> nhiều tiêu chí ở bài 5.3).</li><li><code>LIMIT n</code> lấy tối đa <code>n</code> dòng; <code>OFFSET m</code> bỏ qua <code>m</code> dòng đầu. Trang thứ <code>p</code> với <code>perPage</code> dòng là <code>LIMIT perPage OFFSET (p - 1) * perPage</code>. Laravel <code>paginate()</code> sinh đúng câu này. Offset càng lớn càng chậm vì database vẫn phải đếm qua, đó là lý do Part 12 của lộ trình Laravel có <code>cursorPaginate</code>.</li><li><code>LIKE 'Học%'</code>: <code>%</code> khớp chuỗi bất kỳ, <code>_</code> khớp đúng một ký tự. Mẫu bắt đầu bằng chữ (<code>'Học%'</code>) có thể tận dụng index, nhưng mẫu <code>'%Học%'</code> thì không.</li><li><code>BETWEEN a AND b</code> gồm <strong>cả hai đầu</strong>. Điều kiện <code>OR</code> và <code>AND</code>: <code>AND</code> ưu tiên hơn <code>OR</code>, nên khi trộn hãy dùng ngoặc cho rõ.</li><li>Chuỗi trong SQL dùng <strong>nháy đơn</strong> <code>'...'</code>. Nháy kép trong SQL chuẩn dành cho tên cột/bảng.</li></ul><p class="jump"><a href="#q-12-2">← Về đề bài 12.2</a></p></div><div class="ex ans-ex" id="a-12-3"><div class="ex-head ans-head"><span class="ex-id">Đáp án 12.3</span><span class="ex-title">NULL và COUNT</span></div><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>1: 0
+2: 1
+3: 4
+4: 5 | 4
+5: 3
+6: Học PHP
+Học Laravel
+Học SQL</code></pre><h4>Giải thích</h4>
+<ul><li><strong>Câu 1</strong>: <code>= NULL</code> <strong>luôn không đúng</strong> với mọi dòng, vì so sánh bất kỳ với NULL cho kết quả "không biết" (không phải TRUE). Kết quả <code>0</code>. Phải dùng <code>IS NULL</code>.</li><li><strong>Câu 2</strong>: <code>IS NULL</code> đúng, tìm được bài nháp <code>Học SQL</code>, kết quả <code>1</code>.</li><li><strong>Câu 3</strong>: <code>IS NOT NULL</code> cho <code>4</code> bài đã xuất bản.</li><li><strong>Câu 4</strong>: <code>COUNT(*)</code> đếm <strong>số dòng</strong> (5), còn <code>COUNT(published_at)</code> đếm số dòng mà cột đó <strong>khác NULL</strong> (4). Hai hàm này khác nhau đúng ở NULL.</li><li><strong>Câu 5</strong>: <code>published_at != '2026-01-05'</code> với bài nháp (NULL) cho "không biết", nên bài nháp <strong>bị loại</strong>, kết quả <code>3</code> chứ không phải 4. Đây là bẫy kinh điển: muốn lấy cả dòng NULL phải viết thêm <code>OR published_at IS NULL</code>.</li><li><strong>Câu 6</strong>: kết hợp <code>IS NULL OR ...</code> lấy bài nháp và các bài xuất bản trước 01/03/2026 (so sánh chuỗi ngày dạng <code>YYYY-MM-DD</code> đúng thứ tự thời gian): <code>Học PHP</code>, <code>Học Laravel</code>, <code>Học SQL</code>.</li></ul>
+<h4>Liên hệ Laravel</h4>
+<p><code>-&gt;whereNull('published_at')</code> sinh <code>IS NULL</code>. Viết <code>-&gt;where('published_at', null)</code> Laravel cũng tự đổi thành <code>IS NULL</code>. Cột <code>$table-&gt;timestamp('published_at')-&gt;nullable()</code> trong migration là để cho phép NULL.</p><p class="jump"><a href="#q-12-3">← Về đề bài 12.3</a></p></div><div class="ex ans-ex" id="a-12-4"><div class="ex-head ans-head"><span class="ex-id">Đáp án 12.4</span><span class="ex-title">UPDATE, DELETE và ràng buộc khoá ngoại</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+$pdo = makeDb();
+
+$pdo-&gt;exec(&#x27;UPDATE posts SET views = views + 1 WHERE id = 1&#x27;);
+show($pdo, &#x27;SELECT views FROM posts WHERE id = 1&#x27;);
+
+try {
+    $pdo-&gt;exec(&#x27;DELETE FROM users WHERE id = 1&#x27;);
+} catch (PDOException $e) {
+    echo $e-&gt;getMessage(), &quot;\n&quot;;
+}
+
+$stmt = $pdo-&gt;prepare(&#x27;DELETE FROM users WHERE id = ?&#x27;);
+$stmt-&gt;execute([3]);
+echo $stmt-&gt;rowCount(), &quot;\n&quot;;
+show($pdo, &#x27;SELECT COUNT(*) FROM users&#x27;);</code></pre><p class="todo">Đoạn code trên chạy kèm phần chuẩn bị chung (hàm <code>makeDb()</code> và <code>show()</code> ở bài 12.1). Hãy chép phần đó vào đầu file của bạn.</p><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>121
+SQLSTATE[23000]: Integrity constraint violation: 19 FOREIGN KEY constraint failed
+1
+2</code></pre><h4>Giải thích</h4>
+<ul><li><code>UPDATE posts SET views = views + 1 WHERE id = 1</code>: database tự đọc giá trị hiện tại, cộng 1, ghi lại <strong>trong một thao tác nguyên tử</strong>. Nếu đọc ra bằng PHP, cộng rồi ghi, hai request cùng lúc có thể ghi đè nhau và mất lượt xem (race condition). Laravel có <code>$post-&gt;increment('views')</code> sinh đúng câu này.</li><li><strong>Luôn có <code>WHERE</code></strong> trong <code>UPDATE</code> và <code>DELETE</code>. Thiếu <code>WHERE</code> thì <strong>mọi dòng</strong> bị sửa hoặc xoá, và database không hỏi lại.</li><li>Xoá user 1 thất bại vì các bài <code>posts.user_id = 1</code> đang trỏ tới user này. Khoá ngoại <strong>bảo vệ tính toàn vẹn</strong>: không để tồn tại bài viết mồ côi. Thông báo chứa <code>FOREIGN KEY constraint failed</code>.</li><li>Có ba cách xử lý khi xoá cha: (1) chặn (mặc định, như trên), (2) <code>ON DELETE CASCADE</code>: xoá cha thì tự xoá con (trong Laravel: <code>-&gt;constrained()-&gt;cascadeOnDelete()</code>), (3) <code>ON DELETE SET NULL</code>: đặt khoá ngoại con về NULL (cột phải cho phép NULL).</li><li>User 3 chưa có bài nào nên xoá được; <code>rowCount()</code> cho biết số dòng bị ảnh hưởng (<code>1</code>). Còn lại 2 user.</li></ul><p class="jump"><a href="#q-12-4">← Về đề bài 12.4</a></p></div><div class="ex ans-ex" id="a-12-5"><div class="ex-head ans-head"><span class="ex-id">Đáp án 12.5</span><span class="ex-title">GROUP BY, hàm gộp và HAVING</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+$pdo = makeDb();
+
+show($pdo, &#x27;SELECT user_id, COUNT(*) AS bai, SUM(views) AS tong_view FROM posts GROUP BY user_id ORDER BY user_id&#x27;);
+echo &quot;---\n&quot;;
+show($pdo, &#x27;SELECT user_id, SUM(views) AS tong_view FROM posts GROUP BY user_id HAVING SUM(views) &gt; 200&#x27;);
+echo &quot;---\n&quot;;
+show($pdo, &#x27;SELECT ROUND(AVG(views), 1), MAX(views), MIN(views) FROM posts WHERE published_at IS NOT NULL&#x27;);
+echo &quot;---\n&quot;;
+show($pdo, &#x27;SELECT user_id, COUNT(*) FROM posts WHERE published_at IS NOT NULL GROUP BY user_id HAVING COUNT(*) &gt;= 2 ORDER BY user_id&#x27;);</code></pre><p class="todo">Đoạn code trên chạy kèm phần chuẩn bị chung (hàm <code>makeDb()</code> và <code>show()</code> ở bài 12.1). Hãy chép phần đó vào đầu file của bạn.</p><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>1 | 3 | 500
+2 | 2 | 195
+---
+1 | 500
+---
+153.8 | 300 | 45
+---
+1 | 2
+2 | 2</code></pre><h4>Giải thích</h4>
+<ul><li><code>GROUP BY user_id</code> gộp các dòng cùng <code>user_id</code> thành một nhóm; hàm gộp (<code>COUNT</code>, <code>SUM</code>, <code>AVG</code>, <code>MIN</code>, <code>MAX</code>) tính trên <strong>từng nhóm</strong>. User 1 có 3 bài (120 + 300 + 80 = 500 lượt xem), user 2 có 2 bài (150 + 45 = 195).</li><li><strong><code>WHERE</code> lọc dòng trước khi gom nhóm; <code>HAVING</code> lọc nhóm sau khi gom</strong>. Điều kiện trên kết quả hàm gộp (<code>SUM(views) &gt; 200</code>) phải để ở <code>HAVING</code>, <code>WHERE</code> không dùng được hàm gộp. Nhóm 2 chỉ còn user 1 (500 &gt; 200); user 2 (195) bị loại.</li><li>Nhóm 3: bài đã xuất bản có views 120, 300, 150, 45; trung bình 153.75 làm tròn <code>153.8</code>, lớn nhất <code>300</code>, nhỏ nhất <code>45</code>. Bài nháp (80) không được tính nhờ <code>WHERE</code>.</li><li>Nhóm 4: sau khi <code>WHERE</code> loại bài nháp, user 1 còn 2 bài, user 2 còn 2 bài, cả hai thoả <code>COUNT(*) &gt;= 2</code>. Nếu không có <code>WHERE</code>, user 1 sẽ có 3 bài. Thử bỏ <code>WHERE</code> để thấy khác biệt.</li><li><code>AS bai</code> đặt <strong>bí danh</strong> cho cột. Trong <code>SELECT</code> của câu <code>GROUP BY</code>, mọi cột không nằm trong hàm gộp phải có trong <code>GROUP BY</code>.</li></ul>
+<h4>Liên hệ Laravel</h4>
+<p><code>Post::selectRaw('user_id, COUNT(*) as bai')-&gt;groupBy('user_id')-&gt;having('bai', '&gt;', 1)-&gt;get()</code>; và <code>withCount('comments')</code> ở Part 08 thực chất sinh một truy vấn con kiểu này.</p><p class="jump"><a href="#q-12-5">← Về đề bài 12.5</a></p></div><div class="ex ans-ex" id="a-12-6"><div class="ex-head ans-head"><span class="ex-id">Đáp án 12.6</span><span class="ex-title">INNER JOIN: ghép bảng theo khoá ngoại</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+$pdo = makeDb();
+
+show($pdo, &#x27;SELECT p.title, u.name FROM posts p JOIN users u ON u.id = p.user_id ORDER BY p.id&#x27;);
+echo &quot;---\n&quot;;
+show($pdo, &#x27;SELECT c.body, p.title, u.name
+    FROM comments c
+    JOIN posts p ON p.id = c.post_id
+    JOIN users u ON u.id = p.user_id
+    ORDER BY c.id&#x27;);
+echo &quot;---\n&quot;;
+show($pdo, &#x27;SELECT p.title, COUNT(c.id) AS so_comment
+    FROM posts p
+    JOIN comments c ON c.post_id = p.id
+    GROUP BY p.id
+    ORDER BY so_comment DESC, p.id&#x27;);</code></pre><p class="todo">Đoạn code trên chạy kèm phần chuẩn bị chung (hàm <code>makeDb()</code> và <code>show()</code> ở bài 12.1). Hãy chép phần đó vào đầu file của bạn.</p><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Học PHP | An
+Học Laravel | An
+Học SQL | An
+Docker cơ bản | Bình
+Redis là gì | Bình
+---
+Hay quá | Học PHP | An
+Cảm ơn bạn | Học PHP | An
+Rất chi tiết | Học Laravel | An
+Có ví dụ không? | Học Laravel | An
+Đã thử, chạy tốt | Học Laravel | An
+Cần thêm phần Sail | Docker cơ bản | Bình
+---
+Học Laravel | 3
+Học PHP | 2
+Docker cơ bản | 1</code></pre><h4>Giải thích</h4>
+<ul><li><code>JOIN ... ON</code> ghép hai bảng theo điều kiện, thường là <code>khoá_ngoại = khoá_chính</code>. Mỗi dòng của <code>posts</code> được ghép với dòng <code>users</code> có <code>u.id = p.user_id</code>. <code>p</code> và <code>u</code> là <strong>bí danh bảng</strong>, ngắn gọn hơn và bắt buộc khi hai bảng có cột trùng tên (đều có <code>id</code>).</li><li><code>JOIN</code> mặc định là <strong>INNER JOIN</strong>: chỉ giữ những dòng ghép được ở <strong>cả hai</strong> phía. Bài viết nào không có tác giả (không xảy ra do khoá ngoại) hay user nào không có bài sẽ không xuất hiện.</li><li>Ghép ba bảng thì viết nối tiếp: <code>comments</code> ghép <code>posts</code>, rồi ghép tiếp <code>users</code>. Điều kiện của mỗi <code>JOIN</code> nối vào bảng đã có.</li><li>Câu 3 dùng <code>INNER JOIN</code> nên bài không có bình luận (<code>Học SQL</code>, <code>Redis là gì</code>) <strong>biến mất khỏi kết quả</strong>. Để giữ chúng lại với số 0 cần <code>LEFT JOIN</code> (bài 12.7).</li><li><code>COUNT(c.id)</code> đếm số <code>id</code> bình luận khác NULL trong nhóm.</li></ul>
+<h4>Liên hệ Laravel</h4>
+<p><code>Post::join('users', 'users.id', '=', 'posts.user_id')-&gt;select('posts.title', 'users.name')</code>. Quan hệ <code>belongsTo</code> và <code>hasMany</code> của Eloquent <strong>không</strong> dùng JOIN: nó chạy truy vấn riêng cho mỗi bảng (xem bài 12.8).</p><p class="jump"><a href="#q-12-6">← Về đề bài 12.6</a></p></div><div class="ex ans-ex" id="a-12-7"><div class="ex-head ans-head"><span class="ex-id">Đáp án 12.7</span><span class="ex-title">LEFT JOIN: giữ lại dòng không có bên kia</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+$pdo = makeDb();
+
+show($pdo, &#x27;SELECT u.name, COUNT(p.id) AS so_bai
+    FROM users u
+    LEFT JOIN posts p ON p.user_id = u.id
+    GROUP BY u.id
+    ORDER BY u.id&#x27;);
+echo &quot;---\n&quot;;
+show($pdo, &#x27;SELECT p.title
+    FROM posts p
+    LEFT JOIN comments c ON c.post_id = p.id
+    WHERE c.id IS NULL
+    ORDER BY p.id&#x27;);
+echo &quot;---\n&quot;;
+show($pdo, &#x27;SELECT p.title, COUNT(c.id) AS so_comment
+    FROM posts p
+    LEFT JOIN comments c ON c.post_id = p.id
+    GROUP BY p.id
+    ORDER BY so_comment DESC, p.id&#x27;);</code></pre><p class="todo">Đoạn code trên chạy kèm phần chuẩn bị chung (hàm <code>makeDb()</code> và <code>show()</code> ở bài 12.1). Hãy chép phần đó vào đầu file của bạn.</p><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>An | 3
+Bình | 2
+Chi | 0
+---
+Học SQL
+Redis là gì
+---
+Học Laravel | 3
+Học PHP | 2
+Docker cơ bản | 1
+Học SQL | 0
+Redis là gì | 0</code></pre><h4>Giải thích</h4>
+<ul><li><code>LEFT JOIN</code> giữ <strong>mọi dòng của bảng bên trái</strong> (đứng trước <code>LEFT JOIN</code>). Dòng nào không ghép được với bảng bên phải thì các cột bên phải là <strong>NULL</strong>.</li><li>Câu 1: Chi không có bài nào nên các cột <code>p.*</code> là NULL. Dùng <code>COUNT(p.id)</code> (đếm cột khác NULL) cho ra <code>0</code> là đúng, còn <code>COUNT(*)</code> sẽ đếm cả dòng NULL đó và ra <code>1</code>, sai. Đây là điểm bài 12.3 đã nhắc về <code>COUNT(*)</code> và <code>COUNT(cột)</code>.</li><li>Câu 2: mẫu <strong>"tìm dòng không có dòng tương ứng"</strong> (anti-join): <code>LEFT JOIN</code> rồi <code>WHERE bảng_phải.id IS NULL</code>. Kết quả <code>Học SQL</code> và <code>Redis là gì</code>. Cách viết tương đương: <code>WHERE NOT EXISTS (SELECT 1 FROM comments c WHERE c.post_id = p.id)</code>; Eloquent là <code>Post::doesntHave('comments')</code>.</li><li>Câu 3: giống câu 3 của bài 12.6 nhưng dùng <code>LEFT JOIN</code> nên hai bài 0 bình luận có mặt ở cuối.</li><li>Quy tắc chọn: cần <strong>chỉ những dòng có quan hệ</strong> thì <code>INNER JOIN</code>; cần <strong>mọi dòng bên trái, có hay không bên phải</strong> thì <code>LEFT JOIN</code>.</li></ul>
+<div class="warn"><b>Lưu ý:</b> Cạm bẫy: đặt điều kiện lọc của bảng bên phải trong <code>WHERE</code> (thay vì trong <code>ON</code>) làm <code>LEFT JOIN</code> biến thành <code>INNER JOIN</code>, vì dòng NULL bị lọc mất. Điều kiện chỉ ảnh hưởng bảng phải nên để ở <code>ON</code>.</div><p class="jump"><a href="#q-12-7">← Về đề bài 12.7</a></p></div><div class="ex ans-ex" id="a-12-8"><div class="ex-head ans-head"><span class="ex-id">Đáp án 12.8</span><span class="ex-title">Vấn đề N+1 ở tầng SQL</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+$pdo = makeDb();
+
+$queries = 0;
+$run = function (string $sql, array $params = []) use ($pdo, &amp;$queries): array {
+    $queries++;
+    $stmt = $pdo-&gt;prepare($sql);
+    $stmt-&gt;execute($params);
+
+    return $stmt-&gt;fetchAll();
+};
+
+$posts = $run(&#x27;SELECT id, user_id, title FROM posts ORDER BY id&#x27;);
+foreach ($posts as $post) {
+    $author = $run(&#x27;SELECT name FROM users WHERE id = ?&#x27;, [$post[&#x27;user_id&#x27;]]);
+}
+echo &#x27;A (N+1): &#x27;, $queries, &quot; câu\n&quot;;
+
+$queries = 0;
+$posts = $run(&#x27;SELECT id, user_id, title FROM posts ORDER BY id&#x27;);
+$ids = array_values(array_unique(array_column($posts, &#x27;user_id&#x27;)));
+$marks = implode(&#x27;, &#x27;, array_fill(0, count($ids), &#x27;?&#x27;));
+$users = $run(&quot;SELECT id, name FROM users WHERE id IN ($marks)&quot;, $ids);
+$names = array_column($users, &#x27;name&#x27;, &#x27;id&#x27;);
+foreach ($posts as $post) {
+    $name = $names[$post[&#x27;user_id&#x27;]];
+}
+echo &#x27;B (IN): &#x27;, $queries, &quot; câu\n&quot;;
+
+$queries = 0;
+$rows = $run(&#x27;SELECT p.title, u.name FROM posts p JOIN users u ON u.id = p.user_id ORDER BY p.id&#x27;);
+echo &#x27;C (JOIN): &#x27;, $queries, &quot; câu\n&quot;;</code></pre><p class="todo">Đoạn code trên chạy kèm phần chuẩn bị chung (hàm <code>makeDb()</code> và <code>show()</code> ở bài 12.1). Hãy chép phần đó vào đầu file của bạn.</p><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>A (N+1): 6 câu
+B (IN): 2 câu
+C (JOIN): 1 câu</code></pre><h4>Giải thích</h4>
+<ul><li><strong>Cách A: 6 câu</strong> (1 câu lấy 5 bài + 5 câu lấy tác giả). Tổng quát là <code>1 + N</code> câu với <code>N</code> bài, nên gọi là <strong>N+1</strong>. Với 1000 bài là 1001 lần gọi database, và mỗi lần tốn thời gian mạng và phân tích câu lệnh. Đây là lỗi hiệu năng phổ biến nhất của mọi ORM (Part 08 của lộ trình).</li><li><strong>Cách B: 2 câu</strong>, bất kể có bao nhiêu bài. Đây chính xác là thứ <code>Post::with('author')-&gt;get()</code> của Eloquent làm: một câu lấy bài, một câu <code>WHERE id IN (...)</code> lấy tác giả rồi <strong>ghép trong PHP</strong>. Điểm mấu chốt là dùng <code>array_unique</code> để chỉ hỏi mỗi user một lần và <code>array_column($users, 'name', 'id')</code> tạo bảng tra cứu <code>id sang tên</code>.</li><li><strong>Cách C: 1 câu</strong> bằng JOIN. Gọn nhất với quan hệ <strong>một-một / nhiều-một</strong>. Với quan hệ <strong>một-nhiều</strong> (bài và bình luận), JOIN nhân bản dòng cha theo số con nên kết quả to; Eloquent chọn cách B vì lý do này.</li><li><code>use ($pdo, &amp;$queries)</code>: <code>$pdo</code> đọc được bằng giá trị (object là handle), còn <code>$queries</code> cần <code>&amp;</code> để closure <strong>tăng được biến bên ngoài</strong>.</li><li><code>array_fill(0, n, '?')</code> tạo mảng <code>n</code> dấu <code>?</code>; <code>implode(', ', ...)</code> thành chuỗi <code>?, ?</code> để đặt vào <code>IN (...)</code>. Luôn dùng <code>?</code> (tham số hoá) thay vì ghép giá trị vào chuỗi.</li></ul>
+<h4>Cách phát hiện N+1 trong Laravel</h4>
+<p>Bật <code>Model::preventLazyLoading()</code> ở môi trường dev để lazy loading ném lỗi, hoặc xem số query bằng Telescope/Debugbar. Chữa bằng <code>with()</code>.</p><p class="jump"><a href="#q-12-8">← Về đề bài 12.8</a></p></div><div class="ex ans-ex" id="a-12-9"><div class="ex-head ans-head"><span class="ex-id">Đáp án 12.9</span><span class="ex-title">Index và EXPLAIN QUERY PLAN</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+$pdo = new PDO(&#x27;sqlite::memory:&#x27;);
+$pdo-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$pdo-&gt;setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+$pdo-&gt;exec(&#x27;CREATE TABLE logs (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL, action TEXT NOT NULL)&#x27;);
+
+$pdo-&gt;beginTransaction();
+$stmt = $pdo-&gt;prepare(&#x27;INSERT INTO logs (user_id, action) VALUES (?, ?)&#x27;);
+for ($i = 0; $i &lt; 20000; $i++) {
+    $stmt-&gt;execute([$i % 1000, $i % 2 === 0 ? &#x27;login&#x27; : &#x27;view&#x27;]);
+}
+$pdo-&gt;commit();
+
+function plan(PDO $pdo, string $sql): void
+{
+    foreach ($pdo-&gt;query(&#x27;EXPLAIN QUERY PLAN &#x27; . $sql)-&gt;fetchAll() as $row) {
+        echo $row[&#x27;detail&#x27;], &quot;\n&quot;;
+    }
+}
+
+echo &quot;1. Chưa có index:\n&quot;;
+plan($pdo, &#x27;SELECT * FROM logs WHERE user_id = 42&#x27;);
+
+$pdo-&gt;exec(&#x27;CREATE INDEX idx_logs_user_id ON logs (user_id)&#x27;);
+
+echo &quot;2. Đã có index user_id:\n&quot;;
+plan($pdo, &#x27;SELECT * FROM logs WHERE user_id = 42&#x27;);
+
+echo &quot;3. Lọc theo cột chưa có index:\n&quot;;
+plan($pdo, &quot;SELECT * FROM logs WHERE action = &#x27;login&#x27;&quot;);
+
+$pdo-&gt;exec(&#x27;CREATE INDEX idx_logs_user_action ON logs (user_id, action)&#x27;);
+
+echo &quot;4. Index hợp (user_id, action):\n&quot;;
+plan($pdo, &quot;SELECT * FROM logs WHERE user_id = 42 AND action = &#x27;login&#x27;&quot;);</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>1. Chưa có index:
+SCAN logs
+2. Đã có index user_id:
+SEARCH logs USING INDEX idx_logs_user_id (user_id=?)
+3. Lọc theo cột chưa có index:
+SCAN logs
+4. Index hợp (user_id, action):
+SEARCH logs USING COVERING INDEX idx_logs_user_action (user_id=? AND action=?)</code></pre><h4>Giải thích</h4>
+<ul><li><strong>Index</strong> giống mục lục cuối sách. Không có index, database phải đọc <strong>từng dòng</strong> của bảng (quét toàn bảng, <code>SCAN</code> trong SQLite, <code>type: ALL</code> trong MySQL). Có index, nó nhảy thẳng tới các dòng khớp (<code>SEARCH ... USING INDEX</code>). Cấu trúc bên dưới thường là <strong>B-tree</strong>, cho phép tìm trong <code>log n</code> bước thay vì <code>n</code> (cùng ý tưởng binary search ở bài 9.4).</li><li>Kết quả 1: <code>SCAN logs</code>, quét cả 20000 dòng để tìm user 42. Kết quả 2: <code>SEARCH logs USING INDEX idx_logs_user_id (user_id=?)</code>, chỉ chạm vào khoảng 20 dòng của user 42.</li><li>Kết quả 3: cột <code>action</code> chưa có index nên vẫn <code>SCAN</code>. Index chỉ giúp những câu lọc/sắp xếp/ghép <strong>đúng cột đó</strong>.</li><li>Kết quả 4: SQLite chọn index hợp <code>(user_id, action)</code> vì nó phủ cả hai điều kiện. Chữ <code>COVERING INDEX</code> nghĩa là mọi cột câu truy vấn cần (<code>id</code>, <code>user_id</code>, <code>action</code>) đã nằm sẵn trong index, nên database không phải đọc thêm bảng gốc: nhanh hơn nữa. Quy tắc <strong>tiền tố trái (leftmost prefix)</strong>: index <code>(a, b)</code> giúp được <code>WHERE a = ?</code> và <code>WHERE a = ? AND b = ?</code>, nhưng <strong>không</strong> giúp <code>WHERE b = ?</code> đứng riêng. Thứ tự cột trong index hợp rất quan trọng.</li><li><strong>Cái giá của index</strong>: chiếm dung lượng và làm <code>INSERT/UPDATE/DELETE</code> chậm hơn vì phải cập nhật cả index. Chỉ tạo index cho cột hay xuất hiện ở <code>WHERE</code>, <code>JOIN</code>, <code>ORDER BY</code>. Đừng đánh index mọi cột.</li><li>Chèn 20000 dòng trong <strong>một transaction</strong> (<code>beginTransaction</code>/<code>commit</code>) nhanh hơn nhiều so với để mỗi <code>INSERT</code> tự commit.</li></ul>
+<h4>Liên hệ Laravel</h4>
+<p>Trong migration: <code>$table-&gt;index('user_id')</code>, <code>$table-&gt;index(['user_id', 'action'])</code>, <code>$table-&gt;unique('email')</code>. Cột <code>foreignId('user_id')-&gt;constrained()</code> tạo <strong>khoá ngoại</strong>; MySQL tự đánh index cho cột khoá ngoại, còn SQLite thì không, nên hãy chủ động <code>-&gt;index()</code> khi cần. Xem kế hoạch trong MySQL/PostgreSQL bằng <code>EXPLAIN SELECT ...</code> chạy trong client SQL, hoặc từ code qua <code>DB::select('EXPLAIN SELECT ...')</code>.</p><p class="jump"><a href="#q-12-9">← Về đề bài 12.9</a></p></div><div class="ex ans-ex" id="a-12-10"><div class="ex-head ans-head"><span class="ex-id">Đáp án 12.10</span><span class="ex-title">Transaction: tất cả hoặc không gì cả</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+$pdo = new PDO(&#x27;sqlite::memory:&#x27;);
+$pdo-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$pdo-&gt;setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+$pdo-&gt;exec(&#x27;CREATE TABLE accounts (id INTEGER PRIMARY KEY, name TEXT NOT NULL, balance INTEGER NOT NULL)&#x27;);
+$pdo-&gt;exec(&quot;INSERT INTO accounts (id, name, balance) VALUES (1, &#x27;An&#x27;, 1000), (2, &#x27;Bình&#x27;, 500)&quot;);
+
+function balances(PDO $pdo): string
+{
+    $rows = $pdo-&gt;query(&#x27;SELECT name, balance FROM accounts ORDER BY id&#x27;)-&gt;fetchAll();
+
+    return implode(&#x27;, &#x27;, array_map(fn (array $r): string =&gt; $r[&#x27;name&#x27;] . &#x27;=&#x27; . $r[&#x27;balance&#x27;], $rows));
+}
+
+function transfer(PDO $pdo, int $from, int $to, int $amount): void
+{
+    $pdo-&gt;beginTransaction();
+
+    try {
+        $debit = $pdo-&gt;prepare(&#x27;UPDATE accounts SET balance = balance - ? WHERE id = ? AND balance &gt;= ?&#x27;);
+        $debit-&gt;execute([$amount, $from, $amount]);
+
+        if ($debit-&gt;rowCount() === 0) {
+            throw new RuntimeException(&#x27;Số dư không đủ&#x27;);
+        }
+
+        $credit = $pdo-&gt;prepare(&#x27;UPDATE accounts SET balance = balance + ? WHERE id = ?&#x27;);
+        $credit-&gt;execute([$amount, $to]);
+
+        $pdo-&gt;commit();
+    } catch (Throwable $e) {
+        $pdo-&gt;rollBack();
+        throw $e;
+    }
+}
+
+echo &#x27;Ban đầu: &#x27;, balances($pdo), &quot;\n&quot;;
+
+transfer($pdo, 1, 2, 300);
+echo &#x27;Sau khi chuyển 300: &#x27;, balances($pdo), &quot;\n&quot;;
+
+try {
+    transfer($pdo, 1, 2, 5000);
+} catch (RuntimeException $e) {
+    echo &#x27;Lỗi: &#x27;, $e-&gt;getMessage(), &quot;\n&quot;;
+}
+echo &#x27;Sau lần lỗi: &#x27;, balances($pdo), &quot;\n&quot;;</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Ban đầu: An=1000, Bình=500
+Sau khi chuyển 300: An=700, Bình=800
+Lỗi: Số dư không đủ
+Sau lần lỗi: An=700, Bình=800</code></pre><h4>Giải thích</h4>
+<ul><li><strong>Transaction</strong> gom nhiều câu lệnh thành một đơn vị: hoặc <strong>tất cả thành công</strong> (<code>commit</code>), hoặc <strong>không gì thay đổi</strong> (<code>rollBack</code>). Đây là tính <strong>nguyên tử (Atomicity)</strong> trong ACID. Nếu trừ tiền xong mà cộng tiền thất bại, không có transaction thì tiền "biến mất".</li><li>Mẫu chuẩn: <code>beginTransaction()</code>, thao tác trong <code>try</code>, <code>commit()</code> nếu ổn, <code>catch</code> thì <code>rollBack()</code> rồi <strong>ném lại</strong> lỗi (<code>throw $e</code>) để chỗ gọi biết.</li><li><code>UPDATE ... WHERE id = ? AND balance &gt;= ?</code>: kiểm tra đủ tiền <strong>ngay trong câu UPDATE</strong>, không đọc ra kiểm tra rồi ghi (sẽ dính race condition như bài 12.4). <code>rowCount() === 0</code> nghĩa là không có dòng nào thoả điều kiện, tức không đủ tiền.</li><li>Chuyển 300: An 700, Bình 800. Lần chuyển 5000 thất bại, <code>rollBack</code> đảm bảo số dư vẫn <code>An=700, Bình=800</code>.</li><li>Bẫy kinh điển của Laravel (Part 13): job hoặc event bắn <strong>bên trong</strong> transaction có thể chạy trước khi dữ liệu được commit. Hãy dùng <code>afterCommit</code>.</li></ul>
+<h4>Liên hệ Laravel</h4>
+<pre class="code"><code>DB::transaction(function () use ($from, $to, $amount) { ... });</code></pre>
+<p>Closure bên trong tự <code>commit</code> khi chạy xong và tự <code>rollBack</code> rồi ném lại exception khi có lỗi: đúng mẫu ở trên, gói gọn trong một hàm (và đây là lý do closure xuất hiện nhiều ở Laravel).</p><p class="jump"><a href="#q-12-10">← Về đề bài 12.10</a></p></div><div class="ex ans-ex" id="a-12-11"><div class="ex-head ans-head"><span class="ex-id">Đáp án 12.11</span><span class="ex-title">SQL injection: ghép chuỗi và tham số hoá</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+$pdo = makeDb();
+$input = &quot;&#x27; OR &#x27;1&#x27;=&#x27;1&quot;;
+
+echo &quot;Ghép chuỗi:\n&quot;;
+show($pdo, &quot;SELECT name FROM users WHERE email = &#x27;$input&#x27;&quot;);
+
+echo &quot;Tham số hoá:\n&quot;;
+show($pdo, &#x27;SELECT name FROM users WHERE email = ?&#x27;, [$input]);
+
+function safeSortColumn(string $input): string
+{
+    return in_array($input, [&#x27;id&#x27;, &#x27;title&#x27;, &#x27;views&#x27;], true) ? $input : &#x27;id&#x27;;
+}
+
+echo safeSortColumn(&#x27;views&#x27;), &quot;\n&quot;;
+echo safeSortColumn(&#x27;views; DROP TABLE posts&#x27;), &quot;\n&quot;;</code></pre><p class="todo">Đoạn code trên chạy kèm phần chuẩn bị chung (hàm <code>makeDb()</code> và <code>show()</code> ở bài 12.1). Hãy chép phần đó vào đầu file của bạn.</p><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Ghép chuỗi:
+An
+Bình
+Chi
+Tham số hoá:
+views
+id</code></pre><h4>Giải thích</h4>
+<ul><li><strong>Cách nguy hiểm</strong>: câu SQL thực tế thành <code>... WHERE email = '' OR '1'='1'</code>. Điều kiện <code>'1'='1'</code> luôn đúng, nên trả về <strong>toàn bộ user</strong>. Kẻ tấn công đăng nhập được mà không cần biết email. Biến thể nặng hơn là chèn <code>; DROP TABLE ...</code> hoặc đọc dữ liệu bảng khác bằng <code>UNION</code>.</li><li><strong>Cách an toàn (prepared statement)</strong>: câu SQL được gửi cho database <strong>trước</strong>, với <code>?</code> là chỗ trống; giá trị gửi <strong>riêng sau</strong>. Database coi giá trị chỉ là <strong>dữ liệu</strong>, không bao giờ là một phần của câu lệnh, nên cả chuỗi <code>' OR '1'='1</code> chỉ được tìm như một địa chỉ email lạ. Kết quả: không có dòng nào.</li><li>Tham số hoá <strong>chỉ áp dụng cho giá trị</strong>, không áp dụng cho <strong>tên cột, tên bảng, hướng sắp xếp</strong> (<code>ORDER BY ?</code> không hoạt động như bạn muốn). Với những thứ này phải dùng <strong>danh sách cho phép (allowlist)</strong>: <code>in_array($input, [...], true)</code>. Đây là cảnh báo chính thức của docs Laravel: "PDO does not support binding column names. Therefore, you should never allow user input to dictate the column names referenced by your queries, including order by columns".</li><li>Query Builder và Eloquent <strong>tự tham số hoá</strong> mọi giá trị bạn truyền, nên bạn không cần làm sạch chuỗi. Nguy cơ quay lại khi bạn dùng <code>DB::raw</code>, <code>whereRaw</code>, <code>selectRaw</code>, <code>orderByRaw</code> và <strong>ghép biến người dùng vào chuỗi</strong>. Khi buộc phải dùng <code>Raw</code>, truyền giá trị qua tham số thứ hai: <code>whereRaw('views &gt; ?', [$min])</code>.</li></ul>
+<h4>Quy tắc ngắn gọn</h4>
+<ol><li>Giá trị từ người dùng luôn đi qua tham số <code>?</code> hoặc Query Builder.</li><li>Tên cột, bảng, hướng sắp xếp từ người dùng luôn đi qua allowlist.</li><li>Không bao giờ nội suy <code>$biến</code> hay nối <code>.</code> vào câu SQL.</li></ol><p class="jump"><a href="#q-12-11">← Về đề bài 12.11</a></p></div>
 
 <div class="chap"><div class="chap-badge">PHỤ LỤC</div></div>
 <p># Phụ lục A: Bảng hàm array cần nhớ</p>
