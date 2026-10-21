@@ -1,0 +1,9 @@
+{
+    "total": 3190000,
+    "byCategory": {
+        "rent": 3000000,
+        "food": 140000,
+        "transport": 50000
+    },
+    "top": "rent"
+}
