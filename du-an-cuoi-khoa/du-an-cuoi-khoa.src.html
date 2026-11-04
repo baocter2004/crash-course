@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Dự án cuối khoá — Job Board fullstack</title>
+<style>  @page { size: A4; margin: 17mm 16mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Helvetica, Arial, sans-serif; color: #1a1a1a; line-height: 1.5; font-size: 13.5px; }
+  .cover { height: 245mm; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; page-break-after: always; }
+  .cover .tag { background: #0f766e; color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; letter-spacing: 1px; margin-bottom: 18px; }
+  .cover h1 { font-size: 40px; margin: 0 0 8px 0; color: #111; }
+  .cover h2 { font-size: 18px; font-weight: 400; color: #555; margin: 0 0 40px 0; }
+  .cover .meta { color: #888; font-size: 13px; }
+  .cover .meta div { margin-bottom: 4px; }
+  h1 { font-size: 22px; border-bottom: 3px solid #0f766e; padding-bottom: 8px; margin-top: 0; color: #111; }
+  h2 { font-size: 16px; color: #0f766e; margin-top: 22px; border-left: 4px solid #0f766e; padding-left: 10px; }
+  h3 { font-size: 14px; color: #222; margin-top: 16px; }
+  p { margin: 6px 0; }
+  .part { margin-top: 34px; padding-top: 18px; border-top: 2px dashed #d9d9d9; }
+  .part.first { margin-top: 24px; }
+  .part-head { break-inside: avoid; page-break-inside: avoid; break-after: avoid; page-break-after: avoid; }
+  .part-badge { display: inline-block; background: #111; color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 12px; margin-bottom: 8px; }
+  .part-badge.new { background: #0f766e; }
+  .goal-box { background: #effaf8; border-left: 4px solid #0f766e; padding: 8px 12px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+  .goal-box b { color: #0f766e; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12.5px; }
+  th, td { border: 1px solid #ddd; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #f5f5f5; }
+  code { background: #f2f2f2; padding: 1px 5px; border-radius: 3px; font-family: "DejaVu Sans Mono", "Noto Sans Mono", Consolas, monospace; font-size: 12px; color: #c7254e; }
+  pre { background: #1e1e2e; color: #e0e0e0; padding: 12px 14px; border-radius: 6px; white-space: pre-wrap; word-break: break-word; overflow-x: visible; font-size: 11.5px; line-height: 1.5; margin: 10px 0; font-family: "DejaVu Sans Mono", "Noto Sans Mono", Consolas, monospace; }
+  pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+  .diagram { background: #0f172a; color: #a5f3fc; padding: 14px 16px; border-radius: 6px; font-family: "DejaVu Sans Mono", "Noto Sans Mono", Consolas, monospace; font-size: 11.5px; white-space: pre-wrap; line-height: 1.5; margin: 12px 0; }
+  .note { background: #fffbe6; border: 1px solid #ffe58f; padding: 8px 12px; border-radius: 4px; margin: 10px 0; font-size: 12.5px; }
+  .note b { color: #ad6800; }
+  .task-box { background: #f0fdf4; border-left: 4px solid #16a34a; padding: 8px 12px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+  .task-box b { color: #16a34a; }
+  .audit { background: #eff6ff; border-left: 4px solid #2563eb; padding: 8px 12px; margin: 10px 0; border-radius: 0 4px 4px 0; font-size: 12.5px; }
+  .audit b { color: #2563eb; }
+  .goal-box, .note, .audit, pre, .diagram { page-break-inside: avoid; break-inside: avoid; }
+  .task-box ol { break-before: avoid; page-break-before: avoid; }
+  .task-box li, tr { break-inside: avoid; page-break-inside: avoid; }
+  h2, h3 { break-after: avoid; page-break-after: avoid; }
+  ul, ol { margin: 6px 0; padding-left: 22px; }
+  li { margin: 3px 0; }
+  .toc-list { list-style: none; padding-left: 0; }
+  .toc-list li { display: flex; justify-content: space-between; border-bottom: 1px dotted #ccc; padding: 5px 0; font-size: 13px; }
+  .toc-list .n { color: #0f766e; font-weight: 700; margin-right: 8px; }
+  .toc-list .tag { font-size: 10px; color: #666; background: #eee; padding: 1px 6px; border-radius: 8px; }
+  .toc-list .tag.new { color: #fff; background: #0f766e; }
+  .kw { color: #f97583; } .cls { color: #b392f0; } .str { color: #9ecbff; } .cm { color: #9aa4b2; } .attr { color: #ffab70; } .cli { color: #7ee787; }
+h1.sec { break-before: page; page-break-before: always; }
+.cover + h1.sec { break-before: auto; }
+.note p:first-child, .audit p:first-child { margin-top: 0; }
+.note p:last-child, .audit p:last-child { margin-bottom: 0; }
+</style>
+</head>
+<body>
+<div class="cover">
+  <div class="tag">DỰ ÁN CUỐI KHOÁ</div>
+  <h1>Job Board fullstack</h1>
+  <h2>Một dự án đủ React, API, database, test, Docker, CI và deploy thật, để chứng minh bạn sẵn sàng đi làm và để đưa lên GitHub</h2>
+  <div class="meta">
+    <div>Backend chọn Laravel hoặc NestJS, frontend React và TypeScript</div>
+    <div>Chia thành 9 chặng, mỗi chặng có tiêu chí hoàn thành kiểm tra được</div>
+    <div>Bạn tự code, tài liệu chỉ đưa yêu cầu và trỏ đến Part cần đọc</div>
+  </div>
+</div>
+<h1 class="sec">Vì sao cần dự án này</h1>
+<p>Học xong tài liệu mới là biết. Đi làm cần <strong>làm được một sản phẩm từ đầu đến khi chạy thật</strong>. Dự án này gom toàn bộ lộ trình vào một sản phẩm, để bạn:</p>
+<ul>
+<li>Tự kiểm tra những gì còn yếu, vì ghép các phần lại mới lộ ra lỗi.</li>
+<li>Có một dự án thật trên GitHub, có link chạy được và có README rõ ràng.</li>
+<li>Có câu chuyện kỹ thuật để kể khi phỏng vấn: gặp vấn đề gì và xử lý ra sao.</li>
+</ul>
+<div class="note">
+
+<p><strong>Tài liệu này không có code giải sẵn.</strong> Bạn tự code, mỗi chặng trỏ đến Part cần đọc. Kẹt thì quay lại Part đó, hoặc nhờ review sau khi đã thử.</p>
+</div>
+
+
+<h1 class="sec">Đề bài: Job Board</h1>
+<p>Một trang tuyển dụng có bốn nhóm người dùng:</p>
+<table>
+<thead>
+<tr>
+<th>Vai trò</th>
+<th>Làm được gì</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Khách</td>
+<td>Xem danh sách tin, tìm kiếm, lọc, xem chi tiết</td>
+</tr>
+<tr>
+<td>Ứng viên</td>
+<td>Đăng ký, đăng nhập, lưu tin, nộp hồ sơ kèm file CV, xem trạng thái hồ sơ</td>
+</tr>
+<tr>
+<td>Nhà tuyển dụng</td>
+<td>Quản lý tin của mình, xem hồ sơ ứng tuyển, đổi trạng thái hồ sơ, trả phí đẩy tin nổi bật</td>
+</tr>
+<tr>
+<td>Quản trị</td>
+<td>Duyệt tin, khoá tài khoản</td>
+</tr>
+</tbody></table>
+<h2>Chọn công nghệ</h2>
+<table>
+<thead>
+<tr>
+<th>Phần</th>
+<th>Lựa chọn</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Backend</td>
+<td><strong>Laravel hoặc NestJS.</strong> Chọn theo công việc bạn nhắm tới. Làm xong có thể viết lại bằng cái còn lại để so sánh</td>
+</tr>
+<tr>
+<td>Frontend</td>
+<td>React + TypeScript + Vite + TanStack Query + React Hook Form + Zod</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>MySQL hoặc PostgreSQL, không dùng SQLite</td>
+</tr>
+<tr>
+<td>Cache, queue</td>
+<td>Redis</td>
+</tr>
+<tr>
+<td>File</td>
+<td>Lưu đĩa khi dev, S3 hoặc dịch vụ tương thích khi production</td>
+</tr>
+<tr>
+<td>Chạy</td>
+<td>Docker Compose</td>
+</tr>
+</tbody></table>
+<p>Giữ cả dự án trong một repo riêng, gồm thư mục <code>backend/</code> và <code>frontend/</code>.</p>
+<h2>Thiết kế dữ liệu gợi ý</h2>
+<table>
+<thead>
+<tr>
+<th>Bảng</th>
+<th>Cột chính</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>users</code></td>
+<td><code>id</code>, <code>email</code> unique, <code>password</code>, <code>role</code>, <code>locked_at</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>companies</code></td>
+<td><code>id</code>, <code>owner_id</code>, <code>name</code>, <code>city</code></td>
+<td>Thuộc nhà tuyển dụng</td>
+</tr>
+<tr>
+<td><code>jobs</code> (đặt tên <code>job_posts</code> nếu dùng Laravel)</td>
+<td><code>id</code>, <code>company_id</code>, <code>title</code>, <code>description</code>, <code>type</code>, <code>salary_min</code>, <code>salary_max</code>, <code>status</code>, <code>boosted_until</code>, <code>published_at</code></td>
+<td>Index cho <code>status</code> + <code>published_at</code></td>
+</tr>
+<tr>
+<td><code>applications</code></td>
+<td><code>id</code>, <code>job_id</code>, <code>user_id</code>, <code>cv_path</code>, <code>status</code></td>
+<td><strong>Unique <code>(job_id, user_id)</code></strong>: mỗi người nộp một lần</td>
+</tr>
+<tr>
+<td><code>saved_jobs</code></td>
+<td><code>user_id</code>, <code>job_id</code></td>
+<td>Bảng trung gian</td>
+</tr>
+<tr>
+<td><code>payments</code></td>
+<td><code>id</code>, <code>job_id</code>, <code>amount</code>, <code>status</code>, <code>provider_ref</code></td>
+<td>Đẩy tin</td>
+</tr>
+<tr>
+<td><code>webhook_events</code></td>
+<td><code>provider</code>, <code>event_id</code></td>
+<td>Unique, chống xử lý trùng</td>
+</tr>
+</tbody></table>
+<p>Tên bảng <code>jobs</code> trùng với bảng queue của Laravel, nên nếu dùng Laravel hãy đặt <code>job_posts</code>.</p>
+<p>Trường <code>status</code> nên dùng enum: tin có <code>draft</code>, <code>pending</code>, <code>published</code>, <code>closed</code>; hồ sơ có <code>submitted</code>, <code>reviewing</code>, <code>accepted</code>, <code>rejected</code>.</p>
+<h1 class="sec">Các chặng</h1>
+<p>Mỗi chặng có <strong>tiêu chí hoàn thành kiểm tra được</strong>. Chưa đạt thì chưa sang chặng sau. Mỗi chặng nên là một nhánh và một Pull Request, để có lịch sử commit đẹp.</p>
+<p>Cột Part dùng ký hiệu: <strong>L</strong> là plan Laravel, <strong>N</strong> là plan NestJS, <strong>R</strong> là plan React, <strong>JS</strong> là <code>js-crash-course</code>.</p>
+<h2>Chặng 1: Khởi tạo và Docker</h2>
+<p>Tạo repo, <code>backend</code>, <code>frontend</code>, <code>compose.yaml</code> gồm app, database, Redis. Có <code>.env.example</code>, <code>.gitignore</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Tiêu chí hoàn thành</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Máy mới clone về chỉ cần <code>docker compose up</code> là chạy được</td>
+</tr>
+<tr>
+<td><code>GET /api/health</code> trả 200 và kiểm tra được kết nối database</td>
+</tr>
+<tr>
+<td>Không có secret nào trong git</td>
+</tr>
+</tbody></table>
+<p>Đọc: L Part SAIL, L Part 22; N Part 25; R Part 01.</p>
+<h2>Chặng 2: Đăng nhập và phân quyền</h2>
+<p>Đăng ký, đăng nhập, đăng xuất, refresh token. Ba vai trò, và middleware hoặc guard kiểm tra vai trò.</p>
+<table>
+<thead>
+<tr>
+<th>Tiêu chí hoàn thành</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mật khẩu được hash, không lộ ra trong response hay log</td>
+</tr>
+<tr>
+<td>Access token ngắn hạn, refresh token trong cookie <code>HttpOnly</code>, có xoay vòng</td>
+</tr>
+<tr>
+<td>Test: sai mật khẩu 401, sai quyền 403, chưa đăng nhập 401</td>
+</tr>
+<tr>
+<td>Giới hạn số lần đăng nhập sai</td>
+</tr>
+</tbody></table>
+<p>Đọc: L Part 09, 19; N Part 10, 17, 27.</p>
+<h2>Chặng 3: Tin tuyển dụng và tìm kiếm</h2>
+<p>CRUD tin. Danh sách có phân trang, tìm theo từ khoá, lọc theo loại, thành phố, khoảng lương, sắp xếp. Nhà tuyển dụng chỉ sửa được tin của mình.</p>
+<table>
+<thead>
+<tr>
+<th>Tiêu chí hoàn thành</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sửa <code>id</code> trên URL không xem hay sửa được tin của công ty khác (test IDOR)</td>
+</tr>
+<tr>
+<td>Không có N+1: kiểm tra bằng số câu query trong test</td>
+</tr>
+<tr>
+<td>Có index, và <code>EXPLAIN</code> xác nhận truy vấn danh sách dùng index</td>
+</tr>
+<tr>
+<td>Cột sắp xếp được kiểm tra theo danh sách cho phép, không nhận trực tiếp từ người dùng</td>
+</tr>
+</tbody></table>
+<p>Đọc: L Part 02–08, 12, SQL; N Part 02–09, 12.</p>
+<h2>Chặng 4: Frontend</h2>
+<p>Trang danh sách, chi tiết, đăng nhập, quản lý tin, form thêm và sửa.</p>
+<table>
+<thead>
+<tr>
+<th>Tiêu chí hoàn thành</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>tsc --noEmit</code> không lỗi, không dùng <code>any</code></td>
+</tr>
+<tr>
+<td>Bộ lọc và trang lưu trên URL: F5 và gửi link vẫn đúng</td>
+</tr>
+<tr>
+<td>Có trạng thái đang tải, rỗng, lỗi ở mọi nơi gọi API</td>
+</tr>
+<tr>
+<td>Lỗi validate từ server hiện đúng dưới ô nhập</td>
+</tr>
+<tr>
+<td>Đăng nhập rồi F5 vẫn giữ phiên, token hết hạn tự làm mới</td>
+</tr>
+</tbody></table>
+<p>Đọc: JS toàn bộ; R Part 14–17.</p>
+<h2>Chặng 5: Nộp hồ sơ và queue</h2>
+<p>Nộp hồ sơ kèm file PDF. Gửi mail cho nhà tuyển dụng qua queue. Nhà tuyển dụng đổi trạng thái thì ứng viên nhận thông báo.</p>
+<table>
+<thead>
+<tr>
+<th>Tiêu chí hoàn thành</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Kiểm tra loại file thật và kích thước, không dùng tên file gốc, file không truy cập công khai được</td>
+</tr>
+<tr>
+<td>Bấm nộp hai lần liên tiếp vẫn chỉ có một hồ sơ, nhờ unique index, và trả thông báo rõ ràng</td>
+</tr>
+<tr>
+<td>Response trả về ngay, mail được gửi trong queue. Tắt worker thì nộp vẫn thành công</td>
+</tr>
+<tr>
+<td>Job có retry, và ghi nhận job thất bại</td>
+</tr>
+</tbody></table>
+<p>Đọc: L Part 13, 14, 18, 20, 24; N Part 18, 22, 23, 28.</p>
+<h2>Chặng 6: Thanh toán đẩy tin và webhook</h2>
+<p>Giả lập cổng thanh toán: một endpoint nhận webhook có chữ ký. Thanh toán xong, tin được đẩy lên đầu danh sách trong 7 ngày.</p>
+<table>
+<thead>
+<tr>
+<th>Tiêu chí hoàn thành</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sai chữ ký trả 401</td>
+</tr>
+<tr>
+<td>Gửi lại cùng một webhook 3 lần, thời hạn đẩy tin chỉ cộng một lần</td>
+</tr>
+<tr>
+<td>Test đồng thời: gửi 10 request cùng lúc vẫn đúng</td>
+</tr>
+</tbody></table>
+<p>Đọc: L Part 24, 28; N Part 28.</p>
+<h2>Chặng 7: Tối ưu và realtime</h2>
+<p>Cache trang chủ, xoá cache khi tin đổi. Thông báo realtime khi hồ sơ đổi trạng thái (tuỳ chọn).</p>
+<table>
+<thead>
+<tr>
+<th>Tiêu chí hoàn thành</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Có số đo trước và sau khi cache, ghi vào README</td>
+</tr>
+<tr>
+<td>Danh sách code splitting, Lighthouse từ 90 trở lên</td>
+</tr>
+<tr>
+<td>Thông báo đến đúng người, người khác không nhận được</td>
+</tr>
+</tbody></table>
+<p>Đọc: L Part 16; N Part 20, 29; R Part 10, 20.</p>
+<h2>Chặng 8: Test và CI</h2>
+<table>
+<thead>
+<tr>
+<th>Tiêu chí hoàn thành</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mọi luồng chính ở chặng 2, 3, 5, 6 có feature test hoặc e2e test</td>
+</tr>
+<tr>
+<td>Frontend có test cho form và luồng đăng nhập</td>
+</tr>
+<tr>
+<td>GitHub Actions chạy lint, kiểm tra kiểu, test, build trên mỗi Pull Request</td>
+</tr>
+<tr>
+<td>Test backend chạy trên cùng loại database với production</td>
+</tr>
+<tr>
+<td>Nhánh <code>main</code> được bảo vệ, phải qua CI mới merge được</td>
+</tr>
+</tbody></table>
+<p>Đọc: L Part 11, 26; N Part 11, 30; R Part 13.</p>
+<h2>Chặng 9: Deploy và README</h2>
+<table>
+<thead>
+<tr>
+<th>Tiêu chí hoàn thành</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Có link chạy thật, có HTTPS</td>
+</tr>
+<tr>
+<td>Migration chạy khi deploy, có cách quay lại khi lỗi</td>
+</tr>
+<tr>
+<td><code>APP_DEBUG</code> tắt, không lộ stack trace</td>
+</tr>
+<tr>
+<td>Log xem được, có backup database</td>
+</tr>
+<tr>
+<td>README đầy đủ theo mục dưới đây</td>
+</tr>
+</tbody></table>
+<p>Đọc: L Part 22, SEC; N Part 25; R Part 20.</p>
+<h1 class="sec">README đạt chuẩn</h1>
+<p>Người tuyển dụng thường chỉ dành một đến hai phút. README nên có:</p>
+<ol>
+<li>Một câu mô tả sản phẩm và <strong>link chạy thật</strong>, kèm tài khoản thử.</li>
+<li>Ảnh chụp màn hình hoặc GIF ngắn.</li>
+<li>Sơ đồ kiến trúc đơn giản.</li>
+<li>Công nghệ, và <strong>lý do chọn</strong> ở những chỗ quan trọng.</li>
+<li>Các vấn đề kỹ thuật đã xử lý: chống nộp trùng, webhook một lần, refresh token, số liệu cache.</li>
+<li>Cách chạy bằng một lệnh.</li>
+<li>Link tài liệu API.</li>
+<li>Những gì sẽ làm tiếp nếu có thêm thời gian.</li>
+</ol>
+<h1 class="sec">Dùng dự án này khi phỏng vấn</h1>
+<p>Chuẩn bị sẵn câu trả lời theo STAR cho những câu sau, dùng đúng chuyện đã xảy ra trong dự án:</p>
+<table>
+<thead>
+<tr>
+<th>Câu hỏi</th>
+<th>Lấy từ</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Vấn đề kỹ thuật khó nhất bạn từng xử lý?</td>
+<td>Chặng 5 hoặc 6</td>
+</tr>
+<tr>
+<td>Làm sao tránh xử lý trùng?</td>
+<td>Unique index, webhook</td>
+</tr>
+<tr>
+<td>Bạn bảo mật ứng dụng thế nào?</td>
+<td>Chặng 2, IDOR ở chặng 3, file ở chặng 5</td>
+</tr>
+<tr>
+<td>Bạn tối ưu hiệu năng thế nào, kết quả ra sao?</td>
+<td>Số đo ở chặng 7</td>
+</tr>
+<tr>
+<td>Bạn test và deploy thế nào?</td>
+<td>Chặng 8, 9</td>
+</tr>
+<tr>
+<td>Nếu làm lại, bạn sẽ làm khác gì?</td>
+<td>Tự ghi lại trong lúc làm</td>
+</tr>
+</tbody></table>
+<div class="note">
+
+<p><strong>Ghi nhật ký trong lúc làm.</strong> Mỗi khi gặp lỗi mất hơn 30 phút, ghi lại triệu chứng, nguyên nhân, cách sửa. Đó chính là những câu chuyện tốt nhất khi phỏng vấn, và sau vài tháng bạn sẽ không còn nhớ nếu không ghi.</p>
+</div>
+
+
+<h1 class="sec">Tự đánh giá</h1>
+<p>Đạt phần lớn các mục dưới đây thì bạn đã sẵn sàng cho vị trí junior, và có cơ sở để đòi mức lương cao hơn:</p>
+<ul>
+<li>Tự dựng được dự án từ đầu, không cần làm theo tutorial.</li>
+<li>Giải thích được <strong>vì sao</strong> chọn từng cách làm, và đánh đổi của nó.</li>
+<li>Đọc log và tự tìm được nguyên nhân lỗi.</li>
+<li>Có test, và tin vào test khi sửa code.</li>
+<li>Đã deploy thật, và đã từng xử lý lỗi trên môi trường thật.</li>
+<li>Đọc được code người khác viết và review được Pull Request.</li>
+</ul>
+
+</body>
+</html>

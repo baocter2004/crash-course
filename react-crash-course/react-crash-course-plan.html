@@ -119,12 +119,13 @@
 <body>
 
 <div class="cover">
-  <div class="tag">CRASH COURSE PLAN — v2 (tái dựng + audit)</div>
+  <div class="tag">CRASH COURSE PLAN — v3 (thêm Part 14–20)</div>
   <h1>React Crash Course</h1>
   <h2>Lộ trình học chi tiết từng phần — kèm giải thích cơ chế render bên trong</h2>
   <div class="meta">
     <div>Repo: crash-course / react-crash-course-traversy</div>
     <div>Tài liệu bám theo React 19.2 (phát hành 01/10/2025, bản ổn định mới nhất) + Vite + React Router — kiểm chứng lại theo react.dev &amp; reactrouter.com (09/2026)</div>
+    <div>Part 14–20 thêm 11/2026, đã chạy thử trên react 19.3.1 · react-router 7.18 · typescript 7.0 · next 16.4</div>
     <div>Dự án hiện tại của bạn: react 19.2.5 · react-router-dom 7.14.2 · vite 8 · tailwindcss 4</div>
     <div>Bản v2: tài liệu HTML gốc từng bị mất, PDF cũ là nguồn duy nhất còn lại — bản này tái dựng lại từ PDF đó và audit toàn bộ theo docs chính thức hiện tại</div>
   </div>
@@ -147,10 +148,18 @@
   <li><span><span class="n">11</span> React 19: Actions, hooks mới &amp; use()</span></li>
   <li><span><span class="n">12</span> Kết nối API thật (Laravel / NestJS) &amp; build production</span></li>
   <li><span><span class="n">13</span> Testing với Vitest + Testing Library</span><span class="tag">TUỲ CHỌN</span></li>
+  <li><span><span class="n">14</span> TypeScript cho React</span><span class="tag">MỚI</span></li>
+  <li><span><span class="n">15</span> TanStack Query thực chiến: cache, phân trang, mutation</span><span class="tag">MỚI</span></li>
+  <li><span><span class="n">16</span> Form với React Hook Form + Zod</span><span class="tag">MỚI</span></li>
+  <li><span><span class="n">17</span> Đăng nhập thực chiến: axios, refresh token, protected route</span><span class="tag">MỚI</span></li>
+  <li><span><span class="n">18</span> State toàn cục: Zustand và Redux Toolkit</span><span class="tag">MỚI</span></li>
+  <li><span><span class="n">19</span> Next.js cơ bản và Server Components</span><span class="tag">MỚI</span></li>
+  <li><span><span class="n">20</span> Code splitting, accessibility và checklist trước khi deploy</span><span class="tag">MỚI</span></li>
 </ul>
 
 <div class="note"><b>Cách dùng tài liệu này:</b> Bạn tự code 100% từng phần. Mỗi phần có mục "Việc cần làm" (task) — không có code giải sẵn để copy, chỉ có ví dụ cú pháp minh hoạ để hiểu cách viết. Khi xong một phần, quay lại chat để mình review và giải thích tiếp phần sau.<br><br><b>Dự án xuyên suốt:</b> App quản lý tin tuyển dụng (job listings) — danh sách, chi tiết, thêm, sửa, xoá. Đúng dự án bạn đã làm theo Traversy, nhưng lần này đi sâu vào vì sao mỗi thứ hoạt động như vậy. Ở Part 12 ta sẽ thay json-server bằng API Laravel/NestJS thật mà bạn tự viết — đó là lúc bạn thành fullstack thật sự.</div>
 
+<div class="audit"><b>Bản v3 thêm gì:</b> Part 14–20 lấp các khoảng trống so với yêu cầu đi làm: TypeScript, TanStack Query, React Hook Form + Zod, đăng nhập với refresh token và protected route, Zustand và Redux Toolkit, Next.js, code splitting và accessibility. Code trong các Part này được lấy từ một app đã chạy <b>type check, 15 test và build</b>, và luồng đăng nhập đã chạy bằng trình duyệt thật với API NestJS thật. Các Part cũ giữ nguyên. Part 12.3 dùng <code>localStorage</code> để đơn giản hoá, còn Part 17 là cách nên dùng trong dự án thật.</div>
 <div class="audit"><b>Bản v2 này khác gì bản PDF gốc:</b> file HTML gốc của tài liệu này đã bị mất (không commit vào git), chỉ còn PDF 39 trang — bản này tái dựng lại toàn bộ nội dung từ PDF đó, rồi audit từng phần theo docs chính thức hiện tại: <code>react.dev/learn</code>, <code>react.dev/reference/react</code>, <code>react.dev/reference/react-dom</code>, <code>react.dev/blog</code> (bài React 19, React 19.2, React Compiler v1.0), và <code>reactrouter.com</code>. Các chỗ đã sửa: (1) API xử lý lỗi của React Router — bản cũ dùng <code>errorElement</code> + <code>throw new Response()</code>, docs hiện tại khuyến nghị <code>ErrorBoundary</code> + <code>useRouteError</code> + <code>data()</code>; (2) import Data mode nên lấy từ <code>"react-router"</code> thay vì <code>"react-router-dom"</code>; (3) bổ sung ngày phát hành chính xác cho React 19.2 (01/10/2025) và React Compiler v1.0 (07/10/2025). Thêm 4 mục "so sánh 2 cách" mới (đánh dấu khung xanh): 7.4, 8.4, 9.1 (nâng cấp), 11.9.</div>
 
 <!-- PART J -->
@@ -1523,6 +1532,1263 @@ global.fetch = vi.<span class="cls">fn</span>(() =&gt;
 <li>Test nhánh lỗi: fetch reject → hiện thông báo lỗi</li>
 </ol>
 </div>
+</div>
+
+<!-- PART 14 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 14 — ĐI LÀM</div>
+<h1>TypeScript cho React</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Đọc và viết được component có kiểu: props, state, sự kiện, generic. Phần lớn công ty hiện nay dùng React với TypeScript.</div></div>
+<div class="note">
+
+<p><strong>Nên học chương JS (<code>js-crash-course</code>) trước.</strong> Part 14–20 kế thừa dự án job listings, nhưng code tại đây là phiên bản viết bằng TypeScript. Máy chỉ cần Node 20 trở lên.</p>
+</div>
+
+
+<h2>14.1 Thêm TypeScript vào dự án Vite</h2>
+<pre><code><span class="cli">npm i -D typescript @types/react @types/react-dom
+# Đổi đuôi file có JSX từ .jsx sang .tsx, file không có JSX từ .js sang .ts
+npx tsc --noEmit        # kiểm tra kiểu, không sinh file</span></code></pre>
+<p>File <code>tsconfig.json</code> tối thiểu đã chạy được:</p>
+<pre><code>{
+  &quot;compilerOptions&quot;: {
+    &quot;target&quot;: <span class="str">&quot;ES2022&quot;</span>,
+    &quot;lib&quot;: [<span class="str">&quot;ES2023&quot;</span>, <span class="str">&quot;DOM&quot;</span>, <span class="str">&quot;DOM.Iterable&quot;</span>],
+    &quot;module&quot;: <span class="str">&quot;ESNext&quot;</span>,
+    &quot;moduleResolution&quot;: <span class="str">&quot;bundler&quot;</span>,
+    &quot;jsx&quot;: <span class="str">&quot;react-jsx&quot;</span>,
+    &quot;strict&quot;: <span class="kw"><span class="kw">true</span></span>,
+    &quot;noUnusedLocals&quot;: <span class="kw"><span class="kw">true</span></span>,
+    &quot;verbatimModuleSyntax&quot;: <span class="kw"><span class="kw">true</span></span>,
+    &quot;skipLibCheck&quot;: <span class="kw"><span class="kw">true</span></span>,
+    &quot;noEmit&quot;: <span class="kw"><span class="kw">true</span></span>
+  },
+  &quot;include&quot;: [<span class="str">&quot;src&quot;</span>]
+}</code></pre>
+<p>Dự án mới thì tạo bằng mẫu <code>react-ts</code> của Vite. Bật <code>strict</code> ngay từ đầu, vì bật về sau rất tốn công sửa.</p>
+<div class="note">
+
+<p><strong>Vite không kiểm tra kiểu.</strong> Vite chỉ xoá kiểu rồi chạy, nên code sai kiểu vẫn hiện lên trình duyệt. Phải có bước <code>tsc --noEmit</code> trong lệnh build và trong CI.</p>
+</div>
+
+
+<h2>14.2 Mô tả dữ liệu từ API</h2>
+<pre><code><span class="kw">export</span> <span class="kw">type</span> <span class="cls">JobType</span> = <span class="str">&#x27;full-time&#x27;</span> | <span class="str">&#x27;part-time&#x27;</span> | <span class="str">&#x27;remote&#x27;</span>;
+
+<span class="kw">export</span> <span class="kw">interface</span> <span class="cls">Company</span> {
+  name: <span class="kw">string</span>;
+  city?: <span class="kw">string</span>; <span class="kw">// có thể không có</span>
+}
+
+<span class="kw">export</span> <span class="kw">interface</span> <span class="cls">Job</span> {
+  id: <span class="kw">number</span>;
+  title: <span class="kw">string</span>;
+  type: <span class="cls">JobType</span>;
+  salary: <span class="kw">number</span>;
+  company: <span class="cls">Company</span>;
+}
+
+<span class="kw">// Dữ liệu gửi lên khi tạo mới: server tự sinh id</span>
+<span class="kw">export</span> <span class="kw">type</span> <span class="cls">NewJob</span> = <span class="cls">Omit</span>&lt;<span class="cls">Job</span>, <span class="str">&#x27;id&#x27;</span>&gt;;
+
+<span class="kw">// Kiểu dùng chung cho mọi API phân trang</span>
+<span class="kw">export</span> <span class="kw">interface</span> <span class="cls">Paginated</span>&lt;T&gt; {
+  data: T[];
+  meta: { page: <span class="kw">number</span>; perPage: <span class="kw">number</span>; total: <span class="kw">number</span>; lastPage: <span class="kw">number</span> };
+}</code></pre>
+<p><code>type</code> và <code>interface</code> đều dùng được cho object. Dùng <code>type</code> khi cần union như <code>JobType</code>. Kiểu chỉ tồn tại lúc biên dịch, nên dữ liệu thật từ API vẫn có thể sai. Muốn kiểm tra lúc chạy phải dùng Zod (Part 16).</p>
+<h2>14.3 Props và children</h2>
+<pre><code><span class="kw">interface</span> <span class="cls">JobCardProps</span> {
+  job: <span class="cls">Job</span>;
+  highlight?: <span class="kw">boolean</span>; <span class="kw">// prop không bắt buộc</span>
+  onSelect: (id: <span class="kw">number</span>) =&gt; <span class="kw">void</span>; <span class="kw">// hàm cha truyền xuống</span>
+  children?: <span class="cls">ReactNode</span>; <span class="kw">// nội dung lồng bên trong</span>
+}
+
+<span class="kw">export</span> <span class="kw">function</span> <span class="cls">JobCard</span>({ job, highlight = <span class="kw">false</span>, onSelect, children }: JobCardProps) {
+  <span class="kw">return</span> (
+    <span class="language-xml">&lt;article className=<span class="str">{highlight</span> ? &#x27;card card--hot&#x27; : &#x27;card&#x27;}&gt;
+      &lt;h3&gt;{job.title}&lt;/h3&gt;
+      &lt;p&gt;{job.company.city ?? &#x27;Chưa rõ địa điểm&#x27;}&lt;/p&gt;
+      &lt;button onClick=<span class="str">{()</span> =&gt; onSelect(job.id)}&gt;Xem&lt;/button&gt;
+      {children}
+    &lt;/article&gt;
+  );
+}</code></pre>
+<h2>14.4 State và sự kiện</h2>
+<pre><code><span class="kw">export</span> <span class="kw">function</span> <span class="cls">SearchBox</span>({ onSearch }: { onSearch: (q: <span class="kw">string</span>) =&gt; <span class="kw">void</span> }) {
+  <span class="kw">const</span> [q, setQ] = <span class="cls">useState</span>(<span class="str">&#x27;&#x27;</span>); <span class="kw">// tự suy ra kiểu string</span>
+  <span class="kw">const</span> [selected, setSelected] = useState&lt;<span class="cls">Job</span> | <span class="kw">null</span>&gt;(<span class="kw">null</span>); <span class="kw">// phải khai báo: ban đầu là null</span>
+
+  <span class="kw">const</span> <span class="cls">handleChange</span> = (e: ChangeEvent&lt;HTMLInputElement&gt;) =&gt; <span class="cls">setQ</span>(e.target.value);
+
+  <span class="kw">return</span> (
+    <span class="language-xml">&lt;form
+      onSubmit=<span class="str">{(e)</span> =&gt; {
+        e.preventDefault();
+        onSearch(q);
+      }}
+    &gt;
+      &lt;label htmlFor=<span class="str">&quot;q&quot;</span>&gt;Tìm kiếm&lt;/label&gt;
+      &lt;input id=<span class="str">&quot;q&quot;</span> value=<span class="str">{q}</span> onChange=<span class="str">{handleChange}</span> /&gt;
+      {selected &amp;&amp; &lt;p&gt;{selected.title}&lt;/p&gt;}
+      &lt;button onClick=<span class="str">{()</span> =&gt; setSelected(null)} type=&quot;submit&quot;&gt;Tìm&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+<table>
+<thead>
+<tr>
+<th>Cần mô tả</th>
+<th>Viết</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>State giá trị đơn giản</td>
+<td><code>useState(&#39;&#39;)</code>, TypeScript tự suy ra</td>
+</tr>
+<tr>
+<td>State ban đầu là <code>null</code> hoặc mảng rỗng</td>
+<td><code>useState&lt;Job | null&gt;(null)</code>, <code>useState&lt;Job[]&gt;([])</code></td>
+</tr>
+<tr>
+<td>Sự kiện input</td>
+<td><code>ChangeEvent&lt;HTMLInputElement&gt;</code></td>
+</tr>
+<tr>
+<td>Sự kiện form</td>
+<td><code>FormEvent&lt;HTMLFormElement&gt;</code></td>
+</tr>
+<tr>
+<td>Sự kiện click</td>
+<td><code>MouseEvent&lt;HTMLButtonElement&gt;</code></td>
+</tr>
+<tr>
+<td>Ref tới phần tử</td>
+<td><code>useRef&lt;HTMLInputElement&gt;(null)</code></td>
+</tr>
+<tr>
+<td>Nội dung lồng bên trong</td>
+<td><code>ReactNode</code></td>
+</tr>
+</tbody></table>
+<p>Mẹo: viết hàm ngay trong JSX thì TypeScript tự biết kiểu của <code>e</code>. Chỉ cần ghi kiểu khi tách hàm ra ngoài.</p>
+<h2>14.5 Component generic</h2>
+<pre><code><span class="kw">interface</span> <span class="cls">ListProps</span>&lt;T&gt; {
+  items: T[];
+  renderItem: (item: T) =&gt; <span class="cls">ReactNode</span>;
+  getKey: (item: T) =&gt; <span class="kw">string</span> | <span class="kw">number</span>;
+}
+
+<span class="kw">export</span> <span class="kw">function</span> <span class="cls">List</span>&lt;T&gt;({ items, renderItem, getKey }: <span class="cls">ListProps</span>&lt;T&gt;) {
+  <span class="kw">return</span> <span class="language-xml">&lt;ul&gt;{items.map((item) =&gt; &lt;li key=<span class="str">{getKey(item)}</span>&gt;{renderItem(item)}&lt;/li&gt;)}&lt;/ul&gt;;
+}</code></pre>
+<p>Component này dùng được cho danh sách bất kỳ, và <code>renderItem</code> biết chính xác kiểu của <code>item</code>.</p>
+<h2>14.6 Lỗi hay gặp</h2>
+<table>
+<thead>
+<tr>
+<th>Lỗi</th>
+<th>Nguyên nhân</th>
+<th>Sửa</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Object is possibly &#39;null&#39;</code></td>
+<td>Giá trị có thể <code>null</code></td>
+<td><code>?.</code>, kiểm tra trước, hoặc <code>??</code></td>
+</tr>
+<tr>
+<td><code>Property &#39;x&#39; does not exist on type &#39;never&#39;</code></td>
+<td><code>useState([])</code> mà không ghi kiểu</td>
+<td><code>useState&lt;Job[]&gt;([])</code></td>
+</tr>
+<tr>
+<td><code>Type &#39;string&#39; is not assignable to type &#39;JobType&#39;</code></td>
+<td>Mảng hoặc object bị suy rộng thành <code>string</code></td>
+<td>Ghi kiểu rõ ràng hoặc dùng <code>as const</code></td>
+</tr>
+<tr>
+<td>Dùng <code>any</code> cho nhanh</td>
+<td>Tắt mất kiểm tra</td>
+<td>Dùng <code>unknown</code> rồi thu hẹp kiểu</td>
+</tr>
+<tr>
+<td><code>as Job</code> dữ liệu từ API</td>
+<td><code>as</code> chỉ là lời hứa, không kiểm tra thật</td>
+<td>Chấp nhận với API đáng tin, còn lại dùng Zod</td>
+</tr>
+</tbody></table>
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Chuyển dự án job listings sang TypeScript, bật <code>strict</code>, <code>npx tsc --noEmit</code> không còn lỗi.</li>
+<li>Viết <code>types/job.ts</code> khớp với <code>jobs.json</code>, không dùng <code>any</code>.</li>
+<li>Gõ kiểu cho toàn bộ props của <code>JobListing</code>, <code>Hero</code>, <code>Card</code>, và form thêm job.</li>
+<li>Viết component generic <code>List&lt;T&gt;</code> và dùng cho danh sách job.</li>
+<li>Thêm <code>tsc --noEmit</code> vào script <code>build</code> trong <code>package.json</code>.</li>
+</ol>
+</div>
+
+
+
+</div>
+
+<!-- PART 15 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 15 — ĐI LÀM</div>
+<h1>TanStack Query thực chiến: cache, phân trang, mutation</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Bỏ cách tự viết <code>useEffect</code> + <code>loading</code> + <code>error</code> cho từng API. Part 7.4 mới so sánh, Part này mới làm thật.</div></div>
+<h2>15.1 Thư viện này giải quyết gì</h2>
+<p>Dữ liệu từ API là <strong>server state</strong>: nó có thể cũ, được nhiều màn hình dùng chung, và cần tải lại. TanStack Query lo cache, gộp request trùng, tải lại, huỷ request cũ, và trạng thái loading/error.</p>
+<pre><code><span class="cli">npm i @tanstack/react-query</span></code></pre>
+<pre><code><span class="kw">const</span> queryClient = <span class="kw">new</span> <span class="cls">QueryClient</span>({
+  defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: <span class="kw">false</span> } },
+});
+
+<span class="kw">export</span> <span class="kw">function</span> <span class="cls">App</span>() {
+  <span class="kw">return</span> (
+    <span class="language-xml">&lt;QueryClientProvider client=<span class="str">{queryClient}</span>&gt;
+      &lt;BrowserRouter&gt;
+        &lt;AuthProvider&gt;
+          &lt;Suspense fallback=<span class="str">{</span>&lt;p&gt;Đang tải trang...&lt;/p&gt;}&gt;
+            &lt;Routes&gt;
+              &lt;Route path=<span class="str">&quot;/login&quot;</span> element=<span class="str">{</span>&lt;LoginPage /&gt;} /&gt;
+              &lt;Route element=<span class="str">{</span>&lt;ProtectedRoute /&gt;}&gt;
+                &lt;Route path=<span class="str">&quot;/&quot;</span> element=<span class="str">{</span>&lt;JobsPage /&gt;} /&gt;
+                &lt;Route path=<span class="str">&quot;/jobs/new&quot;</span> element=<span class="str">{</span>&lt;JobForm /&gt;} /&gt;
+              &lt;/Route&gt;
+            &lt;/Routes&gt;
+          &lt;/Suspense&gt;
+        &lt;/AuthProvider&gt;
+      &lt;/BrowserRouter&gt;
+    &lt;/QueryClientProvider&gt;
+  );
+}</code></pre>
+<h2>15.2 Query key</h2>
+<pre><code><span class="kw">// Gom key một chỗ để không gõ sai và dễ invalidate đúng phạm vi</span>
+<span class="kw">export</span> <span class="kw">const</span> jobKeys = {
+  all: [<span class="str">&#x27;jobs&#x27;</span>] <span class="kw">as</span> <span class="kw">const</span>,
+  list: (filters: JobFilters) =&gt; [<span class="str">&#x27;jobs&#x27;</span>, <span class="str">&#x27;list&#x27;</span>, filters] <span class="kw">as</span> <span class="kw">const</span>,
+};</code></pre>
+<p><strong>Key là địa chỉ của cache.</strong> Cùng key thì dùng chung dữ liệu và chỉ gọi API một lần. Mọi biến ảnh hưởng đến kết quả (trang, từ khoá) đều phải nằm trong key.</p>
+<h2>15.3 Tầng gọi API và hook đọc dữ liệu</h2>
+<pre><code><span class="kw">export</span> <span class="kw">interface</span> <span class="cls">JobFilters</span> {
+  page: <span class="kw">number</span>;
+  q: <span class="kw">string</span>;
+}
+
+<span class="kw">export</span> <span class="kw">const</span> jobsApi = {
+  list: <span class="kw">async</span> ({ page, q }: <span class="cls">JobFilters</span>, signal?: <span class="cls">AbortSignal</span>) =&gt; {
+    <span class="kw">const</span> res = <span class="kw">await</span> http.get&lt;<span class="cls">Paginated</span>&lt;<span class="cls">Job</span>&gt;&gt;(<span class="str">&#x27;/jobs&#x27;</span>, { params: { page, q }, signal });
+    <span class="kw">return</span> res.data;
+  },
+  create: <span class="kw">async</span> (job: <span class="cls">NewJob</span>) =&gt; (<span class="kw">await</span> http.post&lt;<span class="cls">Job</span>&gt;(<span class="str">&#x27;/jobs&#x27;</span>, job)).data,
+  remove: <span class="kw">async</span> (id: <span class="kw">number</span>) =&gt; {
+    <span class="kw">await</span> http.<span class="cls">delete</span>(<span class="str">`/jobs/${id}`</span>);
+  },
+};</code></pre>
+<pre><code><span class="kw">export</span> <span class="kw">function</span> <span class="cls">useJobs</span>(filters: JobFilters) {
+  <span class="kw">return</span> <span class="cls">useQuery</span>({
+    queryKey: jobKeys.<span class="cls">list</span>(filters), <span class="kw">// filters đổi là tự gọi lại</span>
+    queryFn: ({ signal }) =&gt; jobsApi.<span class="cls">list</span>(filters, signal), <span class="kw">// signal để huỷ request cũ</span>
+    placeholderData: keepPreviousData, <span class="kw">// giữ trang cũ trong lúc tải trang mới</span>
+    staleTime: 30_000, <span class="kw">// 30 giây đầu coi là còn mới, không gọi lại</span>
+  });
+}</code></pre>
+<table>
+<thead>
+<tr>
+<th>Khái niệm</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>isPending</code></td>
+<td>Chưa có dữ liệu lần nào (hiện khung tải)</td>
+</tr>
+<tr>
+<td><code>isFetching</code></td>
+<td>Đang gọi API, có thể đã có dữ liệu cũ</td>
+</tr>
+<tr>
+<td><code>staleTime</code></td>
+<td>Bao lâu thì dữ liệu bị coi là cũ. Mặc định <code>0</code>, nghĩa là cũ ngay</td>
+</tr>
+<tr>
+<td><code>gcTime</code></td>
+<td>Bao lâu sau khi không còn component dùng thì xoá khỏi cache. Mặc định 5 phút</td>
+</tr>
+<tr>
+<td><code>placeholderData: keepPreviousData</code></td>
+<td>Giữ trang cũ khi đang tải trang mới, tránh màn hình nhảy</td>
+</tr>
+</tbody></table>
+<div class="note">
+
+<p><strong>Từ bản 5:</strong> <code>isLoading</code> cũ đổi thành <code>isPending</code>, và <code>keepPreviousData: true</code> đổi thành <code>placeholderData: keepPreviousData</code>. Nếu đọc bài viết cũ thấy khác thì đây là lý do.</p>
+</div>
+
+
+<h2>15.4 Phân trang lưu trên URL</h2>
+<pre><code><span class="kw">export</span> <span class="kw">function</span> <span class="cls">JobsPage</span>() {
+  <span class="kw">const</span> [params, setParams] = <span class="cls">useSearchParams</span>(); <span class="kw">// state nằm trên URL: F5 hay gửi link vẫn đúng trang</span>
+  <span class="kw">const</span> page = <span class="cls">Number</span>(params.<span class="cls">get</span>(<span class="str">&#x27;page&#x27;</span>) ?? 1);
+  <span class="kw">const</span> q = params.<span class="cls">get</span>(<span class="str">&#x27;q&#x27;</span>) ?? <span class="str">&#x27;&#x27;</span>;
+  <span class="kw">const</span> filters = { page, q };
+
+  <span class="kw">const</span> { data, isPending, isError, error, isPlaceholderData } = <span class="cls">useJobs</span>(filters);
+  <span class="kw">const</span> deleteJob = <span class="cls">useDeleteJob</span>(filters);
+
+  <span class="kw">const</span> <span class="cls">goTo</span> = (next: <span class="kw">number</span>) =&gt;
+    <span class="cls">setParams</span>((prev) =&gt; {
+      prev.<span class="cls">set</span>(<span class="str">&#x27;page&#x27;</span>, <span class="cls">String</span>(next));
+      <span class="kw">return</span> prev;
+    });
+
+  <span class="kw">if</span> (isPending) <span class="kw">return</span> <span class="language-xml">&lt;p&gt;Đang tải...&lt;/p&gt;;
+  <span class="kw">if</span> (isError) <span class="kw">return</span> <span class="language-xml">&lt;p role=<span class="str">&quot;alert&quot;</span>&gt;{getErrorMessage(error)}&lt;/p&gt;;
+
+  <span class="kw">return</span> (
+    <span class="language-xml">&lt;section style=<span class="str">{{</span> opacity: isPlaceholderData ? 0.5 : 1 }}&gt;
+      {data.data.length === 0 &amp;&amp; &lt;p&gt;Chưa có tin nào&lt;/p&gt;}
+      &lt;ul&gt;
+        {data.data.map((job) =&gt; (
+          &lt;li key=<span class="str">{job.id}</span>&gt;
+            {job.title}
+            &lt;button onClick=<span class="str">{()</span> =&gt; deleteJob.mutate(job.id)}&gt;Xoá {job.title}&lt;/button&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+      &lt;button disabled=<span class="str">{page</span> &lt;= <span class="str">1}</span> onClick=<span class="str">{()</span> =&gt; goTo(page - 1)}&gt;Trước&lt;/button&gt;
+      &lt;span&gt;Trang {data.meta.page}/{data.meta.lastPage}&lt;/span&gt;
+      &lt;button disabled=<span class="str">{isPlaceholderData</span> || page &gt;= data.meta.lastPage} onClick={() =&gt; goTo(page + 1)}&gt;Sau&lt;/button&gt;
+    &lt;/section&gt;
+  );
+}</code></pre>
+<p>Lưu trang và từ khoá trên URL thay vì <code>useState</code>. Nhờ vậy F5 vẫn đúng trang, gửi link cho người khác vẫn đúng kết quả, và nút Back hoạt động. Nút &quot;Sau&quot; bị khoá khi <code>isPlaceholderData</code> là <code>true</code>, để người dùng không bấm vượt quá trang có thật.</p>
+<h2>15.5 Ghi dữ liệu với mutation</h2>
+<pre><code><span class="kw">export</span> <span class="kw">function</span> <span class="cls">useCreateJob</span>() {
+  <span class="kw">const</span> queryClient = <span class="cls">useQueryClient</span>();
+  <span class="kw">return</span> <span class="cls">useMutation</span>({
+    mutationFn: jobsApi.create,
+    onSuccess: () =&gt; queryClient.<span class="cls">invalidateQueries</span>({ queryKey: jobKeys.all }),
+  });
+}</code></pre>
+<p>Sau khi ghi, <code>invalidateQueries</code> đánh dấu mọi query có key bắt đầu bằng <code>[&#39;jobs&#39;]</code> là cũ và tải lại các query đang hiển thị. Đây là lý do nên gom key theo cấp.</p>
+<h2>15.6 Optimistic update</h2>
+<p>Giao diện đổi ngay, không chờ server. Nếu lỗi thì phục hồi lại.</p>
+<pre><code><span class="kw">export</span> <span class="kw">function</span> <span class="cls">useDeleteJob</span>(filters: JobFilters) {
+  <span class="kw">const</span> queryClient = <span class="cls">useQueryClient</span>();
+  <span class="kw">const</span> key = jobKeys.<span class="cls">list</span>(filters);
+
+  <span class="kw">return</span> <span class="cls">useMutation</span>({
+    mutationFn: jobsApi.remove,
+    onMutate: <span class="kw">async</span> (id: <span class="kw">number</span>) =&gt; {
+      <span class="kw">await</span> queryClient.<span class="cls">cancelQueries</span>({ queryKey: key }); <span class="kw">// tránh request cũ ghi đè</span>
+      <span class="kw">const</span> previous = queryClient.getQueryData&lt;<span class="cls">Paginated</span>&lt;<span class="cls">Job</span>&gt;&gt;(key);
+      queryClient.setQueryData&lt;<span class="cls">Paginated</span>&lt;<span class="cls">Job</span>&gt;&gt;(key, (old) =&gt;
+        old &amp;&amp; { ...old, data: old.data.<span class="cls">filter</span>((j) =&gt; j.id !== id) },
+      );
+      <span class="kw">return</span> { previous }; <span class="kw">// đưa sang onError để phục hồi</span>
+    },
+    onError: (_error, _id, context) =&gt; {
+      <span class="kw">if</span> (context?.previous) queryClient.<span class="cls">setQueryData</span>(key, context.previous);
+    },
+    onSettled: () =&gt; queryClient.<span class="cls">invalidateQueries</span>({ queryKey: jobKeys.all }),
+  });
+}</code></pre>
+<p>Chỉ dùng cho thao tác hay thành công và dễ phục hồi, như xoá hay thích. Không dùng cho thanh toán.</p>
+<div class="audit">
+
+<p><strong>Đã kiểm chứng bằng test:</strong> tải dữ liệu rồi chuyển trang theo URL, hiện lỗi khi API trả 500, và xoá optimistic: dòng biến mất ngay, server trả lỗi thì dòng hiện lại.</p>
+</div>
+
+
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Thay toàn bộ <code>useEffect</code> gọi API của dự án bằng <code>useQuery</code>.</li>
+<li>Gom key vào một object như <code>jobKeys</code>.</li>
+<li>Thêm phân trang và ô tìm kiếm lưu trên URL, kết hợp debounce (bài 4.5 trong tài liệu JS) để không gọi API mỗi lần gõ.</li>
+<li>Thêm job bằng <code>useMutation</code>, chứng minh danh sách tự cập nhật.</li>
+<li>Xoá job bằng optimistic update. Tắt API rồi bấm xoá, xác nhận dòng hiện lại và có thông báo lỗi.</li>
+<li>Mở Network: cùng một trang vào hai lần trong 30 giây thì chỉ có một request.</li>
+</ol>
+</div>
+
+
+
+</div>
+
+<!-- PART 16 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 16 — ĐI LÀM</div>
+<h1>Form với React Hook Form + Zod</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Làm form có validate rõ ràng, hiển thị được lỗi từ server, dùng được với trình đọc màn hình.</div></div>
+<h2>16.1 Vì sao không tự viết</h2>
+<p>Form thật có rất nhiều trạng thái: giá trị, lỗi, đã chạm, đang gửi, lỗi server. React Hook Form lo phần đó và hạn chế render lại. Zod mô tả quy tắc ở một chỗ, và <strong>TypeScript tự suy ra kiểu từ quy tắc</strong>.</p>
+<pre><code><span class="cli">npm i react-hook-form zod @hookform/resolvers</span></code></pre>
+<h2>16.2 Schema</h2>
+<pre><code><span class="kw">export</span> <span class="kw">const</span> jobFormSchema = z.<span class="cls">object</span>({
+  title: z.<span class="cls">string</span>().<span class="cls">trim</span>().<span class="cls">min</span>(3, <span class="str">&#x27;Tiêu đề tối thiểu 3 ký tự&#x27;</span>),
+  type: z.<span class="cls">enum</span>([<span class="str">&#x27;full-time&#x27;</span>, <span class="str">&#x27;part-time&#x27;</span>, <span class="str">&#x27;remote&#x27;</span>], { error: <span class="str">&#x27;Chọn loại công việc&#x27;</span> }),
+  salary: z.coerce.<span class="cls">number</span>({ error: <span class="str">&#x27;Lương phải là số&#x27;</span> }).<span class="cls">int</span>(<span class="str">&#x27;Lương phải là số nguyên&#x27;</span>).<span class="cls">positive</span>(<span class="str">&#x27;Lương phải lớn hơn 0&#x27;</span>),
+  companyName: z.<span class="cls">string</span>().<span class="cls">trim</span>().<span class="cls">min</span>(1, <span class="str">&#x27;Nhập tên công ty&#x27;</span>),
+});
+
+<span class="kw">// input: dữ liệu trong form (salary còn là chuỗi); output: sau khi Zod xử lý (salary là number)</span>
+<span class="kw">export</span> <span class="kw">type</span> <span class="cls">JobFormInput</span> = z.input&lt;<span class="kw">typeof</span> jobFormSchema&gt;;
+<span class="kw">export</span> <span class="kw">type</span> <span class="cls">JobFormValues</span> = z.output&lt;<span class="kw">typeof</span> jobFormSchema&gt;;</code></pre>
+<p>Ô input luôn trả về chuỗi, nên <code>salary</code> cần <code>z.coerce.number()</code>. Vì đầu vào và đầu ra khác kiểu, phải tách <code>z.input</code> và <code>z.output</code>. Lưu ý: chuỗi rỗng được ép thành số <code>0</code>, nên phải có <code>.positive()</code> thì mới bắt được ô bỏ trống.</p>
+<h2>16.3 Form</h2>
+<pre><code><span class="kw">export</span> <span class="kw">function</span> <span class="cls">JobForm</span>({ onCreated }: { onCreated?: () =&gt; <span class="kw">void</span> }) {
+  <span class="kw">const</span> createJob = <span class="cls">useCreateJob</span>();
+  <span class="kw">const</span> {
+    register,
+    handleSubmit,
+    setError,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm&lt;<span class="cls">JobFormInput</span>, <span class="kw">unknown</span>, <span class="cls">JobFormValues</span>&gt;({
+    resolver: <span class="cls">zodResolver</span>(jobFormSchema),
+    defaultValues: { title: <span class="str">&#x27;&#x27;</span>, salary: <span class="str">&#x27;&#x27;</span>, companyName: <span class="str">&#x27;&#x27;</span> },
+  });
+
+  <span class="kw">const</span> <span class="cls">onSubmit</span> = <span class="kw">async</span> (values: JobFormValues) =&gt; {
+    <span class="kw">try</span> {
+      <span class="kw">await</span> createJob.<span class="cls">mutateAsync</span>({
+        title: values.title,
+        type: values.type,
+        salary: values.salary,
+        company: { name: values.companyName },
+      });
+      <span class="cls">reset</span>();
+      onCreated?.();
+    } <span class="kw">catch</span> (error) {
+      <span class="kw">const</span> fields = <span class="cls">getFieldErrors</span>(error); <span class="kw">// lỗi 422 từ server gắn vào đúng ô</span>
+      <span class="kw">for</span> (<span class="kw">const</span> [field, message] <span class="kw">of</span> <span class="cls">Object</span>.<span class="cls">entries</span>(fields)) {
+        <span class="cls">setError</span>(field <span class="kw">as</span> keyof <span class="cls">JobFormInput</span>, { message });
+      }
+      <span class="kw">if</span> (<span class="cls">Object</span>.<span class="cls">keys</span>(fields).length === 0) <span class="cls">setError</span>(<span class="str">&#x27;root&#x27;</span>, { message: <span class="cls">getErrorMessage</span>(error) });
+    }
+  };
+
+  <span class="kw">return</span> (
+    <span class="language-xml">&lt;form onSubmit=<span class="str">{handleSubmit(onSubmit)}</span> noValidate&gt;
+      &lt;label htmlFor=<span class="str">&quot;title&quot;</span>&gt;Tiêu đề&lt;/label&gt;
+      &lt;input
+        id=<span class="str">&quot;title&quot;</span>
+        aria-invalid=<span class="str">{!!errors.title}</span>
+        aria-describedby=<span class="str">{errors.title</span> ? &#x27;title-error&#x27; : undefined}
+        {...register(&#x27;title&#x27;)}
+      /&gt;
+      {errors.title &amp;&amp; &lt;p id=<span class="str">&quot;title-error&quot;</span> role=<span class="str">&quot;alert&quot;</span>&gt;{errors.title.message}&lt;/p&gt;}
+
+      &lt;label htmlFor=<span class="str">&quot;type&quot;</span>&gt;Loại&lt;/label&gt;
+      &lt;select id=<span class="str">&quot;type&quot;</span> defaultValue=<span class="str">&quot;&quot;</span> {...register(&#x27;type&#x27;)}&gt;
+        &lt;option value=<span class="str">&quot;&quot;</span> disabled&gt;Chọn...&lt;/option&gt;
+        &lt;option value=<span class="str">&quot;full-time&quot;</span>&gt;Toàn thời gian&lt;/option&gt;
+        &lt;option value=<span class="str">&quot;remote&quot;</span>&gt;Từ xa&lt;/option&gt;
+      &lt;/select&gt;
+      {errors.type &amp;&amp; &lt;p role=<span class="str">&quot;alert&quot;</span>&gt;{errors.type.message}&lt;/p&gt;}
+
+      &lt;label htmlFor=<span class="str">&quot;salary&quot;</span>&gt;Lương&lt;/label&gt;
+      &lt;input id=<span class="str">&quot;salary&quot;</span> inputMode=<span class="str">&quot;numeric&quot;</span> {...register(&#x27;salary&#x27;)} /&gt;
+      {errors.salary &amp;&amp; &lt;p role=<span class="str">&quot;alert&quot;</span>&gt;{errors.salary.message}&lt;/p&gt;}
+
+      &lt;label htmlFor=<span class="str">&quot;companyName&quot;</span>&gt;Công ty&lt;/label&gt;
+      &lt;input id=<span class="str">&quot;companyName&quot;</span> {...register(&#x27;companyName&#x27;)} /&gt;
+      {errors.companyName &amp;&amp; &lt;p role=<span class="str">&quot;alert&quot;</span>&gt;{errors.companyName.message}&lt;/p&gt;}
+
+      {errors.root &amp;&amp; &lt;p role=<span class="str">&quot;alert&quot;</span>&gt;{errors.root.message}&lt;/p&gt;}
+      &lt;button disabled=<span class="str">{isSubmitting}</span>&gt;{isSubmitting ? &#x27;Đang lưu...&#x27; : &#x27;Lưu&#x27;}&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+<h2>16.4 Đưa lỗi từ server vào đúng ô</h2>
+<p>Validate ở client chỉ để trải nghiệm tốt hơn. <strong>Server vẫn phải validate</strong>, và có lỗi chỉ server mới biết, như email đã tồn tại.</p>
+<pre><code><span class="kw">// Laravel trả 422 { message, errors: { title: [&#x27;...&#x27;] } }</span>
+<span class="kw">// NestJS (ValidationPipe) trả 400 { message: [&#x27;title must be...&#x27;] }</span>
+<span class="kw">export</span> <span class="kw">function</span> <span class="cls">getFieldErrors</span>(error: <span class="kw">unknown</span>): <span class="cls">Record</span>&lt;<span class="kw">string</span>, <span class="kw">string</span>&gt; {
+  <span class="kw">if</span> (!axios.<span class="cls">isAxiosError</span>(error)) <span class="kw">return</span> {};
+  <span class="kw">const</span> errors = error.response?.data?.errors <span class="kw">as</span> <span class="cls">Record</span>&lt;<span class="kw">string</span>, <span class="kw">string</span>[]&gt; | <span class="kw">undefined</span>;
+  <span class="kw">if</span> (!errors) <span class="kw">return</span> {};
+  <span class="kw">return</span> <span class="cls">Object</span>.<span class="cls">fromEntries</span>(<span class="cls">Object</span>.<span class="cls">entries</span>(errors).<span class="cls">map</span>(([field, list]) =&gt; [field, list[0]]));
+}
+
+<span class="kw">export</span> <span class="kw">function</span> <span class="cls">getErrorMessage</span>(error: <span class="kw">unknown</span>): <span class="kw">string</span> {
+  <span class="kw">if</span> (axios.<span class="cls">isAxiosError</span>(error)) {
+    <span class="kw">if</span> (!error.response) <span class="kw">return</span> <span class="str">&#x27;Không kết nối được máy chủ&#x27;</span>;
+    <span class="kw">const</span> message = error.response.data?.message;
+    <span class="kw">return</span> <span class="cls">Array</span>.<span class="cls">isArray</span>(message) ? message.<span class="cls">join</span>(<span class="str">&#x27;, &#x27;</span>) : (message ?? <span class="str">`Lỗi ${error.response.status}`</span>);
+  }
+  <span class="kw">return</span> <span class="str">&#x27;Có lỗi xảy ra&#x27;</span>;
+}</code></pre>
+<h2>16.5 Accessibility cho form</h2>
+<ul>
+<li>Mọi ô có <code>label</code> gắn đúng <code>htmlFor</code>, không dùng <code>placeholder</code> thay nhãn.</li>
+<li>Ô lỗi có <code>aria-invalid</code>, nối với thông báo bằng <code>aria-describedby</code>.</li>
+<li>Thông báo lỗi có <code>role=&quot;alert&quot;</code> để trình đọc màn hình đọc lên.</li>
+<li>Test bằng <code>getByLabelText</code> (Part 13) vừa kiểm tra chức năng vừa kiểm tra nhãn.</li>
+</ul>
+<h2>16.6 Khi nào dùng Actions của React 19</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>React Hook Form + Zod</th>
+<th><code>useActionState</code> (Part 11)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Validate khi đang gõ</td>
+<td>Có sẵn</td>
+<td>Tự viết</td>
+</tr>
+<tr>
+<td>Form lớn, nhiều trường phụ thuộc nhau</td>
+<td>Rất hợp</td>
+<td>Khó</td>
+</tr>
+<tr>
+<td>Thêm thư viện</td>
+<td>Có</td>
+<td>Không</td>
+</tr>
+<tr>
+<td>Hợp với</td>
+<td>SPA gọi API</td>
+<td>Form đơn giản, Server Actions của Next.js</td>
+</tr>
+</tbody></table>
+<div class="audit">
+
+<p><strong>Đã kiểm chứng bằng test:</strong> Zod báo đủ lỗi và không gọi API; dữ liệu gửi đi đúng kiểu (<code>salary</code> là số, <code>title</code> đã cắt khoảng trắng); lỗi 422 của server hiện đúng dưới ô. Chạy với zod 4.6, react-hook-form 7.91.</p>
+</div>
+
+
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Viết lại form thêm và sửa job bằng React Hook Form + Zod, dùng chung một schema.</li>
+<li>Khi sửa, nạp dữ liệu cũ vào form bằng <code>values</code> hoặc <code>reset</code>.</li>
+<li>Hiện lỗi 422 của Laravel vào đúng ô bằng <code>setError</code>.</li>
+<li>Khoá nút khi đang gửi, chặn gửi hai lần.</li>
+<li>Test: bỏ trống hiện lỗi, nhập đúng thì gọi API đúng dữ liệu, server trả 422 thì hiện lỗi đúng chỗ.</li>
+</ol>
+</div>
+
+
+
+</div>
+
+<!-- PART 17 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 17 — ĐI LÀM</div>
+<h1>Đăng nhập thực chiến: axios, refresh token, protected route</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Làm luồng đăng nhập dùng được trong dự án thật: token an toàn, tự làm mới, F5 không mất phiên. Backend tương ứng ở NestJS Part 27.</div></div>
+<h2>17.1 Mô hình</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Lưu ở đâu</th>
+<th>Sống bao lâu</th>
+<th>Vì sao</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Access token</td>
+<td>Biến trong bộ nhớ</td>
+<td>15 phút</td>
+<td>XSS khó lấy hơn <code>localStorage</code>, lộ cũng hết hạn nhanh</td>
+</tr>
+<tr>
+<td>Refresh token</td>
+<td>Cookie <code>HttpOnly</code>, do server đặt</td>
+<td>30 ngày</td>
+<td>JavaScript không đọc được</td>
+</tr>
+</tbody></table>
+<p>F5 làm mất access token, nên khi tải trang, app gọi <code>/auth/refresh</code> để lấy lại.</p>
+<h2>17.2 Axios instance</h2>
+<pre><code><span class="kw">export</span> <span class="kw">const</span> http = axios.<span class="cls">create</span>({ baseURL: <span class="str">&#x27;/api&#x27;</span>, withCredentials: <span class="kw">true</span> });
+
+<span class="kw">let</span> accessToken: <span class="kw">string</span> | <span class="kw">null</span> = <span class="kw">null</span>; <span class="kw">// chỉ giữ trong bộ nhớ, không để localStorage</span>
+<span class="kw">let</span> onSessionExpired: () =&gt; <span class="kw">void</span> = () =&gt; {};
+
+<span class="kw">export</span> <span class="kw">const</span> <span class="cls">setAccessToken</span> = (token: <span class="kw">string</span> | <span class="kw">null</span>) =&gt; {
+  accessToken = token;
+};
+<span class="kw">export</span> <span class="kw">const</span> <span class="cls">setSessionExpiredHandler</span> = (fn: () =&gt; <span class="kw">void</span>) =&gt; {
+  onSessionExpired = fn;
+};
+
+http.interceptors.request.<span class="cls">use</span>((config) =&gt; {
+  <span class="kw">if</span> (accessToken) config.headers.Authorization = <span class="str">`Bearer ${accessToken}`</span>;
+  <span class="kw">return</span> config;
+});
+
+<span class="kw">// API NestJS bọc mọi response thành { success, data } (TransformInterceptor, Part 07 của plan NestJS).</span>
+<span class="kw">// Bóc ở MỘT chỗ để phần còn lại của app chỉ thấy dữ liệu. Có meta thì giữ nguyên để lấy phân trang.</span>
+<span class="kw">function</span> unwrap&lt;T <span class="kw">extends</span> <span class="cls">AxiosResponse</span>&gt;(res: T): T {
+  <span class="kw">if</span> (res.data?.success === <span class="kw">true</span> &amp;&amp; !(<span class="str">&#x27;meta&#x27;</span> <span class="kw">in</span> res.data)) res.data = res.data.data;
+  <span class="kw">return</span> res;
+}</code></pre>
+<p>Đoạn <code>unwrap</code> tồn tại vì API NestJS của bạn bọc response trong <code>{ success, data }</code>. Nếu quên, đăng nhập sẽ không chạy, vì <code>res.data.access_token</code> là <code>undefined</code>. <strong>Lỗi này không test giả lập nào bắt được, chỉ lộ ra khi nối với API thật.</strong></p>
+<h2>17.3 Tự làm mới token</h2>
+<pre><code><span class="kw">type</span> <span class="cls">RetriableConfig</span> = <span class="cls">InternalAxiosRequestConfig</span> &amp; { _retried?: <span class="kw">boolean</span> };
+
+<span class="kw">// Nhiều request cùng nhận 401 chỉ gọi refresh MỘT lần và cùng chờ kết quả đó</span>
+<span class="kw">let</span> refreshing: <span class="cls">Promise</span>&lt;<span class="kw">string</span>&gt; | <span class="kw">null</span> = <span class="kw">null</span>;
+
+<span class="kw">export</span> <span class="kw">function</span> <span class="cls">refreshAccessToken</span>(): <span class="cls">Promise</span>&lt;<span class="kw">string</span>&gt; {
+  refreshing ??= axios
+    .post&lt;{ access_token: <span class="kw">string</span> }&gt;(<span class="str">&#x27;/api/auth/refresh&#x27;</span>, <span class="kw">null</span>, { withCredentials: <span class="kw">true</span> })
+    .<span class="cls">then</span>(unwrap)
+    .<span class="cls">then</span>((res) =&gt; {
+      <span class="cls">setAccessToken</span>(res.data.access_token);
+      <span class="kw">return</span> res.data.access_token;
+    })
+    .<span class="cls">finally</span>(() =&gt; {
+      refreshing = <span class="kw">null</span>;
+    });
+  <span class="kw">return</span> refreshing;
+}
+
+http.interceptors.response.<span class="cls">use</span>(
+  unwrap,
+  <span class="kw">async</span> (error: <span class="cls">AxiosError</span>) =&gt; {
+    <span class="kw">const</span> original = error.config <span class="kw">as</span> <span class="cls">RetriableConfig</span> | <span class="kw">undefined</span>;
+    <span class="kw">const</span> isAuthCall = original?.url?.<span class="cls">startsWith</span>(<span class="str">&#x27;/auth/&#x27;</span>);
+
+    <span class="kw">if</span> (error.response?.status !== 401 || !original || original._retried || isAuthCall) {
+      <span class="kw">throw</span> error;
+    }
+
+    original._retried = <span class="kw">true</span>; <span class="kw">// chặn vòng lặp vô hạn</span>
+    <span class="kw">try</span> {
+      <span class="kw">await</span> <span class="cls">refreshAccessToken</span>();
+      <span class="kw">return</span> <span class="kw">await</span> <span class="cls">http</span>(original); <span class="kw">// interceptor request gắn token mới</span>
+    } <span class="kw">catch</span> (refreshError) {
+      <span class="cls">setAccessToken</span>(<span class="kw">null</span>);
+      <span class="cls">onSessionExpired</span>();
+      <span class="kw">throw</span> refreshError;
+    }
+  },
+);</code></pre>
+<p>Ba điểm dễ sai:</p>
+<ul>
+<li><strong>Chỉ refresh một lần:</strong> nhiều request cùng nhận 401 phải dùng chung một lần refresh. Nếu mỗi request tự refresh, token xoay vòng sẽ bị coi là dùng lại và cả phiên bị thu hồi.</li>
+<li><strong>Chặn vòng lặp:</strong> cờ <code>_retried</code> để một request chỉ thử lại một lần.</li>
+<li><strong>Không refresh cho chính <code>/auth/*</code>:</strong> đăng nhập sai mà cũng refresh là vô lý.</li>
+</ul>
+<h2>17.4 AuthContext</h2>
+<pre><code><span class="kw">interface</span> <span class="cls">User</span> {
+  id: <span class="kw">number</span>;
+  email: <span class="kw">string</span>;
+}
+<span class="kw">interface</span> <span class="cls">AuthValue</span> {
+  user: <span class="cls">User</span> | <span class="kw">null</span>;
+  isLoading: <span class="kw">boolean</span>;
+  login: (email: <span class="kw">string</span>, password: <span class="kw">string</span>) =&gt; <span class="cls">Promise</span>&lt;<span class="kw">void</span>&gt;;
+  logout: () =&gt; <span class="cls">Promise</span>&lt;<span class="kw">void</span>&gt;;
+}
+
+<span class="kw">const</span> <span class="cls">AuthContext</span> = createContext&lt;<span class="cls">AuthValue</span> | <span class="kw">null</span>&gt;(<span class="kw">null</span>);
+
+<span class="kw">export</span> <span class="kw">function</span> <span class="cls">AuthProvider</span>({ children }: { children: ReactNode }) {
+  <span class="kw">const</span> [user, setUser] = useState&lt;<span class="cls">User</span> | <span class="kw">null</span>&gt;(<span class="kw">null</span>);
+  <span class="kw">const</span> [isLoading, setIsLoading] = <span class="cls">useState</span>(<span class="kw">true</span>);
+
+  <span class="cls">useEffect</span>(() =&gt; {
+    <span class="cls">setSessionExpiredHandler</span>(() =&gt; <span class="cls">setUser</span>(<span class="kw">null</span>));
+    <span class="kw">// F5 làm mất access token trong bộ nhớ: thử lấy lại bằng refresh token trong cookie</span>
+    <span class="cls">refreshAccessToken</span>()
+      .<span class="cls">then</span>(() =&gt; http.get&lt;<span class="cls">User</span>&gt;(<span class="str">&#x27;/auth/me&#x27;</span>))
+      .<span class="cls">then</span>((res) =&gt; <span class="cls">setUser</span>(res.data))
+      .<span class="cls">catch</span>(() =&gt; <span class="cls">setUser</span>(<span class="kw">null</span>))
+      .<span class="cls">finally</span>(() =&gt; <span class="cls">setIsLoading</span>(<span class="kw">false</span>));
+  }, []);
+
+  <span class="kw">const</span> value = useMemo&lt;<span class="cls">AuthValue</span>&gt;(
+    () =&gt; ({
+      user,
+      isLoading,
+      login: <span class="kw">async</span> (email, password) =&gt; {
+        <span class="kw">const</span> res = <span class="kw">await</span> http.post&lt;{ access_token: <span class="kw">string</span> }&gt;(<span class="str">&#x27;/auth/login&#x27;</span>, { email, password });
+        <span class="cls">setAccessToken</span>(res.data.access_token);
+        <span class="kw">const</span> me = <span class="kw">await</span> http.get&lt;<span class="cls">User</span>&gt;(<span class="str">&#x27;/auth/me&#x27;</span>);
+        <span class="cls">setUser</span>(me.data);
+      },
+      logout: <span class="kw">async</span> () =&gt; {
+        <span class="kw">await</span> http.<span class="cls">post</span>(<span class="str">&#x27;/auth/logout&#x27;</span>).<span class="cls">catch</span>(() =&gt; <span class="kw">undefined</span>);
+        <span class="cls">setAccessToken</span>(<span class="kw">null</span>);
+        <span class="cls">setUser</span>(<span class="kw">null</span>);
+      },
+    }),
+    [user, isLoading],
+  );
+
+  <span class="kw">return</span> <span class="language-xml">&lt;AuthContext value=<span class="str">{value}</span>&gt;{children}&lt;/AuthContext&gt;;
+}
+
+<span class="kw">export</span> <span class="kw">function</span> <span class="cls">useAuth</span>() {
+  <span class="kw">const</span> value = <span class="cls">use</span>(<span class="cls">AuthContext</span>);
+  <span class="kw">if</span> (!value) <span class="kw">throw</span> <span class="kw">new</span> <span class="cls">Error</span>(<span class="str">&#x27;useAuth phải nằm trong AuthProvider&#x27;</span>);
+  <span class="kw">return</span> value;
+}</code></pre>
+<h2>17.5 Protected route</h2>
+<pre><code><span class="kw">export</span> <span class="kw">function</span> <span class="cls">ProtectedRoute</span>() {
+  <span class="kw">const</span> { user, isLoading } = <span class="cls">useAuth</span>();
+  <span class="kw">const</span> location = <span class="cls">useLocation</span>();
+
+  <span class="kw">if</span> (isLoading) <span class="kw">return</span> <span class="language-xml">&lt;p&gt;Đang kiểm tra đăng nhập...&lt;/p&gt;; <span class="kw">// chưa biết thì đừng đá về /login</span>
+  <span class="kw">if</span> (!user) <span class="kw">return</span> <span class="language-xml">&lt;Navigate to=<span class="str">&quot;/login&quot;</span> replace state=<span class="str">{{</span> from: location.pathname }} /&gt;;
+  <span class="kw">return</span> <span class="language-xml">&lt;Outlet /&gt;;
+}</code></pre>
+<p>Cách gắn vào router xem đoạn <code>App</code> ở mục 15.1: bọc các trang cần đăng nhập trong <code>&lt;Route element={&lt;ProtectedRoute /&gt;}&gt;</code>.</p>
+<p><code>isLoading</code> rất quan trọng: nếu thiếu, người đã đăng nhập bấm F5 sẽ bị đá về <code>/login</code> trong tích tắc. Sau khi đăng nhập, gọi <code>navigate(location.state?.from ?? &#39;/&#39;, { replace: true })</code> để quay về trang đang định vào.</p>
+<div class="note">
+
+<p><strong>Protected route chỉ là trải nghiệm, không phải bảo mật.</strong> Mã JavaScript nằm ở trình duyệt, ai cũng sửa được. Quyền thật phải kiểm tra ở server trên mỗi request.</p>
+</div>
+
+
+<h2>17.6 Nối với API: proxy và cookie path</h2>
+<pre><code><span class="kw">// vite.config.ts</span>
+<span class="kw">export</span> <span class="kw">default</span> <span class="cls">defineConfig</span>({
+  plugins: [<span class="cls">react</span>()],
+  server: { proxy: { <span class="str">&#x27;/api&#x27;</span>: { target: <span class="str">&#x27;http://localhost:3000&#x27;</span>, changeOrigin: <span class="kw">true</span> } } },
+});</code></pre>
+<p>Proxy làm trình duyệt coi API và trang web là <strong>cùng origin</strong>, nên không gặp CORS và cookie hoạt động đơn giản hơn.</p>
+<div class="audit">
+
+<p><strong>Đã chạy bằng trình duyệt thật với API NestJS thật qua proxy Vite:</strong></p>
+<ul>
+<li>Chưa đăng nhập vào <code>/</code> thì sang <code>/login</code>. Đăng nhập xong về <code>/</code>, hiện đúng email.</li>
+<li>Cookie <code>HttpOnly</code>, <code>SameSite=Lax</code>, JavaScript không đọc được, <code>localStorage</code> rỗng.</li>
+<li>Bấm F5: gọi <code>POST /api/auth/refresh</code> 200, rồi <code>GET /api/auth/me</code> 200, vẫn ở <code>/</code>.</li>
+<li><strong>Cookie sai path:</strong> server đặt <code>Path=/auth</code> trong khi trình duyệt gọi <code>/api/auth/...</code>. Đăng nhập vẫn thành công, nhưng F5 thì cookie không được gửi: <code>refresh</code> trả 401 và người dùng văng ra <code>/login</code>. Lỗi này rất khó nhận ra. <code>Path</code> của cookie phải khớp URL <strong>trình duyệt nhìn thấy</strong>.</li>
+</ul>
+</div>
+
+
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Tạo <code>lib/http.ts</code>, chuyển toàn bộ lời gọi API sang dùng <code>http</code>.</li>
+<li>Làm trang đăng nhập, <code>AuthProvider</code>, <code>ProtectedRoute</code>.</li>
+<li>Nối với API NestJS Part 27. Xác nhận trong DevTools: cookie có <code>HttpOnly</code>, <code>localStorage</code> trống.</li>
+<li>Đặt thời hạn access token 20 giây để thử: gọi API sau 20 giây vẫn thành công, và Network có đúng một <code>refresh</code>.</li>
+<li>Mở hai request cùng lúc khi token hết hạn, xác nhận chỉ có một <code>refresh</code>.</li>
+<li>Xoá dòng token trong database rồi thao tác, xác nhận app về <code>/login</code> và không lặp vô hạn.</li>
+</ol>
+</div>
+
+
+
+</div>
+
+<!-- PART 18 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 18 — ĐI LÀM</div>
+<h1>State toàn cục: Zustand và Redux Toolkit</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Biết chọn đúng công cụ cho từng loại state, đọc được code Redux ở dự án có sẵn.</div></div>
+<h2>18.1 Chọn công cụ theo loại state</h2>
+<table>
+<thead>
+<tr>
+<th>Loại state</th>
+<th>Ví dụ</th>
+<th>Dùng</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Server state</td>
+<td>Danh sách job, thông tin user</td>
+<td>TanStack Query</td>
+</tr>
+<tr>
+<td>URL state</td>
+<td>Trang, bộ lọc</td>
+<td><code>useSearchParams</code></td>
+</tr>
+<tr>
+<td>Form state</td>
+<td>Giá trị đang nhập</td>
+<td>React Hook Form</td>
+</tr>
+<tr>
+<td>Local state</td>
+<td>Mở hay đóng modal</td>
+<td><code>useState</code></td>
+</tr>
+<tr>
+<td>Global client state</td>
+<td>Giỏ hàng, giao diện sáng tối</td>
+<td>Context, Zustand, Redux Toolkit</td>
+</tr>
+</tbody></table>
+<p>Thực tế, sau khi TanStack Query lo dữ liệu từ server, phần còn lại cần state toàn cục thường <strong>rất ít</strong>. Đừng đưa dữ liệu API vào Redux nếu không có lý do.</p>
+<h2>18.2 Zustand</h2>
+<pre><code><span class="kw">interface</span> <span class="cls">CartItem</span> {
+  id: <span class="kw">number</span>;
+  price: <span class="kw">number</span>;
+  qty: <span class="kw">number</span>;
+}
+<span class="kw">interface</span> <span class="cls">CartState</span> {
+  items: <span class="cls">CartItem</span>[];
+  add: (item: Omit&lt;CartItem, <span class="str">&#x27;qty&#x27;</span>&gt;) =&gt; <span class="kw">void</span>;
+  remove: (id: <span class="kw">number</span>) =&gt; <span class="kw">void</span>;
+  clear: () =&gt; <span class="kw">void</span>;
+}
+
+<span class="kw">export</span> <span class="kw">const</span> useCart = create&lt;<span class="cls">CartState</span>&gt;()(
+  <span class="cls">persist</span>(
+    (set) =&gt; ({
+      items: [],
+      add: (item) =&gt;
+        <span class="cls">set</span>((state) =&gt; {
+          <span class="kw">const</span> found = state.items.<span class="cls">some</span>((i) =&gt; i.id === item.id);
+          <span class="kw">return</span> {
+            items: found
+              ? state.items.<span class="cls">map</span>((i) =&gt; (i.id === item.id ? { ...i, qty: i.qty + 1 } : i))
+              : [...state.items, { ...item, qty: 1 }],
+          };
+        }),
+      remove: (id) =&gt; <span class="cls">set</span>((state) =&gt; ({ items: state.items.<span class="cls">filter</span>((i) =&gt; i.id !== id) })),
+      clear: () =&gt; <span class="cls">set</span>({ items: [] }),
+    }),
+    { name: <span class="str">&#x27;cart&#x27;</span> }, <span class="kw">// tự lưu vào localStorage với khoá &quot;cart&quot;</span>
+  ),
+);
+
+<span class="kw">// Selector: component chỉ render lại khi đúng phần này đổi</span>
+<span class="kw">export</span> <span class="kw">const</span> <span class="cls">selectTotal</span> = (state: CartState) =&gt; state.items.<span class="cls">reduce</span>((s, i) =&gt; s + i.price * i.qty, 0);</code></pre>
+<pre><code><span class="kw">// Trong component: chỉ render lại khi total đổi</span>
+<span class="kw">const</span> total = <span class="cls">useCart</span>(selectTotal);
+<span class="kw">const</span> add = <span class="cls">useCart</span>((state) =&gt; state.add);</code></pre>
+<h2>18.3 Redux Toolkit</h2>
+<pre><code><span class="kw">interface</span> <span class="cls">CartItem</span> {
+  id: <span class="kw">number</span>;
+  price: <span class="kw">number</span>;
+  qty: <span class="kw">number</span>;
+}
+
+<span class="kw">const</span> cartSlice = <span class="cls">createSlice</span>({
+  name: <span class="str">&#x27;cart&#x27;</span>,
+  initialState: { items: [] <span class="kw">as</span> <span class="cls">CartItem</span>[] },
+  reducers: {
+    <span class="cls">added</span>(state, action: PayloadAction&lt;Omit&lt;CartItem, <span class="str">&#x27;qty&#x27;</span>&gt;&gt;) {
+      <span class="kw">const</span> found = state.items.<span class="cls">find</span>((i) =&gt; i.id === action.payload.id);
+      <span class="kw">if</span> (found) found.qty += 1; <span class="kw">// trông như sửa trực tiếp, Immer tạo state mới phía sau</span>
+      <span class="kw">else</span> state.items.<span class="cls">push</span>({ ...action.payload, qty: 1 });
+    },
+    <span class="cls">removed</span>(state, action: PayloadAction&lt;<span class="kw">number</span>&gt;) {
+      state.items = state.items.<span class="cls">filter</span>((i) =&gt; i.id !== action.payload);
+    },
+  },
+});
+
+<span class="kw">export</span> <span class="kw">const</span> { added, removed } = cartSlice.actions;
+
+<span class="kw">export</span> <span class="kw">const</span> store = <span class="cls">configureStore</span>({ reducer: { cart: cartSlice.reducer } });
+
+<span class="kw">export</span> <span class="kw">type</span> <span class="cls">RootState</span> = <span class="cls">ReturnType</span>&lt;<span class="kw">typeof</span> store.getState&gt;;
+<span class="kw">export</span> <span class="kw">type</span> <span class="cls">AppDispatch</span> = <span class="kw">typeof</span> store.dispatch;
+<span class="kw">export</span> <span class="kw">const</span> useAppDispatch = useDispatch.withTypes&lt;<span class="cls">AppDispatch</span>&gt;();
+<span class="kw">export</span> <span class="kw">const</span> useAppSelector = useSelector.withTypes&lt;<span class="cls">RootState</span>&gt;();</code></pre>
+<pre><code><span class="kw">// main.tsx bọc &lt;Provider store={store}&gt;, sau đó trong component:</span>
+<span class="kw">const</span> items = <span class="cls">useAppSelector</span>((state) =&gt; state.cart.items);
+<span class="kw">const</span> dispatch = <span class="cls">useAppDispatch</span>();
+<span class="cls">dispatch</span>(<span class="cls">added</span>({ id: 1, price: 100 }));</code></pre>
+<h2>18.4 So sánh</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Context</th>
+<th>Zustand</th>
+<th>Redux Toolkit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cài thêm</td>
+<td>Không</td>
+<td>Rất nhẹ</td>
+<td>Hai gói</td>
+</tr>
+<tr>
+<td>Lượng code</td>
+<td>Ít</td>
+<td>Ít nhất</td>
+<td>Nhiều hơn</td>
+</tr>
+<tr>
+<td>Render lại</td>
+<td>Mọi component dùng context</td>
+<td>Theo selector</td>
+<td>Theo selector</td>
+</tr>
+<tr>
+<td>Công cụ debug</td>
+<td>Không có</td>
+<td>Có thể thêm</td>
+<td>Redux DevTools rất mạnh</td>
+</tr>
+<tr>
+<td>Hợp với</td>
+<td>Giá trị ít đổi: theme, user</td>
+<td>Dự án nhỏ và vừa</td>
+<td>Dự án lớn, team đông, đã có sẵn Redux</td>
+</tr>
+</tbody></table>
+<p>Nhiều công ty vẫn dùng Redux trong dự án có sẵn, nên cần đọc được: action, reducer, selector, <code>dispatch</code>.</p>
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Làm tính năng &quot;Lưu tin&quot; bằng Zustand, lưu xuống <code>localStorage</code> bằng <code>persist</code>. F5 vẫn còn.</li>
+<li>Dùng selector, thêm <code>console.log</code> trong component để chứng minh component không liên quan không render lại.</li>
+<li>Làm lại đúng tính năng đó bằng Redux Toolkit, cài Redux DevTools để xem action.</li>
+<li>Viết ra lý do bạn sẽ chọn công cụ nào cho dự án job listings.</li>
+</ol>
+</div>
+
+
+
+</div>
+
+<!-- PART 19 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 19 — ĐI LÀM</div>
+<h1>Next.js cơ bản và Server Components</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Hiểu App Router, ranh giới server và client, Server Actions. Đủ để bắt tay vào dự án Next.js có sẵn.</div></div>
+<h2>19.1 Khi nào cần Next.js</h2>
+<table>
+<thead>
+<tr>
+<th>Cần</th>
+<th>Chọn</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Trang công khai cần SEO: bán hàng, tin tức, tuyển dụng</td>
+<td>Next.js</td>
+</tr>
+<tr>
+<td>Dashboard sau đăng nhập, không cần SEO</td>
+<td>Vite + React là đủ</td>
+</tr>
+<tr>
+<td>Đã có API Laravel hoặc NestJS riêng</td>
+<td>Cả hai đều được, Next.js gọi API đó</td>
+</tr>
+</tbody></table>
+<pre><code><span class="cli">npx create-next-app@latest</span></code></pre>
+<h2>19.2 Định tuyến theo thư mục</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Vai trò</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>app/page.tsx</code></td>
+<td>Trang <code>/</code></td>
+</tr>
+<tr>
+<td><code>app/jobs/[id]/page.tsx</code></td>
+<td>Trang <code>/jobs/123</code></td>
+</tr>
+<tr>
+<td><code>app/layout.tsx</code></td>
+<td>Khung dùng chung, bắt buộc có <code>html</code> và <code>body</code></td>
+</tr>
+<tr>
+<td><code>app/loading.tsx</code></td>
+<td>Giao diện chờ, tự bọc trong Suspense</td>
+</tr>
+<tr>
+<td><code>app/error.tsx</code></td>
+<td>Bắt lỗi của trang</td>
+</tr>
+<tr>
+<td><code>app/not-found.tsx</code></td>
+<td>Trang 404</td>
+</tr>
+</tbody></table>
+<pre><code><span class="kw">export</span> <span class="kw">const</span> metadata: <span class="cls">Metadata</span> = { title: <span class="str">&#x27;Việc làm&#x27;</span>, description: <span class="str">&#x27;Danh sách tin tuyển dụng&#x27;</span> };
+
+<span class="kw">export</span> <span class="kw">default</span> <span class="kw">function</span> <span class="cls">RootLayout</span>({ children }: { children: ReactNode }) {
+  <span class="kw">return</span> (
+    <span class="language-xml">&lt;html lang=<span class="str">&quot;vi&quot;</span>&gt;
+      &lt;body&gt;
+        &lt;nav&gt;Trang web việc làm&lt;/nav&gt;
+        {children}
+      &lt;/body&gt;
+    &lt;/html&gt;
+  );
+}</code></pre>
+<h2>19.3 Server Component và Client Component</h2>
+<p>Trong thư mục <code>app</code>, <strong>mọi component mặc định là Server Component</strong>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Server Component</th>
+<th>Client Component (<code>&#39;use client&#39;</code>)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Chạy ở đâu</td>
+<td>Server</td>
+<td>Server (render đầu) và trình duyệt</td>
+</tr>
+<tr>
+<td><code>async</code>, đọc database, dùng secret</td>
+<td>Được</td>
+<td>Không</td>
+</tr>
+<tr>
+<td><code>useState</code>, <code>useEffect</code>, <code>onClick</code></td>
+<td>Không</td>
+<td>Được</td>
+</tr>
+<tr>
+<td>JavaScript gửi xuống trình duyệt</td>
+<td>Không</td>
+<td>Có</td>
+</tr>
+</tbody></table>
+<pre><code><span class="kw">export</span> <span class="kw">const</span> dynamic = <span class="str">&#x27;force-dynamic&#x27;</span>; <span class="kw">// không prerender lúc build, mỗi request render lại</span>
+
+<span class="kw">// Mặc định là Server Component: được async, đọc được database, không gửi JS xuống trình duyệt</span>
+<span class="kw">export</span> <span class="kw">default</span> <span class="kw">async</span> <span class="kw">function</span> <span class="cls">HomePage</span>() {
+  <span class="kw">const</span> jobs = <span class="kw">await</span> <span class="cls">getJobs</span>();
+  <span class="kw">return</span> (
+    <span class="language-xml">&lt;main&gt;
+      &lt;ul&gt;
+        {jobs.map((job) =&gt; (
+          &lt;li key=<span class="str">{job.id}</span>&gt;
+            &lt;Link href=<span class="str">{</span>`/jobs/${job.id}`}&gt;{job.title}&lt;/Link&gt;
+            &lt;LikeButton /&gt; {/* Chỗ duy nhất cần tương tác mới là Client Component */}
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+      &lt;AddJobForm /&gt;
+    &lt;/main&gt;
+  );
+}</code></pre>
+<pre><code><span class="str">&#x27;use client&#x27;</span>; <span class="kw">// ranh giới: file này và những gì nó import chạy được ở trình duyệt</span>
+
+<span class="kw">import</span> { useState } <span class="kw">from</span> <span class="str">&#x27;react&#x27;</span>;
+
+<span class="kw">export</span> <span class="kw">function</span> <span class="cls">LikeButton</span>() {
+  <span class="kw">const</span> [liked, setLiked] = <span class="cls">useState</span>(<span class="kw">false</span>);
+  <span class="kw">return</span> <span class="language-xml">&lt;button onClick=<span class="str">{()</span> =&gt; setLiked(!liked)}&gt;{liked ? &#x27;Đã thích&#x27; : &#x27;Thích&#x27;}&lt;/button&gt;;
+}</code></pre>
+<p><strong>Nguyên tắc:</strong> đặt <code>&#39;use client&#39;</code> thấp nhất có thể trong cây component. Chỉ nút cần tương tác mới là client, phần còn lại vẫn ở server.</p>
+<h2>19.4 Route động và SEO</h2>
+<pre><code><span class="kw">interface</span> <span class="cls">Props</span> {
+  params: <span class="cls">Promise</span>&lt;{ id: <span class="kw">string</span> }&gt;; <span class="kw">// từ Next 15, params là Promise</span>
+}
+
+<span class="kw">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="cls">generateMetadata</span>({ params }: Props): <span class="cls">Promise</span>&lt;<span class="cls">Metadata</span>&gt; {
+  <span class="kw">const</span> { id } = <span class="kw">await</span> params;
+  <span class="kw">const</span> job = <span class="kw">await</span> <span class="cls">getJob</span>(<span class="cls">Number</span>(id));
+  <span class="kw">return</span> { title: job?.title ?? <span class="str">&#x27;Không tìm thấy&#x27;</span> }; <span class="kw">// &lt;title&gt; riêng cho SEO</span>
+}
+
+<span class="kw">export</span> <span class="kw">default</span> <span class="kw">async</span> <span class="kw">function</span> <span class="cls">JobPage</span>({ params }: Props) {
+  <span class="kw">const</span> { id } = <span class="kw">await</span> params;
+  <span class="kw">const</span> job = <span class="kw">await</span> <span class="cls">getJob</span>(<span class="cls">Number</span>(id));
+  <span class="kw">if</span> (!job) <span class="cls">notFound</span>(); <span class="kw">// hiển thị not-found, trả về 404</span>
+  <span class="kw">return</span> <span class="language-xml">&lt;h1&gt;{job.title}&lt;/h1&gt;;
+}</code></pre>
+<div class="audit">
+
+<p><strong>Đã chạy thử trên Next 16.4:</strong> <code>/jobs/2</code> có <code>title</code> riêng. Nhưng <code>notFound()</code> <strong>không phải lúc nào cũng trả HTTP 404</strong>: khi có <code>app/loading.tsx</code>, <code>/jobs/99</code> trả về <strong>200</strong>, vì response đã bắt đầu stream trước khi biết không có dữ liệu. Bỏ <code>loading.tsx</code> thì trả đúng <strong>404</strong>. Trang cần SEO chuẩn nên lưu ý điểm này.</p>
+</div>
+
+
+<h2>19.5 Server Actions</h2>
+<pre><code><span class="str">&#x27;use server&#x27;</span>; <span class="kw">// mỗi hàm export ở đây là một endpoint công khai</span>
+
+<span class="kw">import</span> { revalidatePath } <span class="kw">from</span> <span class="str">&#x27;next/cache&#x27;</span>;
+<span class="kw">import</span> { addJob } <span class="kw">from</span> <span class="str">&#x27;./lib/jobs&#x27;</span>;
+
+<span class="kw">export</span> <span class="kw">interface</span> <span class="cls">AddJobState</span> {
+  error?: <span class="kw">string</span>;
+  ok?: <span class="kw">boolean</span>;
+}
+
+<span class="kw">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="cls">addJobAction</span>(_prev: AddJobState, formData: FormData): <span class="cls">Promise</span>&lt;<span class="cls">AddJobState</span>&gt; {
+  <span class="kw">const</span> title = <span class="cls">String</span>(formData.<span class="cls">get</span>(<span class="str">&#x27;title&#x27;</span>) ?? <span class="str">&#x27;&#x27;</span>).<span class="cls">trim</span>();
+  <span class="kw">if</span> (title.length &lt; 3) <span class="kw">return</span> { error: <span class="str">&#x27;Tiêu đề tối thiểu 3 ký tự&#x27;</span> }; <span class="kw">// luôn validate lại ở server</span>
+  <span class="kw">await</span> <span class="cls">addJob</span>(title);
+  <span class="cls">revalidatePath</span>(<span class="str">&#x27;/&#x27;</span>); <span class="kw">// làm mới dữ liệu của trang chủ</span>
+  <span class="kw">return</span> { ok: <span class="kw">true</span> };
+}</code></pre>
+<pre><code><span class="str">&#x27;use client&#x27;</span>;
+
+<span class="kw">import</span> { useActionState } <span class="kw">from</span> <span class="str">&#x27;react&#x27;</span>;
+<span class="kw">import</span> { addJobAction } <span class="kw">from</span> <span class="str">&#x27;./actions&#x27;</span>;
+
+<span class="kw">export</span> <span class="kw">function</span> <span class="cls">AddJobForm</span>() {
+  <span class="kw">const</span> [state, formAction, isPending] = <span class="cls">useActionState</span>(addJobAction, {});
+  <span class="kw">return</span> (
+    <span class="language-xml">&lt;form action=<span class="str">{formAction}</span>&gt;
+      &lt;label htmlFor=<span class="str">&quot;title&quot;</span>&gt;Tiêu đề&lt;/label&gt;
+      &lt;input id=<span class="str">&quot;title&quot;</span> name=<span class="str">&quot;title&quot;</span> /&gt;
+      {state.error &amp;&amp; &lt;p role=<span class="str">&quot;alert&quot;</span>&gt;{state.error}&lt;/p&gt;}
+      &lt;button disabled=<span class="str">{isPending}</span>&gt;{isPending ? &#x27;Đang lưu...&#x27; : &#x27;Thêm&#x27;}&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+<div class="note">
+
+<p><strong>Mỗi Server Action là một endpoint công khai</strong>, ai cũng gọi được, kể cả không qua form của bạn. Phải kiểm tra đăng nhập, quyền và validate như một API thật. Đồng thời luôn cập nhật bản vá của <code>next</code> và <code>react</code>: cuối năm 2025 đã có lỗ hổng nghiêm trọng trong React Server Components.</p>
+</div>
+
+
+<h2>19.6 Trạng thái chờ và lỗi</h2>
+<pre><code><span class="kw">export</span> <span class="kw">default</span> <span class="kw">function</span> <span class="cls">Loading</span>() {
+  <span class="kw">return</span> <span class="language-xml">&lt;p&gt;Đang tải...&lt;/p&gt;; <span class="kw">// tự bọc page trong Suspense</span>
+}</code></pre>
+<pre><code><span class="str">&#x27;use client&#x27;</span>; <span class="kw">// error boundary bắt buộc là Client Component</span>
+
+<span class="kw">export</span> <span class="kw">default</span> <span class="kw">function</span> <span class="cls">ErrorPage</span>({ error, reset }: { error: <span class="kw">Error</span>; reset: () =&gt; <span class="kw">void</span> }) {
+  <span class="kw">return</span> (
+    <span class="language-xml">&lt;div role=<span class="str">&quot;alert&quot;</span>&gt;
+      &lt;p&gt;Có lỗi: {error.message}&lt;/p&gt;
+      &lt;button onClick=<span class="str">{reset}</span>&gt;Thử lại&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<div class="audit">
+
+<p><strong>Đã chạy thử qua HTTP thật:</strong> Server Component render dữ liệu ngay trong HTML (tốt cho SEO). Gửi form Server Action với tiêu đề ngắn thì hiện lỗi validate; tiêu đề hợp lệ thì thêm được và danh sách cập nhật. Phần cache nâng cao của Next.js thay đổi khá nhiều giữa các bản nên không đưa vào đây: khi cần, hãy đọc docs của đúng bản bạn đang dùng.</p>
+</div>
+
+
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Tạo app Next.js, làm trang danh sách job và trang chi tiết, gọi API Laravel hoặc NestJS trong Server Component.</li>
+<li>Thêm <code>generateMetadata</code>. Xem nguồn trang (View Source) để xác nhận có sẵn nội dung và <code>title</code>.</li>
+<li>Làm nút &quot;Lưu tin&quot; là Client Component, phần còn lại vẫn là Server Component.</li>
+<li>Làm form thêm job bằng Server Action có validate.</li>
+<li>Thêm <code>loading.tsx</code>, <code>error.tsx</code>, <code>not-found.tsx</code>. Kiểm tra status code của trang không tồn tại bằng <code>curl -I</code>, có và không có <code>loading.tsx</code>.</li>
+</ol>
+</div>
+
+
+
+</div>
+
+<!-- PART 20 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 20 — ĐI LÀM</div>
+<h1>Code splitting, accessibility và checklist trước khi deploy</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Làm app tải nhanh hơn, dùng được cho nhiều người hơn, và đưa lên production đúng cách.</div></div>
+<h2>20.1 Code splitting</h2>
+<pre><code><span class="kw">// Mỗi trang là một file JS riêng, chỉ tải khi người dùng vào trang đó</span>
+<span class="kw">const</span> <span class="cls">JobsPage</span> = <span class="cls">lazy</span>(() =&gt; <span class="kw">import</span>(<span class="str">&#x27;./jobs/JobsPage&#x27;</span>).<span class="cls">then</span>((m) =&gt; ({ default: m.JobsPage })));
+<span class="kw">const</span> <span class="cls">JobForm</span> = <span class="cls">lazy</span>(() =&gt; <span class="kw">import</span>(<span class="str">&#x27;./jobs/JobForm&#x27;</span>).<span class="cls">then</span>((m) =&gt; ({ default: m.JobForm })));</code></pre>
+<p><code>lazy</code> cần một module có <code>export default</code>. Nếu component dùng named export thì đổi như ví dụ trên. Component <code>lazy</code> phải nằm trong <code>&lt;Suspense&gt;</code>.</p>
+<div class="audit">
+
+<p><strong>Đã kiểm chứng bằng <code>vite build</code>:</strong> <code>JobsPage</code> (0,93 kB) và <code>JobForm</code> (122,9 kB, gồm React Hook Form và Zod) được tách thành file riêng, chỉ tải khi vào đúng trang. File chính 347 kB, trong đó có React, router và TanStack Query.</p>
+</div>
+
+
+<h2>20.2 Accessibility cơ bản</h2>
+<table>
+<thead>
+<tr>
+<th>Làm</th>
+<th>Tránh</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>button</code> cho hành động, <code>a</code> cho chuyển trang</td>
+<td><code>div onClick</code> (không dùng được bằng bàn phím)</td>
+</tr>
+<tr>
+<td><code>label</code> cho mọi ô nhập</td>
+<td>Chỉ dùng <code>placeholder</code></td>
+</tr>
+<tr>
+<td><code>alt</code> có ý nghĩa cho ảnh</td>
+<td>Bỏ trống <code>alt</code> với ảnh có nội dung</td>
+</tr>
+<tr>
+<td>Thẻ ngữ nghĩa: <code>nav</code>, <code>main</code>, <code>article</code>, <code>h1</code>–<code>h3</code> đúng thứ tự</td>
+<td>Toàn <code>div</code></td>
+</tr>
+<tr>
+<td>Dùng Tab đi được khắp trang, thấy rõ ô đang chọn</td>
+<td><code>outline: none</code> mà không có thay thế</td>
+</tr>
+<tr>
+<td>Thông báo lỗi có <code>role=&quot;alert&quot;</code></td>
+<td>Lỗi chỉ thể hiện bằng màu đỏ</td>
+</tr>
+</tbody></table>
+<h2>20.3 Checklist trước khi deploy</h2>
+<table>
+<thead>
+<tr>
+<th>Hạng mục</th>
+<th>Kiểm tra</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Chất lượng</td>
+<td><code>tsc --noEmit</code>, lint, test đều qua trong CI</td>
+</tr>
+<tr>
+<td>Biến môi trường</td>
+<td>Chỉ biến <code>VITE_*</code> lộ ra trình duyệt: <strong>không để secret ở đó</strong></td>
+</tr>
+<tr>
+<td>SPA routing</td>
+<td>Server trả <code>index.html</code> cho mọi đường dẫn, nếu không F5 ở <code>/jobs/1</code> sẽ 404</td>
+</tr>
+<tr>
+<td>API</td>
+<td>CORS đúng domain, cookie có <code>Secure</code> trên HTTPS</td>
+</tr>
+<tr>
+<td>Lỗi</td>
+<td>Có Error Boundary, gắn công cụ theo dõi lỗi như Sentry</td>
+</tr>
+<tr>
+<td>Tốc độ</td>
+<td>Chạy Lighthouse, ảnh đúng kích thước, kiểm tra kích thước bundle</td>
+</tr>
+</tbody></table>
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Tách mỗi trang thành một chunk. So sánh kích thước file chính trước và sau.</li>
+<li>Dùng dự án chỉ bằng bàn phím, sửa các chỗ không dùng được.</li>
+<li>Chạy Lighthouse, đưa điểm Accessibility và Performance lên từ 90.</li>
+<li>Deploy lên Vercel hoặc Netlify. Mở thẳng <code>/jobs/1</code> và bấm F5 để kiểm tra.</li>
+</ol>
+</div>
+
+
 </div>
 
 <div class="footer-note">— Hết tài liệu — Quay lại chat khi bạn xong mỗi Part để được review &amp; giải thích tiếp phần sau —</div>

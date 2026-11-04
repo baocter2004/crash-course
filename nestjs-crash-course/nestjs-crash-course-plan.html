@@ -119,7 +119,7 @@
 <body>
 
 <div class="cover">
-  <div class="tag">CRASH COURSE PLAN — v3 (đã audit)</div>
+  <div class="tag">CRASH COURSE PLAN — v4 (thêm Part 27–31)</div>
   <h1>NestJS Crash Course</h1>
   <h2>Lộ trình học chi tiết từng phần — kèm giải thích cơ chế hoạt động bên trong</h2>
   <div class="meta">
@@ -158,8 +158,14 @@
   <li><span><span class="n">24</span> Kiến trúc dự án lớn</span></li>
   <li><span><span class="n">25</span> Production: build, deploy, quan sát hệ thống</span></li>
   <li><span><span class="n">26</span> Lộ trình master NestJS</span></li>
+  <li><span><span class="n">27</span> Refresh token xoay vòng, cookie HttpOnly</span><span class="tag">MỚI</span></li>
+  <li><span><span class="n">28</span> Chuyển sang Postgres và chống race condition</span><span class="tag">MỚI</span></li>
+  <li><span><span class="n">29</span> WebSocket với gateway và xác thực</span><span class="tag">MỚI</span></li>
+  <li><span><span class="n">30</span> CI với GitHub Actions và sửa bộ test</span><span class="tag">MỚI</span></li>
+  <li><span><span class="n">31</span> Prisma: đọc hiểu và so sánh với TypeORM</span><span class="tag">MỚI</span></li>
 </ul>
 <div class="note"><b>Cách dùng tài liệu này:</b> Bạn tự code 100% từng phần. Mỗi phần có mục "Việc cần làm" (task) — không có code giải sẵn để copy, chỉ có ví dụ cú pháp minh hoạ để hiểu cách viết. Khi xong một phần, quay lại chat để mình review và giải thích tiếp phần sau.</div>
+<div class="audit"><b>Bản v4 thêm gì:</b> Part 27–31 gồm refresh token xoay vòng, chuyển sang Postgres và chống race condition, WebSocket có xác thực, CI bằng GitHub Actions, so sánh Prisma. Code lấy từ bản sao dự án của bạn đã chạy <b>14 test e2e trên Node 24 và Postgres thật</b>. <b>Lưu ý quan trọng khi rà lại:</b> máy đang dùng Node 20 thì <code>npm test</code> của dự án bị lỗi "Must use import to load ES Module", còn <code>npm run test:e2e</code> thiếu <code>moduleNameMapper</code>. Xem cách sửa ở Part 30.</div>
 <div class="audit"><b>Bản audit này khác gì bản gốc:</b> mọi phần đã được đối chiếu lại với code THẬT đã chạy qua trong quá trình học (Part 1-9), sửa các chỗ sai do phiên bản package đổi khác (đặc biệt Part 08), bổ sung các bài học rút ra từ lỗi thực tế đã gặp (đánh dấu bằng khung màu xanh này), và thêm 2 phần mới: Pagination, Transactions.</div>
 <div class="audit"><b>Bản cập nhật lần 2 (đối chiếu docs.nestjs.com):</b> toàn bộ nội dung đã được đối chiếu thêm 1 lần nữa với tài liệu chính thức docs.nestjs.com (thuật ngữ, API còn hiện hành hay đã đổi) — sửa 1 lỗi sai thực sự (Part 05/12, cấu hình <code>transform</code> mặc định), bổ sung cảnh báo về các trang docs đã tái cấu trúc (Part 08, Part 10), và thêm 2 mục "so sánh 2 cách" mới ở Part 06 và Part 10, nâng cấp mục so sánh ở Part 07 — theo đúng format đã dùng ở mục 8.4/13.4. Khi tài liệu chính thức và phát hiện từ code thật (node_modules) mâu thuẫn nhau, phát hiện từ code thật luôn được giữ nguyên vì đó là sự thật cho đúng phiên bản package đang cài.</div>
 
@@ -5601,6 +5607,754 @@ app.<span class="cls">useLogger</span>(app.<span class="cls">get</span>(Logger))
 <li>Chọn 1 chủ đề ở 26.2 (gợi ý: Testcontainers hoặc WebSocket gateway), làm một bản nhỏ trên dự án, nhớ kiểm tra <code>peerDependencies</code> trước khi <code>npm i</code>.</li>
 </ol>
 </div>
+</div>
+
+<!-- PART 27 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 27 — ĐI LÀM</div>
+<h1>Refresh token xoay vòng, cookie HttpOnly</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Hoàn thiện đăng nhập của Part 10: access token ngắn hạn, refresh token an toàn, phát hiện token bị đánh cắp, đăng xuất thật sự.</div></div>
+<h2>27.1 Vấn đề của một token duy nhất</h2>
+<p>Part 10 cấp một JWT sống 1 giờ. Đặt ngắn thì người dùng liên tục phải đăng nhập lại. Đặt dài thì lộ token là mất quyền kiểm soát, vì JWT không thu hồi được trước khi hết hạn.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Access token</th>
+<th>Refresh token</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dạng</td>
+<td>JWT, tự chứa thông tin</td>
+<td>Chuỗi ngẫu nhiên, lưu <strong>hash</strong> trong database</td>
+</tr>
+<tr>
+<td>Thời hạn</td>
+<td>15 phút</td>
+<td>30 ngày</td>
+</tr>
+<tr>
+<td>Gửi đi</td>
+<td>Header <code>Authorization</code>, mọi request</td>
+<td>Cookie <code>HttpOnly</code>, chỉ các route <code>/auth</code></td>
+</tr>
+<tr>
+<td>Thu hồi được</td>
+<td>Không, chờ hết hạn</td>
+<td>Có, sửa database</td>
+</tr>
+</tbody></table>
+<p><strong>Xoay vòng (rotation):</strong> mỗi lần refresh thì token cũ bị vô hiệu và cấp token mới. <strong>Phát hiện dùng lại:</strong> token đã dùng mà vẫn được gửi lại nghĩa là có hai bên đang giữ token, nên thu hồi cả &quot;họ&quot; token của phiên đó, buộc đăng nhập lại.</p>
+<h2>27.2 Entity</h2>
+<pre><code>@Entity()
+<span class="kw">export</span> <span class="kw">class</span> <span class="cls">RefreshToken</span> {
+  @PrimaryGeneratedColumn()
+  id: <span class="kw">number</span>;
+
+  @Column()
+  userId: <span class="kw">number</span>;
+
+  @Index({ unique: <span class="kw">true</span> })
+  @Column()
+  tokenHash: <span class="kw">string</span>; <span class="kw">// chỉ lưu hash: lộ database cũng không dùng được token</span>
+
+  @Index()
+  @Column()
+  familyId: <span class="kw">string</span>; <span class="kw">// các token sinh ra từ cùng một lần đăng nhập</span>
+
+  @Column({ type: <span class="str">&#x27;datetime&#x27;</span> })
+  expiresAt: <span class="cls">Date</span>;
+
+  @Column({ type: <span class="str">&#x27;datetime&#x27;</span>, nullable: <span class="kw">true</span> })
+  revokedAt: <span class="cls">Date</span> | <span class="kw">null</span>;
+
+  @CreateDateColumn()
+  createdAt: <span class="cls">Date</span>;
+}</code></pre>
+<p>Kiểu <code>datetime</code> chỉ chạy trên SQLite. Trên Postgres, TypeORM báo lỗi ngay khi khởi động: <code>Data type &quot;datetime&quot; ... is not supported</code>. Sang Part 28 phải đổi thành <code>timestamptz</code>.</p>
+<h2>27.3 Service</h2>
+<pre><code>@Injectable()
+<span class="kw">export</span> <span class="kw">class</span> <span class="cls">RefreshTokenService</span> {
+  <span class="cls">constructor</span>(
+    @InjectRepository(RefreshToken)
+    <span class="kw">private</span> <span class="kw">readonly</span> tokens: Repository&lt;RefreshToken&gt;,
+  ) {}
+
+  <span class="kw">// Token ngẫu nhiên 256 bit nên SHA-256 là đủ. bcrypt chỉ cần cho mật khẩu do người đặt</span>
+  <span class="kw">private</span> <span class="cls">hash</span>(raw: <span class="kw">string</span>): <span class="kw">string</span> {
+    <span class="kw">return</span> <span class="cls">createHash</span>(<span class="str">&#x27;sha256&#x27;</span>).<span class="cls">update</span>(raw).<span class="cls">digest</span>(<span class="str">&#x27;hex&#x27;</span>);
+  }
+
+  <span class="kw">async</span> <span class="cls">issue</span>(
+    userId: <span class="kw">number</span>,
+    familyId: <span class="kw">string</span> = <span class="cls">randomUUID</span>(),
+  ): <span class="cls">Promise</span>&lt;<span class="kw">string</span>&gt; {
+    <span class="kw">const</span> raw = <span class="cls">randomBytes</span>(32).<span class="cls">toString</span>(<span class="str">&#x27;base64url&#x27;</span>);
+    <span class="kw">await</span> this.tokens.<span class="cls">save</span>(
+      this.tokens.<span class="cls">create</span>({
+        userId,
+        familyId,
+        tokenHash: this.<span class="cls">hash</span>(raw),
+        expiresAt: <span class="kw">new</span> <span class="cls">Date</span>(<span class="cls">Date</span>.<span class="cls">now</span>() + REFRESH_TTL_MS),
+        revokedAt: <span class="kw">null</span>,
+      }),
+    );
+    <span class="kw">return</span> raw; <span class="kw">// chỉ lần này mới thấy được token gốc</span>
+  }
+
+  <span class="kw">async</span> <span class="cls">rotate</span>(raw: <span class="kw">string</span>): <span class="cls">Promise</span>&lt;{ userId: <span class="kw">number</span>; token: <span class="kw">string</span> }&gt; {
+    <span class="kw">const</span> found = <span class="kw">await</span> this.tokens.<span class="cls">findOneBy</span>({ tokenHash: this.<span class="cls">hash</span>(raw) });
+    <span class="kw">if</span> (!found || found.expiresAt &lt; <span class="kw">new</span> <span class="cls">Date</span>()) {
+      <span class="kw">throw</span> <span class="kw">new</span> <span class="cls">UnauthorizedException</span>(<span class="str">&#x27;Refresh token không hợp lệ&#x27;</span>);
+    }
+
+    <span class="kw">// UPDATE có điều kiện: hai request cùng lúc thì chỉ một request giành được token</span>
+    <span class="kw">const</span> claimed = <span class="kw">await</span> this.tokens.<span class="cls">update</span>(
+      { id: found.id, revokedAt: <span class="cls">IsNull</span>() },
+      { revokedAt: <span class="kw">new</span> <span class="cls">Date</span>() },
+    );
+
+    <span class="kw">if</span> (claimed.affected !== 1) {
+      <span class="kw">// Token đã dùng rồi mà vẫn bị gửi lại: nghi bị đánh cắp, thu hồi cả họ</span>
+      <span class="kw">await</span> this.<span class="cls">revokeFamily</span>(found.familyId);
+      <span class="kw">throw</span> <span class="kw">new</span> <span class="cls">UnauthorizedException</span>(<span class="str">&#x27;Refresh token đã bị sử dụng lại&#x27;</span>);
+    }
+
+    <span class="kw">return</span> {
+      userId: found.userId,
+      token: <span class="kw">await</span> this.<span class="cls">issue</span>(found.userId, found.familyId),
+    };
+  }
+
+  <span class="kw">async</span> <span class="cls">revoke</span>(raw: <span class="kw">string</span>): <span class="cls">Promise</span>&lt;<span class="kw">void</span>&gt; {
+    <span class="kw">const</span> found = <span class="kw">await</span> this.tokens.<span class="cls">findOneBy</span>({ tokenHash: this.<span class="cls">hash</span>(raw) });
+    <span class="kw">if</span> (found) <span class="kw">await</span> this.<span class="cls">revokeFamily</span>(found.familyId);
+  }
+
+  <span class="kw">private</span> <span class="kw">async</span> <span class="cls">revokeFamily</span>(familyId: <span class="kw">string</span>): <span class="cls">Promise</span>&lt;<span class="kw">void</span>&gt; {
+    <span class="kw">await</span> this.tokens.<span class="cls">update</span>(
+      { familyId, revokedAt: <span class="cls">IsNull</span>() },
+      { revokedAt: <span class="kw">new</span> <span class="cls">Date</span>() },
+    );
+  }
+}</code></pre>
+<p>Vì sao không dùng bcrypt: bcrypt cố tình chậm để chống dò mật khẩu yếu do người đặt. Token ở đây là 256 bit ngẫu nhiên, không thể dò, nên SHA-256 là đủ và nhanh hơn nhiều.</p>
+<h2>27.4 AuthService và Controller</h2>
+<pre><code><span class="kw">async</span> <span class="cls">login</span>(dto: LoginDto) {
+  <span class="kw">const</span> user = <span class="kw">await</span> this.usersService.<span class="cls">findByEmail</span>(dto.email);
+  <span class="kw">if</span> (!user || !(<span class="kw">await</span> bcrypt.<span class="cls">compare</span>(dto.password, user.password))) {
+    <span class="kw">throw</span> <span class="kw">new</span> <span class="cls">UnauthorizedException</span>(<span class="str">&#x27;Invalid credentials&#x27;</span>);
+  }
+  <span class="kw">return</span> {
+    access_token: <span class="kw">await</span> this.<span class="cls">signAccessToken</span>(user.id, user.email),
+    refresh_token: <span class="kw">await</span> this.refreshTokens.<span class="cls">issue</span>(user.id),
+  };
+}
+
+<span class="kw">async</span> <span class="cls">refresh</span>(raw: <span class="kw">string</span>) {
+  <span class="kw">const</span> { userId, token } = <span class="kw">await</span> this.refreshTokens.<span class="cls">rotate</span>(raw);
+  <span class="kw">const</span> user = <span class="kw">await</span> this.usersService.<span class="cls">findById</span>(userId);
+  <span class="kw">if</span> (!user) <span class="kw">throw</span> <span class="kw">new</span> <span class="cls">UnauthorizedException</span>();
+  <span class="kw">return</span> {
+    access_token: <span class="kw">await</span> this.<span class="cls">signAccessToken</span>(user.id, user.email),
+    refresh_token: token,
+  };
+}
+
+<span class="cls">logout</span>(raw: <span class="kw">string</span>) {
+  <span class="kw">return</span> this.refreshTokens.<span class="cls">revoke</span>(raw);
+}
+
+<span class="kw">private</span> <span class="cls">signAccessToken</span>(id: <span class="kw">number</span>, email: <span class="kw">string</span>) {
+  <span class="kw">return</span> this.jwtService.<span class="cls">signAsync</span>({ sub: id, email });
+}</code></pre>
+<pre><code><span class="kw">const</span> COOKIE = <span class="str">&#x27;refresh_token&#x27;</span>;
+<span class="kw">const</span> cookieOptions: <span class="cls">CookieOptions</span> = {
+  httpOnly: <span class="kw">true</span>, <span class="kw">// JavaScript không đọc được: XSS không lấy được token</span>
+  secure: process.env.NODE_ENV === <span class="str">&#x27;production&#x27;</span>, <span class="kw">// chỉ gửi qua HTTPS</span>
+  sameSite: <span class="str">&#x27;lax&#x27;</span>, <span class="kw">// trang khác không tự gửi được bằng POST</span>
+  path: process.env.AUTH_COOKIE_PATH ?? <span class="str">&#x27;/auth&#x27;</span>, <span class="kw">// phải khớp URL trình duyệt nhìn thấy</span>
+  maxAge: REFRESH_TTL_MS,
+};
+
+@Controller(<span class="str">&#x27;auth&#x27;</span>)
+<span class="kw">export</span> <span class="kw">class</span> <span class="cls">AuthController</span> {
+  <span class="cls">constructor</span>(<span class="kw">private</span> <span class="kw">readonly</span> authService: AuthService) {}
+
+  @Post(<span class="str">&#x27;login&#x27;</span>)
+  @HttpCode(200)
+  <span class="kw">async</span> <span class="cls">login</span>(
+    @Body() dto: LoginDto,
+    @Res({ passthrough: <span class="kw">true</span> }) res: Response,
+  ) {
+    <span class="kw">const</span> { access_token, refresh_token } = <span class="kw">await</span> this.authService.<span class="cls">login</span>(dto);
+    res.<span class="cls">cookie</span>(COOKIE, refresh_token, cookieOptions);
+    <span class="kw">return</span> { access_token }; <span class="kw">// refresh token không nằm trong body</span>
+  }
+
+  @Post(<span class="str">&#x27;refresh&#x27;</span>)
+  @HttpCode(200)
+  <span class="kw">async</span> <span class="cls">refresh</span>(
+    @Req() req: Request,
+    @Res({ passthrough: <span class="kw">true</span> }) res: Response,
+  ) {
+    <span class="kw">const</span> raw = req.cookies?.[COOKIE] <span class="kw">as</span> <span class="kw">string</span> | <span class="kw">undefined</span>;
+    <span class="kw">if</span> (!raw) <span class="kw">throw</span> <span class="kw">new</span> <span class="cls">UnauthorizedException</span>();
+    <span class="kw">const</span> { access_token, refresh_token } = <span class="kw">await</span> this.authService.<span class="cls">refresh</span>(raw);
+    res.<span class="cls">cookie</span>(COOKIE, refresh_token, cookieOptions);
+    <span class="kw">return</span> { access_token };
+  }
+
+  @Post(<span class="str">&#x27;logout&#x27;</span>)
+  @HttpCode(204)
+  <span class="kw">async</span> <span class="cls">logout</span>(@Req() req: Request, @Res({ passthrough: <span class="kw">true</span> }) res: Response) {
+    <span class="kw">const</span> raw = req.cookies?.[COOKIE] <span class="kw">as</span> <span class="kw">string</span> | <span class="kw">undefined</span>;
+    <span class="kw">if</span> (raw) <span class="kw">await</span> this.authService.<span class="cls">logout</span>(raw);
+    res.<span class="cls">clearCookie</span>(COOKIE, { ...cookieOptions, maxAge: <span class="kw">undefined</span> });
+  }</code></pre>
+<pre><code><span class="cli">npm i cookie-parser
+npm i -D @types/cookie-parser</span></code></pre>
+<pre><code><span class="kw">// main.ts</span>
+<span class="kw">import</span> cookieParser <span class="kw">from</span> <span class="str">&#x27;cookie-parser&#x27;</span>;
+app.<span class="cls">use</span>(<span class="cls">cookieParser</span>());</code></pre>
+<p>Trong <code>AuthModule</code>: đổi <code>expiresIn</code> thành <code>&#39;15m&#39;</code>, thêm <code>TypeOrmModule.forFeature([RefreshToken])</code> và <code>RefreshTokenService</code> vào <code>providers</code>.</p>
+<div class="note">
+
+<p><strong><code>passthrough: true</code> là bắt buộc.</strong> Thiếu nó, Nest coi như bạn tự gửi response: <code>return</code> không còn tác dụng và <code>TransformInterceptor</code> không chạy.</p>
+</div>
+
+
+<h2>27.5 Đặt <code>Path</code> của cookie cho đúng</h2>
+<p><code>Path</code> phải khớp với URL <strong>trình duyệt nhìn thấy</strong>, không phải URL server nhận. Nếu frontend gọi <code>/api/auth/refresh</code> qua proxy, hoặc app dùng <code>setGlobalPrefix(&#39;api&#39;)</code>, thì <code>Path</code> phải là <code>/api/auth</code>.</p>
+<div class="audit">
+
+<p><strong>Đã chạy bằng trình duyệt thật qua proxy Vite (xem React Part 17):</strong> để sai <code>Path=/auth</code> thì đăng nhập vẫn thành công, nhưng F5 không gửi cookie, <code>refresh</code> trả 401. Để <code>Path=/api/auth</code> thì F5 vẫn giữ được phiên.</p>
+<p><strong>Đã chạy test e2e:</strong> cookie có <code>HttpOnly</code>, <code>Path</code>, <code>SameSite=Lax</code>; database không chứa token gốc; dùng lại token cũ thì trả 401 và token mới nhất cũng bị thu hồi; hai request cùng token chỉ một cái thành công; đăng xuất thì không refresh được nữa; token hết hạn trả 401.</p>
+</div>
+
+
+<div class="note">
+
+<p><strong>Đánh đổi của phát hiện dùng lại:</strong> nếu người dùng mở hai tab và cả hai cùng refresh, tab thua sẽ bị đăng xuất. Phía client đã giảm rủi ro bằng cách chỉ refresh một lần trong mỗi tab (React Part 17). Một số hệ thống cho thêm khoảng ân hạn vài giây để xử lý trường hợp nhiều tab.</p>
+</div>
+
+
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Thêm entity, service, sửa <code>AuthService</code> và <code>AuthController</code>.</li>
+<li>Viết <code>test/auth-refresh.e2e-spec.ts</code>: login, refresh, dùng lại token cũ, logout, token hết hạn.</li>
+<li>Kiểm tra bảng <code>refresh_token</code>: không có token gốc, thấy rõ các dòng cùng <code>familyId</code>.</li>
+<li>Thêm lệnh xoá các token đã hết hạn chạy theo lịch (Part 21).</li>
+<li>Thêm <code>@nestjs/throttler</code> cho <code>/auth/login</code> và <code>/auth/refresh</code>.</li>
+<li>Nối với frontend ở React Part 17.</li>
+</ol>
+</div>
+
+
+
+</div>
+
+<!-- PART 28 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 28 — ĐI LÀM</div>
+<h1>Chuyển sang Postgres và chống race condition</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Biết vì sao code &quot;đúng&quot; vẫn bán lố hàng, và chọn đúng một trong ba cách xử lý. SQLite không làm được phần này, nên phải dùng database thật.</div></div>
+<h2>28.1 Chuyển từ SQLite sang Postgres</h2>
+<p>Khoá dòng cần một database cho nhiều kết nối ghi đồng thời. Công việc thật cũng thường dùng Postgres hoặc MySQL.</p>
+<pre><code><span class="cli">docker run -d --name shop-pg -e POSTGRES_PASSWORD=pw -e POSTGRES_DB=shop -p 5432:5432 postgres:17-alpine
+npm i pg</span></code></pre>
+<pre><code><span class="cls">TypeOrmModule</span>.<span class="cls">forRootAsync</span>({
+  inject: [<span class="cls">ConfigService</span>],
+  useFactory: (config: ConfigService) =&gt; ({
+    type: <span class="str">&#x27;postgres&#x27;</span>,
+    url: config.getOrThrow&lt;<span class="kw">string</span>&gt;(<span class="str">&#x27;DATABASE_URL&#x27;</span>),
+    autoLoadEntities: <span class="kw">true</span>,
+    synchronize: <span class="kw">false</span>, <span class="kw">// production dùng migration (Part 25), không để tự sửa schema</span>
+  }),
+});</code></pre>
+<table>
+<thead>
+<tr>
+<th>Điểm khác so với SQLite</th>
+<th>Cần làm</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Không có kiểu <code>datetime</code></td>
+<td>Đổi thành <code>timestamptz</code>, kể cả entity ở Part 27</td>
+</tr>
+<tr>
+<td>Kiểm tra kiểu và khoá ngoại chặt hơn</td>
+<td>Sửa các chỗ trước đây &quot;vẫn chạy&quot;</td>
+</tr>
+<tr>
+<td>Tên bảng <code>user</code> là từ khoá</td>
+<td>TypeORM tự đặt trong ngoặc kép. Viết SQL tay phải nhớ, hoặc đổi tên bảng thành <code>users</code></td>
+</tr>
+<tr>
+<td>Có <code>FOR UPDATE</code> thật</td>
+<td>Dùng được phần dưới đây</td>
+</tr>
+</tbody></table>
+<h2>28.2 Vấn đề: đọc rồi mới ghi</h2>
+<pre><code><span class="kw">// SAI: nhiều request cùng đọc stock = 1, cùng thấy còn hàng, cùng trừ</span>
+<span class="kw">async</span> <span class="cls">buyUnsafe</span>(id: <span class="kw">number</span>): <span class="cls">Promise</span>&lt;<span class="kw">void</span>&gt; {
+  <span class="kw">const</span> repo = this.dataSource.<span class="cls">getRepository</span>(<span class="cls">ProductStock</span>);
+  <span class="kw">const</span> product = <span class="kw">await</span> repo.<span class="cls">findOneByOrFail</span>({ id });
+  <span class="kw">if</span> (product.stock &lt; 1) <span class="kw">throw</span> <span class="kw">new</span> <span class="cls">ConflictException</span>(<span class="str">&#x27;Hết hàng&#x27;</span>);
+  product.stock -= 1;
+  <span class="kw">await</span> repo.<span class="cls">save</span>(product);
+}</code></pre>
+<p>Dù Node đơn luồng, giữa hai <code>await</code> các request vẫn xen vào nhau (chương 7 tài liệu JS). Nhiều request cùng đọc <code>stock = 5</code>, cùng thấy còn hàng, cùng ghi.</p>
+<h2>28.3 Ba cách đúng</h2>
+<p><strong>Cách 1: một câu lệnh atomic.</strong> Nên nghĩ đến đầu tiên.</p>
+<pre><code><span class="kw">// Một câu lệnh duy nhất: kiểm tra và trừ cùng lúc. Ưu tiên cách này khi đủ dùng</span>
+<span class="kw">async</span> <span class="cls">buyAtomic</span>(id: <span class="kw">number</span>): <span class="cls">Promise</span>&lt;<span class="kw">void</span>&gt; {
+  <span class="kw">const</span> result = <span class="kw">await</span> this.dataSource
+    .<span class="cls">createQueryBuilder</span>()
+    .<span class="cls">update</span>(<span class="cls">ProductStock</span>)
+    .<span class="cls">set</span>({ stock: () =&gt; <span class="str">&#x27;stock - 1&#x27;</span> })
+    .<span class="cls">where</span>(<span class="str">&#x27;id = :id AND stock &gt; 0&#x27;</span>, { id })
+    .<span class="cls">execute</span>();
+  <span class="kw">if</span> (result.affected !== 1) <span class="kw">throw</span> <span class="kw">new</span> <span class="cls">ConflictException</span>(<span class="str">&#x27;Hết hàng&#x27;</span>);
+}</code></pre>
+<p><strong>Cách 2: khoá dòng (pessimistic lock).</strong> Khi cần đọc giá trị rồi xử lý logic phức tạp trước khi ghi.</p>
+<pre><code><span class="kw">// Khoá dòng: request khác phải chờ đến khi transaction này kết thúc</span>
+<span class="kw">async</span> <span class="cls">buyPessimistic</span>(id: <span class="kw">number</span>): <span class="cls">Promise</span>&lt;<span class="kw">void</span>&gt; {
+  <span class="kw">await</span> this.dataSource.<span class="cls">transaction</span>(<span class="kw">async</span> (manager) =&gt; {
+    <span class="kw">const</span> product = <span class="kw">await</span> manager.<span class="cls">findOneOrFail</span>(<span class="cls">ProductStock</span>, {
+      where: { id },
+      lock: { mode: <span class="str">&#x27;pessimistic_write&#x27;</span> }, <span class="kw">// SELECT ... FOR UPDATE</span>
+    });
+    <span class="kw">if</span> (product.stock &lt; 1) <span class="kw">throw</span> <span class="kw">new</span> <span class="cls">ConflictException</span>(<span class="str">&#x27;Hết hàng&#x27;</span>);
+    product.stock -= 1;
+    <span class="kw">await</span> manager.<span class="cls">save</span>(product);
+  });
+}</code></pre>
+<p><strong>Cách 3: kiểm tra version (optimistic lock).</strong> Khi ít xung đột và không muốn giữ khoá lâu, ví dụ sửa form lâu rồi mới lưu.</p>
+<pre><code><span class="kw">// Không khoá: cập nhật kèm điều kiện version, thua thì đọc lại và thử lại</span>
+<span class="kw">async</span> <span class="cls">buyOptimistic</span>(id: <span class="kw">number</span>, maxRetries = 50): <span class="cls">Promise</span>&lt;<span class="kw">void</span>&gt; {
+  <span class="kw">const</span> repo = this.dataSource.<span class="cls">getRepository</span>(<span class="cls">ProductStock</span>);
+  <span class="kw">for</span> (<span class="kw">let</span> attempt = 0; attempt &lt; maxRetries; attempt++) {
+    <span class="kw">const</span> product = <span class="kw">await</span> repo.<span class="cls">findOneByOrFail</span>({ id });
+    <span class="kw">if</span> (product.stock &lt; 1) <span class="kw">throw</span> <span class="kw">new</span> <span class="cls">ConflictException</span>(<span class="str">&#x27;Hết hàng&#x27;</span>);
+
+    <span class="kw">const</span> result = <span class="kw">await</span> repo
+      .<span class="cls">createQueryBuilder</span>()
+      .<span class="cls">update</span>()
+      .<span class="cls">set</span>({ stock: product.stock - 1, version: () =&gt; <span class="str">&#x27;version + 1&#x27;</span> })
+      .<span class="cls">where</span>(<span class="str">&#x27;id = :id AND version = :version&#x27;</span>, {
+        id,
+        version: product.version,
+      })
+      .<span class="cls">execute</span>();
+    <span class="kw">if</span> (result.affected === 1) <span class="kw">return</span>;
+  }
+  <span class="kw">throw</span> <span class="kw">new</span> <span class="cls">ConflictException</span>(<span class="str">&#x27;Thử lại quá nhiều lần&#x27;</span>);
+}</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Atomic</th>
+<th>Pessimistic</th>
+<th>Optimistic</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cơ chế</td>
+<td>Một câu <code>UPDATE</code> có điều kiện</td>
+<td><code>SELECT ... FOR UPDATE</code></td>
+<td><code>UPDATE ... WHERE version = ?</code></td>
+</tr>
+<tr>
+<td>Khi xung đột</td>
+<td>Database tự xếp hàng</td>
+<td>Request sau chờ</td>
+<td>Thua thì thử lại hoặc báo lỗi</td>
+</tr>
+<tr>
+<td>Logic phức tạp</td>
+<td>Khó</td>
+<td>Dễ</td>
+<td>Dễ</td>
+</tr>
+<tr>
+<td>Rủi ro</td>
+<td>Ít</td>
+<td>Deadlock, giữ khoá lâu</td>
+<td>Thử lại nhiều khi xung đột cao</td>
+</tr>
+<tr>
+<td>Hợp với</td>
+<td>Trừ kho, cộng tiền, đếm</td>
+<td>Chuyển khoản, nhiều bước</td>
+<td>Sửa dữ liệu ít xung đột</td>
+</tr>
+</tbody></table>
+<div class="audit">
+
+<p><strong>Đã chạy thật trên Postgres 17: 20 request mua cùng lúc, kho có 5 sản phẩm.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Cách</th>
+<th>Bán được</th>
+<th>Tồn kho cuối</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Không khoá</td>
+<td><strong>20</strong></td>
+<td>3 (sai cả hai số)</td>
+</tr>
+<tr>
+<td>Atomic</td>
+<td>5</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Pessimistic</td>
+<td>5</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Optimistic</td>
+<td>5</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p>Chạy lại 3 lần, các cách đúng đều cho cùng kết quả. Với bản không khoá, con số cụ thể có thể khác giữa các lần chạy, nhưng vẫn bán lố.</p>
+</div>
+
+
+<div class="note">
+
+<p><strong>Bẫy với <code>@VersionColumn</code>:</strong> chỉ thêm cột này thì <code>save()</code> <strong>không</strong> chặn được ghi đè. Đã thử: hai bên cùng đọc rồi cùng <code>save()</code>, không có lỗi nào, kho chỉ giảm 1 dù trừ 2 lần, và <code>version</code> còn bị đặt lại giá trị cũ. Phải tự viết <code>UPDATE ... WHERE version = ?</code> như trên.</p>
+</div>
+
+
+<div class="note">
+
+<p><strong>Trong transaction, mọi truy vấn phải đi qua <code>manager</code> được truyền vào.</strong> Dùng <code>this.repo</code> là chạy trên kết nối khác, nằm ngoài transaction và không có khoá. Luôn khoá theo cùng một thứ tự để tránh deadlock, và giữ transaction thật ngắn: không gọi API bên ngoài trong đó.</p>
+</div>
+
+
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Chạy Postgres bằng Docker, chuyển dự án sang Postgres, sửa <code>timestamptz</code>, tạo migration.</li>
+<li>Viết <code>StockService</code> với cả 4 cách, và test cho 20 request đồng thời mua 5 sản phẩm bằng <code>Promise.allSettled</code>.</li>
+<li>Tự chứng minh bản không khoá bị bán lố.</li>
+<li>Viết API <code>POST /orders</code> có nhiều bước (trừ kho, tạo đơn, ghi log) trong một transaction có khoá dòng.</li>
+<li>Tự tạo deadlock bằng hai transaction khoá hai dòng theo thứ tự ngược nhau, đọc lỗi, rồi sửa bằng cách khoá theo thứ tự <code>id</code>.</li>
+</ol>
+</div>
+
+
+
+</div>
+
+<!-- PART 29 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 29 — ĐI LÀM</div>
+<h1>WebSocket với gateway và xác thực</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Gửi thông báo realtime đến đúng người dùng, biết vì sao guard HTTP không tự bảo vệ kết nối.</div></div>
+<h2>29.1 Khi nào cần</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HTTP polling</th>
+<th>SSE</th>
+<th>WebSocket</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Chiều dữ liệu</td>
+<td>Client hỏi</td>
+<td>Server gửi xuống</td>
+<td>Hai chiều</td>
+</tr>
+<tr>
+<td>Hợp với</td>
+<td>Cập nhật chậm, đơn giản</td>
+<td>Thông báo, tiến độ</td>
+<td>Chat, cộng tác, game</td>
+</tr>
+</tbody></table>
+<pre><code><span class="cli"># Dùng đúng major của @nestjs/core trong dự án (hiện là 11)
+npm i @nestjs/websockets@11 @nestjs/platform-socket.io@11 socket.io</span></code></pre>
+<h2>29.2 Gateway</h2>
+<pre><code>@WebSocketGateway({
+  namespace: <span class="str">&#x27;notifications&#x27;</span>,
+  cors: { origin: [<span class="str">&#x27;http://localhost:5173&#x27;</span>], credentials: <span class="kw">true</span> },
+})
+<span class="kw">export</span> <span class="kw">class</span> <span class="cls">NotificationsGateway</span> <span class="kw">implements</span> <span class="cls">OnGatewayConnection</span> {
+  <span class="kw">private</span> <span class="kw">readonly</span> logger = <span class="kw">new</span> <span class="cls">Logger</span>(<span class="cls">NotificationsGateway</span>.name);
+
+  @WebSocketServer()
+  <span class="kw">private</span> <span class="kw">readonly</span> server: <span class="cls">Server</span>;
+
+  <span class="cls">constructor</span>(<span class="kw">private</span> <span class="kw">readonly</span> jwtService: JwtService) {}
+
+  <span class="kw">// Guard HTTP không chạy lúc bắt tay kết nối, nên phải tự xác thực ở đây</span>
+  <span class="kw">async</span> <span class="cls">handleConnection</span>(client: AppSocket) {
+    <span class="kw">try</span> {
+      <span class="kw">const</span> token = client.handshake.auth.token <span class="kw">as</span> <span class="kw">string</span>;
+      <span class="kw">const</span> payload = <span class="kw">await</span> this.jwtService.verifyAsync&lt;{ sub: <span class="kw">number</span> }&gt;(token);
+      client.data.userId = payload.sub;
+      <span class="kw">await</span> client.<span class="cls">join</span>(<span class="str">`user:${payload.sub}`</span>); <span class="kw">// mỗi user một phòng, nhiều tab vẫn nhận đủ</span>
+      client.<span class="cls">emit</span>(<span class="str">&#x27;ready&#x27;</span>, { userId: payload.sub });
+    } <span class="kw">catch</span> {
+      this.logger.<span class="cls">warn</span>(<span class="str">&#x27;Kết nối WebSocket bị từ chối&#x27;</span>);
+      client.<span class="cls">disconnect</span>(<span class="kw">true</span>);
+    }
+  }
+
+  @SubscribeMessage(<span class="str">&#x27;ping&#x27;</span>)
+  <span class="cls">ping</span>(
+    @ConnectedSocket() client: AppSocket,
+    @MessageBody() body: { n: <span class="kw">number</span> },
+  ) {
+    <span class="kw">return</span> { n: body.n, userId: client.data.userId }; <span class="kw">// trả về như ack</span>
+  }
+
+  <span class="kw">// Service khác inject gateway rồi gọi hàm này</span>
+  <span class="cls">notifyUser</span>(userId: <span class="kw">number</span>, event: <span class="kw">string</span>, payload: <span class="kw">unknown</span>) {
+    this.server.<span class="cls">to</span>(<span class="str">`user:${userId}`</span>).<span class="cls">emit</span>(event, payload);
+  }
+}</code></pre>
+<p>Gateway là provider, nên đăng ký trong <code>providers</code> của module và import <code>JwtModule</code>. Service khác inject <code>NotificationsGateway</code> rồi gọi <code>notifyUser</code>.</p>
+<p>Những điểm cần nhớ:</p>
+<ul>
+<li><strong>Xác thực lúc kết nối:</strong> <code>handleConnection</code> chạy khi bắt tay, phải tự kiểm tra token và ngắt nếu sai.</li>
+<li><strong>Room:</strong> mỗi user một room <code>user:{id}</code>, nên một người mở nhiều tab đều nhận được, và người khác thì không.</li>
+<li><strong>Token hết hạn:</strong> kết nối đã mở vẫn tiếp tục sống sau khi token hết hạn. Dữ liệu nhạy cảm cần có cơ chế ngắt hoặc yêu cầu xác thực lại.</li>
+<li><strong>Nhiều server:</strong> room chỉ tồn tại trong một process. Chạy từ hai instance trở lên phải có Redis adapter.</li>
+</ul>
+<h2>29.3 Client</h2>
+<pre><code><span class="kw">import</span> { io } <span class="kw">from</span> <span class="str">&#x27;socket.io-client&#x27;</span>;
+
+<span class="kw">const</span> socket = <span class="cls">io</span>(<span class="str">&#x27;http://localhost:3000/notifications&#x27;</span>, {
+  auth: { token: accessToken }, <span class="kw">// server đọc ở client.handshake.auth.token</span>
+});
+socket.<span class="cls">on</span>(<span class="str">&#x27;order&#x27;</span>, (payload) =&gt; console.<span class="cls">log</span>(payload));</code></pre>
+<p>Trong React, tạo kết nối trong <code>useEffect</code> và <strong>phải</strong> <code>socket.disconnect()</code> ở cleanup, nếu không mỗi lần render lại có thể mở thêm một kết nối.</p>
+<div class="audit">
+
+<p><strong>Đã chạy test e2e với client Socket.IO thật:</strong> cùng một user mở hai kết nối đều nhận được, user khác không nhận được, ack của <code>ping</code> trả đúng <code>userId</code>, token sai bị ngắt kết nối.</p>
+</div>
+
+
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Tạo gateway, xác thực bằng JWT, join room theo user.</li>
+<li>Khi có comment mới trên bài của ai đó, gửi thông báo cho đúng người đó.</li>
+<li>Viết test e2e với <code>socket.io-client</code>: đúng người nhận, sai người không nhận, token sai bị ngắt.</li>
+<li>Hiển thị thông báo trong React, kiểm tra không rò rỉ kết nối khi chuyển trang.</li>
+<li>Đọc về Redis adapter và viết ra vì sao cần nó khi có hai instance.</li>
+</ol>
+</div>
+
+
+
+</div>
+
+<!-- PART 30 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 30 — ĐI LÀM</div>
+<h1>CI với GitHub Actions và sửa bộ test</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Mỗi lần push tự chạy lint, kiểm tra kiểu, test, build. Đồng thời sửa bộ test của dự án đang lỗi.</div></div>
+<h2>30.1 Bộ test của dự án đang lỗi: sửa trước</h2>
+<div class="audit">
+
+<p><strong>Đã chạy bản sao dự án của bạn:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Lệnh</th>
+<th>Node 20.20</th>
+<th>Node 24.22</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>npm test</code></td>
+<td><strong>Lỗi</strong>: <code>Must use import to load ES Module</code> tại <code>@nestjs/typeorm</code></td>
+<td>Qua (4 test)</td>
+</tr>
+<tr>
+<td><code>npm run test:e2e</code></td>
+<td><strong>Lỗi</strong></td>
+<td><strong>Lỗi</strong>: không tìm thấy module <code>src/...</code></td>
+</tr>
+<tr>
+<td><code>npm run build</code></td>
+<td>Qua</td>
+<td>Qua</td>
+</tr>
+</tbody></table>
+<p>Máy hiện dùng Node 20. <code>@nestjs/typeorm</code> 12 đã là ESM, và cơ chế nạp của Jest không xử lý được trên Node 20.</p>
+</div>
+
+
+<p><strong>Sửa 1:</strong> dùng Node 24 LTS trở lên, và ghi vào <code>package.json</code> để không ai bị nhầm:</p>
+<pre><code>{ &quot;engines&quot;: { &quot;node&quot;: <span class="str">&quot;&gt;=24&quot;</span> } }</code></pre>
+<p><strong>Sửa 2:</strong> thêm dòng ánh xạ <code>src/</code> vào <code>test/jest-e2e.json</code>:</p>
+<pre><code>{
+  &quot;moduleFileExtensions&quot;: [<span class="str">&quot;js&quot;</span>, <span class="str">&quot;json&quot;</span>, <span class="str">&quot;ts&quot;</span>],
+  &quot;rootDir&quot;: <span class="str">&quot;.&quot;</span>,
+  &quot;testEnvironment&quot;: <span class="str">&quot;node&quot;</span>,
+  &quot;testRegex&quot;: <span class="str">&quot;.e2e-spec.ts$&quot;</span>,
+  &quot;transform&quot;: { &quot;^.+\\.(t|j)s$&quot;: <span class="str">&quot;ts-jest&quot;</span> },
+  &quot;moduleNameMapper&quot;: { &quot;^src/(.*)$&quot;: <span class="str">&quot;&lt;rootDir&gt;/../src/$1&quot;</span> }
+}</code></pre>
+<h2>30.2 Workflow</h2>
+<p>File đặt ở thư mục gốc repo: <code>.github/workflows/ci.yml</code>.</p>
+<pre><code>name: <span class="str">NestJS</span> <span class="str">CI</span>
+
+on:
+  push:
+    branches: [<span class="str">main</span>]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: <span class="str">ubuntu-latest</span>
+    defaults:
+      run:
+        working-directory: <span class="str">nestjs-crash-course</span>
+    services:
+      postgres:
+        image: <span class="str">postgres:17-alpine</span>
+        env:
+          POSTGRES_PASSWORD: <span class="str">pw</span>
+          POSTGRES_DB: <span class="str">shop_test</span>
+        ports:
+          - 5432<span class="str">:5432</span>
+        options: <span class="str">&gt;-
+          --health-cmd &quot;pg_isready -U postgres&quot;
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+</span>    env:
+      JWT_SECRET: <span class="str">ci-only-secret</span>
+      DATABASE_URL: <span class="str">postgres://postgres:pw@localhost:5432/shop_test</span>
+    steps:
+      - uses: <span class="str">actions/checkout@v5</span>
+      - uses: <span class="str">actions/setup-node@v5</span>
+        with:
+          node-version: 24
+          cache: <span class="str">npm</span>
+          cache-dependency-path: <span class="str">nestjs-crash-course/package-lock.json</span>
+      - run: <span class="str">npm</span> <span class="str">ci</span>
+      - run: <span class="str">npx</span> <span class="str">eslint</span> <span class="str">&quot;{src,test}/**/*.ts&quot;</span> <span class="str">--max-warnings=0</span>
+      - run: <span class="str">npx</span> <span class="str">tsc</span> <span class="str">--noEmit</span>
+      - run: <span class="str">npm</span> <span class="str">test</span>
+      - run: <span class="str">npm</span> <span class="str">run</span> <span class="str">test:e2e</span>
+      - run: <span class="str">npm</span> <span class="str">run</span> <span class="str">build</span></code></pre>
+<ul>
+<li><strong><code>npx eslint</code></strong> chạy trực tiếp, vì script <code>npm run lint</code> có <code>--fix</code>: trong CI nó sẽ tự sửa rồi báo qua, che mất lỗi.</li>
+<li><strong><code>--max-warnings=0</code></strong> coi cảnh báo là lỗi. Hiện tại dự án còn đúng một cảnh báo <code>no-floating-promises</code> ở <code>src/seed.ts</code>, phải sửa trước (việc cần làm số 4 của Part P), nếu không CI sẽ đỏ.</li>
+<li><strong><code>services</code></strong> tạo Postgres thật cho test. Thiết lập <code>health-cmd</code> để đợi database sẵn sàng.</li>
+<li><strong>Secret thật</strong> đưa vào GitHub Secrets, không ghi vào file. <code>JWT_SECRET</code> ở đây chỉ dùng cho test.</li>
+</ul>
+<div class="audit">
+
+<p><strong>Đã kiểm tra:</strong> file này qua <code>actionlint</code>, và các bước <code>npm ci</code>, <code>tsc --noEmit</code>, <code>npm test</code>, <code>test:e2e</code>, <code>build</code> đã chạy được trên Node 24. Riêng file chưa chạy trên máy chủ GitHub thật, vì repo chưa push workflow này: lần đầu push hãy xem tab Actions.</p>
+</div>
+
+
+<h2>30.3 Từ CI sang CD</h2>
+<p>Khi CI đã xanh, thêm job deploy chạy với <code>needs: test</code> và chỉ khi ở nhánh <code>main</code>: build Docker image (Part 25), đẩy lên registry, cập nhật server. Bảo vệ nhánh <code>main</code> để phải qua CI mới merge được.</p>
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Đổi sang Node 24, ghi <code>engines</code>. Sửa <code>jest-e2e.json</code>. Chạy <code>npm test</code> và <code>npm run test:e2e</code> đều xanh.</li>
+<li>Sửa cảnh báo ở <code>seed.ts</code>.</li>
+<li>Thêm workflow, push lên nhánh mới, tạo Pull Request, xem CI chạy.</li>
+<li>Cố tình làm hỏng một test, xác nhận CI đỏ và PR hiện cảnh báo.</li>
+<li>Bật Branch protection cho <code>main</code>, yêu cầu CI phải qua.</li>
+</ol>
+</div>
+
+
+
+</div>
+
+<!-- PART 31 -->
+<div class="part">
+<div class="part-head"><div class="part-badge">PART 31 — ĐI LÀM</div>
+<h1>Prisma: đọc hiểu và so sánh với TypeORM</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Biết Prisma khác gì để đọc được code và trả lời phỏng vấn. Phần này chỉ để đọc hiểu.</div></div>
+<div class="note">
+
+<p><strong>Phần này không có code chạy thử.</strong> Tại thời điểm kiểm tra (11/2026), tag <code>latest</code> của <code>prisma</code> trên npm đang là một bản <code>8.0.0-rc</code>, chưa phải bản phát hành ổn định, nên mình không đưa cú pháp cụ thể. Khi cần dùng, hãy đọc docs của đúng bản bạn cài.</p>
+</div>
+
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>TypeORM</th>
+<th>Prisma</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Nguồn của sự thật</td>
+<td>Class Entity có decorator</td>
+<td>File <code>schema.prisma</code></td>
+</tr>
+<tr>
+<td>Kiểu trong TypeScript</td>
+<td>Theo class bạn viết, quan hệ chưa load vẫn có kiểu</td>
+<td>Sinh tự động, kiểu kết quả thay đổi theo những gì bạn truy vấn</td>
+</tr>
+<tr>
+<td>Migration</td>
+<td>Sinh từ Entity</td>
+<td>Sinh từ schema, rất rõ ràng</td>
+</tr>
+<tr>
+<td>Truy vấn phức tạp</td>
+<td>QueryBuilder</td>
+<td>API riêng hoặc SQL thuần</td>
+</tr>
+<tr>
+<td>Mẫu thiết kế</td>
+<td>Active Record hoặc Data Mapper</td>
+<td>Client sinh tự động</td>
+</tr>
+<tr>
+<td>Dùng trong Nest</td>
+<td>Module chính thức <code>@nestjs/typeorm</code></td>
+<td>Tự viết <code>PrismaService</code></td>
+</tr>
+<tr>
+<td>Khoá dòng</td>
+<td>Có <code>lock</code></td>
+<td>Phải dùng SQL thuần</td>
+</tr>
+</tbody></table>
+<p>Khái niệm không đổi dù dùng ORM nào: N+1, transaction, index, migration, khoá dòng. Nắm các khái niệm này thì đổi ORM chỉ mất vài ngày.</p>
+<div class="task-box">
+
+<p><strong>Việc cần làm (tuỳ chọn):</strong></p>
+<ol>
+<li>Đọc trang Getting Started của Prisma, làm một bảng nhỏ trong project riêng.</li>
+<li>Viết ra 3 điểm bạn thích và không thích so với TypeORM. Đây là câu trả lời tốt khi phỏng vấn.</li>
+</ol>
+</div>
+
+
 </div>
 
 </body>

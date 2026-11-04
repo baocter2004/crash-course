@@ -54,7 +54,7 @@
 <body>
 
 <div class="cover">
-  <div class="tag">CRASH COURSE PLAN — v3 (đã audit theo docs Laravel 13.x)</div>
+  <div class="tag">CRASH COURSE PLAN — v4 (thêm Part 24–29, đã audit theo docs Laravel 13.x)</div>
   <h1>Laravel Crash Course — REST API</h1>
   <h2>Lộ trình học chi tiết từng phần, kèm giải thích cơ chế bên trong — và lộ trình để master Laravel</h2>
   <div class="meta">
@@ -94,11 +94,18 @@
   <li><span><span class="n">21</span> Kiến trúc dự án lớn: Service, Action, DTO, Enum</span><span class="tag new">MỚI</span></li>
   <li><span><span class="n">22</span> Production: deploy, worker, Octane, quan sát hệ thống</span><span class="tag new">MỚI</span></li>
   <li><span><span class="n">23</span> Lộ trình master Laravel — làm gì tiếp theo</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">24</span> Khoá dòng và chống race condition</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">25</span> Tài liệu API tự động</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">26</span> CI với GitHub Actions</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">27</span> Đa ngôn ngữ</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">28</span> Webhook: chữ ký và xử lý một lần</span><span class="tag new">MỚI</span></li>
+  <li><span><span class="n">29</span> Blade: làm giao diện phía server</span><span class="tag new">MỚI</span></li>
 </ul>
 <div class="note"><b>Cách dùng tài liệu này:</b> Bạn tự code 100% từng phần. Mỗi phần có mục "Việc cần làm" (task) — không có code giải sẵn để copy, chỉ có ví dụ cú pháp minh hoạ để hiểu cách viết. Khi xong một phần, quay lại chat để mình review và giải thích tiếp phần sau.</div>
 <div class="audit"><b>Bản v2 khác gì bản gốc:</b> (1) mọi API/cú pháp đã đối chiếu lại với docs chính thức Laravel 13.x — các khung màu xanh như khung này đánh dấu chỗ đã sửa hoặc bổ sung sau audit; (2) thêm 12 phần mới (Part 12–23) đi sâu vào những thứ phân biệt "biết Laravel" với "master Laravel": pagination cho dữ liệu lớn, transaction, queue/job, event, cache, scheduling, storage, authorization, notification, kiến trúc dự án lớn, vận hành production; (3) phần cuối là lộ trình tự học tiếp để master.</div>
+<div class="audit"><b>Bản v4 thêm gì:</b> Part 24–29 gồm khoá dòng và chống race condition, tài liệu API tự động, CI bằng GitHub Actions, đa ngôn ngữ, webhook có chữ ký, và Blade cho dự án có giao diện. Code lấy từ một app Laravel 13.40 đã chạy test, phần race condition chạy trên MySQL 8.4 thật. Part 24–29 học sau Part 11; số thứ tự đặt sau Part 23 để không làm đổi số các Part cũ.</div>
 <div class="audit"><b>Bản v3 bổ sung (sau khi rà các chỗ còn hở):</b> (1) <b>PART SQL</b> — SQL nền tảng (JOIN, GROUP BY, index, EXPLAIN, transaction) đặt ngay trước Part 04 vì không hiểu SQL thì Eloquent và N+1 chỉ là học thuộc; (2) <b>PART SAIL</b> — chạy Laravel bằng Docker (tuỳ chọn, hữu ích khi tới Part 14/20/22); (3) <b>PART SEC</b> — gom tư duy bảo mật vào một chỗ, kèm bài kiểm tra bằng test; (4) mục <b>1.6 Git cho dự án</b> trong Part 01; (5) ghi rõ <b>phạm vi</b>: tài liệu này chỉ làm API, giao diện (Blade, Livewire, Inertia, Vite, starter kit) nằm ngoài phạm vi. Các khối mới đã đối chiếu docs Laravel 13.x (Sail, installation, database, queries, csrf, releases) và <b>mọi câu SQL, kết quả, kế hoạch EXPLAIN trong Part SQL đã chạy thật</b> trên SQLite. Bài tập có đáp án đi kèm nằm ở file <c>php-bai-tap.pdf</c>: Chương 1–11 luyện PHP, <b>Chương 12 luyện SQL</b>.</div>
-<div class="note"><b>Phạm vi của tài liệu:</b> chỉ xây <b>REST API</b> (không làm giao diện). Nếu bạn muốn làm cả giao diện, Laravel có Blade, Livewire, Inertia, Vite và các starter kit chính thức; xem mục "Next Steps" trong trang Installation của docs và Part 23.2. Mọi thứ trong Part 00–22 (routing, Eloquent, queue, cache, test...) vẫn dùng nguyên cho cả hai kiểu dự án.</div>
+<div class="note"><b>Phạm vi của tài liệu:</b> Part 00–28 chỉ xây <b>REST API</b>. Part 29 là phần riêng về giao diện bằng Blade. Nếu bạn muốn làm cả giao diện, Laravel có Blade, Livewire, Inertia, Vite và các starter kit chính thức; xem mục "Next Steps" trong trang Installation của docs và Part 23.2. Mọi thứ trong Part 00–22 (routing, Eloquent, queue, cache, test...) vẫn dùng nguyên cho cả hai kiểu dự án.</div>
 <div class="note"><b>Dự án xuyên suốt:</b> Xây một API quản lý bài viết — Post (tiêu đề, nội dung), Comment (bình luận thuộc về một Post), User (đăng ký / đăng nhập bằng token). Đây đúng là bài toán bạn đã làm bên NestJS, nên xuyên suốt tài liệu sẽ có các bảng đối chiếu NestJS ↔ Laravel để bạn thấy cùng một khái niệm được hai framework giải quyết thế nào. Các Part mới mở rộng chính dự án này: đăng bài xong thì đẩy job xử lý nền, bắn event, gửi notification, cache danh sách, dọn dẹp theo lịch.</div>
 
 <!-- ===================== PART PHP ===================== -->
@@ -3567,6 +3574,741 @@ php artisan up
 <tr><td>Khác nhau giữa 401 và 403; giữa <c>Response::deny()</c> và <c>denyAsNotFound()</c>?</td><td></td></tr>
 </table>
 <p>Trả lời trôi chảy cả 10 câu bằng lời của bạn, kèm ví dụ từ dự án đã làm — bạn đã ở tầng 3.</p>
+</div>
+
+<!-- PART 24 -->
+<div class="part">
+<div class="part-head"><div class="part-badge new">PART 24 — ĐI LÀM</div>
+<h1>Khoá dòng và chống race condition</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Biết vì sao code &quot;đúng&quot; vẫn bán lố hàng, và chọn đúng cách xử lý. Part 13 có transaction, Part 16 có <c>Cache::lock</c>, Part này là phần khoá ở tầng database.</div></div>
+<h2>24.1 SQLite không dùng được cho phần này</h2>
+<p>Mặc định Laravel dùng SQLite, nhưng trong mã nguồn Laravel, <c>compileLock</c> của SQLite trả về chuỗi rỗng: <strong><c>lockForUpdate()</c> không làm gì cả và không báo lỗi</strong>. Muốn thử thật phải dùng MySQL hoặc PostgreSQL.</p>
+<code-block lang="bash">
+docker run -d --name blog-mysql -e MYSQL_ROOT_PASSWORD=pw -e MYSQL_DATABASE=blog -p 3306:3306 mysql:8.4
+</code-block>
+<p>Sửa <c>.env</c>: <c>DB_CONNECTION=mysql</c>, <c>DB_HOST=127.0.0.1</c>, <c>DB_DATABASE=blog</c>, <c>DB_USERNAME=root</c>, <c>DB_PASSWORD=pw</c>. Hoặc dùng Sail (Part SAIL).</p>
+<h2>24.2 Vấn đề: đọc rồi mới ghi</h2>
+<code-block lang="php">
+// SAI: nhiều request cùng đọc stock = 1, cùng thấy còn hàng, cùng trừ
+public function buyUnsafe(int $id): void
+{
+    $product = ProductStock::findOrFail($id);
+    if ($product->stock &lt; 1) {
+        throw new RuntimeException('Hết hàng');
+    }
+    $product->stock -= 1;
+    $product->save();
+}
+</code-block>
+<p>Hai request ở hai worker PHP-FPM chạy song song thật, cùng đọc <c>stock = 1</c>, cùng thấy còn hàng, cùng trừ. Thêm <c>DB::transaction</c> thôi <strong>không</strong> giải quyết được: mức cô lập mặc định vẫn cho phép hai transaction đọc cùng một giá trị (xem số liệu chạy thật bên dưới).</p>
+<h2>24.3 Ba cách đúng</h2>
+<p><strong>Cách 1: một câu lệnh atomic.</strong> Nên nghĩ đến đầu tiên.</p>
+<code-block lang="php">
+// Một câu lệnh duy nhất: kiểm tra và trừ cùng lúc. Ưu tiên cách này khi đủ dùng
+public function buyAtomic(int $id): void
+{
+    $affected = ProductStock::whereKey($id)->where('stock', '>', 0)->decrement('stock');
+    if ($affected === 0) {
+        throw new RuntimeException('Hết hàng');
+    }
+}
+</code-block>
+<p><strong>Cách 2: khoá dòng (pessimistic lock).</strong> Khi cần đọc rồi xử lý logic phức tạp.</p>
+<code-block lang="php">
+// Khoá dòng: request khác phải chờ đến khi transaction này kết thúc
+public function buyPessimistic(int $id): void
+{
+    DB::transaction(function () use ($id) {
+        $product = ProductStock::whereKey($id)->lockForUpdate()->firstOrFail(); // SELECT ... FOR UPDATE
+        if ($product->stock &lt; 1) {
+            throw new RuntimeException('Hết hàng');
+        }
+        $product->decrement('stock');
+    }, attempts: 3); // gặp deadlock thì tự chạy lại tối đa 3 lần
+}
+</code-block>
+<p><c>lockForUpdate</c> (<c>FOR UPDATE</c>) chặn cả đọc có khoá và ghi. <c>sharedLock</c> (trên MySQL sinh ra <c>LOCK IN SHARE MODE</c>) cho phép nhiều bên cùng đọc nhưng chặn ghi. Khoá chỉ có tác dụng <strong>trong transaction</strong>.</p>
+<p><strong>Cách 3: kiểm tra version (optimistic lock).</strong> Khi ít xung đột và không muốn giữ khoá lâu.</p>
+<code-block lang="php">
+// Không khoá: cập nhật kèm điều kiện version, thua thì đọc lại và thử lại
+public function buyOptimistic(int $id, int $maxRetries = 50): void
+{
+    for ($attempt = 0; $attempt &lt; $maxRetries; $attempt++) {
+        $product = ProductStock::findOrFail($id);
+        if ($product->stock &lt; 1) {
+            throw new RuntimeException('Hết hàng');
+        }
+
+        $affected = ProductStock::whereKey($id)
+            ->where('version', $product->version)
+            ->update(['stock' => $product->stock - 1, 'version' => $product->version + 1]);
+
+        if ($affected === 1) {
+            return;
+        }
+    }
+    throw new RuntimeException('Thử lại quá nhiều lần');
+}
+</code-block>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Atomic</th>
+<th>Pessimistic</th>
+<th>Optimistic</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cơ chế</td>
+<td>Một câu <c>UPDATE</c> có điều kiện</td>
+<td><c>SELECT ... FOR UPDATE</c></td>
+<td><c>UPDATE ... WHERE version = ?</c></td>
+</tr>
+<tr>
+<td>Khi xung đột</td>
+<td>Database tự xếp hàng</td>
+<td>Request sau chờ</td>
+<td>Thua thì thử lại hoặc báo lỗi</td>
+</tr>
+<tr>
+<td>Logic phức tạp</td>
+<td>Khó</td>
+<td>Dễ</td>
+<td>Dễ</td>
+</tr>
+<tr>
+<td>Rủi ro</td>
+<td>Ít</td>
+<td>Deadlock, giữ khoá lâu</td>
+<td>Thử lại nhiều khi xung đột cao</td>
+</tr>
+<tr>
+<td>Hợp với</td>
+<td>Trừ kho, cộng tiền, đếm</td>
+<td>Chuyển khoản, nhiều bước</td>
+<td>Sửa dữ liệu ít xung đột</td>
+</tr>
+</tbody></table>
+<p>So với <c>Cache::lock</c> ở Part 16: khoá cache chạy trên Redis, dùng được ngoài database, nhưng có thể hết hạn giữa chừng. Khoá dòng gắn với transaction nên đáng tin hơn cho dữ liệu trong database.</p>
+<div class="audit">
+
+<p><strong>Đã chạy thật trên MySQL 8.4: 20 process PHP mua cùng lúc, kho có 5 sản phẩm, lặp lại 3 lần.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Cách</th>
+<th>Bán được</th>
+<th>Tồn kho cuối</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Không khoá</td>
+<td><strong>8, 9, 8</strong></td>
+<td>0 (bán lố, kho vẫn báo đúng 0 nên rất khó phát hiện)</td>
+</tr>
+<tr>
+<td>Chỉ bọc <c>DB::transaction</c>, không khoá</td>
+<td><strong>10, 8, 6</strong></td>
+<td>0 (vẫn bán lố)</td>
+</tr>
+<tr>
+<td>Atomic</td>
+<td>5, 5, 5</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Pessimistic</td>
+<td>5, 5, 5</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Optimistic</td>
+<td>5, 5, 5</td>
+<td>0</td>
+</tr>
+</tbody></table>
+</div>
+
+
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Chuyển dự án sang MySQL. Tạo bảng và <c>StockService</c> với cả 4 cách.</li>
+<li>Viết lệnh <c>artisan</c> dùng <c>Process::pool</c> để chạy 20 process mua cùng lúc, in số đơn bán được. Tự chứng minh bản không khoá bị bán lố.</li>
+<li>Chạy cùng lệnh đó trên SQLite và ghi lại bạn thấy gì, rồi giải thích vì sao không nên tin kết quả này.</li>
+<li>Viết API <c>POST /api/orders</c> nhiều bước trong transaction có khoá dòng.</li>
+<li>Tự tạo deadlock bằng hai transaction khoá hai dòng theo thứ tự ngược nhau, rồi sửa bằng cách khoá theo thứ tự <c>id</c>.</li>
+</ol>
+</div>
+
+
+
+</div>
+
+<!-- PART 25 -->
+<div class="part">
+<div class="part-head"><div class="part-badge new">PART 25 — ĐI LÀM</div>
+<h1>Tài liệu API tự động</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Có trang tài liệu API luôn khớp với code, để frontend không phải hỏi và để bạn đưa vào dự án GitHub.</div></div>
+<h2>25.1 Chọn công cụ</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Scramble</th>
+<th>Scribe</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cách làm</td>
+<td>Tự suy ra từ code: FormRequest, Resource, kiểu trả về</td>
+<td>Đọc annotation, có thể gọi thử endpoint thật</td>
+</tr>
+<tr>
+<td>Viết thêm</td>
+<td>Rất ít</td>
+<td>Nhiều hơn nhưng kiểm soát tốt hơn</td>
+</tr>
+<tr>
+<td>Đầu ra</td>
+<td>OpenAPI 3.1, giao diện tại <c>/docs/api</c></td>
+<td>Trang HTML, Postman, OpenAPI</td>
+</tr>
+</tbody></table>
+<p>Phần dưới dùng Scramble vì cần ít code nhất.</p>
+<code-block lang="bash">
+composer require dedoc/scramble
+php artisan scramble:export --path=openapi.json   # xuất file OpenAPI
+</code-block>
+<h2>25.2 Code viết đúng chuẩn thì tài liệu tự có</h2>
+<code-block lang="php">
+class PostController extends Controller
+{
+    /**
+     * Danh sách bài viết.
+     *
+     * Trả về bài mới nhất trước, mỗi trang 15 bài.
+     */
+    public function index()
+    {
+        return PostResource::collection(Post::latest()->paginate(15));
+    }
+
+    /**
+     * Tạo bài viết.
+     */
+    public function store(StorePostRequest $request)
+    {
+        return new PostResource(Post::create($request->validated()));
+    }
+}
+</code-block>
+<p>Comment phía trên method trở thành tiêu đề và mô tả. FormRequest trở thành schema của body, API Resource trở thành schema của response.</p>
+<div class="audit">
+
+<p><strong>Đã chạy trên Laravel 13.40 với Scramble 0.13.53.</strong> File OpenAPI sinh ra có đúng <c>/posts</c> với <c>GET</c> và <c>POST</c>; tiêu đề lấy từ comment; <c>title</c> được ghi <c>type: string, minLength: 3, maxLength: 255</c> và bắt buộc, lấy từ <c>rules()</c>; có sẵn response <c>422</c>.</p>
+<p><strong>Nhưng phải đọc lại, đừng tin tuyệt đối:</strong> <c>POST /posts</c> được ghi là trả <c>200</c>, trong khi API thật trả <c>201</c> (đã kiểm tra bằng test). Công cụ tự suy luận có thể sai ở những chỗ như vậy.</p>
+</div>
+
+
+<div class="note">
+
+<p>Trang tài liệu mặc định chỉ mở ở môi trường <c>local</c>. Muốn mở ở production thì phải khai báo Gate <c>viewApiDocs</c>, và chỉ cho người được phép xem. Đừng để lộ tài liệu API nội bộ ra ngoài.</p>
+</div>
+
+
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Cài Scramble, mở <c>/docs/api</c> và thử gọi API ngay trên trang đó.</li>
+<li>Viết comment cho các method. Đọc từng endpoint, tìm chỗ tài liệu sai so với thực tế, như status <c>201</c>.</li>
+<li>Thêm cấu hình xác thực Bearer để thử được các API cần đăng nhập.</li>
+<li>Xuất <c>openapi.json</c> và import vào Postman.</li>
+<li>Thêm link tài liệu vào README của dự án.</li>
+</ol>
+</div>
+
+
+
+</div>
+
+<!-- PART 26 -->
+<div class="part">
+<div class="part-head"><div class="part-badge new">PART 26 — ĐI LÀM</div>
+<h1>CI với GitHub Actions</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Mỗi lần push tự kiểm tra code style và chạy test trên MySQL thật.</div></div>
+<h2>26.1 Workflow</h2>
+<p>File đặt ở thư mục gốc repo: <c>.github/workflows/ci.yml</c>. Đổi <c>laravel-crash-course/blog-api</c> thành đúng thư mục dự án của bạn.</p>
+<code-block lang="yaml">
+name: Laravel CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: laravel-crash-course/blog-api
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: pw
+          MYSQL_DATABASE: blog_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -ppw"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: blog_test
+      DB_USERNAME: root
+      DB_PASSWORD: pw
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_mysql, bcmath, intl
+          coverage: none
+      - uses: actions/cache@v4
+        with:
+          path: laravel-crash-course/blog-api/vendor
+          key: composer-${{ hashFiles('laravel-crash-course/blog-api/composer.lock') }}
+      - run: composer install --no-interaction --prefer-dist
+      - run: cp .env.example .env &amp;&amp; php artisan key:generate
+      - run: vendor/bin/pint --test
+      - run: php artisan test
+</code-block>
+<ul>
+<li><strong><c>pint --test</c></strong> chỉ kiểm tra chứ không sửa, sai style là CI đỏ. Chạy <c>vendor/bin/pint</c> trên máy để sửa trước khi push.</li>
+<li><strong><c>services</c></strong> tạo MySQL thật. <c>phpunit.xml</c> ghi <c>DB_CONNECTION=sqlite</c>, nhưng biến môi trường thật được ưu tiên hơn, nên khối <c>env</c> của workflow làm test chạy trên MySQL mà không phải sửa <c>phpunit.xml</c> (đã kiểm tra: driver lúc test là <c>mysql</c>).</li>
+<li><strong><c>APP_KEY</c></strong> được sinh bằng <c>key:generate</c>, không commit file <c>.env</c>.</li>
+</ul>
+<div class="note">
+
+<p><strong>Vì sao nên chạy test trên cùng loại database với production:</strong> SQLite bỏ qua <c>lockForUpdate</c> (Part 24), và lỏng hơn về kiểu dữ liệu. Test xanh trên SQLite chưa chắc đúng trên MySQL. Cách phổ biến: chạy SQLite trên máy cho nhanh, chạy MySQL trong CI.</p>
+</div>
+
+
+<div class="audit">
+
+<p><strong>Đã kiểm tra:</strong> file qua <c>actionlint</c>, <c>pint --test</c> và <c>php artisan test</c> đều chạy qua ở máy thử, kể cả test webhook trên MySQL 8.4. File chưa chạy trên máy chủ GitHub thật: lần đầu push hãy xem tab Actions.</p>
+</div>
+
+
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Thêm workflow, tạo Pull Request, xem CI chạy.</li>
+<li>Cố tình làm sai style và làm hỏng test, xác nhận CI đỏ.</li>
+<li>Thêm Larastan (PHPStan cho Laravel) mức thấp vào CI.</li>
+<li>Bật Branch protection cho <c>main</c>, yêu cầu CI phải qua.</li>
+</ol>
+</div>
+
+
+
+</div>
+
+<!-- PART 27 -->
+<div class="part">
+<div class="part-head"><div class="part-badge new">PART 27 — ĐI LÀM</div>
+<h1>Đa ngôn ngữ</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Trả thông báo và lỗi validate theo ngôn ngữ người dùng. Khách hàng Nhật và Việt Nam đều cần việc này.</div></div>
+<h2>27.1 Tổ chức file</h2>
+<code-block lang="bash">
+php artisan lang:publish   # đưa file ngôn ngữ mặc định vào thư mục lang/
+</code-block>
+<p>Laravel chỉ có sẵn tiếng Anh. Thông báo tiếng Việt phải tự tạo, hoặc dùng gói cộng đồng <c>laravel-lang/lang</c>.</p>
+<code-block lang="php">
+return [
+    'required' => 'Trường :attribute là bắt buộc.',
+    'string' => 'Trường :attribute phải là chuỗi.',
+    'min' => ['string' => 'Trường :attribute phải có ít nhất :min ký tự.'],
+    'max' => ['string' => 'Trường :attribute không được quá :max ký tự.'],
+
+    'attributes' => [
+        'title' => 'tiêu đề',
+        'body' => 'nội dung',
+    ],
+];
+</code-block>
+<p>Mục <c>attributes</c> đổi <c>title</c> trong thông báo thành <c>tiêu đề</c>.</p>
+<h2>27.2 Chọn ngôn ngữ theo request</h2>
+<p>API không có session, nên đọc từ header <c>Accept-Language</c>.</p>
+<code-block lang="php">
+class SetLocale
+{
+    private const SUPPORTED = ['en', 'vi'];
+
+    public function handle(Request $request, Closure $next): Response
+    {
+        // getPreferredLanguage đọc Accept-Language, chỉ trả về ngôn ngữ nằm trong danh sách cho phép
+        App::setLocale($request->getPreferredLanguage(self::SUPPORTED) ?? config('app.locale'));
+
+        return $next($request);
+    }
+}
+</code-block>
+<code-block lang="php">
+// bootstrap/app.php
+->withMiddleware(function (Middleware $middleware): void {
+    $middleware->append(\App\Http\Middleware\SetLocale::class);
+})
+</code-block>
+<p><strong>Không dùng trực tiếp giá trị từ người dùng</strong> cho <c>setLocale</c>, phải kiểm tra theo danh sách cho phép. Giá trị này được dùng để tìm file trên đĩa.</p>
+<h2>27.3 Dùng trong code</h2>
+<code-block lang="php">
+return [
+    'created' => 'Đã tạo bài ":title".',
+    'count' => '{0} Chưa có bài nào|[1,*] Có :count bài',
+];
+</code-block>
+<code-block lang="php">
+__('posts.created', ['title' => 'A']);   // Đã tạo bài "A".
+trans_choice('posts.count', 0);          // Chưa có bài nào
+trans_choice('posts.count', 5);          // Có 5 bài
+</code-block>
+<p>Tiếng Việt và tiếng Nhật không chia số nhiều như tiếng Anh, nhưng <c>trans_choice</c> vẫn có ích để viết riêng trường hợp số 0.</p>
+<h2>27.4 Những gì không tự dịch</h2>
+<p>Dữ liệu trong database như tên sản phẩm cần cách riêng: thêm cột theo ngôn ngữ, bảng dịch, hoặc gói như <c>spatie/laravel-translatable</c>. Định dạng ngày và tiền cũng khác theo vùng, dùng <c>Number::currency</c> và <c>Carbon::setLocale</c>.</p>
+<div class="audit">
+
+<p><strong>Đã kiểm chứng bằng test:</strong> <c>Accept-Language: vi</c> trả &quot;Trường tiêu đề phải có ít nhất 3 ký tự.&quot;; <c>en</c> trả &quot;The title field must be at least 3 characters.&quot;; ngôn ngữ không hỗ trợ (<c>fr</c>) vẫn chạy bình thường; <c>trans_choice</c> và <c>__</c> trả đúng cả hai ngôn ngữ.</p>
+</div>
+
+
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Thêm <c>lang/vi</c> với <c>validation.php</c> và một file thông báo của riêng dự án.</li>
+<li>Tạo middleware <c>SetLocale</c>, test bằng <c>Accept-Language</c> với <c>vi</c>, <c>en</c> và giá trị lạ.</li>
+<li>Thay các chuỗi cứng trong controller bằng <c>__()</c>.</li>
+<li>Bổ sung <c>lang/ja</c> cho một vài thông báo.</li>
+</ol>
+</div>
+
+
+
+</div>
+
+<!-- PART 28 -->
+<div class="part">
+<div class="part-head"><div class="part-badge new">PART 28 — ĐI LÀM</div>
+<h1>Webhook: chữ ký và xử lý một lần</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Nhận webhook của cổng thanh toán đúng cách: chống giả mạo, chịu được việc gửi lại nhiều lần.</div></div>
+<h2>28.1 Ba tính chất của webhook</h2>
+<table>
+<thead>
+<tr>
+<th>Tính chất</th>
+<th>Hệ quả</th>
+<th>Cách xử lý</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>URL công khai, ai cũng gọi được</td>
+<td>Có thể bị giả mạo</td>
+<td><strong>Kiểm tra chữ ký</strong></td>
+</tr>
+<tr>
+<td>Bên gửi tự gửi lại nếu không nhận được 2xx</td>
+<td>Một sự kiện đến nhiều lần</td>
+<td><strong>Idempotent</strong></td>
+</tr>
+<tr>
+<td>Có thể đến sai thứ tự</td>
+<td>Sự kiện cũ đến sau sự kiện mới</td>
+<td>Chỉ cập nhật khi trạng thái hiện tại cho phép</td>
+</tr>
+</tbody></table>
+<h2>28.2 Bảng lưu sự kiện đã xử lý</h2>
+<code-block lang="php">
+Schema::create('webhook_events', function (Blueprint $table) {
+    $table->id();
+    $table->string('provider');
+    $table->string('event_id');
+    $table->timestamp('processed_at')->nullable();
+    $table->timestamps();
+
+    $table->unique(['provider', 'event_id']); // database đảm bảo mỗi sự kiện chỉ có một dòng
+});
+</code-block>
+<h2>28.3 Controller</h2>
+<code-block lang="php">
+class PaymentWebhookController extends Controller
+{
+    public function __invoke(Request $request): JsonResponse
+    {
+        // Ký trên chuỗi gốc: giải mã JSON rồi mã hoá lại có thể làm đổi vài byte
+        $expected = hash_hmac('sha256', $request->getContent(), config('services.payment.secret'));
+        if (! hash_equals($expected, (string) $request->header('X-Signature'))) {
+            return response()->json(['message' => 'Sai chữ ký'], 401);
+        }
+
+        DB::transaction(function () use ($request) {
+            $inserted = DB::table('webhook_events')->insertOrIgnore([
+                'provider' => 'payment',
+                'event_id' => $request->input('event_id'),
+                'processed_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            if ($inserted === 0) {
+                return; // đã xử lý rồi: bỏ qua nhưng vẫn trả 200 để họ không gửi lại
+            }
+
+            if ($request->input('type') === 'payment.succeeded') {
+                Order::where('code', $request->input('order_code'))
+                    ->where('status', 'pending')
+                    ->update(['status' => 'paid', 'paid_count' => DB::raw('paid_count + 1')]);
+            }
+        });
+
+        return response()->json(['received' => true]);
+    }
+}
+</code-block>
+<ul>
+<li><strong><c>hash_equals</c></strong> so sánh trong thời gian không đổi, chống timing attack. Không dùng <c>===</c>.</li>
+<li><strong><c>insertOrIgnore</c> + unique index</strong> để database đảm bảo chỉ một request giành được sự kiện. Kiểm tra <c>exists()</c> rồi mới <c>insert</c> sẽ bị race condition như Part 24.</li>
+<li><strong>Đặt trong transaction</strong> để nếu cập nhật đơn lỗi thì dòng sự kiện cũng được rollback, và lần gửi lại vẫn xử lý được.</li>
+<li><strong><c>where(&#39;status&#39;, &#39;pending&#39;)</c></strong> chống sự kiện đến sai thứ tự.</li>
+<li><strong>Trả 200 khi đã xử lý rồi</strong>: nếu trả lỗi, bên gửi sẽ gửi lại mãi.</li>
+</ul>
+<p>Route trong <c>routes/api.php</c> không có CSRF nên không cần loại trừ. Việc nặng như gửi mail nên đưa vào queue với <c>afterCommit()</c> (Part 14), để webhook trả lời nhanh.</p>
+<div class="note">
+
+<p>Mỗi cổng thanh toán có cách ký riêng: chuỗi nào được ký, tên header, thuật toán. Đoạn trên là mẫu chung, hãy đọc tài liệu của VNPAY, MoMo hay Stripe khi làm thật. Ở môi trường dev, dùng <c>ngrok</c> hoặc <c>cloudflared</c> để có URL công khai.</p>
+</div>
+
+
+<div class="audit">
+
+<p><strong>Đã kiểm chứng bằng test, cả trên SQLite và MySQL 8.4:</strong> sai chữ ký trả 401 và đơn không đổi; gửi đúng thì đơn thành <c>paid</c>; gửi lại cùng <c>event_id</c> vẫn trả 200 và <c>paid_count</c> vẫn là 1; sự kiện khác cho đơn đã <c>paid</c> không làm đổi đơn.</p>
+</div>
+
+
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Tạo bảng và controller như trên, secret đọc từ <c>config</c>.</li>
+<li>Viết test: sai chữ ký, gửi đúng, gửi lại hai lần, sự kiện sai thứ tự.</li>
+<li>Viết lệnh giả lập bên gửi: ký bằng <c>hash_hmac</c> và gửi bằng <c>Http::</c>.</li>
+<li>Đưa việc gửi mail xác nhận vào queue, chỉ chạy sau khi transaction commit.</li>
+</ol>
+</div>
+
+
+
+</div>
+
+<!-- PART 29 -->
+<div class="part">
+<div class="part-head"><div class="part-badge new">PART 29 — TUỲ CHỌN</div>
+<h1>Blade: làm giao diện phía server</h1>
+<div class="goal-box"><b>Mục tiêu:</b> Làm được trang có form, đăng nhập bằng session, phân trang. Nhiều dự án outsource và dự án có sẵn vẫn dùng Blade.</div></div>
+<h2>29.1 Layout bằng component</h2>
+<code-block lang="blade">
+@props(['title' => 'Blog'])
+
+&lt;!doctype html>
+&lt;html lang="{{ app()->getLocale() }}">
+&lt;head>
+    &lt;title>{{ $title }}&lt;/title>
+&lt;/head>
+&lt;body>
+    &lt;nav>
+        @auth
+            &lt;span>{{ auth()->user()->name }}&lt;/span>
+            &lt;form method="POST" action="{{ route('logout') }}">
+                @csrf
+                &lt;button>Đăng xuất&lt;/button>
+            &lt;/form>
+        @else
+            &lt;a href="{{ route('login') }}">Đăng nhập&lt;/a>
+        @endauth
+    &lt;/nav>
+
+    @session('status')
+        &lt;p role="status">{{ $value }}&lt;/p>
+    @endsession
+
+    {{ $slot }}
+&lt;/body>
+&lt;/html>
+</code-block>
+<h2>29.2 Trang danh sách</h2>
+<code-block lang="blade">
+&lt;x-layout title="Danh sách bài viết">
+    @forelse ($posts as $post)
+        &lt;article>
+            &lt;h2>{{ $post->title }}&lt;/h2> {{-- {{ }} tự escape: chống XSS --}}
+            &lt;p>{{ Str::limit($post->body, 100) }}&lt;/p>
+        &lt;/article>
+    @empty
+        &lt;p>{{ trans_choice('posts.count', 0) }}&lt;/p>
+    @endforelse
+
+    {{ $posts->links() }} {{-- link phân trang --}}
+&lt;/x-layout>
+</code-block>
+<p><c>{{ $x }}</c> tự escape nên an toàn. <c>{!! $x !!}</c> <strong>không escape</strong>, chỉ dùng với nội dung bạn hoàn toàn tin tưởng.</p>
+<h2>29.3 Form</h2>
+<code-block lang="blade">
+&lt;x-layout title="Viết bài">
+    &lt;form method="POST" action="{{ route('posts.store') }}">
+        @csrf {{-- thiếu dòng này sẽ gặp lỗi 419 --}}
+
+        &lt;label for="title">Tiêu đề&lt;/label>
+        &lt;input id="title" name="title" value="{{ old('title') }}"> {{-- giữ lại dữ liệu đã nhập --}}
+        @error('title')
+            &lt;p role="alert">{{ $message }}&lt;/p>
+        @enderror
+
+        &lt;label for="body">Nội dung&lt;/label>
+        &lt;textarea id="body" name="body">{{ old('body') }}&lt;/textarea>
+        @error('body')
+            &lt;p role="alert">{{ $message }}&lt;/p>
+        @enderror
+
+        &lt;button>Lưu&lt;/button>
+    &lt;/form>
+&lt;/x-layout>
+</code-block>
+<code-block lang="php">
+class PostController extends Controller
+{
+    public function index()
+    {
+        return view('posts.index', ['posts' => Post::latest()->paginate(10)]);
+    }
+
+    public function create()
+    {
+        return view('posts.create');
+    }
+
+    public function store(StorePostRequest $request)
+    {
+        $post = Post::create($request->validated());
+
+        return redirect()
+            ->route('posts.index')
+            ->with('status', __('posts.created', ['title' => $post->title])); // flash: chỉ sống đến request kế tiếp
+    }
+}
+</code-block>
+<p>Khi validate thất bại ở request web, Laravel <strong>redirect về trang trước</strong> kèm lỗi và dữ liệu cũ. Khác với API, API trả 422 JSON. Đó là lý do cùng một <c>StorePostRequest</c> dùng được cho cả hai.</p>
+<p>Mẫu <strong>Post/Redirect/Get</strong>: sau <c>POST</c> thành công luôn redirect, để F5 không gửi lại form.</p>
+<h2>29.4 Đăng nhập bằng session</h2>
+<code-block lang="php">
+class SessionController extends Controller
+{
+    public function store(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (! Auth::attempt($credentials, $request->boolean('remember'))) {
+            return back()->withErrors(['email' => 'Sai email hoặc mật khẩu'])->onlyInput('email');
+        }
+
+        $request->session()->regenerate(); // đổi session id: chống session fixation
+
+        return redirect()->intended(route('posts.index'));
+    }
+
+    public function destroy(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
+}
+</code-block>
+<code-block lang="php">
+Route::view('/login', 'auth.login')->middleware('guest')->name('login');
+Route::post('/login', [SessionController::class, 'store'])->middleware('throttle:5,1');
+Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth')->name('logout');
+
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+});
+</code-block>
+<p>Đây là bản tự viết để hiểu cơ chế. Dự án thật nên dùng starter kit của Laravel hoặc Laravel Fortify, vì còn quên mật khẩu, xác minh email, 2FA.</p>
+<div class="audit">
+
+<p><strong>Đã kiểm chứng bằng test:</strong> khách vào <c>/posts/create</c> bị chuyển về <c>/login</c>, đăng nhập xong quay lại đúng trang đó (<c>intended</c>). Form có <c>_token</c>. Validate sai thì redirect về kèm lỗi và <c>old(&#39;title&#39;)</c>. Tiêu đề chứa thẻ <c>script</c> hiển thị dưới dạng đã escape. Phân trang có link <c>page=1</c>. Đăng xuất xoá phiên.</p>
+<p><strong>Lỗi đã gặp khi viết thử:</strong> route API (<c>Route::apiResource(&#39;posts&#39;, ...)</c>) và route web cùng tên <c>posts.index</c>, khiến <c>route(&#39;posts.index&#39;)</c> trỏ sang <c>/api/posts</c>. Sửa bằng <c>-&gt;names(&#39;api.posts&#39;)</c>. Dự án có cả web và API rất dễ gặp lỗi này.</p>
+</div>
+
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Blade</th>
+<th>Inertia + React</th>
+<th>SPA + API</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hợp với</td>
+<td>Site nội dung, admin đơn giản</td>
+<td>Một team, muốn dùng React mà không tách API</td>
+<td>Team tách riêng, có app di động</td>
+</tr>
+<tr>
+<td>Đăng nhập</td>
+<td>Session</td>
+<td>Session</td>
+<td>Sanctum hoặc token</td>
+</tr>
+<tr>
+<td>SEO</td>
+<td>Tốt</td>
+<td>Cần SSR</td>
+<td>Cần SSR hoặc Next.js</td>
+</tr>
+</tbody></table>
+<div class="task-box">
+
+<p><strong>Việc cần làm:</strong></p>
+<ol>
+<li>Làm CRUD bài viết bằng Blade: danh sách có phân trang, form thêm và sửa, xoá bằng <c>@method(&#39;DELETE&#39;)</c>.</li>
+<li>Làm đăng nhập, đăng xuất bằng session, và bảo vệ trang bằng middleware <c>auth</c>.</li>
+<li>Bỏ <c>@csrf</c> để thấy lỗi 419, rồi thêm lại.</li>
+<li>Thử lưu nội dung có thẻ <c>script</c>, so sánh <c>{{ }}</c> với <c>{!! !!}</c>.</li>
+<li>Viết Feature test cho luồng trên.</li>
+</ol>
+</div>
+
+
 </div>
 
 </body>
