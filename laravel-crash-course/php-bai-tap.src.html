@@ -60,8 +60,8 @@ tr { break-inside: avoid; }
   <h1>PHP cho người học Laravel</h1>
   <h2>Bộ bài tập thực hành từ cơ bản đến nâng cao, kèm đáp án và giải thích chi tiết ở phần sau</h2>
   <div class="meta">
-    <div>Gồm 77 bài tập thuộc 12 chương</div>
-    <div>Mọi đáp án đã được chạy thật bằng PHP 8.5 — phần "Kết quả khi chạy" là output thực tế, không phải gõ tay</div>
+    <div>Gồm 96 bài tập thuộc 13 chương</div>
+    <div>Mọi đáp án đã được chạy thật (chương 1–12 bằng PHP 8.5, chương 13 bằng PHP 8.3) — phần "Kết quả khi chạy" là output thực tế, không phải gõ tay</div>
     <div>Thư mục thực hành: laravel-crash-course/php-warmup</div>
   </div>
 </div>
@@ -70,6 +70,7 @@ tr { break-inside: avoid; }
 <ul class="toc-list">
   <li><span><span class="n">0</span> Cách dùng tài liệu này</span><span class="tag">ĐỌC TRƯỚC</span></li>
   <li><span><span class="n">1</span> Nền tảng ngôn ngữ: chuỗi, so sánh, hằng, kiểu</span><span class="tag">5 bài</span></li><li><span><span class="n">2</span> Array cơ bản: indexed, associative, mảng lồng nhau</span><span class="tag">4 bài</span></li><li><span><span class="n">3</span> Truy cập mảng an toàn: ??, isset, array_key_exists</span><span class="tag">3 bài</span></li><li><span><span class="n">4</span> Hàm xử lý array: map, filter, reduce, column</span><span class="tag">9 bài</span></li><li><span><span class="n">5</span> Sắp xếp: &lt;=&gt;, usort và họ sort</span><span class="tag">5 bài</span></li><li><span><span class="n">6</span> Toán tử PHP 8: ??, ?:, ??=, ?-&gt;, match</span><span class="tag">6 bài</span></li><li><span><span class="n">7</span> Class và OOP cơ bản</span><span class="tag">6 bài</span></li><li><span><span class="n">8</span> File, CSV, JSON và xử lý lỗi</span><span class="tag">7 bài</span></li><li><span><span class="n">9</span> Luyện logic: sắp xếp, tìm kiếm, tìm cặp, nhóm</span><span class="tag">12 bài</span></li><li><span><span class="n">10</span> Closure và arrow function</span><span class="tag">7 bài</span></li><li><span><span class="n">11</span> Tổng hợp: mini project đơn hàng</span><span class="tag">2 bài</span></li><li><span><span class="n">12</span> SQL nền tảng với SQLite (chạy bằng PDO)</span><span class="tag">11 bài</span></li>
+  <li><span><span class="n">13</span> OOP nâng cao: interface, abstract, trait, enum, static, namespace, DI</span><span class="tag">19 bài</span></li>
   <li><span><span class="n">PL</span> Phụ lục: bảng hàm cần nhớ và lỗi hay gặp</span><span class="tag">TRA CỨU</span></li>
 </ul>
 <p class="note"><b>Cấu trúc:</b> Phần 1 là toàn bộ đề bài (kèm kết quả mong đợi cho bài viết code). Phần 2 ở nửa sau là đáp án và giải thích. Bấm vào liên kết "Xem đáp án" để nhảy đến đúng bài, và "Về đề bài" để quay lại.</p>
@@ -80,18 +81,16 @@ tr { break-inside: avoid; }
 <h4>Quy trình làm một bài (làm đúng thứ tự)</h4>
 <ol><li>Đọc đề, <strong>dự đoán</strong> hoặc tự phác thảo cách làm trên giấy.</li><li>Gõ code vào một file <code>.php</code> trong <code>php-warmup</code>, chạy bằng lệnh <code>php ten-file.php</code>.</li><li>So sánh với mục "Kết quả khi chạy" trong đề (nếu có). Khác thì tự debug, nhìn lỗi PHP báo ở dòng nào.</li><li>Kẹt hơn <strong>15 phút</strong> mới mở đáp án. Đọc đáp án rồi <strong>đóng lại</strong> và viết lại từ trí nhớ.</li><li>Làm thí nghiệm "phá code": đổi một dấu, một điều kiện, xoá một <code>use</code>, xem lỗi gì. Hiểu lỗi nhớ lâu hơn hiểu đúng.</li></ol>
 <h4>Chạy file và đọc lỗi</h4>
-<ul><li>Chạy: <code>php ten-file.php</code>. Kiểm tra phiên bản: <code>php -v</code> (tài liệu chạy kiểm tra trên PHP 8.5, yêu cầu tối thiểu 8.3).</li><li><code>Warning</code> và <code>Notice</code>: chương trình vẫn chạy nhưng có vấn đề (thường là đọc key không tồn tại). Đừng bỏ qua.</li><li><code>Fatal error: Uncaught ...</code>: ném exception mà không ai bắt. Đọc dòng đầu: loại lỗi và message; dòng <code>#0</code> cho biết hàm nào, file nào, dòng nào.</li><li>Dùng <code>print_r($x)</code> hoặc <code>var_dump($x)</code> để xem nội dung biến, <code>json_encode($x)</code> để in gọn một dòng.</li></ul>
+<ul><li>Chạy: <code>php ten-file.php</code>. Kiểm tra phiên bản: <code>php -v</code> (chương 1–12 chạy kiểm tra trên PHP 8.5, chương 13 trên PHP 8.3, yêu cầu tối thiểu 8.3).</li><li><code>Warning</code> và <code>Notice</code>: chương trình vẫn chạy nhưng có vấn đề (thường là đọc key không tồn tại). Đừng bỏ qua.</li><li><code>Fatal error: Uncaught ...</code>: ném exception mà không ai bắt. Đọc dòng đầu: loại lỗi và message; dòng <code>#0</code> cho biết hàm nào, file nào, dòng nào.</li><li>Dùng <code>print_r($x)</code> hoặc <code>var_dump($x)</code> để xem nội dung biến, <code>json_encode($x)</code> để in gọn một dòng.</li></ul>
 <h4>Độ khó</h4>
 <p>Mỗi bài có ★ (dễ), ★★ (vừa), ★★★ (khó, cần suy nghĩ). Bài <strong>dự đoán output</strong> được đánh dấu rõ: chỉ có code, không có kết quả mong đợi, bạn phải tự đoán trước khi chạy.</p>
 <h4>Bảng chương và file thực hành tương ứng</h4>
-<table><tr><th>Chương</th><th>Nội dung</th><th>File bạn đã làm</th></tr><tr><td>1</td><td>Chuỗi, so sánh, hằng, kiểu</td><td><code>index.php</code></td></tr><tr><td>2</td><td>Array cơ bản</td><td><code>array-basics.php</code>, <code>array.php</code></td></tr><tr><td>3</td><td>Truy cập mảng an toàn</td><td><code>array-safe.php</code></td></tr><tr><td>4</td><td>map, filter, reduce, column</td><td><code>array-function.php</code>, <code>array-keys.php</code>, <code>array-column.php</code>, <code>array-excires.php</code></td></tr><tr><td>5</td><td>Sắp xếp</td><td><code>array-sort.php</code></td></tr><tr><td>6</td><td>Toán tử PHP 8</td><td><code>operators.php</code></td></tr><tr><td>7</td><td>Class và OOP</td><td><code>php-class/*.php</code></td></tr><tr><td>8</td><td>File, CSV, JSON, exception</td><td><code>file.php</code></td></tr><tr><td>9</td><td>Logic và thuật toán</td><td><code>logic.php</code></td></tr><tr><td>10</td><td>Closure</td><td><code>closure/closure.php</code>, <code>closure/excirse.php</code></td></tr><tr><td>11</td><td>Mini project tổng hợp</td><td>tự tạo <code>project/</code></td></tr><tr><td>12</td><td>SQL nền tảng (SQLite, PDO)</td><td>tự tạo <code>sql/</code></td></tr></table>
+<table><tr><th>Chương</th><th>Nội dung</th><th>File bạn đã làm</th></tr><tr><td>1</td><td>Chuỗi, so sánh, hằng, kiểu</td><td><code>index.php</code></td></tr><tr><td>2</td><td>Array cơ bản</td><td><code>array-basics.php</code>, <code>array.php</code></td></tr><tr><td>3</td><td>Truy cập mảng an toàn</td><td><code>array-safe.php</code></td></tr><tr><td>4</td><td>map, filter, reduce, column</td><td><code>array-function.php</code>, <code>array-keys.php</code>, <code>array-column.php</code>, <code>array-excires.php</code></td></tr><tr><td>5</td><td>Sắp xếp</td><td><code>array-sort.php</code></td></tr><tr><td>6</td><td>Toán tử PHP 8</td><td><code>operators.php</code></td></tr><tr><td>7</td><td>Class và OOP</td><td><code>php-class/*.php</code></td></tr><tr><td>8</td><td>File, CSV, JSON, exception</td><td><code>file.php</code></td></tr><tr><td>9</td><td>Logic và thuật toán</td><td><code>logic.php</code></td></tr><tr><td>10</td><td>Closure</td><td><code>closure/closure.php</code>, <code>closure/excirse.php</code></td></tr><tr><td>11</td><td>Mini project tổng hợp</td><td>tự tạo <code>project/</code></td></tr><tr><td>12</td><td>SQL nền tảng (SQLite, PDO)</td><td>tự tạo <code>sql/</code></td></tr><tr><td>13</td><td>OOP nâng cao (nên học ngay sau chương 7)</td><td>tự tạo <code>php-excersires/part13-oop/</code></td></tr></table>
 <h4>Quy ước về đáp án</h4>
 <p>Có nhiều cách đúng cho cùng một bài. Đáp án trong tài liệu là <strong>một</strong> cách rõ ràng và an toàn, không phải cách duy nhất. Nếu code của bạn cho cùng kết quả (kể cả các trường hợp biên), nó vẫn đúng. Hãy so sánh hai cách, hiểu vì sao đáp án chọn như vậy.</p>
-<h4>Phần chưa có trong tài liệu này</h4>
-<p>Các chủ đề PHP sau nằm trong lộ trình Laravel nhưng chưa có bài tập ở đây: <code>interface</code>, <code>abstract class</code>, <code>trait</code>, <code>enum</code>, <code>static</code>, namespace + Composer autoload (PSR-4), attribute, và dependency injection. Khi bạn học đến đó sẽ có thể bổ sung chương mới.</p>
 <h4>Checklist tự đánh giá cuối khoá</h4>
 <p>Đánh dấu khi bạn <strong>tự làm được không cần xem</strong>:</p>
-<ul><li>Giải thích được khác nhau của <code>==</code> / <code>===</code>, <code>??</code> / <code>?:</code>, <code>isset</code> / <code>array_key_exists</code>.</li><li>Biết <code>array_filter</code> giữ key và biết khi nào dùng <code>array_values</code>.</li><li>Phân biệt <code>sort</code> / <code>asort</code> / <code>usort</code> và biết hàm nào giữ key.</li><li>Viết được <code>usort</code> nhiều tiêu chí với <code>&lt;=&gt;</code>.</li><li>Viết được class có constructor promotion, <code>private</code>, <code>readonly</code>, ném và bắt exception.</li><li>Đọc/ghi được file, CSV, JSON; xử lý được file không tồn tại.</li><li>Phân biệt <code>use ($x)</code>, <code>use (&amp;$x)</code> và <code>fn</code>; viết được hàm trả về closure.</li><li>Giải thích được vì sao tìm nhị phân nhanh hơn và vì sao dùng hash map (<code>isset</code>) nhanh hơn <code>in_array</code>.</li></ul>
+<ul><li>Giải thích được khác nhau của <code>==</code> / <code>===</code>, <code>??</code> / <code>?:</code>, <code>isset</code> / <code>array_key_exists</code>.</li><li>Biết <code>array_filter</code> giữ key và biết khi nào dùng <code>array_values</code>.</li><li>Phân biệt <code>sort</code> / <code>asort</code> / <code>usort</code> và biết hàm nào giữ key.</li><li>Viết được <code>usort</code> nhiều tiêu chí với <code>&lt;=&gt;</code>.</li><li>Viết được class có constructor promotion, <code>private</code>, <code>readonly</code>, ném và bắt exception.</li><li>Đọc/ghi được file, CSV, JSON; xử lý được file không tồn tại.</li><li>Phân biệt <code>use ($x)</code>, <code>use (&amp;$x)</code> và <code>fn</code>; viết được hàm trả về closure.</li><li>Giải thích được vì sao tìm nhị phân nhanh hơn và vì sao dùng hash map (<code>isset</code>) nhanh hơn <code>in_array</code>.</li><li>Phân biệt <code>interface</code>, <code>abstract class</code>, <code>trait</code> và biết khi nào dùng cái nào.</li><li>Giải thích được <code>self</code> và <code>static</code>, vì sao <code>User::create()</code> trả về <code>User</code>.</li><li>Viết được enum có method, và phân biệt <code>from</code> với <code>tryFrom</code>.</li><li>Giải thích được namespace, PSR-4, vì sao thiếu <code>\</code> trước <code>Exception</code> lại lỗi.</li><li>Viết lại được một class theo Dependency Injection, giải thích được Service Container tự tạo object thế nào.</li><li>Giải thích được Facade không phải static thật, và cách <code>$user->name</code> hoạt động.</li></ul>
 
 <div class="part-title"><div class="big">PHẦN 1</div><h1>ĐỀ BÀI</h1><p>Tự làm trước khi xem đáp án.</p></div>
 <div class="chap"><div class="chap-badge">CHƯƠNG 1</div><h1>Nền tảng ngôn ngữ: chuỗi, so sánh, hằng, kiểu</h1><p>Chương này ôn những điều căn bản nhất của PHP mà người từ JavaScript/TypeScript sang hay vấp: nháy đơn khác nháy kép, nối chuỗi bằng dấu chấm, <code>==</code> khác <code>===</code>, và vì sao nên bật <code>declare(strict_types=1)</code>.</p>
@@ -598,6 +597,656 @@ Chi
 Tham số hoá:
 views
 id</code></pre><p class="jump"><a href="#a-12-11">Xem đáp án bài 12.11 →</a></p></div>
+
+<div class="chap"><div class="chap-badge">CHƯƠNG 13</div><h1>OOP nâng cao: interface, abstract, trait, enum, static, namespace, DI</h1><p>Laravel được xây trên đúng những thứ trong chương này. <code>Authenticatable</code> là interface, <code>Model</code> là abstract class, <code>SoftDeletes</code> là trait, <code>User::create()</code> dùng <code>static</code>, <code>Cache::get()</code> dùng magic method, Service Container dùng reflection và dependency injection. Học xong chương này, bạn đọc code Laravel mà không còn thấy &quot;phép màu&quot;.</p>
+<p><strong>Nên học ngay sau chương 7.</strong> Chương được đặt cuối tài liệu để không làm đổi số thứ tự các bài bạn đã làm. Tạo thư mục <code>php-excersires/part13-oop/</code> để làm bài. Các bài chỉ dùng tính năng có từ PHP 8.3 trở xuống, và được chạy kiểm tra trên PHP 8.3.</p>
+<h4>Bảng chọn nhanh</h4>
+<table>
+<thead>
+<tr>
+<th>Khái niệm</th>
+<th>Trả lời câu hỏi</th>
+<th>Thấy trong Laravel ở đâu</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>interface</code></td>
+<td>Đối tượng này <strong>làm được gì</strong>? Chỉ là hợp đồng, không có code</td>
+<td><code>ShouldQueue</code>, <code>Authenticatable</code>, <code>Arrayable</code></td>
+</tr>
+<tr>
+<td><code>abstract class</code></td>
+<td>Đối tượng này <strong>là loại gì</strong>? Có sẵn code chung, không tạo trực tiếp được</td>
+<td><code>Model</code>, <code>ServiceProvider</code>, <code>Facade</code>, <code>Controller</code></td>
+</tr>
+<tr>
+<td><code>trait</code></td>
+<td>Dùng lại code <strong>ngang hàng</strong> giữa các class không cùng họ</td>
+<td><code>HasFactory</code>, <code>SoftDeletes</code>, <code>Notifiable</code></td>
+</tr>
+<tr>
+<td><code>enum</code></td>
+<td>Tập giá trị <strong>cố định</strong>, thay cho chuỗi hay số rời rạc</td>
+<td>Cast enum trong Model, <code>Rule::enum</code></td>
+</tr>
+<tr>
+<td><code>static</code></td>
+<td>Thuộc về <strong>class</strong>, không thuộc từng object</td>
+<td><code>User::create()</code>, <code>User::query()</code></td>
+</tr>
+<tr>
+<td><code>namespace</code></td>
+<td>Tránh trùng tên, ánh xạ tới thư mục qua PSR-4</td>
+<td><code>App\Models\User</code></td>
+</tr>
+<tr>
+<td>Dependency Injection</td>
+<td>Nhận phụ thuộc <strong>từ ngoài</strong> thay vì tự <code>new</code></td>
+<td>Type-hint trong constructor, Service Container</td>
+</tr>
+<tr>
+<td>Magic method</td>
+<td>Xử lý thuộc tính hay method <strong>không tồn tại</strong></td>
+<td><code>$user-&gt;name</code>, <code>Cache::get()</code></td>
+</tr>
+<tr>
+<td>Attribute</td>
+<td>Gắn <strong>thông tin</strong> vào class hay method để code khác đọc</td>
+<td><code>#[ObservedBy]</code>, và từ Laravel 13 có <code>#[Table]</code>, <code>#[Fillable]</code>, <code>#[Hidden]</code> trên Model</td>
+</tr>
+</tbody></table>
+<h4>Interface hay abstract class?</h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>interface</code></th>
+<th><code>abstract class</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Có code sẵn trong method</td>
+<td>Không</td>
+<td>Có</td>
+</tr>
+<tr>
+<td>Có thuộc tính</td>
+<td>Không (chỉ hằng)</td>
+<td>Có</td>
+</tr>
+<tr>
+<td>Số lượng mỗi class dùng được</td>
+<td>Nhiều (<code>implements A, B</code>)</td>
+<td>Một (<code>extends A</code>)</td>
+</tr>
+<tr>
+<td>Dùng khi</td>
+<td>Nhiều class không liên quan có chung một khả năng</td>
+<td>Nhiều class cùng họ có chung logic</td>
+</tr>
+</tbody></table>
+<p>Hai thứ này thường đi cùng nhau: code bên ngoài phụ thuộc vào interface, còn abstract class gom phần code chung cho các bản cài đặt.</p>
+<h4><code>self</code>, <code>static</code>, <code>$this</code></h4>
+<ul>
+<li><code>$this</code>: object hiện tại, chỉ có trong method không static.</li>
+<li><code>self::</code>: class <strong>nơi đoạn code được viết</strong>.</li>
+<li><code>static::</code>: class <strong>thực sự được gọi lúc chạy</strong> (late static binding). Đây là lý do <code>User::create()</code> trả về <code>User</code> dù method được viết trong <code>Model</code>.</li>
+</ul>
+<div class="outlabel">Ví dụ</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+class Model
+{
+    public static function make(): static
+    {
+        return new static();
+    }
+
+    public static function viaSelf(): string
+    {
+        return self::class;
+    }
+
+    public static function viaStatic(): string
+    {
+        return static::class;
+    }
+}
+
+class User extends Model
+{
+}
+
+echo get_class(User::make()), &quot;\n&quot;;
+echo User::viaSelf(), &quot;\n&quot;;
+echo User::viaStatic(), &quot;\n&quot;;</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>User
+Model
+User</code></pre><h4>Dependency Injection trong một ví dụ</h4>
+<pre class="code"><code>// Tự new: gắn chặt, không thay được khi test
+class OrderService
+{
+    private SmtpMailer $mailer;
+
+    public function __construct()
+    {
+        $this-&gt;mailer = new SmtpMailer();
+    }
+}
+
+// Nhận từ ngoài: phụ thuộc vào interface, đổi được bản cài đặt
+class OrderService
+{
+    public function __construct(private Mailer $mailer)
+    {
+    }
+}</code></pre><h4>Magic method hay gặp</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Được gọi khi</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>__get($name)</code>, <code>__set($name, $value)</code>, <code>__isset($name)</code></td>
+<td>Đọc, gán, kiểm tra thuộc tính không tồn tại hoặc không truy cập được</td>
+</tr>
+<tr>
+<td><code>__call($name, $args)</code>, <code>__callStatic($name, $args)</code></td>
+<td>Gọi method không tồn tại, trên object hoặc trên class</td>
+</tr>
+<tr>
+<td><code>__toString()</code></td>
+<td>Dùng object như chuỗi</td>
+</tr>
+<tr>
+<td><code>__invoke(...)</code></td>
+<td>Gọi object như một hàm</td>
+</tr>
+</tbody></table>
+<div class="warn">
+
+<p><strong>Với mỗi bài, hãy trả lời được hai câu:</strong> khái niệm này giải quyết vấn đề gì, và nếu không dùng nó thì code sẽ gặp rắc rối gì. Người phỏng vấn thường hỏi đúng hai câu đó, chứ không hỏi cú pháp.</p>
+</div>
+
+</div><div class="ex" id="q-13-1"><div class="ex-head"><span class="ex-id">Bài 13.1</span><span class="ex-title">Interface đầu tiên: đổi cổng thanh toán</span><span class="ex-stars">★☆☆</span></div><p>Khai báo interface <code>PaymentGateway</code> có method <code>pay(int $amount): string</code>. Viết hai class <code>VnpayGateway</code> và <code>MomoGateway</code> cài đặt interface đó. Viết hàm <code>checkout(PaymentGateway $gateway, int $amount): void</code> in kết quả. Gọi hàm với cả hai cổng. Hàm <code>checkout</code> không được biết cổng cụ thể là gì.</p>
+<div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>VNPAY đã thu 100000
+MoMo đã thu 50000</code></pre><p class="jump"><a href="#a-13-1">Xem đáp án bài 13.1 →</a></p></div><div class="ex" id="q-13-2"><div class="ex-head"><span class="ex-id">Bài 13.2</span><span class="ex-title">Nhiều interface, <code>instanceof</code> và lỗi kiểu</span><span class="ex-stars">★★☆</span></div><p>Dự đoán output. Class có thể cài đặt nhiều interface. Có tạo được object từ interface không?</p>
+<div class="outlabel">Code đề bài</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+interface HasName
+{
+    public const PREFIX = &#x27;Tên: &#x27;;
+
+    public function name(): string;
+}
+
+interface HasPrice
+{
+    public function price(): int;
+}
+
+class Book implements HasName, HasPrice
+{
+    public function name(): string
+    {
+        return &#x27;Sách PHP&#x27;;
+    }
+
+    public function price(): int
+    {
+        return 100;
+    }
+}
+
+class Author implements HasName
+{
+    public function name(): string
+    {
+        return &#x27;An&#x27;;
+    }
+}
+
+function label(HasName $x): string
+{
+    return $x::PREFIX . $x-&gt;name();
+}
+
+function total(HasPrice ...$items): int
+{
+    return array_sum(array_map(fn (HasPrice $i) =&gt; $i-&gt;price(), $items));
+}
+
+$book = new Book();
+$author = new Author();
+
+echo label($book), &quot;\n&quot;;
+echo label($author), &quot;\n&quot;;
+var_dump($book instanceof HasPrice);
+var_dump($author instanceof HasPrice);
+echo total($book, $book), &quot;\n&quot;;
+
+try {
+    echo total($book, $author), &quot;\n&quot;;
+} catch (TypeError $e) {
+    echo get_class($e), &quot;\n&quot;;
+}
+
+try {
+    $x = new HasName();
+} catch (Error $e) {
+    echo $e-&gt;getMessage(), &quot;\n&quot;;
+}</code></pre><p class="todo">Việc cần làm: ghi ra giấy kết quả bạn dự đoán, sau đó tự chạy để kiểm tra rồi mới xem đáp án.</p><p class="jump"><a href="#a-13-2">Xem đáp án bài 13.2 →</a></p></div><div class="ex" id="q-13-3"><div class="ex-head"><span class="ex-id">Bài 13.3</span><span class="ex-title">Abstract class và template method</span><span class="ex-stars">★★☆</span></div><p>Viết abstract class <code>Report</code> có:</p>
+<ul>
+<li>Method thường <code>render(): string</code> ghép <code>title()</code> và <code>body()</code> theo mẫu trong kết quả mong đợi. Method này khai báo <code>final</code> để class con không đổi được khung.</li>
+<li>Hai method abstract <code>title(): string</code> và <code>body(): string</code>.</li>
+<li>Method <code>footer(): string</code> có sẵn nội dung <code>-- hết --</code>, class con được phép ghi đè. <code>render</code> cũng gọi <code>footer()</code>.</li>
+</ul>
+<p>Viết <code>SalesReport</code> và <code>UserReport</code>. <code>UserReport</code> ghi đè <code>footer</code>. Cuối cùng thử <code>new Report()</code> trong <code>try/catch</code> và in message lỗi.</p>
+<div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>== Doanh thu ==
+Tổng: 500
+-- hết --
+== Người dùng ==
+Mới: 3
+-- nội bộ --
+Cannot instantiate abstract class Report</code></pre><p class="jump"><a href="#a-13-3">Xem đáp án bài 13.3 →</a></p></div><div class="ex" id="q-13-4"><div class="ex-head"><span class="ex-id">Bài 13.4</span><span class="ex-title">Kết hợp interface và abstract class</span><span class="ex-stars">★★☆</span></div><p>Khai báo interface <code>Shape</code> với <code>area(): float</code> và <code>describe(): string</code>. Viết abstract class <code>BaseShape implements Shape</code>, cài đặt sẵn <code>describe()</code> dựa trên <code>name()</code> (abstract) và <code>area()</code>. Viết <code>Circle</code> và <code>Rectangle</code> chỉ với những gì còn thiếu. Viết hàm <code>totalArea(Shape ...$shapes): float</code>. Diện tích làm tròn 2 chữ số.</p>
+<p>Chỗ nào trong code nên nhắc đến <code>Shape</code>, chỗ nào nhắc đến <code>BaseShape</code>?</p>
+<div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Hình tròn: 3.14
+Chữ nhật: 6.00
+Tổng: 9.14</code></pre><p class="jump"><a href="#a-13-4">Xem đáp án bài 13.4 →</a></p></div><div class="ex" id="q-13-5"><div class="ex-head"><span class="ex-id">Bài 13.5</span><span class="ex-title">Trait: dùng lại code ngang hàng</span><span class="ex-stars">★★☆</span></div><p><code>Post</code> và <code>Comment</code> không cùng họ, nhưng đều cần xoá mềm. Viết trait <code>SoftDeletes</code> có:</p>
+<ul>
+<li>Thuộc tính <code>?string $deletedAt = null</code>.</li>
+<li>Method <code>softDelete(string $at)</code>, <code>restore()</code>, <code>trashed(): bool</code>.</li>
+<li>Method abstract <code>label(): string</code> để bắt class dùng trait phải tự cung cấp. Trong trait có <code>status(): string</code> dùng <code>label()</code>.</li>
+</ul>
+<p>Dùng trait cho cả hai class và in <code>class_uses</code> để xem class đang dùng trait nào.</p>
+<div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Bài viết đã xoá lúc 2026-01-01
+Bình luận còn hoạt động
+Bài viết còn hoạt động
+SoftDeletes
+bool(false)</code></pre><p class="jump"><a href="#a-13-5">Xem đáp án bài 13.5 →</a></p></div><div class="ex" id="q-13-6"><div class="ex-head"><span class="ex-id">Bài 13.6</span><span class="ex-title">Xung đột trait và thứ tự ưu tiên</span><span class="ex-stars">★★☆</span></div><p>Dự đoán output. Khi cùng tên, method của class, của trait và của class cha thì cái nào thắng?</p>
+<div class="outlabel">Code đề bài</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+trait A
+{
+    public function hello(): string
+    {
+        return &#x27;A&#x27;;
+    }
+
+    public function who(): string
+    {
+        return &#x27;trait A&#x27;;
+    }
+}
+
+trait B
+{
+    public function hello(): string
+    {
+        return &#x27;B&#x27;;
+    }
+}
+
+class Base
+{
+    public function who(): string
+    {
+        return &#x27;class cha&#x27;;
+    }
+
+    public function me(): string
+    {
+        return &#x27;class cha&#x27;;
+    }
+}
+
+class Child extends Base
+{
+    use A, B {
+        A::hello insteadof B;
+        B::hello as helloFromB;
+    }
+
+    public function me(): string
+    {
+        return &#x27;class con&#x27;;
+    }
+}
+
+class Other extends Base
+{
+    use A, B {
+        B::hello insteadof A;
+    }
+
+    public function who(): string
+    {
+        return &#x27;Other tự viết&#x27;;
+    }
+}
+
+$c = new Child();
+echo $c-&gt;hello(), &quot;\n&quot;;
+echo $c-&gt;helloFromB(), &quot;\n&quot;;
+echo $c-&gt;who(), &quot;\n&quot;;
+echo $c-&gt;me(), &quot;\n&quot;;
+
+$o = new Other();
+echo $o-&gt;hello(), &quot;\n&quot;;
+echo $o-&gt;who(), &quot;\n&quot;;</code></pre><p class="todo">Việc cần làm: ghi ra giấy kết quả bạn dự đoán, sau đó tự chạy để kiểm tra rồi mới xem đáp án.</p><p class="jump"><a href="#a-13-6">Xem đáp án bài 13.6 →</a></p></div><div class="ex" id="q-13-7"><div class="ex-head"><span class="ex-id">Bài 13.7</span><span class="ex-title">Thuộc tính <code>static</code> dùng chung</span><span class="ex-stars">★★☆</span></div><p>Dự đoán output. <code>static</code> thuộc về class, vậy class con có một bản riêng hay dùng chung?</p>
+<div class="outlabel">Code đề bài</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+class Counter
+{
+    public static int $total = 0;
+    public int $own = 0;
+
+    public function inc(): void
+    {
+        self::$total++;
+        $this-&gt;own++;
+    }
+}
+
+$a = new Counter();
+$b = new Counter();
+$a-&gt;inc();
+$a-&gt;inc();
+$b-&gt;inc();
+echo $a-&gt;own, &#x27; &#x27;, $b-&gt;own, &#x27; &#x27;, Counter::$total, &quot;\n&quot;;
+
+class Base
+{
+    public static array $log = [];
+    protected static string $table = &#x27;base&#x27;;
+
+    public static function selfTable(): string
+    {
+        return self::$table;
+    }
+
+    public static function staticTable(): string
+    {
+        return static::$table;
+    }
+}
+
+class ChildA extends Base
+{
+    protected static string $table = &#x27;child_a&#x27;;
+}
+
+class ChildB extends Base
+{
+}
+
+ChildA::$log[] = &#x27;a&#x27;;
+ChildB::$log[] = &#x27;b&#x27;;
+echo json_encode(Base::$log), &quot;\n&quot;;
+
+echo ChildA::selfTable(), &quot;\n&quot;;
+echo ChildA::staticTable(), &quot;\n&quot;;
+echo ChildB::staticTable(), &quot;\n&quot;;</code></pre><p class="todo">Việc cần làm: ghi ra giấy kết quả bạn dự đoán, sau đó tự chạy để kiểm tra rồi mới xem đáp án.</p><p class="jump"><a href="#a-13-7">Xem đáp án bài 13.7 →</a></p></div><div class="ex" id="q-13-8"><div class="ex-head"><span class="ex-id">Bài 13.8</span><span class="ex-title">Static factory kiểu Eloquent</span><span class="ex-stars">★★☆</span></div><p>Viết abstract class <code>Model</code> lưu dữ liệu trong bộ nhớ, mô phỏng Eloquent:</p>
+<ul>
+<li><code>protected static string $table</code> do class con khai báo.</li>
+<li><code>create(array $attrs): static</code> tạo object, tự gán <code>id</code> tăng dần riêng cho từng class, trả về đúng kiểu class con.</li>
+<li><code>all(): array</code> trả về object của riêng class đó.</li>
+<li><code>table(): string</code>.</li>
+</ul>
+<p>Viết <code>User</code> và <code>Post</code>, kiểm tra hai class không lẫn dữ liệu.</p>
+<div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>User 2
+Post 1
+2 1
+users posts</code></pre><p class="jump"><a href="#a-13-8">Xem đáp án bài 13.8 →</a></p></div><div class="ex" id="q-13-9"><div class="ex-head"><span class="ex-id">Bài 13.9</span><span class="ex-title">Enum trạng thái đơn hàng</span><span class="ex-stars">★★☆</span></div><p>Viết backed enum <code>OrderStatus</code> với các case <code>Pending = &#39;pending&#39;</code>, <code>Paid = &#39;paid&#39;</code>, <code>Shipped = &#39;shipped&#39;</code>, <code>Cancelled = &#39;cancelled&#39;</code>, có:</p>
+<ul>
+<li><code>label(): string</code> trả về tên tiếng Việt, dùng <code>match</code>.</li>
+<li><code>canTransitionTo(self $next): bool</code>: <code>Pending</code> sang <code>Paid</code> hoặc <code>Cancelled</code>; <code>Paid</code> sang <code>Shipped</code> hoặc <code>Cancelled</code>; các trạng thái khác không đi đâu được nữa.</li>
+<li><code>static options(): array</code> trả về mảng <code>value =&gt; label</code>, dùng cho dropdown.</li>
+</ul>
+<p>Viết class <code>Order</code> có <code>transitionTo()</code>, chuyển sai thì ném <code>DomainException</code>.</p>
+<div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Đã thanh toán
+Không thể chuyển từ Đã thanh toán sang Chờ thanh toán
+{&quot;pending&quot;:&quot;Chờ thanh toán&quot;,&quot;paid&quot;:&quot;Đã thanh toán&quot;,&quot;shipped&quot;:&quot;Đã giao&quot;,&quot;cancelled&quot;:&quot;Đã huỷ&quot;}</code></pre><p class="jump"><a href="#a-13-9">Xem đáp án bài 13.9 →</a></p></div><div class="ex" id="q-13-10"><div class="ex-head"><span class="ex-id">Bài 13.10</span><span class="ex-title">Đặc điểm của enum</span><span class="ex-stars">★★☆</span></div><p>Dự đoán output. <code>from</code> và <code>tryFrom</code> khác nhau thế nào? Enum có phải object không?</p>
+<div class="outlabel">Code đề bài</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+enum Status: string
+{
+    case Active = &#x27;active&#x27;;
+    case Banned = &#x27;banned&#x27;;
+
+    public const DEFAULT = self::Active;
+}
+
+enum Suit
+{
+    case Hearts;
+    case Spades;
+}
+
+echo Status::Active-&gt;name, &#x27; &#x27;, Status::Active-&gt;value, &quot;\n&quot;;
+var_dump(Status::from(&#x27;active&#x27;) === Status::Active);
+var_dump(Status::tryFrom(&#x27;xyz&#x27;));
+
+try {
+    Status::from(&#x27;xyz&#x27;);
+} catch (ValueError $e) {
+    echo get_class($e), &quot;\n&quot;;
+}
+
+echo count(Status::cases()), &quot;\n&quot;;
+echo Status::DEFAULT-&gt;name, &quot;\n&quot;;
+echo json_encode([&#x27;status&#x27; =&gt; Status::Banned]), &quot;\n&quot;;
+
+var_dump(Status::Active instanceof BackedEnum);
+var_dump(Suit::Hearts instanceof BackedEnum);
+var_dump(Suit::Hearts instanceof UnitEnum);
+echo Suit::Spades-&gt;name, &quot;\n&quot;;
+
+try {
+    new Status();
+} catch (Error $e) {
+    echo $e-&gt;getMessage(), &quot;\n&quot;;
+}</code></pre><p class="todo">Việc cần làm: ghi ra giấy kết quả bạn dự đoán, sau đó tự chạy để kiểm tra rồi mới xem đáp án.</p><p class="jump"><a href="#a-13-10">Xem đáp án bài 13.10 →</a></p></div><div class="ex" id="q-13-11"><div class="ex-head"><span class="ex-id">Bài 13.11</span><span class="ex-title">Namespace, <code>use</code> và lỗi thiếu dấu <code>\</code></span><span class="ex-stars">★★☆</span></div><p>Dự đoán output. Trong một namespace, tên class được phân giải thế nào? Tại sao <code>strlen</code> chạy được mà <code>Exception</code> thì không?</p>
+<div class="outlabel">Code đề bài</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Models {
+    class User
+    {
+    }
+
+    function helper(): string
+    {
+        return __FUNCTION__;
+    }
+}
+
+namespace App\Services {
+    use App\Models\User;
+    use App\Models\User as Account;
+
+    use function App\Models\helper;
+
+    echo User::class, &quot;\n&quot;;
+    echo Account::class, &quot;\n&quot;;
+    echo Missing::class, &quot;\n&quot;;
+    var_dump(class_exists(Missing::class));
+    echo helper(), &quot;\n&quot;;
+    echo strlen(&#x27;abc&#x27;), &quot;\n&quot;;
+    echo __NAMESPACE__, &quot;\n&quot;;
+
+    try {
+        throw new Exception(&#x27;lỗi&#x27;);
+    } catch (\Error $e) {
+        echo $e-&gt;getMessage(), &quot;\n&quot;;
+    }
+
+    try {
+        throw new \Exception(&#x27;lỗi thật&#x27;);
+    } catch (\Exception $e) {
+        echo get_class($e), &#x27;: &#x27;, $e-&gt;getMessage(), &quot;\n&quot;;
+    }
+}</code></pre><p class="todo">Việc cần làm: ghi ra giấy kết quả bạn dự đoán, sau đó tự chạy để kiểm tra rồi mới xem đáp án.</p><p class="jump"><a href="#a-13-11">Xem đáp án bài 13.11 →</a></p></div><div class="ex" id="q-13-12"><div class="ex-head"><span class="ex-id">Bài 13.12</span><span class="ex-title">Tự viết autoload PSR-4</span><span class="ex-stars">★★★</span></div><p>Composer tự làm việc này, nhưng tự viết một lần sẽ hiểu được vì sao <code>App\Models\User</code> nằm ở <code>app/Models/User.php</code>.</p>
+<p>Với hai file cho sẵn, viết <code>main.php</code> dùng <code>spl_autoload_register</code>: chuyển <code>App\...</code> thành đường dẫn trong <code>app/</code>, <code>require</code> file đó, và in ra file vừa nạp. <strong>Không được</strong> <code>require</code> trực tiếp hai file này.</p>
+<div class="outlabel">File cho sẵn: app/Models/User.php</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Models;
+
+class User
+{
+    public function __construct(public string $name)
+    {
+    }
+}</code></pre><div class="outlabel">File cho sẵn: app/Services/Greeter.php</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Services;
+
+use App\Models\User;
+
+class Greeter
+{
+    public function greet(User $user): string
+    {
+        return &quot;Chào {$user-&gt;name}&quot;;
+    }
+}</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Bắt đầu
+Nạp: app/Services/Greeter.php
+Đã có Greeter
+Nạp: app/Models/User.php
+Chào An
+bool(false)</code></pre><p class="jump"><a href="#a-13-12">Xem đáp án bài 13.12 →</a></p></div><div class="ex" id="q-13-13"><div class="ex-head"><span class="ex-id">Bài 13.13</span><span class="ex-title">Dependency Injection: tách khỏi mail thật</span><span class="ex-stars">★★☆</span></div><p>Test muốn dùng <code>FakeMailer</code> để không gửi mail thật, nhưng code vẫn gửi qua SMTP. Bản ghi của <code>FakeMailer</code> thì rỗng. Sửa <code>OrderService</code> theo hướng Dependency Injection, không sửa các class còn lại và phần chạy ở dưới.</p>
+<div class="outlabel">Code đề bài</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+interface Mailer
+{
+    public function send(string $to): void;
+}
+
+class SmtpMailer implements Mailer
+{
+    public function send(string $to): void
+    {
+        echo &quot;SMTP: gửi thật cho {$to}\n&quot;;
+    }
+}
+
+class FakeMailer implements Mailer
+{
+    public array $sent = [];
+
+    public function send(string $to): void
+    {
+        $this-&gt;sent[] = $to;
+    }
+}
+
+class OrderService
+{
+    private Mailer $mailer;
+
+    public function __construct()
+    {
+        $this-&gt;mailer = new SmtpMailer();
+    }
+
+    public function place(string $email): void
+    {
+        $this-&gt;mailer-&gt;send($email);
+    }
+}
+
+$fake = new FakeMailer();
+$service = new OrderService($fake);
+$service-&gt;place(&#x27;an@x.vn&#x27;);
+echo &#x27;Mail giả đã ghi: &#x27;, count($fake-&gt;sent), &quot;\n&quot;;</code></pre><div class="outlabel">Kết quả hiện tại (sai)</div><pre class="out"><code>SMTP: gửi thật cho an@x.vn
+Mail giả đã ghi: 0</code></pre><div class="outlabel">Kết quả mong đợi</div><pre class="out"><code>Mail giả đã ghi: 1</code></pre><p class="jump"><a href="#a-13-13">Xem đáp án bài 13.13 →</a></p></div><div class="ex" id="q-13-14"><div class="ex-head"><span class="ex-id">Bài 13.14</span><span class="ex-title">Mini Service Container với reflection</span><span class="ex-stars">★★★</span></div><p>Viết class <code>Container</code> mô phỏng Service Container của Laravel:</p>
+<ul>
+<li><code>bind($abstract, $concrete)</code>: mỗi lần <code>make</code> tạo object mới.</li>
+<li><code>singleton($abstract, $concrete)</code>: chỉ tạo một lần.</li>
+<li><code>make($abstract)</code>: nếu đã đăng ký thì dùng bản đăng ký; <code>$concrete</code> có thể là tên class hoặc closure nhận <code>$container</code>. Nếu chưa đăng ký thì <strong>tự tạo</strong> bằng <code>ReflectionClass</code>, đọc type-hint của constructor và đệ quy <code>make</code> từng tham số. Tham số không có type class thì dùng giá trị mặc định. Không tạo được thì ném <code>RuntimeException</code>.</li>
+</ul>
+<p>Kiểm tra bằng <code>OrderController</code> phụ thuộc <code>OrderService</code>, <code>OrderService</code> phụ thuộc interface <code>Mailer</code>.</p>
+<div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Không tạo được Mailer: chưa bind
+SmtpMailer 3
+bool(false)
+bool(true)
+bool(false)</code></pre><p class="jump"><a href="#a-13-14">Xem đáp án bài 13.14 →</a></p></div><div class="ex" id="q-13-15"><div class="ex-head"><span class="ex-id">Bài 13.15</span><span class="ex-title">Mini Eloquent với magic method</span><span class="ex-stars">★★★</span></div><p>Viết class <code>Model</code> mô phỏng cách Eloquent xử lý thuộc tính:</p>
+<ul>
+<li>Dữ liệu nằm trong <code>protected array $attributes</code>.</li>
+<li><code>$fillable</code> giới hạn trường được gán qua <code>fill()</code>.</li>
+<li><code>__get</code>: nếu có method <code>get{TenCot}Attribute</code> thì gọi nó, không thì đọc từ <code>$attributes</code>. Ví dụ <code>full_name</code> tương ứng <code>getFullNameAttribute</code>.</li>
+<li><code>__set</code>, <code>__isset</code>.</li>
+<li>Cài đặt <code>JsonSerializable</code>, chỉ trả về các trường không nằm trong <code>$hidden</code>.</li>
+</ul>
+<p>Viết <code>User</code>, kiểm tra việc chặn mass assignment <code>is_admin</code>.</p>
+<div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Thái
+Thái Bảo
+NULL
+bool(false)
+bool(true)
+{&quot;first_name&quot;:&quot;Thái&quot;,&quot;last_name&quot;:&quot;Bảo&quot;,&quot;is_admin&quot;:true}</code></pre><p class="jump"><a href="#a-13-15">Xem đáp án bài 13.15 →</a></p></div><div class="ex" id="q-13-16"><div class="ex-head"><span class="ex-id">Bài 13.16</span><span class="ex-title">Mini Facade với <code>__callStatic</code></span><span class="ex-stars">★★★</span></div><p>Viết abstract class <code>Facade</code> mô phỏng <code>Cache::get()</code> của Laravel:</p>
+<ul>
+<li><code>Facade::$app</code> là mảng <code>tên =&gt; object</code>, đóng vai container.</li>
+<li><code>abstract protected static function accessor(): string</code>.</li>
+<li><code>__callStatic</code> lấy object thật theo <code>accessor()</code> rồi chuyển lời gọi sang object đó.</li>
+<li><code>swap(object $fake)</code> thay object thật, dùng khi test.</li>
+</ul>
+<p>Viết <code>ArrayCache</code> có <code>put</code>, <code>get</code>, và facade <code>Cache</code>.</p>
+<div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Chưa đăng ký cache
+An
+mặc định
+bool(false)
+giả:name</code></pre><p class="jump"><a href="#a-13-16">Xem đáp án bài 13.16 →</a></p></div><div class="ex" id="q-13-17"><div class="ex-head"><span class="ex-id">Bài 13.17</span><span class="ex-title">Attribute và router đọc bằng reflection</span><span class="ex-stars">★★★</span></div><p>Tạo attribute <code>Route</code> nhận <code>path</code> và <code>method</code> (mặc định <code>GET</code>), chỉ gắn được lên method. Gắn lên các method của <code>PostController</code>, có một method không gắn gì. Viết hàm <code>routesOf(string $controller): array</code> đọc attribute bằng reflection, rồi hàm <code>dispatch</code> chạy đúng method theo <code>method</code> và <code>path</code>, không có thì trả về <code>404</code>.</p>
+<div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>GET /posts, POST /posts
+danh sách bài
+đã tạo bài
+404</code></pre><p class="jump"><a href="#a-13-17">Xem đáp án bài 13.17 →</a></p></div><div class="ex" id="q-13-18"><div class="ex-head"><span class="ex-id">Bài 13.18</span><span class="ex-title">Lưu mật khẩu đúng cách</span><span class="ex-stars">★☆☆</span></div><p>Viết class <code>Credential</code> lưu mật khẩu an toàn:</p>
+<ul>
+<li><code>static fromPlain(string $plain): self</code> dùng <code>password_hash</code>.</li>
+<li><code>check(string $plain): bool</code> dùng <code>password_verify</code>.</li>
+<li><code>needsRehash(): bool</code> dùng <code>password_needs_rehash</code>, với thuật toán <code>PASSWORD_BCRYPT</code> và <code>cost</code> 11.</li>
+</ul>
+<p>Tạo hash bằng <code>PASSWORD_BCRYPT</code> với <code>cost</code> 10. Vì hash có salt ngẫu nhiên, chỉ in những gì không đổi giữa các lần chạy. Chứng minh hai lần hash cùng mật khẩu cho ra hai chuỗi khác nhau.</p>
+<div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>bool(true)
+bool(false)
+bool(false)
+bool(true)
+bool(true)
+bcrypt 60</code></pre><p class="jump"><a href="#a-13-18">Xem đáp án bài 13.18 →</a></p></div><div class="ex" id="q-13-19"><div class="ex-head"><span class="ex-id">Bài 13.19</span><span class="ex-title">Tổng hợp: luồng thanh toán</span><span class="ex-stars">★★★</span></div><p>Kết hợp toàn bộ chương:</p>
+<ul>
+<li>Enum <code>PaymentMethod</code> (<code>Vnpay</code>, <code>Momo</code>) có method <code>fee(int $amount): int</code>, phí lần lượt 2% và 1%, làm tròn.</li>
+<li>Interface <code>PaymentGateway</code> với <code>pay(int $amount): Receipt</code>.</li>
+<li><code>readonly class Receipt</code> gồm <code>method</code>, <code>amount</code>, <code>fee</code>, và một method tính <code>total()</code>.</li>
+<li>Trait <code>RecordsLog</code> có <code>log(string $line)</code> và <code>logs(): array</code>.</li>
+<li>Abstract class <code>BaseGateway</code> cài đặt <code>pay</code> theo template: kiểm tra số tiền dương (sai thì ném <code>InvalidArgumentException</code>), gọi <code>charge()</code> (abstract), rồi trả <code>Receipt</code>. Dùng trait để ghi log.</li>
+<li><code>VnpayGateway</code>, <code>MomoGateway</code>.</li>
+<li><code>GatewayFactory::for(PaymentMethod $method)</code> dùng <code>match</code>.</li>
+<li><code>CheckoutService</code> nhận factory qua constructor.</li>
+</ul>
+<p>Chạy một đơn VNPAY, một đơn MoMo, và một đơn số tiền âm.</p>
+<div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Gọi API VNPAY: 102000
+OK vnpay: tổng 102000
+Gọi API MoMo: 50500
+OK momo: tổng 50500
+Từ chối: Số tiền không hợp lệ: -1
+[&quot;momo: 50000 + 500&quot;]</code></pre><p class="jump"><a href="#a-13-19">Xem đáp án bài 13.19 →</a></p></div>
 
 <div class="part-title"><div class="big">PHẦN 2</div><h1>ĐÁP ÁN VÀ GIẢI THÍCH CHI TIẾT</h1><p>Chỉ mở phần này sau khi đã thử ít nhất 15 phút cho mỗi bài.</p></div>
 <div class="chap ans"><div class="chap-badge">ĐÁP ÁN — CHƯƠNG 1</div><h1>Nền tảng ngôn ngữ: chuỗi, so sánh, hằng, kiểu</h1></div><div class="ex ans-ex" id="a-1-1"><div class="ex-head ans-head"><span class="ex-id">Đáp án 1.1</span><span class="ex-title">Nháy đơn và nháy kép</span></div><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Xin chào $name
@@ -2748,12 +3397,1099 @@ id</code></pre><h4>Giải thích</h4>
 <h4>Quy tắc ngắn gọn</h4>
 <ol><li>Giá trị từ người dùng luôn đi qua tham số <code>?</code> hoặc Query Builder.</li><li>Tên cột, bảng, hướng sắp xếp từ người dùng luôn đi qua allowlist.</li><li>Không bao giờ nội suy <code>$biến</code> hay nối <code>.</code> vào câu SQL.</li></ol><p class="jump"><a href="#q-12-11">← Về đề bài 12.11</a></p></div>
 
+<div class="chap ans"><div class="chap-badge">ĐÁP ÁN — CHƯƠNG 13</div><h1>OOP nâng cao: interface, abstract, trait, enum, static, namespace, DI</h1></div><div class="ex ans-ex" id="a-13-1"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.1</span><span class="ex-title">Interface đầu tiên: đổi cổng thanh toán</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+interface PaymentGateway
+{
+    public function pay(int $amount): string;
+}
+
+class VnpayGateway implements PaymentGateway
+{
+    public function pay(int $amount): string
+    {
+        return &quot;VNPAY đã thu {$amount}&quot;;
+    }
+}
+
+class MomoGateway implements PaymentGateway
+{
+    public function pay(int $amount): string
+    {
+        return &quot;MoMo đã thu {$amount}&quot;;
+    }
+}
+
+function checkout(PaymentGateway $gateway, int $amount): void
+{
+    echo $gateway-&gt;pay($amount), &quot;\n&quot;;
+}
+
+checkout(new VnpayGateway(), 100000);
+checkout(new MomoGateway(), 50000);</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>VNPAY đã thu 100000
+MoMo đã thu 50000</code></pre><h4>Giải thích</h4><p>Đây là <strong>đa hình</strong>: cùng một lời gọi <code>$gateway-&gt;pay()</code>, mỗi class chạy theo cách riêng. Muốn thêm ZaloPay chỉ cần thêm class mới, không phải sửa <code>checkout</code>. Nếu viết bằng chuỗi <code>if ($type === &#39;vnpay&#39;)</code>, mỗi lần thêm cổng lại phải sửa code cũ.</p>
+<p>Quên cài đặt một method của interface sẽ gây lỗi Fatal ngay khi nạp class, nên lỗi lộ ra sớm.</p>
+<p class="jump"><a href="#q-13-1">← Về đề bài 13.1</a></p></div><div class="ex ans-ex" id="a-13-2"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.2</span><span class="ex-title">Nhiều interface, <code>instanceof</code> và lỗi kiểu</span></div><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Tên: Sách PHP
+Tên: An
+bool(true)
+bool(false)
+200
+TypeError
+Cannot instantiate interface HasName</code></pre><h4>Giải thích</h4><ul>
+<li><code>label</code> nhận mọi thứ có <code>HasName</code>, nên dùng được cho cả <code>Book</code> và <code>Author</code> dù hai class không liên quan.</li>
+<li><code>Author</code> không có <code>HasPrice</code>, nên <code>instanceof</code> là <code>false</code>, và truyền vào <code>total</code> ném <code>TypeError</code>.</li>
+<li>Interface không tạo object được, nên <code>new HasName()</code> ném <code>Error</code>.</li>
+<li>Interface được phép có hằng, truy cập qua object bằng <code>$x::PREFIX</code>.</li>
+</ul>
+<p>Tách interface nhỏ như vậy là nguyên tắc <strong>I</strong> trong SOLID: <code>total</code> chỉ cần biết giá, không cần biết tên.</p>
+<p class="jump"><a href="#q-13-2">← Về đề bài 13.2</a></p></div><div class="ex ans-ex" id="a-13-3"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.3</span><span class="ex-title">Abstract class và template method</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+abstract class Report
+{
+    final public function render(): string
+    {
+        return &quot;== {$this-&gt;title()} ==\n{$this-&gt;body()}\n{$this-&gt;footer()}\n&quot;;
+    }
+
+    protected function footer(): string
+    {
+        return &#x27;-- hết --&#x27;;
+    }
+
+    abstract protected function title(): string;
+
+    abstract protected function body(): string;
+}
+
+class SalesReport extends Report
+{
+    protected function title(): string
+    {
+        return &#x27;Doanh thu&#x27;;
+    }
+
+    protected function body(): string
+    {
+        return &#x27;Tổng: 500&#x27;;
+    }
+}
+
+class UserReport extends Report
+{
+    protected function title(): string
+    {
+        return &#x27;Người dùng&#x27;;
+    }
+
+    protected function body(): string
+    {
+        return &#x27;Mới: 3&#x27;;
+    }
+
+    protected function footer(): string
+    {
+        return &#x27;-- nội bộ --&#x27;;
+    }
+}
+
+echo (new SalesReport())-&gt;render();
+echo (new UserReport())-&gt;render();
+
+try {
+    new Report();
+} catch (Error $e) {
+    echo $e-&gt;getMessage(), &quot;\n&quot;;
+}</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>== Doanh thu ==
+Tổng: 500
+-- hết --
+== Người dùng ==
+Mới: 3
+-- nội bộ --
+Cannot instantiate abstract class Report</code></pre><h4>Giải thích</h4><p>Đây là mẫu <strong>template method</strong>: class cha cố định <strong>các bước</strong>, class con chỉ điền <strong>nội dung</strong> từng bước. Laravel dùng ý tưởng này ở nhiều nơi, ví dụ <code>FormRequest</code> tự chạy luồng validate, còn bạn chỉ viết <code>rules()</code> và <code>authorize()</code>.</p>
+<p><code>protected</code> cho phép class con ghi đè nhưng bên ngoài không gọi được. <code>final</code> chặn việc ghi đè, nên cấu trúc báo cáo luôn đúng.</p>
+<p class="jump"><a href="#q-13-3">← Về đề bài 13.3</a></p></div><div class="ex ans-ex" id="a-13-4"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.4</span><span class="ex-title">Kết hợp interface và abstract class</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+interface Shape
+{
+    public function area(): float;
+
+    public function describe(): string;
+}
+
+abstract class BaseShape implements Shape
+{
+    abstract protected function name(): string;
+
+    public function describe(): string
+    {
+        return sprintf(&#x27;%s: %.2f&#x27;, $this-&gt;name(), $this-&gt;area());
+    }
+}
+
+class Circle extends BaseShape
+{
+    public function __construct(private float $radius)
+    {
+    }
+
+    protected function name(): string
+    {
+        return &#x27;Hình tròn&#x27;;
+    }
+
+    public function area(): float
+    {
+        return M_PI * $this-&gt;radius ** 2;
+    }
+}
+
+class Rectangle extends BaseShape
+{
+    public function __construct(private float $width, private float $height)
+    {
+    }
+
+    protected function name(): string
+    {
+        return &#x27;Chữ nhật&#x27;;
+    }
+
+    public function area(): float
+    {
+        return $this-&gt;width * $this-&gt;height;
+    }
+}
+
+function totalArea(Shape ...$shapes): float
+{
+    return array_sum(array_map(fn (Shape $s) =&gt; $s-&gt;area(), $shapes));
+}
+
+$shapes = [new Circle(1), new Rectangle(2, 3)];
+
+foreach ($shapes as $shape) {
+    echo $shape-&gt;describe(), &quot;\n&quot;;
+}
+printf(&quot;Tổng: %.2f\n&quot;, totalArea(...$shapes));</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Hình tròn: 3.14
+Chữ nhật: 6.00
+Tổng: 9.14</code></pre><h4>Giải thích</h4><ul>
+<li>Code <strong>sử dụng</strong> (<code>totalArea</code>) chỉ nhắc đến <code>Shape</code>, nên một class không kế thừa <code>BaseShape</code> vẫn dùng được, miễn cài đặt đủ interface.</li>
+<li><code>BaseShape</code> chỉ xuất hiện ở các class <strong>cài đặt</strong>, để không viết lại <code>describe</code>.</li>
+</ul>
+<p><code>new Circle(1)</code> truyền số nguyên vào tham số <code>float</code> vẫn hợp lệ dù có <code>strict_types</code>. Đây là ngoại lệ duy nhất: <code>int</code> được phép chuyển thành <code>float</code>.</p>
+<p class="jump"><a href="#q-13-4">← Về đề bài 13.4</a></p></div><div class="ex ans-ex" id="a-13-5"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.5</span><span class="ex-title">Trait: dùng lại code ngang hàng</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+trait SoftDeletes
+{
+    private ?string $deletedAt = null;
+
+    abstract public function label(): string;
+
+    public function softDelete(string $at): void
+    {
+        $this-&gt;deletedAt = $at;
+    }
+
+    public function restore(): void
+    {
+        $this-&gt;deletedAt = null;
+    }
+
+    public function trashed(): bool
+    {
+        return $this-&gt;deletedAt !== null;
+    }
+
+    public function status(): string
+    {
+        return $this-&gt;label() . ($this-&gt;trashed() ? &quot; đã xoá lúc {$this-&gt;deletedAt}&quot; : &#x27; còn hoạt động&#x27;);
+    }
+}
+
+class Post
+{
+    use SoftDeletes;
+
+    public function label(): string
+    {
+        return &#x27;Bài viết&#x27;;
+    }
+}
+
+class Comment
+{
+    use SoftDeletes;
+
+    public function label(): string
+    {
+        return &#x27;Bình luận&#x27;;
+    }
+}
+
+$post = new Post();
+$comment = new Comment();
+
+$post-&gt;softDelete(&#x27;2026-01-01&#x27;);
+echo $post-&gt;status(), &quot;\n&quot;;
+echo $comment-&gt;status(), &quot;\n&quot;;
+
+$post-&gt;restore();
+echo $post-&gt;status(), &quot;\n&quot;;
+
+echo implode(&#x27;, &#x27;, class_uses($post)), &quot;\n&quot;;
+var_dump($post instanceof Comment);</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Bài viết đã xoá lúc 2026-01-01
+Bình luận còn hoạt động
+Bài viết còn hoạt động
+SoftDeletes
+bool(false)</code></pre><h4>Giải thích</h4><p>Trait giống như <strong>dán code vào class</strong> lúc biên dịch, kể cả thuộc tính <code>private</code>. Nó không phải một kiểu dữ liệu: không type-hint được bằng trait và <code>instanceof</code> trait luôn là <code>false</code>. Muốn type-hint thì thêm interface.</p>
+<p><code>SoftDeletes</code> thật của Laravel cũng là trait: <code>use SoftDeletes;</code> trong Model thêm <code>restore</code>, <code>trashed</code>, <code>forceDelete</code>, và đổi cách <code>delete</code> hoạt động thành xoá mềm. Lạm dụng trait làm code khó lần theo, vì đọc class không thấy method đến từ đâu.</p>
+<p class="jump"><a href="#q-13-5">← Về đề bài 13.5</a></p></div><div class="ex ans-ex" id="a-13-6"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.6</span><span class="ex-title">Xung đột trait và thứ tự ưu tiên</span></div><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>A
+B
+trait A
+class con
+B
+Other tự viết</code></pre><h4>Giải thích</h4><p>Thứ tự ưu tiên: <strong>method của chính class</strong> thắng <strong>method của trait</strong>, và method của trait thắng <strong>method kế thừa từ class cha</strong>.</p>
+<ul>
+<li><code>Child::hello</code>: <code>insteadof</code> chọn của <code>A</code>. <code>as</code> giữ thêm bản của <code>B</code> dưới tên khác, nếu không thì bản đó không gọi được.</li>
+<li><code>Child::who</code>: trait <code>A</code> thắng class cha.</li>
+<li><code>Child::me</code>: class tự viết, không liên quan đến trait.</li>
+<li><code>Other::who</code>: class tự viết thắng cả trait.</li>
+</ul>
+<p>Hai trait trùng tên method mà không giải quyết bằng <code>insteadof</code> sẽ gây lỗi Fatal.</p>
+<p class="jump"><a href="#q-13-6">← Về đề bài 13.6</a></p></div><div class="ex ans-ex" id="a-13-7"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.7</span><span class="ex-title">Thuộc tính <code>static</code> dùng chung</span></div><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>2 1 3
+[&quot;a&quot;,&quot;b&quot;]
+base
+child_a
+base</code></pre><h4>Giải thích</h4><ul>
+<li><code>own</code> là của từng object. <code>$total</code> là của class, nên ba lần <code>inc</code> cộng dồn vào cùng một chỗ.</li>
+<li><code>ChildA</code> và <code>ChildB</code> không khai báo lại <code>$log</code>, nên <strong>cả ba class dùng chung một mảng</strong>. Đây là bẫy hay gặp.</li>
+<li><code>ChildA</code> khai báo lại <code>$table</code>, nên có bản riêng.</li>
+<li><code>self::$table</code> luôn đọc của <code>Base</code>, vì <code>self</code> là class nơi code được viết. <code>static::$table</code> đọc theo class được gọi.</li>
+<li><code>ChildB</code> không khai báo lại nên <code>static::$table</code> đọc được giá trị của <code>Base</code>.</li>
+</ul>
+<p><code>User::query()</code> của Eloquent dựa vào đúng cơ chế này: code thật là <code>return (new static)-&gt;newQuery();</code>, nên tạo query cho <code>User</code> dù được viết trong <code>Model</code>. Trạng thái <code>static</code> còn tồn tại suốt vòng đời process, nên trong Laravel Octane hoặc queue worker, nó dùng chung giữa các request và các job.</p>
+<p class="jump"><a href="#q-13-7">← Về đề bài 13.7</a></p></div><div class="ex ans-ex" id="a-13-8"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.8</span><span class="ex-title">Static factory kiểu Eloquent</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+abstract class Model
+{
+    protected static string $table = &#x27;&#x27;;
+
+    /** @var array&lt;class-string, array&lt;int, static&gt;&gt; */
+    private static array $store = [];
+
+    public int $id;
+
+    public function __construct(public array $attrs = [])
+    {
+    }
+
+    public static function create(array $attrs): static
+    {
+        $model = new static($attrs);
+        $model-&gt;id = count(self::$store[static::class] ?? []) + 1;
+        self::$store[static::class][] = $model;
+
+        return $model;
+    }
+
+    public static function all(): array
+    {
+        return self::$store[static::class] ?? [];
+    }
+
+    public static function table(): string
+    {
+        return static::$table;
+    }
+}
+
+class User extends Model
+{
+    protected static string $table = &#x27;users&#x27;;
+}
+
+class Post extends Model
+{
+    protected static string $table = &#x27;posts&#x27;;
+}
+
+$u1 = User::create([&#x27;name&#x27; =&gt; &#x27;An&#x27;]);
+$u2 = User::create([&#x27;name&#x27; =&gt; &#x27;Bình&#x27;]);
+$p1 = Post::create([&#x27;title&#x27; =&gt; &#x27;Học PHP&#x27;]);
+
+echo get_class($u1), &#x27; &#x27;, $u2-&gt;id, &quot;\n&quot;;
+echo get_class($p1), &#x27; &#x27;, $p1-&gt;id, &quot;\n&quot;;
+echo count(User::all()), &#x27; &#x27;, count(Post::all()), &quot;\n&quot;;
+echo User::table(), &#x27; &#x27;, Post::table(), &quot;\n&quot;;</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>User 2
+Post 1
+2 1
+users posts</code></pre><h4>Giải thích</h4><ul>
+<li><code>new static</code> tạo đúng class được gọi. Viết <code>new self</code> sẽ lỗi vì <code>Model</code> là abstract.</li>
+<li>Kiểu trả về <code>static</code> cho công cụ và IDE biết <code>User::create()</code> trả về <code>User</code>.</li>
+<li><code>$store</code> là <code>private static</code> trong <code>Model</code>, có một bản duy nhất. Vì vậy phải chia theo <code>static::class</code>, nếu không thì <code>User</code> và <code>Post</code> sẽ lẫn nhau, đúng bẫy của bài trước.</li>
+</ul>
+<p>Đây là bản đơn giản hoá. Trong Eloquent thật, <code>$table</code> là thuộc tính thường (<code>protected $table = &#39;posts&#39;;</code>), không phải <code>static</code>, và <code>create</code> đi qua query builder. Giống nhau ở cơ chế cốt lõi: <code>new static</code> tạo đúng class được gọi.</p>
+<p class="jump"><a href="#q-13-8">← Về đề bài 13.8</a></p></div><div class="ex ans-ex" id="a-13-9"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.9</span><span class="ex-title">Enum trạng thái đơn hàng</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+enum OrderStatus: string
+{
+    case Pending = &#x27;pending&#x27;;
+    case Paid = &#x27;paid&#x27;;
+    case Shipped = &#x27;shipped&#x27;;
+    case Cancelled = &#x27;cancelled&#x27;;
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::Pending =&gt; &#x27;Chờ thanh toán&#x27;,
+            self::Paid =&gt; &#x27;Đã thanh toán&#x27;,
+            self::Shipped =&gt; &#x27;Đã giao&#x27;,
+            self::Cancelled =&gt; &#x27;Đã huỷ&#x27;,
+        };
+    }
+
+    public function canTransitionTo(self $next): bool
+    {
+        $allowed = match ($this) {
+            self::Pending =&gt; [self::Paid, self::Cancelled],
+            self::Paid =&gt; [self::Shipped, self::Cancelled],
+            self::Shipped, self::Cancelled =&gt; [],
+        };
+
+        return in_array($next, $allowed, true);
+    }
+
+    public static function options(): array
+    {
+        return array_column(
+            array_map(fn (self $s) =&gt; [&#x27;value&#x27; =&gt; $s-&gt;value, &#x27;label&#x27; =&gt; $s-&gt;label()], self::cases()),
+            &#x27;label&#x27;,
+            &#x27;value&#x27;,
+        );
+    }
+}
+
+class Order
+{
+    public function __construct(public OrderStatus $status = OrderStatus::Pending)
+    {
+    }
+
+    public function transitionTo(OrderStatus $next): void
+    {
+        if (! $this-&gt;status-&gt;canTransitionTo($next)) {
+            throw new DomainException(&quot;Không thể chuyển từ {$this-&gt;status-&gt;label()} sang {$next-&gt;label()}&quot;);
+        }
+        $this-&gt;status = $next;
+    }
+}
+
+$order = new Order();
+$order-&gt;transitionTo(OrderStatus::Paid);
+echo $order-&gt;status-&gt;label(), &quot;\n&quot;;
+
+try {
+    $order-&gt;transitionTo(OrderStatus::Pending);
+} catch (DomainException $e) {
+    echo $e-&gt;getMessage(), &quot;\n&quot;;
+}
+
+echo json_encode(OrderStatus::options(), JSON_UNESCAPED_UNICODE), &quot;\n&quot;;</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Đã thanh toán
+Không thể chuyển từ Đã thanh toán sang Chờ thanh toán
+{&quot;pending&quot;:&quot;Chờ thanh toán&quot;,&quot;paid&quot;:&quot;Đã thanh toán&quot;,&quot;shipped&quot;:&quot;Đã giao&quot;,&quot;cancelled&quot;:&quot;Đã huỷ&quot;}</code></pre><h4>Giải thích</h4><ul>
+<li><code>match</code> trên enum không có <code>default</code>: thêm case mới mà quên xử lý sẽ ném <code>UnhandledMatchError</code>, giúp lộ lỗi sớm.</li>
+<li>Logic nằm ngay trong enum nên không rải <code>if ($status === &#39;paid&#39;)</code> khắp nơi, và không gõ sai chuỗi được.</li>
+<li><code>in_array</code> phải có tham số <code>true</code>. Enum là object duy nhất nên so sánh bằng <code>===</code>.</li>
+</ul>
+<p>Trong Laravel: khai báo <code>&#39;status&#39; =&gt; OrderStatus::class</code> trong <code>casts()</code> thì <code>$order-&gt;status</code> tự thành enum khi đọc từ database.</p>
+<p class="jump"><a href="#q-13-9">← Về đề bài 13.9</a></p></div><div class="ex ans-ex" id="a-13-10"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.10</span><span class="ex-title">Đặc điểm của enum</span></div><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Active active
+bool(true)
+NULL
+ValueError
+2
+Active
+{&quot;status&quot;:&quot;banned&quot;}
+bool(true)
+bool(false)
+bool(true)
+Spades
+Cannot instantiate enum Status</code></pre><h4>Giải thích</h4><ul>
+<li><code>from</code> với giá trị lạ ném <code>ValueError</code>, <code>tryFrom</code> trả về <code>null</code>. Dữ liệu từ người dùng nên dùng <code>tryFrom</code>, hoặc validate trước.</li>
+<li>Mỗi case là một object duy nhất, nên <code>===</code> so sánh được.</li>
+<li>Enum có <code>value</code> (backed enum) được <code>json_encode</code> thành giá trị đó, nên API trả về <code>&quot;banned&quot;</code>.</li>
+<li><code>Suit</code> là <strong>pure enum</strong>, không có <code>value</code>. Nó không phải <code>BackedEnum</code> và không có <code>from</code>.</li>
+<li>Enum không tạo được bằng <code>new</code>.</li>
+</ul>
+<p>Khi lưu vào database, dùng backed enum vì cần một giá trị chuỗi hoặc số.</p>
+<p class="jump"><a href="#q-13-10">← Về đề bài 13.10</a></p></div><div class="ex ans-ex" id="a-13-11"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.11</span><span class="ex-title">Namespace, <code>use</code> và lỗi thiếu dấu <code>\</code></span></div><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>App\Models\User
+App\Models\User
+App\Services\Missing
+bool(false)
+App\Models\helper
+3
+App\Services
+Class &quot;App\Services\Exception&quot; not found
+Exception: lỗi thật</code></pre><h4>Giải thích</h4><ul>
+<li><code>use</code> chỉ là tạo <strong>tên viết tắt</strong>, không nạp file. <code>::class</code> chỉ ghép chuỗi tên, nên <code>Missing::class</code> vẫn ra tên đầy đủ dù class không tồn tại.</li>
+<li><code>strlen</code>: <strong>hàm</strong> không tìm thấy trong namespace thì PHP tìm tiếp ở global.</li>
+<li><code>new Exception</code>: <strong>class</strong> thì không. PHP tìm <code>App\Services\Exception</code>, không có thì ném <code>Error</code>. Đây là lỗi bạn sẽ gặp rất thường xuyên. Sửa bằng <code>\Exception</code>, hoặc thêm <code>use Exception;</code>.</li>
+</ul>
+<p>Một file thường chỉ có một namespace và không có ngoặc nhọn. Đề bài dùng ngoặc để đặt mọi thứ trong một file cho dễ chạy.</p>
+<p class="jump"><a href="#q-13-11">← Về đề bài 13.11</a></p></div><div class="ex ans-ex" id="a-13-12"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.12</span><span class="ex-title">Tự viết autoload PSR-4</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+spl_autoload_register(function (string $class): void {
+    $prefix = &#x27;App\\&#x27;;
+    if (! str_starts_with($class, $prefix)) {
+        return;
+    }
+
+    $relative = str_replace(&#x27;\\&#x27;, &#x27;/&#x27;, substr($class, strlen($prefix)));
+    $file = &quot;app/{$relative}.php&quot;;
+
+    if (file_exists($file)) {
+        echo &quot;Nạp: {$file}\n&quot;;
+        require $file;
+    }
+});
+
+use App\Models\User;
+use App\Services\Greeter;
+
+echo &quot;Bắt đầu\n&quot;;
+$greeter = new Greeter();
+echo &quot;Đã có Greeter\n&quot;;
+$user = new User(&#x27;An&#x27;);
+echo $greeter-&gt;greet($user), &quot;\n&quot;;
+var_dump(class_exists(&#x27;App\Models\Khong&#x27;));</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Bắt đầu
+Nạp: app/Services/Greeter.php
+Đã có Greeter
+Nạp: app/Models/User.php
+Chào An
+bool(false)</code></pre><h4>Giải thích</h4><p>Đọc thứ tự output để thấy <strong>class chỉ được nạp khi dùng lần đầu</strong>. Các dòng <code>use</code> ở đầu file không nạp gì cả. Nạp <code>Greeter</code> xong, <code>User</code> vẫn chưa được nạp, dù <code>Greeter</code> có nhắc đến nó.</p>
+<p>Đây đúng là việc <code>vendor/autoload.php</code> làm, theo khai báo sau trong <code>composer.json</code>. Đoạn này cần cài Composer riêng nên không được chạy trong tài liệu, chỉ để đối chiếu:</p>
+<pre class="code"><code>{
+    &quot;autoload&quot;: {
+        &quot;psr-4&quot;: { &quot;App\\&quot;: &quot;app/&quot; }
+    }
+}</code></pre><p>Đặt sai tên file hoặc sai chữ hoa chữ thường sẽ gây lỗi <code>Class not found</code>. Lỗi này hay chỉ xuất hiện khi lên server Linux, vì Linux phân biệt hoa thường.</p>
+<p class="jump"><a href="#q-13-12">← Về đề bài 13.12</a></p></div><div class="ex ans-ex" id="a-13-13"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.13</span><span class="ex-title">Dependency Injection: tách khỏi mail thật</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+interface Mailer
+{
+    public function send(string $to): void;
+}
+
+class SmtpMailer implements Mailer
+{
+    public function send(string $to): void
+    {
+        echo &quot;SMTP: gửi thật cho {$to}\n&quot;;
+    }
+}
+
+class FakeMailer implements Mailer
+{
+    public array $sent = [];
+
+    public function send(string $to): void
+    {
+        $this-&gt;sent[] = $to;
+    }
+}
+
+class OrderService
+{
+    public function __construct(private Mailer $mailer)
+    {
+    }
+
+    public function place(string $email): void
+    {
+        $this-&gt;mailer-&gt;send($email);
+    }
+}
+
+$fake = new FakeMailer();
+$service = new OrderService($fake);
+$service-&gt;place(&#x27;an@x.vn&#x27;);
+echo &#x27;Mail giả đã ghi: &#x27;, count($fake-&gt;sent), &quot;\n&quot;;</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Mail giả đã ghi: 1</code></pre><h4>Giải thích</h4><p><code>OrderService</code> tự <code>new SmtpMailer()</code> nên bị gắn chặt với mail thật. Sau khi sửa, service chỉ biết interface <code>Mailer</code>, còn bản cụ thể do bên ngoài quyết định. Đây là chữ <strong>D</strong> trong SOLID.</p>
+<p>Có một cái bẫy trong code cũ: <code>new OrderService($fake)</code> không báo lỗi, vì <strong>PHP bỏ qua âm thầm tham số thừa</strong> khi gọi hàm do người dùng viết. Vì vậy bug này không lộ ra bằng thông báo lỗi.</p>
+<p>Trong Laravel, <code>Mail::fake()</code> và <code>$this-&gt;mock()</code> dùng chính cơ chế thay thế này.</p>
+<p class="jump"><a href="#q-13-13">← Về đề bài 13.13</a></p></div><div class="ex ans-ex" id="a-13-14"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.14</span><span class="ex-title">Mini Service Container với reflection</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+class Container
+{
+    private array $bindings = [];
+    private array $instances = [];
+
+    public function bind(string $abstract, string|Closure $concrete): void
+    {
+        $this-&gt;bindings[$abstract] = [&#x27;concrete&#x27; =&gt; $concrete, &#x27;shared&#x27; =&gt; false];
+    }
+
+    public function singleton(string $abstract, string|Closure $concrete): void
+    {
+        $this-&gt;bindings[$abstract] = [&#x27;concrete&#x27; =&gt; $concrete, &#x27;shared&#x27; =&gt; true];
+    }
+
+    public function make(string $abstract): object
+    {
+        if (isset($this-&gt;instances[$abstract])) {
+            return $this-&gt;instances[$abstract];
+        }
+
+        $binding = $this-&gt;bindings[$abstract] ?? null;
+        $concrete = $binding[&#x27;concrete&#x27;] ?? $abstract;
+
+        $object = $concrete instanceof Closure ? $concrete($this) : $this-&gt;build($concrete);
+
+        if ($binding[&#x27;shared&#x27;] ?? false) {
+            $this-&gt;instances[$abstract] = $object;
+        }
+
+        return $object;
+    }
+
+    private function build(string $class): object
+    {
+        if (! class_exists($class)) {
+            throw new RuntimeException(&quot;Không tạo được {$class}: chưa bind&quot;);
+        }
+
+        $reflection = new ReflectionClass($class);
+        $constructor = $reflection-&gt;getConstructor();
+
+        if ($constructor === null) {
+            return new $class();
+        }
+
+        $args = [];
+        foreach ($constructor-&gt;getParameters() as $param) {
+            $type = $param-&gt;getType();
+            if ($type instanceof ReflectionNamedType &amp;&amp; ! $type-&gt;isBuiltin()) {
+                $args[] = $this-&gt;make($type-&gt;getName());
+            } elseif ($param-&gt;isDefaultValueAvailable()) {
+                $args[] = $param-&gt;getDefaultValue();
+            } else {
+                throw new RuntimeException(&quot;Không biết truyền gì cho \${$param-&gt;getName()} của {$class}&quot;);
+            }
+        }
+
+        return $reflection-&gt;newInstanceArgs($args);
+    }
+}
+
+interface Mailer
+{
+}
+
+class SmtpMailer implements Mailer
+{
+}
+
+class OrderService
+{
+    public function __construct(public Mailer $mailer, public int $retries = 3)
+    {
+    }
+}
+
+class OrderController
+{
+    public function __construct(public OrderService $service)
+    {
+    }
+}
+
+$app = new Container();
+
+try {
+    $app-&gt;make(OrderController::class);
+} catch (RuntimeException $e) {
+    echo $e-&gt;getMessage(), &quot;\n&quot;;
+}
+
+$app-&gt;singleton(Mailer::class, SmtpMailer::class);
+$controller = $app-&gt;make(OrderController::class);
+
+echo get_class($controller-&gt;service-&gt;mailer), &#x27; &#x27;, $controller-&gt;service-&gt;retries, &quot;\n&quot;;
+var_dump($app-&gt;make(OrderController::class) === $controller);
+var_dump($app-&gt;make(Mailer::class) === $controller-&gt;service-&gt;mailer);
+
+$app-&gt;bind(&#x27;now&#x27;, fn (Container $c) =&gt; new ArrayObject([&#x27;closure&#x27;]));
+var_dump($app-&gt;make(&#x27;now&#x27;) === $app-&gt;make(&#x27;now&#x27;));</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Không tạo được Mailer: chưa bind
+SmtpMailer 3
+bool(false)
+bool(true)
+bool(false)</code></pre><h4>Giải thích</h4><ul>
+<li><code>OrderController</code> và <code>OrderService</code> không cần đăng ký: container đọc type-hint và tự tạo. Đó là <strong>auto-resolution</strong>. Lần gọi đầu lỗi vì <code>Mailer</code> là interface, container không biết chọn class nào. Đây là thông báo bạn sẽ gặp trong Laravel: <code>Target [...] is not instantiable</code>.</li>
+<li><code>singleton</code> trả về cùng object, còn <code>OrderController</code> chưa đăng ký nên mỗi lần tạo mới.</li>
+<li><code>class_exists</code> trả về <code>false</code> với interface, nên interface chưa bind rơi đúng vào nhánh lỗi.</li>
+</ul>
+<p>Đây chính là lý do trong Laravel bạn chỉ cần <code>bind</code> khi type-hint interface, còn class cụ thể thì không cần.</p>
+<p class="jump"><a href="#q-13-14">← Về đề bài 13.14</a></p></div><div class="ex ans-ex" id="a-13-15"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.15</span><span class="ex-title">Mini Eloquent với magic method</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+abstract class Model implements JsonSerializable
+{
+    protected array $attributes = [];
+    protected array $fillable = [];
+    protected array $hidden = [];
+
+    public function fill(array $data): static
+    {
+        foreach ($data as $key =&gt; $value) {
+            if (in_array($key, $this-&gt;fillable, true)) {
+                $this-&gt;attributes[$key] = $value;
+            }
+        }
+
+        return $this;
+    }
+
+    public function __get(string $key): mixed
+    {
+        $studly = str_replace(&#x27; &#x27;, &#x27;&#x27;, ucwords(str_replace(&#x27;_&#x27;, &#x27; &#x27;, $key)));
+        $accessor = &quot;get{$studly}Attribute&quot;;
+
+        if (method_exists($this, $accessor)) {
+            return $this-&gt;$accessor();
+        }
+
+        return $this-&gt;attributes[$key] ?? null;
+    }
+
+    public function __set(string $key, mixed $value): void
+    {
+        $this-&gt;attributes[$key] = $value;
+    }
+
+    public function __isset(string $key): bool
+    {
+        return isset($this-&gt;attributes[$key]);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_diff_key($this-&gt;attributes, array_flip($this-&gt;hidden));
+    }
+}
+
+class User extends Model
+{
+    protected array $fillable = [&#x27;first_name&#x27;, &#x27;last_name&#x27;, &#x27;password&#x27;];
+    protected array $hidden = [&#x27;password&#x27;];
+
+    public function getFullNameAttribute(): string
+    {
+        return &quot;{$this-&gt;first_name} {$this-&gt;last_name}&quot;;
+    }
+}
+
+$user = (new User())-&gt;fill([
+    &#x27;first_name&#x27; =&gt; &#x27;Thái&#x27;,
+    &#x27;last_name&#x27; =&gt; &#x27;Bảo&#x27;,
+    &#x27;password&#x27; =&gt; &#x27;secret&#x27;,
+    &#x27;is_admin&#x27; =&gt; true,
+]);
+
+echo $user-&gt;first_name, &quot;\n&quot;;
+echo $user-&gt;full_name, &quot;\n&quot;;
+var_dump($user-&gt;is_admin);
+var_dump(isset($user-&gt;is_admin));
+
+$user-&gt;is_admin = true;
+var_dump(isset($user-&gt;is_admin));
+
+echo json_encode($user, JSON_UNESCAPED_UNICODE), &quot;\n&quot;;</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Thái
+Thái Bảo
+NULL
+bool(false)
+bool(true)
+{&quot;first_name&quot;:&quot;Thái&quot;,&quot;last_name&quot;:&quot;Bảo&quot;,&quot;is_admin&quot;:true}</code></pre><h4>Giải thích</h4><ul>
+<li><code>$user-&gt;first_name</code> không phải thuộc tính thật, <code>__get</code> chạy vì thuộc tính đó không tồn tại trên object.</li>
+<li><code>fill</code> bỏ qua <code>is_admin</code>, đó là cách <code>$fillable</code> chống <strong>mass assignment</strong>. Nhưng gán trực tiếp <code>$user-&gt;is_admin = true</code> thì không bị chặn, giống Eloquent.</li>
+<li><code>isset</code> trên thuộc tính ảo cần <code>__isset</code>. Nếu không có nó, <code>isset($user-&gt;first_name)</code> luôn là <code>false</code>, một lỗi rất khó tìm.</li>
+<li><code>JsonSerializable</code> kiểm soát những gì <code>json_encode</code> in ra, nên <code>password</code> không bị lộ.</li>
+</ul>
+<p>Laravel từ bản 9 có cách viết accessor mới bằng <code>Attribute::make</code>. Cơ chế gốc vẫn là <code>__get</code>.</p>
+<p class="jump"><a href="#q-13-15">← Về đề bài 13.15</a></p></div><div class="ex ans-ex" id="a-13-16"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.16</span><span class="ex-title">Mini Facade với <code>__callStatic</code></span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+abstract class Facade
+{
+    public static array $app = [];
+
+    abstract protected static function accessor(): string;
+
+    public static function swap(object $fake): void
+    {
+        self::$app[static::accessor()] = $fake;
+    }
+
+    public static function __callStatic(string $method, array $args): mixed
+    {
+        $instance = self::$app[static::accessor()]
+            ?? throw new RuntimeException(&#x27;Chưa đăng ký &#x27; . static::accessor());
+
+        return $instance-&gt;$method(...$args);
+    }
+}
+
+class ArrayCache
+{
+    private array $data = [];
+
+    public function put(string $key, mixed $value): void
+    {
+        $this-&gt;data[$key] = $value;
+    }
+
+    public function get(string $key, mixed $default = null): mixed
+    {
+        return $this-&gt;data[$key] ?? $default;
+    }
+}
+
+class FakeCache
+{
+    public function get(string $key, mixed $default = null): mixed
+    {
+        return &quot;giả:{$key}&quot;;
+    }
+}
+
+class Cache extends Facade
+{
+    protected static function accessor(): string
+    {
+        return &#x27;cache&#x27;;
+    }
+}
+
+try {
+    Cache::get(&#x27;x&#x27;);
+} catch (RuntimeException $e) {
+    echo $e-&gt;getMessage(), &quot;\n&quot;;
+}
+
+Facade::$app[&#x27;cache&#x27;] = new ArrayCache();
+
+Cache::put(&#x27;name&#x27;, &#x27;An&#x27;);
+echo Cache::get(&#x27;name&#x27;), &quot;\n&quot;;
+echo Cache::get(&#x27;khong-co&#x27;, &#x27;mặc định&#x27;), &quot;\n&quot;;
+var_dump(method_exists(Cache::class, &#x27;get&#x27;));
+
+Cache::swap(new FakeCache());
+echo Cache::get(&#x27;name&#x27;), &quot;\n&quot;;</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Chưa đăng ký cache
+An
+mặc định
+bool(false)
+giả:name</code></pre><h4>Giải thích</h4><p><code>Cache</code> không có method <code>get</code> nào, như dòng <code>method_exists</code> cho thấy. <code>Cache::get()</code> <strong>trông như static nhưng thật ra gọi method của một object</strong>. Đây là câu phỏng vấn hay gặp: &quot;Facade có phải static không?&quot;</p>
+<p>Vì object phía sau thay được, nên test được bằng <code>Cache::fake()</code> hoặc <code>Cache::shouldReceive()</code>. Hàm static thật thì không thay được như vậy.</p>
+<p><code>?? throw</code> hợp lệ từ PHP 8.0, vì <code>throw</code> đã là biểu thức.</p>
+<p class="jump"><a href="#q-13-16">← Về đề bài 13.16</a></p></div><div class="ex ans-ex" id="a-13-17"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.17</span><span class="ex-title">Attribute và router đọc bằng reflection</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+#[Attribute(Attribute::TARGET_METHOD)]
+class Route
+{
+    public function __construct(
+        public string $path,
+        public string $method = &#x27;GET&#x27;,
+    ) {
+    }
+}
+
+class PostController
+{
+    #[Route(&#x27;/posts&#x27;)]
+    public function index(): string
+    {
+        return &#x27;danh sách bài&#x27;;
+    }
+
+    #[Route(&#x27;/posts&#x27;, method: &#x27;POST&#x27;)]
+    public function store(): string
+    {
+        return &#x27;đã tạo bài&#x27;;
+    }
+
+    public function helper(): string
+    {
+        return &#x27;không phải route&#x27;;
+    }
+}
+
+function routesOf(string $controller): array
+{
+    $routes = [];
+    foreach ((new ReflectionClass($controller))-&gt;getMethods() as $method) {
+        foreach ($method-&gt;getAttributes(Route::class) as $attribute) {
+            $route = $attribute-&gt;newInstance();
+            $routes[&quot;{$route-&gt;method} {$route-&gt;path}&quot;] = [$controller, $method-&gt;getName()];
+        }
+    }
+
+    return $routes;
+}
+
+function dispatch(array $routes, string $method, string $path): string
+{
+    $target = $routes[&quot;{$method} {$path}&quot;] ?? null;
+    if ($target === null) {
+        return &#x27;404&#x27;;
+    }
+    [$class, $action] = $target;
+
+    return (new $class())-&gt;$action();
+}
+
+$routes = routesOf(PostController::class);
+
+echo implode(&#x27;, &#x27;, array_keys($routes)), &quot;\n&quot;;
+echo dispatch($routes, &#x27;GET&#x27;, &#x27;/posts&#x27;), &quot;\n&quot;;
+echo dispatch($routes, &#x27;POST&#x27;, &#x27;/posts&#x27;), &quot;\n&quot;;
+echo dispatch($routes, &#x27;DELETE&#x27;, &#x27;/posts&#x27;), &quot;\n&quot;;</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>GET /posts, POST /posts
+danh sách bài
+đã tạo bài
+404</code></pre><h4>Giải thích</h4><p>Attribute <strong>tự nó không làm gì cả</strong>. Nó chỉ là dữ liệu gắn vào code, cho đến khi có code khác đọc bằng reflection. <code>newInstance()</code> mới thực sự tạo object <code>Route</code>.</p>
+<p>Trong Laravel có <code>#[ObservedBy(...)]</code>, và Laravel 13 cho cấu hình Model bằng <code>#[Table]</code>, <code>#[Fillable]</code>, <code>#[Hidden]</code>. Người từ NestJS sẽ thấy quen, vì <code>@Get(&#39;/posts&#39;)</code> có ý tưởng tương tự, khác ở chỗ decorator của TypeScript là hàm chạy lúc nạp class.</p>
+<p class="jump"><a href="#q-13-17">← Về đề bài 13.17</a></p></div><div class="ex ans-ex" id="a-13-18"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.18</span><span class="ex-title">Lưu mật khẩu đúng cách</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+final class Credential
+{
+    private function __construct(private string $hash)
+    {
+    }
+
+    public static function fromPlain(string $plain): self
+    {
+        return new self(password_hash($plain, PASSWORD_BCRYPT, [&#x27;cost&#x27; =&gt; 10]));
+    }
+
+    public function check(string $plain): bool
+    {
+        return password_verify($plain, $this-&gt;hash);
+    }
+
+    public function needsRehash(): bool
+    {
+        return password_needs_rehash($this-&gt;hash, PASSWORD_BCRYPT, [&#x27;cost&#x27; =&gt; 11]);
+    }
+
+    public function hash(): string
+    {
+        return $this-&gt;hash;
+    }
+}
+
+$a = Credential::fromPlain(&#x27;secret&#x27;);
+$b = Credential::fromPlain(&#x27;secret&#x27;);
+
+var_dump($a-&gt;check(&#x27;secret&#x27;));
+var_dump($a-&gt;check(&#x27;sai&#x27;));
+var_dump($a-&gt;hash() === $b-&gt;hash());
+var_dump($b-&gt;check(&#x27;secret&#x27;));
+var_dump($a-&gt;needsRehash());
+echo password_get_info($a-&gt;hash())[&#x27;algoName&#x27;], &#x27; &#x27;, strlen($a-&gt;hash()), &quot;\n&quot;;</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>bool(true)
+bool(false)
+bool(false)
+bool(true)
+bool(true)
+bcrypt 60</code></pre><h4>Giải thích</h4><ul>
+<li><code>password_hash</code> tự sinh <strong>salt</strong> ngẫu nhiên và lưu luôn trong chuỗi hash. Vì vậy hai hash khác nhau mà đều kiểm tra đúng, và bạn không cần cột salt riêng.</li>
+<li>Không so sánh bằng <code>===</code>, phải dùng <code>password_verify</code>.</li>
+<li>Không dùng <code>md5</code> hay <code>sha1</code> cho mật khẩu. Chúng quá nhanh nên dễ dò. Bcrypt cố tình chậm, và <code>cost</code> điều chỉnh độ chậm. Cột database nên là <code>VARCHAR(255)</code>.</li>
+<li><code>needsRehash</code> là <code>true</code> khi cấu hình mới mạnh hơn. Bạn hash lại lúc người dùng đăng nhập, vì đó là lúc có mật khẩu gốc.</li>
+</ul>
+<p>Constructor <code>private</code> buộc phải tạo object qua <code>fromPlain</code>, gọi là <strong>named constructor</strong>. Laravel: <code>Hash::make()</code>, <code>Hash::check()</code>, cast <code>&#39;password&#39; =&gt; &#39;hashed&#39;</code>.</p>
+<p class="jump"><a href="#q-13-18">← Về đề bài 13.18</a></p></div><div class="ex ans-ex" id="a-13-19"><div class="ex-head ans-head"><span class="ex-id">Đáp án 13.19</span><span class="ex-title">Tổng hợp: luồng thanh toán</span></div><div class="outlabel">Code đáp án</div><pre class="code"><code>&lt;?php
+
+declare(strict_types=1);
+
+enum PaymentMethod: string
+{
+    case Vnpay = &#x27;vnpay&#x27;;
+    case Momo = &#x27;momo&#x27;;
+
+    public function fee(int $amount): int
+    {
+        return (int) round($amount * match ($this) {
+            self::Vnpay =&gt; 0.02,
+            self::Momo =&gt; 0.01,
+        });
+    }
+}
+
+readonly class Receipt
+{
+    public function __construct(
+        public PaymentMethod $method,
+        public int $amount,
+        public int $fee,
+    ) {
+    }
+
+    public function total(): int
+    {
+        return $this-&gt;amount + $this-&gt;fee;
+    }
+}
+
+interface PaymentGateway
+{
+    public function pay(int $amount): Receipt;
+}
+
+trait RecordsLog
+{
+    private array $logs = [];
+
+    protected function log(string $line): void
+    {
+        $this-&gt;logs[] = $line;
+    }
+
+    public function logs(): array
+    {
+        return $this-&gt;logs;
+    }
+}
+
+abstract class BaseGateway implements PaymentGateway
+{
+    use RecordsLog;
+
+    abstract protected function method(): PaymentMethod;
+
+    abstract protected function charge(int $amount): void;
+
+    final public function pay(int $amount): Receipt
+    {
+        if ($amount &lt;= 0) {
+            throw new InvalidArgumentException(&quot;Số tiền không hợp lệ: {$amount}&quot;);
+        }
+
+        $method = $this-&gt;method();
+        $fee = $method-&gt;fee($amount);
+        $this-&gt;charge($amount + $fee);
+        $this-&gt;log(&quot;{$method-&gt;value}: {$amount} + {$fee}&quot;);
+
+        return new Receipt($method, $amount, $fee);
+    }
+}
+
+class VnpayGateway extends BaseGateway
+{
+    protected function method(): PaymentMethod
+    {
+        return PaymentMethod::Vnpay;
+    }
+
+    protected function charge(int $amount): void
+    {
+        echo &quot;Gọi API VNPAY: {$amount}\n&quot;;
+    }
+}
+
+class MomoGateway extends BaseGateway
+{
+    protected function method(): PaymentMethod
+    {
+        return PaymentMethod::Momo;
+    }
+
+    protected function charge(int $amount): void
+    {
+        echo &quot;Gọi API MoMo: {$amount}\n&quot;;
+    }
+}
+
+class GatewayFactory
+{
+    private array $created = [];
+
+    public function for(PaymentMethod $method): PaymentGateway
+    {
+        return $this-&gt;created[$method-&gt;value] ??= match ($method) {
+            PaymentMethod::Vnpay =&gt; new VnpayGateway(),
+            PaymentMethod::Momo =&gt; new MomoGateway(),
+        };
+    }
+}
+
+class CheckoutService
+{
+    public function __construct(private GatewayFactory $gateways)
+    {
+    }
+
+    public function checkout(PaymentMethod $method, int $amount): string
+    {
+        try {
+            $receipt = $this-&gt;gateways-&gt;for($method)-&gt;pay($amount);
+
+            return &quot;OK {$receipt-&gt;method-&gt;value}: tổng {$receipt-&gt;total()}&quot;;
+        } catch (InvalidArgumentException $e) {
+            return &quot;Từ chối: {$e-&gt;getMessage()}&quot;;
+        }
+    }
+}
+
+$factory = new GatewayFactory();
+$service = new CheckoutService($factory);
+
+echo $service-&gt;checkout(PaymentMethod::Vnpay, 100000), &quot;\n&quot;;
+echo $service-&gt;checkout(PaymentMethod::Momo, 50000), &quot;\n&quot;;
+echo $service-&gt;checkout(PaymentMethod::Momo, -1), &quot;\n&quot;;
+
+echo json_encode($factory-&gt;for(PaymentMethod::Momo)-&gt;logs()), &quot;\n&quot;;</code></pre><div class="outlabel">Kết quả khi chạy</div><pre class="out"><code>Gọi API VNPAY: 102000
+OK vnpay: tổng 102000
+Gọi API MoMo: 50500
+OK momo: tổng 50500
+Từ chối: Số tiền không hợp lệ: -1
+[&quot;momo: 50000 + 500&quot;]</code></pre><h4>Giải thích</h4><p>Mỗi phần giải quyết một vấn đề riêng:</p>
+<ul>
+<li><strong>Enum:</strong> không còn chuỗi <code>&#39;vnpay&#39;</code> rải rác, và phí nằm cùng chỗ với phương thức thanh toán.</li>
+<li><strong>Interface:</strong> <code>CheckoutService</code> không biết cổng cụ thể nào.</li>
+<li><strong>Abstract class:</strong> quy trình kiểm tra và tính phí không bị viết lại ở từng cổng.</li>
+<li><strong>Trait:</strong> ghi log dùng lại được ở những class không cùng họ với gateway.</li>
+<li><strong>Factory và DI:</strong> nơi tạo object được gom lại, và thay được khi test.</li>
+<li><strong>Readonly class:</strong> biên lai đã tạo thì không ai sửa được.</li>
+</ul>
+<p>Cấu trúc này gần với một module thanh toán thật. Thêm ZaloPay chỉ cần thêm một case trong enum, một class, và một dòng trong factory. Quên thêm dòng trong factory thì <code>match</code> ném <code>UnhandledMatchError</code>, nên lỗi lộ ra ngay.</p>
+<p class="jump"><a href="#q-13-19">← Về đề bài 13.19</a></p></div>
+
 <div class="chap"><div class="chap-badge">PHỤ LỤC</div></div>
-<p># Phụ lục A: Bảng hàm array cần nhớ</p>
+<h2>Phụ lục A: Bảng hàm array cần nhớ</h2>
 <table><tr><th>Hàm</th><th>Tác dụng</th><th>Chú ý</th></tr><tr><td><code>array_map(fn, $a)</code></td><td>Biến đổi từng phần tử</td><td>Callback đứng <strong>trước</strong>; giữ key</td></tr><tr><td><code>array_filter($a, fn)</code></td><td>Giữ phần tử thoả điều kiện</td><td>Mảng đứng <strong>trước</strong>; <strong>giữ key</strong>, bọc <code>array_values</code></td></tr><tr><td><code>array_reduce($a, fn, $init)</code></td><td>Gộp thành một giá trị</td><td>Nhớ giá trị khởi đầu</td></tr><tr><td><code>array_values($a)</code></td><td>Bỏ key, đánh lại 0,1,2</td><td>Dùng sau <code>array_filter</code>, <code>array_unique</code></td></tr><tr><td><code>array_keys($a)</code></td><td>Lấy các key</td><td></td></tr><tr><td><code>array_column($rows, 'c', 'k')</code></td><td>Lấy một cột từ mảng 2 chiều</td><td>Đánh lại chỉ số khi không có tham số thứ 3</td></tr><tr><td><code>array_slice($a, $off, $len)</code></td><td>Lấy một đoạn</td><td>Không sửa mảng gốc</td></tr><tr><td><code>array_merge($a, $b)</code></td><td>Nối mảng</td><td>Key chuỗi trùng thì giá trị sau ghi đè</td></tr><tr><td><code>array_unique($a)</code></td><td>Loại trùng</td><td>Giữ key đầu tiên, cần <code>array_values</code></td></tr><tr><td><code>array_search($v, $a, true)</code></td><td>Tìm key của giá trị</td><td>Trả <code>false</code> nếu không có, so bằng <code>=== false</code></td></tr><tr><td><code>in_array($v, $a, true)</code></td><td>Có chứa không</td><td>Luôn dùng tham số <code>true</code></td></tr><tr><td><code>array_sum</code>, <code>max</code>, <code>min</code>, <code>count</code></td><td>Tổng, lớn nhất, nhỏ nhất, đếm</td><td></td></tr><tr><td><code>array_key_first</code>, <code>array_key_last</code></td><td>Key đầu / cuối</td><td>An toàn hơn <code>end()</code></td></tr><tr><td><code>array_combine($keys, $vals)</code></td><td>Ghép hai mảng thành mảng kết hợp</td><td>Hai mảng phải cùng độ dài</td></tr><tr><td><code>array_is_list($a)</code></td><td>Key có liên tục từ 0 không</td><td>PHP 8.1+</td></tr><tr><td><code>usort($a, fn)</code></td><td>Sắp xếp tuỳ chỉnh tại chỗ</td><td>Trả <code>true</code>, không trả mảng</td></tr><tr><td><code>implode($sep, $a)</code> / <code>explode($sep, $s)</code></td><td>Mảng thành chuỗi / chuỗi thành mảng</td><td></td></tr></table>
-<p># Phụ lục B: Hàm file, chuỗi, JSON hay dùng</p>
+<h2>Phụ lục B: Hàm file, chuỗi, JSON hay dùng</h2>
 <table><tr><th>Hàm</th><th>Tác dụng</th></tr><tr><td><code>file_exists($p)</code></td><td>File/thư mục có tồn tại không</td></tr><tr><td><code>file_get_contents($p)</code> / <code>file_put_contents($p, $d, FILE_APPEND)</code></td><td>Đọc cả file / ghi (nối nếu có cờ)</td></tr><tr><td><code>fopen</code>, <code>fgets</code>, <code>fclose</code></td><td>Mở, đọc từng dòng, đóng</td></tr><tr><td><code>fputcsv</code>, <code>fgetcsv</code></td><td>Ghi, đọc một dòng CSV</td></tr><tr><td><code>file($p, FILE_IGNORE_NEW_LINES)</code></td><td>Đọc file thành mảng dòng</td></tr><tr><td><code>unlink($p)</code></td><td>Xoá file</td></tr><tr><td><code>__DIR__</code>, <code>basename($p)</code></td><td>Thư mục hiện tại, tên file</td></tr><tr><td><code>json_encode($d, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)</code></td><td>Mảng thành JSON</td></tr><tr><td><code>json_decode($s, true, 512, JSON_THROW_ON_ERROR)</code></td><td>JSON thành mảng, ném lỗi nếu hỏng</td></tr><tr><td><code>sprintf</code>, <code>printf</code>, <code>number_format</code></td><td>Định dạng chuỗi và số</td></tr><tr><td><code>str_split</code>, <code>strrev</code>, <code>strtolower</code>, <code>rtrim</code></td><td>Thao tác chuỗi cơ bản</td></tr></table>
-<p># Phụ lục C: Các lỗi hay gặp và cách nhận ra</p>
+<h2>Phụ lục C: Các lỗi hay gặp và cách nhận ra</h2>
 <table><tr><th>Triệu chứng</th><th>Nguyên nhân thường gặp</th><th>Cách sửa</th></tr><tr><td><code>Undefined variable $x</code></td><td>Closure <code>function</code> quên <code>use ($x)</code></td><td>Thêm <code>use</code>, hoặc dùng <code>fn</code></td></tr><tr><td><code>Undefined array key "x"</code></td><td>Đọc key không tồn tại</td><td>Dùng <code>??</code>, hoặc kiểm tra <code>isset</code></td></tr><tr><td>JSON ra <code>{...}</code> thay vì <code>[...]</code></td><td>Key không liên tục sau <code>array_filter</code></td><td>Bọc <code>array_values()</code></td></tr><tr><td><code>UnhandledMatchError</code></td><td><code>match</code> không có nhánh khớp, thiếu <code>default</code></td><td>Thêm <code>default</code> hoặc bắt lỗi</td></tr><tr><td><code>match (x)</code> với điều kiện khoảng luôn lỗi</td><td>Dùng <code>match ($x)</code> thay vì <code>match (true)</code></td><td>Đổi thành <code>match (true)</code></td></tr><tr><td><code>TypeError</code></td><td>Truyền sai kiểu dưới <code>strict_types</code></td><td>Ép kiểu rõ ràng, ví dụ <code>(int)</code></td></tr><tr><td>Dữ liệu CSV bị nhân đôi</td><td><code>fopen</code> chế độ <code>'a'</code> chạy nhiều lần</td><td>Xoá file trước khi thử, hoặc kiểm tra tồn tại</td></tr><tr><td><code>$x = usort(...)</code> ra <code>true</code></td><td><code>usort</code> sửa tại chỗ</td><td>Gọi <code>usort($mảng, ...)</code> rồi dùng <code>$mảng</code></td></tr><tr><td>Counter không tăng trong closure</td><td>Quên <code>&amp;</code> ở <code>use (&amp;$n)</code> hoặc dùng <code>fn</code></td><td>Dùng <code>function</code> với <code>use (&amp;$n)</code></td></tr><tr><td>Tiếng Việt bị <code>\u...</code> trong JSON</td><td>Thiếu <code>JSON_UNESCAPED_UNICODE</code></td><td>Thêm cờ</td></tr><tr><td>Sort sai khi bằng nhau</td><td>Thứ tự <code>?:</code> hoặc so sánh một tiêu chí</td><td>Thêm tiêu chí phụ bằng <code>?:</code></td></tr></table>
 </body>
 </html>
